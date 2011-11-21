@@ -8,7 +8,6 @@ package gear.ui.theme {
 	 * @version 20101008
 	 */
 	public interface ITheme {
-		function get cssText() : String;
 
 		function get GButton_upSkin() : Sprite;
 

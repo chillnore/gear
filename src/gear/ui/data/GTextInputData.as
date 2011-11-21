@@ -1,4 +1,6 @@
 ﻿package gear.ui.data {
+	import flash.display.DisplayObject;
+
 	import gear.net.AssetData;
 	import gear.ui.core.GBaseData;
 	import gear.ui.manager.UIManager;
@@ -16,6 +18,8 @@
 	 * 尝试加入defaultText属性，当获得输入焦点时移除
 	 */
 	public class GTextInputData extends GBaseData {
+		public var borderSkin : DisplayObject;
+		public var disabledSkin : DisplayObject;
 		public var borderAsset : AssetData = new AssetData("GTextInput_borderSkin");
 		public var disabledAsset : AssetData = new AssetData("GTextInput_disabledSkin");
 		/**
@@ -24,7 +28,7 @@
 		public var textField : TextField;
 		public var textFormat : TextFormat;
 		public var color : GColor;
-		public var textFieldFilters : Array = UIManager.getEdgeFilters(0x000000, 0.7);
+		public var textFieldFilters : Array;
 		public var maxChars : int = 0;
 		public var displayAsPassword : Boolean = false;
 		public var restrict : String = "";
@@ -40,7 +44,7 @@
 			data.borderAsset = borderAsset;
 			data.textFormat = textFormat;
 			data.color = color.clone();
-			data.textFieldFilters = textFieldFilters.concat();
+			data.textFieldFilters = (textFieldFilters != null ? textFieldFilters.concat() : null);
 			data.maxChars = maxChars;
 			data.displayAsPassword = displayAsPassword;
 			data.restrict = restrict;
@@ -53,7 +57,7 @@
 			height = 22;
 			textFormat = new TextFormat();
 			textFormat.font = UIManager.defaultFont;
-			textFormat.size = 12;
+			textFormat.size = UIManager.defaultSize;
 			textFormat.kerning = true;
 			color = new GColor();
 			color.upColor = 0xEFEFEF;

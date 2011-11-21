@@ -1,5 +1,4 @@
 ﻿package gear.ui.theme {
-	import gear.ui.manager.UIManager;
 	import gear.utils.GDrawUtil;
 	import gear.utils.MathUtil;
 
@@ -9,7 +8,6 @@
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 
-
 	/**
 	 * 黑色主题-AS3绘制
 	 * 
@@ -17,10 +15,6 @@
 	 * @version 20101018
 	 */
 	public class BlackTheme implements ITheme {
-		public function get cssText() : String {
-			return "p{color:#EFEFEF;font-family:" + UIManager.defaultFont + ";leading:4;kerning:true}";
-		}
-
 		public function get GButton_upSkin() : Sprite {
 			var skin : Sprite = new Sprite();
 			var g : Graphics = skin.graphics;

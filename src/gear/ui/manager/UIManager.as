@@ -28,13 +28,14 @@
 	 * UI管理器
 	 * 
 	 * @author bright
-	 * @version 20101018
+	 * @version 20111121
 	 */
 	public class UIManager {
 		public static const SHADOW : DropShadowFilter = new DropShadowFilter(1, 45, 0, 0.5, 1, 1);
 		public static var appWidth : int = 0;
 		public static var appHeight : int = 0;
-		private static var _defaultFont : String;
+		public static var defaultFont : String = "Tahoma";
+		public static var defaultSize : int = 12;
 		private static var _defaultCSS : StyleSheet;
 		private static var _root : Sprite;
 		private static var _url : String;
@@ -50,6 +51,14 @@
 			_url = UIManager._root.loaderInfo.url;
 			if (_url.indexOf("/[[DYNAMIC]]/") != -1) {
 				_url = _url.split("/[[DYNAMIC]]/")[0];
+			}
+			var os : String = Capabilities.os;
+			if (os.indexOf("Windows") != -1) {
+				defaultFont = "Tahoma";
+			} else if (os.indexOf("Mac") != -1) {
+				defaultFont = "Monaco";
+			} else if (os.indexOf("Linux") != -1) {
+				defaultFont = "AR PL UMing CN";
 			}
 		}
 
@@ -72,30 +81,6 @@
 
 		public static function get url() : String {
 			return UIManager._url;
-		}
-
-		/**
-		 * 根据操作系统获得默认字体
-		 * 
-		 * Windows Tahoma
-		 * Mac Monaco
-		 * Linux AR PL UMing CN
-		 * 
-		 * @return 字体名称
-		 */
-		public static function get defaultFont() : String {
-			if (_defaultFont == null) {
-				_defaultFont = "Tahoma";
-				var os : String = Capabilities.os;
-				if (os.indexOf("Windows") != -1) {
-					_defaultFont = "Tahoma";
-				} else if (os.indexOf("Mac") != -1) {
-					_defaultFont = "Monaco";
-				} else if (os.indexOf("Linux") != -1) {
-					_defaultFont = "AR PL UMing CN";
-				}
-			}
-			return _defaultFont;
 		}
 
 		/**
@@ -219,8 +204,8 @@
 
 		public static function getTextFormat() : TextFormat {
 			var textFormat : TextFormat = new TextFormat();
-			textFormat.font = UIManager.defaultFont;
-			textFormat.size = 12;
+			textFormat.font = defaultFont;
+			textFormat.size = defaultSize;
 			return textFormat;
 		}
 

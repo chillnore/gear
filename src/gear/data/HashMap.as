@@ -8,7 +8,7 @@
 	 * 哈希表
 	 * 
 	 * @author bright
-	 * @version 20101015
+	 * @version 20111120
 	 */
 	public class HashMap {
 		private var _keys : Array ;

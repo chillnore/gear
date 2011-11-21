@@ -1,4 +1,7 @@
 package test.ui {
+	import gear.ui.manager.UIManager;
+	import flash.text.TextFormat;
+
 	import gear.core.Game;
 	import gear.net.LibData;
 	import gear.net.SWFLoader;
@@ -6,6 +9,7 @@ package test.ui {
 	import gear.ui.data.GGridData;
 
 	import flash.events.Event;
+	import flash.text.TextField;
 
 	/**
 	 * @author bright
@@ -22,10 +26,18 @@ package test.ui {
 		}
 
 		private function res_complateHandler(event : Event) : void {
-			addGrid();
+			// addGrid();
+			var tf : TextField = new TextField();
+			var format : TextFormat = new TextFormat();
+			format.font = UIManager.defaultFont;
+			format.size = UIManager.defaultSize;
+			tf.defaultTextFormat = format;
+			tf.textColor = 0xFFFFFF;
+			tf.text = "中文abcdABCD";
+			addChild(tf);
 		}
 
-		private function addGrid() : void {
+		protected function addGrid() : void {
 			var data : GGridData = new GGridData();
 			data.bgSkin = null;
 			data.x = data.y = 10;

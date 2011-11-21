@@ -28,7 +28,7 @@
 		/**
 		 * 色彩定义
 		 */
-		public var color :GColor;
+		public var color : GColor;
 		/**
 		 * 文本滤镜数组
 		 */
@@ -92,7 +92,7 @@
 			color.disabledColor = 0xEFEFEF;
 			textFormat = new TextFormat();
 			textFormat.font = UIManager.defaultFont;
-			textFormat.size = 12;
+			textFormat.size = UIManager.defaultSize;
 			textFormat.leading = 3;
 			textFormat.kerning = true;
 			styleSheet = UIManager.defaultCSS;

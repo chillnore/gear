@@ -1,6 +1,5 @@
 ﻿package gear.ui.skin {
 	import gear.net.AssetData;
-	import gear.ui.manager.UIManager;
 	import gear.ui.theme.ITheme;
 
 	import flash.display.BitmapData;
@@ -12,7 +11,7 @@
 	 * ASSkin 脚本皮肤
 	 * 
 	 * @author bright
-	 * @version 20101010
+	 * @version 20111121
 	 */
 	public class ASSkin {
 		private static var _lib : Dictionary = new Dictionary(true);
@@ -47,7 +46,6 @@
 		}
 
 		public static function setTheme(libId : String, theme : ITheme) : void {
-			UIManager.defaultCSS.parseCSS(theme.cssText);
 			_lib[libId] = theme;
 		}
 
