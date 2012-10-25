@@ -9,9 +9,12 @@
 
 
 	/**
-	 * @author admin
+	 * Amf3 call
+	 * 
+	 * @author bright
+	 * @version 20121025
 	 */
-	public class AMF3Call {
+	public class Amf3Call {
 		public static var TIME_OUT : int = 30000;
 		private var _method : String;
 		private var _callback : Function;
@@ -56,7 +59,7 @@
 			}
 		}
 
-		public function AMF3Call(method : String, callback : Function, ...args : Array) {
+		public function Amf3Call(method : String, callback : Function, ...args : Array) {
 			_method = method;
 			_callback = callback;
 			_args = args;

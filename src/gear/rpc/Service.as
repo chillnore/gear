@@ -43,7 +43,7 @@
 		private var _test : Dictionary;
 		private var _nc : NetConnection;
 		private var _timer : RenderCall;
-		private var _pollCall : AMF3Call;
+		private var _pollCall : Amf3Call;
 
 		private function netStatusHandler(event : NetStatusEvent) : void {
 			for (var s:String in event.info) {
@@ -105,7 +105,7 @@
 			_prefix = value;
 		}
 
-		public function addCall(value : AMF3Call) : void {
+		public function addCall(value : Amf3Call) : void {
 			if (_test[value.method] != null) {
 				try {
 					value.onResult.apply(null, Function(_test[value.method]).apply(null, value.args));
@@ -124,7 +124,7 @@
 			_timestamp = value;
 		}
 
-		public function startPoll(call : AMF3Call, delay : int) : void {
+		public function startPoll(call : Amf3Call, delay : int) : void {
 			if (_verify == "none") return;
 			_pollCall = call;
 			_pollCall.merge(_prefix);
