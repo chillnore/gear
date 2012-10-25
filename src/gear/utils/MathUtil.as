@@ -8,7 +8,7 @@
 	 * MathUtil 数学工具类
 	 * 
 	 * @author bright
-	 * @version 20101011
+	 * @version 20111207
 	 */
 	public class MathUtil {
 		public static const ZERO_POINT : Point = new Point(0, 0);
@@ -57,6 +57,13 @@
 			return rect;
 		}
 
+		public static function getMinStep(d : int, step : int) : int {
+			if (d > 0) {
+				return (d < step ? d : step);
+			}
+			return (d > -step ? d : -step);
+		}
+
 		public static function clamp(n : Number, min : Number, max : Number) : Number {
 			if (n < min) {
 				return min;
@@ -80,6 +87,9 @@
 		}
 
 		public static function random(min : int, max : int) : int {
+			if (min == max) {
+				return min;
+			}
 			return Math.round(Math.random() * (max - min)) + min;
 		}
 
@@ -137,27 +147,6 @@
 			d.y += ty;
 		}
 
-		public static function cutTwoPoint(source : Point, target : Point, radius : int) : Array {
-			var distance : Number = MathUtil.getTwoPointDistance(source, target);
-			var diameter : int = radius << 1;
-			var cut : Point = new Point();
-			if (distance > diameter) {
-				var count : int = Math.ceil(distance / diameter);
-				var angle : int = MathUtil.getTwoPointAngle(source, target);
-				cut.x = Math.round(diameter * MathUtil.cos(angle));
-				cut.y = Math.round(diameter * MathUtil.sin(angle));
-				var list : Array = new Array();
-				var point : Point = source.clone();
-				for (var i : int = 0;i < count;i++) {
-					list[i] = point;
-					point = point.add(cut);
-				}
-				return list;
-			} else {
-				return [source];
-			}
-		}
-
 		public static function getLastInsertPoint(source : Point, target : Point, radius : int) : Point {
 			var distance : Number = MathUtil.getTwoPointDistance(source, target);
 			var diameter : int = radius * 2;
@@ -201,6 +190,10 @@
 					return -angle;
 				}
 			}
+		}
+
+		public static function ceil(value : Number) : int {
+			return Math.ceil(value > 0 ? value : -value);
 		}
 	}
 }

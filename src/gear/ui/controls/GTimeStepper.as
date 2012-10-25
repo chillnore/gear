@@ -1,6 +1,4 @@
 ﻿package gear.ui.controls {
-	import flash.events.Event;
-	import flash.events.TimerEvent;
 	import gear.render.BDList;
 	import gear.render.FrameRender;
 	import gear.render.RenderCall;
@@ -10,6 +8,8 @@
 	import gear.utils.BDUtil;
 	import gear.utils.GArrayUtil;
 
+	import flash.events.Event;
+	import flash.events.TimerEvent;
 
 	/**
 	 * 时间步进器控件
@@ -28,7 +28,7 @@
 		override protected function create() : void {
 			var chars : Array = [":", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 			var widths : Array = GArrayUtil.repeat(28, chars.length);
-			var list : BDList = BDUtil.cutBD(_data.bdAsset, widths);
+			var list : BDList = BDUtil.cutBD(_data.bdKey, _data.bdLib, widths);
 			_bf = new BDFont(list, chars, widths, 41, 1);
 			_bf.text = "00:00";
 			_width = _bf.width;

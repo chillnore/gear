@@ -1,52 +1,74 @@
 ﻿package gear.net {
+	import gear.log4a.GLogger;
+	import gear.ui.manager.UIManager;
+	import gear.utils.GStringUtil;
+
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.system.Security;
 
 	/**
 	 * 抽象加载器
 	 * 
 	 * @author bright
-	 * @version 20101015
+	 * @version 20120501
 	 */
 	public class ALoader extends EventDispatcher {
-		public static const ERROR : String = "error";
+		public static const FAILED : String = "FAILED";
 		/**
 		 * @private
 		 */
-		protected var _libData : LibData;
+		protected var _url : String;
+		protected var _key : String;
 		/**
 		 * @private
 		 */
 		protected var _loadData : LoadData;
-		/**
-		 * @private
-		 */
-		protected var _isLoadding : Boolean;
-		/**
-		 * @private
-		 */
-		protected var _isLoaded : Boolean;
-		protected var _try : int;
+		protected var _isFailed : Boolean;
+		protected var _isLoading : Boolean;
 		protected var _source : *;
-		public static const TRY_MAX : int = 3;
+
+		protected function crossdomain() : void {
+			if (UIManager.url != null && UIManager.url.indexOf("http://") != -1) {
+				var crossDomain : String = GStringUtil.getCrossDomainUrl(_url);
+				if (crossDomain != null) {
+					Security.loadPolicyFile(crossDomain);
+				}
+			}
+		}
+
+		protected function onFailed() : void {
+			_isFailed = true;
+			GLogger.info(GStringUtil.format("load {0} failed", _url));
+			dispatchEvent(new Event(ALoader.FAILED));
+		}
+
+		protected function onComplete() : void {
+			_isLoading = false;
+			GLoadUtil.setLoaded(this);
+			GLogger.info(GStringUtil.format("load {0} complete", _url));
+			dispatchEvent(new Event(Event.COMPLETE));
+		}
 
 		/**
 		 * 构造函数
 		 * 
 		 * @param data 库数据
 		 */
-		public function ALoader(data : LibData) {
-			_libData = data;
-			_loadData = new LoadData();
-			_isLoadding = false;
-			_isLoaded = false;
+		public function ALoader(url : String, key : String) {
+			_url = url;
+			_key = key;
+			_loadData = new LoadData(key);
+			reset();
 		}
 
-		public function get isLoaded() : Boolean {
-			return _isLoaded;
+		public function reset() : void {
+			_isFailed = false;
+			_isLoading = false;
 		}
 
 		public function get url() : String {
-			return _libData.url;
+			return _url;
 		}
 
 		/**
@@ -54,7 +76,7 @@
 		 * 
 		 * @return 	 */
 		public function get key() : String {
-			return _libData.key;
+			return _key;
 		}
 
 		/**
@@ -64,6 +86,10 @@
 		 */
 		public function get loadData() : LoadData {
 			return _loadData;
+		}
+
+		public function get isFailed() : Boolean {
+			return _isFailed;
 		}
 
 		/**

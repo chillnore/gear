@@ -1,6 +1,7 @@
 ﻿package gear.ui.controls {
+	import gear.gui.controls.GButton;
 	import gear.ui.core.GBase;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
 	import gear.ui.data.GPageControlData;
 	import gear.ui.drag.DragData;
 	import gear.ui.drag.DragState;
@@ -56,9 +57,9 @@
 			addChild(_next_btn);
 			addChild(_page_lb);
 			switch(_data.scaleMode) {
-				case ScaleMode.WIDTH_ONLY:
+				case GScaleMode.WIDTH_ONLY:
 					break;
-				case ScaleMode.NONE:
+				case GScaleMode.NONE:
 					if (_data.bgSkin != null) {
 						_width = _data.bgSkin.width;
 						_height = _data.bgSkin.height;

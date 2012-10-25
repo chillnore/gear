@@ -1,11 +1,13 @@
 ﻿package gear.ui.bd {
+	import gear.pool.ObjPool;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.geom.Point;
+
 	import gear.core.IDispose;
 	import gear.render.BDList;
-
 
 	/**
 	 * 位图字体
@@ -14,6 +16,7 @@
 	 * @version 20101015
 	 */
 	public final class BDFont extends Sprite implements IDispose {
+		public static const pool : ObjPool = new ObjPool(BDFont);
 		private var _chars : Array;
 		private var _widths : Array;
 		private var _height : int;

@@ -26,6 +26,8 @@
 
 		function merge(value : IDragItem) : Boolean;
 
+		function canDragEnter(value : IDragItem, place : int) : Boolean;
+
 		function split(count : int) : IDragItem;
 
 		function syncMove(s_place : int, s_grid : int, t_place : int, t_grid : int, splitKey : String = "", splitCount : int = 0) : void;

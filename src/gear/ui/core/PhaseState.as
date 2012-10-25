@@ -3,7 +3,7 @@
 	 * 阶段状态
 	 * 
 	 * @author bright
-	 * @version 20101012
+	 * @version 20120814
 	 */
 	public final class PhaseState {
 		public static const UP : int = 0;

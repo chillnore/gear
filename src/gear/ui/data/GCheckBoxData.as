@@ -1,26 +1,29 @@
 ﻿package gear.ui.data {
-	import gear.net.AssetData;
 	import gear.ui.core.GBaseData;
+	import gear.ui.manager.UIManager;
 	import gear.ui.skin.SkinStyle;
+
+	import flash.display.DisplayObject;
+
 	/**
 	 * 复选框控件定义
 	 * 
 	 * @author bright
-	 * @version 20101018
+	 * @version 20120814
 	 */
 	public class GCheckBoxData extends GBaseData {
 		/**
 		 * 鼠标抬起元件定义
 		 */
-		public var upAsset : AssetData;
+		public var upSkin : DisplayObject;
 		/**
 		 * 示选中图标控件定义
 		 */
-		public var upIcon : AssetData;
+		public var upIcon : DisplayObject;
 		/**
 		 * 选中图标控件定义
 		 */
-		public var selectedUpIcon : AssetData;
+		public var selectedUpIcon : DisplayObject;
 		/**
 		 * 标签控件定义
 		 * @see gear.ui.data.GLabelData
@@ -45,10 +48,10 @@
 		override protected function parse(source : *) : void {
 			super.parse(source);
 			var data : GCheckBoxData = source as GCheckBoxData;
-			if(data == null) {
+			if (data == null) {
 				return;
 			}
-			data.upAsset = upAsset;
+			data.upSkin = UIManager.cloneSkin(upSkin);
 			data.upIcon = upIcon;
 			data.selectedUpIcon = selectedUpIcon;
 			data.labelData = labelData.clone();
@@ -58,9 +61,9 @@
 		}
 
 		public function GCheckBoxData() {
-			upAsset = new AssetData(SkinStyle.emptySkin, AssetData.AS_LIB);
-			upIcon = new AssetData(SkinStyle.checkBox_upIcon);
-			selectedUpIcon = new AssetData(SkinStyle.checkBox_selectedUpIcon);
+			upSkin = UIManager.getSkinBy(SkinStyle.emptySkin, "ui");
+			upIcon = UIManager.getSkinBy(SkinStyle.checkBox_upIcon, "ui");
+			selectedUpIcon = UIManager.getSkinBy(SkinStyle.checkBox_selectedUpIcon, "ui");
 			labelData = new GLabelData();
 			labelData.text = "Label";
 			selected = false;

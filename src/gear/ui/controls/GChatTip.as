@@ -1,7 +1,6 @@
 ﻿package gear.ui.controls {
 	import gear.ui.core.GBase;
 	import gear.ui.data.GChatTipData;
-	import gear.ui.manager.UIManager;
 
 	import flash.display.Sprite;
 	import flash.utils.clearTimeout;
@@ -24,8 +23,8 @@
 		 * @private
 		 */
 		override protected function create() : void {
-			_bodySkin = UIManager.getSkin(_data.bodyAsset);
-			_tailSkin = UIManager.getSkin(_data.tailAsset);
+			//_bodySkin = UIManager.getSkin(_data.bodyAsset);
+			//_tailSkin = UIManager.getSkin(_data.tailAsset);
 			_tailSkin.x = -int(_tailSkin.width * 0.5);
 			_tailSkin.y = -_tailSkin.height - 1;
 			_data.labelData.width = _data.maxWidth - _data.gap * 2;

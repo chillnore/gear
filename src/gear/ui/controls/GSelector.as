@@ -1,4 +1,5 @@
 ﻿package gear.ui.controls {
+	import gear.gui.controls.GButton;
 	import gear.ui.core.GAlign;
 	import gear.ui.core.GBase;
 	import gear.ui.data.GSelectorData;
@@ -15,7 +16,7 @@
 	 * GSelector 选择器控件
 	 * 
 	 * @author bright
-	 * @version 20110628
+	 * @version 20120416
 	 */
 	public class GSelector extends GBase {
 		/**
@@ -129,9 +130,8 @@
 		protected function model_changeHandler(event : GListEvent) : void {
 			switch(event.state) {
 				case ListState.RESET:
-					if (_selectionModel.index >= _model.size || _selectionModel.index == -1) {
-						_selectionModel.index = 0;
-					}
+					_selectionModel.index = 0;
+					_prev_btn.enabled = _next_btn.enabled = (_model.size > 1);
 					reset();
 					break;
 				case ListState.ADDED:
@@ -190,6 +190,10 @@
 			_selectionModel.addEventListener(Event.CHANGE, selection_changeHandler);
 			_model = new ListModel();
 			addModelEvents();
+		}
+
+		public function get content() : GBase {
+			return _content;
 		}
 
 		/**

@@ -1,4 +1,6 @@
 ﻿package gear.ui.controls {
+	import gear.gui.controls.GButton;
+	import gear.ui.core.GAlign;
 	import gear.ui.core.GBase;
 	import gear.ui.data.GStepperData;
 	import gear.ui.model.RangeModel;
@@ -18,6 +20,7 @@
 		 * @private
 		 */
 		protected var _data : GStepperData;
+		protected var _label : GLabel;
 		/**
 		 * @private
 		 */
@@ -39,10 +42,18 @@
 		 * @private
 		 */
 		override protected function create() : void {
+			var left : int = 0;
+			if (_data.labelData != null) {
+				_data.labelData.align = new GAlign(-1, -1, -1, -1, -1, 0);
+				_label = new GLabel(_data.labelData);
+				left = _label.width;
+				addChild(_label);
+			}
 			_upArrow = new GButton(_data.upArrowData);
 			_downArrow = new GButton(_data.downArrowData);
 			_downArrow.y = _upArrow.height;
 			_textInput = new GTextInput(_data.textInputData);
+			_textInput.x = left;
 			addChild(_upArrow);
 			addChild(_downArrow);
 			addChild(_textInput);
@@ -52,9 +63,9 @@
 		 * @private
 		 */
 		override protected function layout() : void {
-			_upArrow.x = _width - _upArrow.width;
-			_downArrow.x = _width - _downArrow.width;
-			_textInput.width = _width - _upArrow.width;
+			_textInput.width = _width - _upArrow.width - (_label != null ? _label.width : 0);
+			_upArrow.x = _textInput.x + _textInput.width;
+			_downArrow.x = _upArrow.x;
 		}
 
 		/**
@@ -127,8 +138,7 @@
 		 */
 		protected function down_clickHandler(event : MouseEvent) : void {
 			if (_model.value > _model.min) {
-				_model.value--
-				;
+				_model.value--;
 			}
 		}
 

@@ -1,7 +1,7 @@
 ﻿package gear.ui.data {
 	import gear.net.AssetData;
 	import gear.ui.core.GBaseData;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
 	import gear.ui.manager.UIManager;
 	import gear.ui.skin.SkinStyle;
 
@@ -47,7 +47,7 @@
 		}
 
 		public function GChatTipData() {
-			scaleMode = ScaleMode.AUTO_SIZE;
+			scaleMode = GScaleMode.AUTO_SIZE;
 			minWidth = 60;
 			minHeight = 30;
 			maxWidth = 240;

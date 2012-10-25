@@ -1,6 +1,6 @@
 ﻿package gear.ui.data {
 	import gear.ui.core.GBaseData;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
 	/**
 	 * @version 20091215
 	 * @author bright
@@ -21,7 +21,7 @@
 		public function GTabbedPanelData() {
 			tabData = new GTabData();
 			viewStackData = new GBaseData();
-			scaleMode = ScaleMode.AUTO_SIZE;
+			scaleMode = GScaleMode.AUTO_SIZE;
 			width = 200;
 			height = 200;
 		}

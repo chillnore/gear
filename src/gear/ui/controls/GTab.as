@@ -1,11 +1,10 @@
 ﻿package gear.ui.controls {
+	import gear.ui.core.GScaleMode;
 	import gear.ui.core.PhaseState;
-	import gear.ui.core.ScaleMode;
 	import gear.ui.data.GTabData;
 	import gear.ui.layout.GLayout;
-	import gear.ui.manager.UIManager;
 
-	import flash.display.Sprite;
+	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 
 	/**
@@ -22,31 +21,11 @@
 		/**
 		 * @private
 		 */
-		protected var _upSkin : Sprite;
-		/**
-		 * @private
-		 */
-		protected var _overSkin : Sprite;
-		/**
-		 * @private
-		 */
-		protected var _disabledSkin : Sprite;
-		/**
-		 * @private
-		 */
-		protected var _selectedUpSkin : Sprite;
-		/**
-		 * @private
-		 */
-		protected var _selectedDisabledSkin : Sprite;
-		/**
-		 * @private
-		 */
 		protected var _label : GLabel;
 		/**
 		 * @private
 		 */
-		protected var _current : Sprite;
+		protected var _current : DisplayObject;
 		/**
 		 * @private
 		 */
@@ -60,22 +39,17 @@
 		 * @private
 		 */
 		override protected function create() : void {
-			_upSkin = UIManager.getSkin(_data.upAsset);
-			_overSkin = UIManager.getSkin(_data.overAsset);
-			_disabledSkin = UIManager.getSkin(_data.disabledAsset);
-			_selectedUpSkin = UIManager.getSkin(_data.selectedUpAsset);
-			_selectedDisabledSkin = UIManager.getSkin(_data.selectedDisabledAsset);
 			_label = new  GLabel(_data.labelData);
-			_current = _upSkin;
-			addChild(_upSkin);
+			_current = _data.upSkin;
+			addChild(_data.upSkin);
 			addChild(_label);
 			switch(_data.scaleMode) {
-				case ScaleMode.WIDTH_ONLY:
-					_height = _upSkin.height;
+				case GScaleMode.WIDTH_ONLY:
+					_height = _data.upSkin.height;
 					break;
-				case ScaleMode.NONE:
-					_width = _upSkin.width;
-					_height = _upSkin.height;
+				case GScaleMode.NONE:
+					_width = _data.upSkin.width;
+					_height = _data.upSkin.height;
 					break;
 			}
 		}
@@ -85,23 +59,23 @@
 		 */
 		override protected function layout() : void {
 			GLayout.layout(_label);
-			_upSkin.width = _width;
-			_upSkin.height = _height;
-			if (_overSkin) {
-				_overSkin.width = _width;
-				_overSkin.height = _height;
+			_data.upSkin.width = _width;
+			_data.upSkin.height = _height;
+			if (_data.overSkin) {
+				_data.overSkin.width = _width;
+				_data.overSkin.height = _height;
 			}
-			if (_disabledSkin) {
-				_disabledSkin.width = _width;
-				_disabledSkin.height = _height;
+			if (_data.disabledSkin) {
+				_data.disabledSkin.width = _width;
+				_data.disabledSkin.height = _height;
 			}
-			if (_selectedUpSkin) {
-				_selectedUpSkin.width = _width;
-				_selectedUpSkin.height = _height;
+			if (_data.selectedUpSkin) {
+				_data.selectedUpSkin.width = _width;
+				_data.selectedUpSkin.height = _height;
 			}
-			if (_selectedDisabledSkin) {
-				_selectedDisabledSkin.width = _width;
-				_selectedDisabledSkin.height = _height;
+			if (_data.selectedDisabledSkin) {
+				_data.selectedDisabledSkin.width = _width;
+				_data.selectedDisabledSkin.height = _height;
 			}
 		}
 
@@ -183,10 +157,11 @@
 		 * @private
 		 */
 		protected function viewSkin() : void {
+			/*
 			if (!_enabled) {
 				if (selected) {
-					if (_selectedDisabledSkin)
-						_current = replace(_current, _selectedDisabledSkin);
+					if (_data.selectedDisabledSkin)
+						_current = replace(_current, _data.selectedDisabledSkin);
 				} else {
 					_current = replace(_current, _disabledSkin);
 				}
@@ -208,6 +183,7 @@
 				_label.textColor = _data.labelData.color.overColor;
 			} else if (_phase == PhaseState.DOWN) {
 			}
+			*/
 		}
 
 		/**
@@ -226,7 +202,7 @@
 		 */
 		public function set text(value : String) : void {
 			_label.text = value;
-			if (_data.scaleMode == ScaleMode.AUTO_WIDTH) {
+			if (_data.scaleMode == GScaleMode.AUTO_WIDTH) {
 				_width = _label.width + _data.padding * 2;
 			} else {
 				GLayout.layout(_label);

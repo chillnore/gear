@@ -1,7 +1,9 @@
 ﻿package gear.ui.skin {
 	/**
-	 * @version 20091215
+	 * 皮肤样式定义
+	 * 
 	 * @author bright
+	 * @version 20120809
 	 */
 	public class SkinStyle {
 		public static const errorSkin : String = "errorSkin";
@@ -15,6 +17,8 @@
 		public static const button_selectedOverSkin : String = "GButton_selectedOverSkin";
 		public static const button_selectedDownSkin : String = "GButton_selectedDownSkin";
 		public static const button_selectedDisabledSkin : String = "GButton_selectedDisabledSkin";
+		public static const textInput_borderSkin:String="GTextInput_borderSkin";
+		public static const textInput_disabledSkin:String="GTextInput_disabledSkin";
 		public static const cell_upSkin : String = "GCell_upSkin";
 		public static const cell_overSkin : String = "GCell_overSkin";
 		public static const cell_downSkin : String = "GCell_downSkin";

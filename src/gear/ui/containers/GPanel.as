@@ -1,8 +1,10 @@
 ﻿package gear.ui.containers {
+	import gear.ui.controls.GScrollBar;
 	import gear.ui.core.GBase;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
 	import gear.ui.data.GPanelData;
-	import gear.ui.layout.GLayout;
+	import gear.ui.data.GScrollBarData;
+	import gear.ui.events.GScrollBarEvent;
 	import gear.ui.manager.UIManager;
 	import gear.ui.skin.ASSkin;
 	import gear.utils.MathUtil;
@@ -11,6 +13,7 @@
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 
 	/**
 	 * 面板控件
@@ -44,6 +47,10 @@
 		 */
 		protected var _menuTrigger : DisplayObject;
 		protected var _waitTimeout : uint;
+		public var _v_sb : GScrollBar;
+		public var _h_sb : GScrollBar;
+		protected var _viewRect : Rectangle = new Rectangle();
+		protected var _bounds : Rectangle = new Rectangle();
 
 		/**
 		 * @private
@@ -60,10 +67,10 @@
 				_modalSkin = ASSkin.modalSkin;
 			}
 			switch(_data.scaleMode) {
-				case ScaleMode.WIDTH_ONLY:
+				case GScaleMode.WIDTH_ONLY:
 					_height = _data.bgSkin.height;
 					break;
-				case ScaleMode.NONE:
+				case GScaleMode.NONE:
 					if (_data.bgSkin != null) {
 						_width = _data.bgSkin.width;
 						_height = _data.bgSkin.height;
@@ -82,6 +89,105 @@
 				_data.bgSkin.width = _width;
 				_data.bgSkin.height = _height;
 			}
+			_viewW = Math.max(_base.minWidth, _width - _data.padding * 2);
+			_viewH = Math.max(_base.minHeight, _height - _data.padding * 2);
+			_viewRect.width = _viewW;
+			_viewRect.height = _viewW;
+			_content.scrollRect = _viewRect;
+			if (_v_sb) {
+				_v_sb.x = _width + 15;
+				if (_width == 0) {
+					_v_sb.visible = false;
+				} else {
+					_v_sb.visible = true;
+				}
+				_v_sb.y = _data.padding;
+			}
+			if (_h_sb) {
+				_h_sb.x = _data.padding;
+				_h_sb.y = _height;
+			}
+			resetScroll();
+		}
+
+		protected function resetBounds() : void {
+			var total : int = _content.numChildren;
+			var x : Number = 0;
+			var y : Number = 0;
+			var w : Number = _base.minWidth;
+			var h : Number = _base.minHeight;
+			for (var i : int = 0;i < total;i++) {
+				var child : DisplayObject = _content.getChildAt(i);
+				x = Math.min(x, child.x);
+				y = Math.min(y, child.y);
+				w = Math.max(w, child.x + child.width);
+				h = Math.max(h, child.y + child.height);
+			}
+			_bounds = new Rectangle(x, y, w, h);
+		}
+
+		protected function resetScroll() : void {
+			var data : GScrollBarData;
+			resetBounds();
+			var needV : Boolean = _bounds.height > _viewH;
+			var needH : Boolean = _bounds.width > _viewW;
+			var newW : int = _viewW;
+			var newH : int = _viewH;
+			if (_viewRect.width != newW || _viewRect.height != newH) {
+				_viewRect.width = newW;
+				_viewRect.height = newH;
+				resetScroll();
+				return;
+			}
+			if (needV) {
+				if (_v_sb == null) {
+					data = _data.scrollBarData.clone();
+					data.visible = false;
+					data.direction = GScrollBarData.VERTICAL;
+					_v_sb = new GScrollBar(data);
+					_v_sb.x = _width + 15;
+					addChild(_v_sb);
+				}
+				if (!_v_sb.visible) {
+					_v_sb.visible = true;
+					_v_sb.addEventListener(GScrollBarEvent.SCROLL, scrollHandler);
+				}
+				_v_sb.height = newH;
+				_v_sb.resetValue(newH, 0, _bounds.height - newH, (_content.scrollRect ? _content.scrollRect.y : 0));
+			} else if (_v_sb && _v_sb.visible) {
+				_v_sb.visible = false;
+				_viewRect.y = 0;
+			}
+
+			if (needH) {
+				if (_h_sb == null) {
+					data = _data.scrollBarData.clone();
+					data.direction = GScrollBarData.HORIZONTAL;
+					data.visible = false;
+					_h_sb = new GScrollBar(data);
+					addChild(_h_sb);
+				}
+				if (!_h_sb.visible) {
+					_h_sb.visible = true;
+					_h_sb.addEventListener(GScrollBarEvent.SCROLL, scrollHandler);
+				}
+				_h_sb.width = newW;
+				_h_sb.resetValue(newW, 0, _bounds.width - newW, (_content.scrollRect ? +_content.scrollRect.x : 0));
+			} else if (_h_sb && _h_sb.visible) {
+				_h_sb.visible = false;
+				_viewRect.x = 0;
+			}
+
+			_content.scrollRect = _viewRect;
+		}
+
+		protected function scrollHandler(event : GScrollBarEvent) : void {
+			if (event.direction == GScrollBarData.VERTICAL) {
+				_viewRect.y = event.position;
+			} else {
+				_viewRect.x = event.position;
+			}
+			_content.scrollRect = _viewRect;
 		}
 
 		/**
@@ -149,8 +255,9 @@
 			}
 			_content.addChild(value);
 			if (value is GBase) {
-				GLayout.update(this, GBase(value));
+				//GLayout.update(this, GBase(value));
 			}
+			resetScroll();
 		}
 
 		public function get modal() : Boolean {

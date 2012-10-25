@@ -1,11 +1,15 @@
 ﻿package gear.ui.containers {
+	import avmplus.getQualifiedClassName;
+
 	import gear.ui.core.GBase;
 	import gear.ui.data.GTitleWindowData;
 	import gear.ui.manager.UIManager;
+	import gear.ui.manager.ViewManage;
 	import gear.ui.skin.ASSkin;
 	import gear.utils.MathUtil;
 
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 
@@ -48,11 +52,24 @@
 			_titleBar = new GTitleBar(_data.titleBarData);
 			_contentPanel = new GPanel(_data.panelData);
 			_contentPanel.y = _titleBar.height - 1;
-			addChild(_titleBar);
 			addChild(_contentPanel);
+			addChild(_titleBar);
 			if (_data.modal) {
 				_modalSkin = ASSkin.modalSkin;
 			}
+			addCloseButton();
+			name=getQualifiedClassName(this);
+		}
+
+		protected function addCloseButton() : void {
+			if (_titleBar.close_Btn != null) {
+				_titleBar.close_Btn.addEventListener(MouseEvent.CLICK, cloesButton_handler);
+			}
+		}
+
+		protected function cloesButton_handler(event : MouseEvent) : void {
+			dispatchEvent(new Event(Event.CLOSE));
+			hide();
 		}
 
 		/**
@@ -79,8 +96,15 @@
 			if (_data.allowDrag) {
 				_titleBar.addEventListener(MouseEvent.MOUSE_DOWN, titleBar_mouseDownHandler);
 			}
+			
 		}
 
+		override public function show() : void {
+			super.show();
+			if (name.indexOf("View") != -1&&parent==UIManager.root) {
+				ViewManage.add(this);
+			}
+		}
 		/**
 		 * @private
 		 */
@@ -96,6 +120,9 @@
 				if (stage.hasEventListener(MouseEvent.MOUSE_UP)) {
 					stage.removeEventListener(MouseEvent.MOUSE_UP, stage_mouseUpHandler);
 				}
+			}
+			if (name.indexOf("View") != -1) {
+				ViewManage.remove(this);
 			}
 		}
 

@@ -2,9 +2,7 @@
 	import gear.log4a.GLogger;
 	import gear.log4a.LogError;
 	import gear.log4a.TraceAppender;
-	import gear.net.AssetData;
-	import gear.net.RESManager;
-	import gear.net.XMLLoader;
+	import gear.net.GLoadGroup;
 	import gear.render.FrameRender;
 	import gear.ui.manager.UIManager;
 	import gear.ui.monitor.LoadMonitor;
@@ -24,14 +22,7 @@
 	 * @version 20110819
 	 */
 	public class Game extends Sprite {
-		/**
-		 * @private
-		 */
-		protected var _res : RESManager;
-		/**
-		 * @private
-		 */
-		protected var _libs : XMLLoader;
+		protected var _group : GLoadGroup;
 		/**
 		 * @private
 		 */
@@ -42,14 +33,14 @@
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			stage.quality = StageQuality.HIGH;
-			stage.frameRate = 30;
+			stage.frameRate = 32;
 			stage.stageFocusRect = false;
-			stage.showDefaultContextMenu = false;
+			//stage.showDefaultContextMenu = false;
 			GLogger.addAppender(new TraceAppender());
-			ASSkin.setTheme(AssetData.AS_LIB, new BlackTheme());
+			ASSkin.setTheme(ASSkin.AS_LIB, new BlackTheme());
 			UIManager.root = this;
 			FrameRender.instance.stage = stage;
-			_res = RESManager.instance;
+			_group = new GLoadGroup();
 			startup();
 		}
 

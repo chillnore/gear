@@ -1,5 +1,5 @@
 ﻿package gear.ui.core {
-	import gear.motion.GEase;
+	import gear.ui.effect.IEffect;
 	import gear.ui.controls.GToolTip;
 	import gear.ui.data.GToolTipData;
 
@@ -64,7 +64,7 @@
 		 * 缩放模式
 		 * @see gear.ui.core.ScaleMode
 		 */
-		public var scaleMode : int = ScaleMode.SCALE9GRID;
+		public var scaleMode : int = GScaleMode.SCALE9GRID;
 		/**
 		 * 对齐
 		 * @see gear.ui.core.GAlign
@@ -76,14 +76,12 @@
 		public var filters : Array;
 		/**
 		 * 显示效果
-		 * @see gear.ui.effects.GTweenEffect
 		 */
-		public var showEffect : GEase;
+		public var showEffect : IEffect;
 		/**
 		 * 隐藏效果
-		 * @see gear.ui.effects.GTweenEffect
 		 */
-		public var hideEffect : GEase;
+		public var hideEffect : IEffect;
 		/**
 		 * 提示控件类
 		 * @see gear.ui.controls.GToolTip

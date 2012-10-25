@@ -1,4 +1,4 @@
-package gear.motion.easing {
+﻿package gear.motion.easing {
 	public class Cubic {
 		public static function easeIn(t : Number, b : Number, c : Number, d : Number) : Number {
 			return c * (t /= d) * t * t + b;

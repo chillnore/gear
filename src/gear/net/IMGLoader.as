@@ -1,54 +1,36 @@
 ﻿package gear.net {
-	import gear.log4a.GLogger;
-	import gear.utils.GStringUtil;
-
 	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.events.Event;
 
 	/**
-	 * PNG加载器
+	 * PNG,JPG加载器
 	 * 
 	 * @author bright
-	 * @version 20101015
+	 * @version 20121025
 	 */
-	public final class IMGLoader extends RESLoader {
+	internal final class ImgLoader extends BinLoader {
 		private var _loader : Loader;
+		private var _bitmap : Bitmap;
 
-		override protected function onComplete() : void {
+		override protected function decode() : void {
 			_loader = new Loader();
 			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
 			_loader.loadBytes(_byteArray);
 		}
 
 		private function completeHandler(event : Event) : void {
-			GLogger.info(GStringUtil.format("{0} load complete.", _libData.url));
 			_loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, completeHandler);
-			_isLoadding = false;
-			_isLoaded = true;
-			dispatchEvent(new Event(Event.COMPLETE));
+			_bitmap = _loader.contentLoaderInfo.content as Bitmap;
+			onComplete();
 		}
 
-		/**
-		 * @inheritDoc
-		 */
-		public function IMGLoader(data : LibData) {
-			super(data);
+		public function ImgLoader(url : String, key : String) {
+			super(url, key);
 		}
 
-		public function getBitmap() : Bitmap {
-			var bitmap : Bitmap = _loader.contentLoaderInfo.content as Bitmap;
-			return (bitmap == null) ? null : bitmap;
-		}
-
-		/**
-		 * 获得位图
-		 * 
-		 * @return 		 */
-		public function getBitmapData() : BitmapData {
-			var bitmap : Bitmap = _loader.contentLoaderInfo.content as Bitmap;
-			return (bitmap == null) ? null : bitmap.bitmapData;
+		public function get bitmap() : Bitmap {
+			return _bitmap;
 		}
 	}
 }

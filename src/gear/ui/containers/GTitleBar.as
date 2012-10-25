@@ -1,13 +1,11 @@
 ﻿package gear.ui.containers {
+	import gear.gui.controls.GButton;
 	import gear.log4a.GLogger;
 	import gear.ui.controls.GLabel;
 	import gear.ui.core.GBase;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
 	import gear.ui.data.GTitleBarData;
 	import gear.ui.layout.GLayout;
-	import gear.ui.manager.UIManager;
-
-	import flash.display.Sprite;
 
 	/**
 	 * 标题条控件
@@ -23,31 +21,31 @@
 		/**
 		 * @private
 		 */
-		protected var _bgSkin : Sprite;
-		/**
-		 * @private
-		 */
 		protected var _label : GLabel;
 		/**
 		 * @private
 		 */
 		protected var _layout : GLayout;
+		protected var _close_Btn : GButton;
 
 		/**
 		 * @private
 		 */
 		override protected function create() : void {
-			_bgSkin = UIManager.getSkin(_data.bgAsset);
 			_label = new GLabel(_data.labelData);
-			addChild(_bgSkin);
+			_close_Btn = new GButton(_data.closeButtonData);
+			if (_data.bgSkin != null) {
+				addChild(_data.bgSkin);
+			}
 			addChild(_label);
+			addChild(_close_Btn);
 			switch(_data.scaleMode) {
-				case ScaleMode.WIDTH_ONLY:
-					_height = _bgSkin.height;
+				case GScaleMode.WIDTH_ONLY:
+					_height = _data.bgSkin.height;
 					break;
-				case ScaleMode.NONE:
-					_width = _bgSkin.width;
-					_height = _bgSkin.height;
+				case GScaleMode.NONE:
+					_width = _data.bgSkin.width;
+					_height = _data.bgSkin.height;
 					break;
 			}
 		}
@@ -57,20 +55,21 @@
 		 */
 		override protected function layout() : void {
 			switch(_data.scaleMode) {
-				case ScaleMode.SCALE9GRID:
-					_bgSkin.width = _width;
-					_bgSkin.height = _height;
+				case GScaleMode.SCALE9GRID:
+					_data.bgSkin.width = _width;
+					_data.bgSkin.height = _height;
 					break;
-				case ScaleMode.WIDTH_ONLY:
-					_bgSkin.width = _width;
+				case GScaleMode.WIDTH_ONLY:
+					_data.bgSkin.width = _width;
 					break;
-				case ScaleMode.NONE:
+				case GScaleMode.NONE:
 					break;
 				default:
 					GLogger.error("scale mode is invalid!");
 					break;
 			}
 			GLayout.layout(_label);
+			GLayout.layout(_close_Btn);
 		}
 
 		public function GTitleBar(data : GTitleBarData) {
@@ -86,6 +85,10 @@
 		public function set text(value : String) : void {
 			_label.text = value;
 			GLayout.layout(_label);
+		}
+
+		public function get close_Btn() : GButton {
+			return _close_Btn;
 		}
 	}
 }

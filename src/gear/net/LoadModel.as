@@ -6,15 +6,9 @@
 	 * 加载模型
 	 * 
 	 * @author bright
-	 * @version 20101015
+	 * @version 20120503
 	 */
 	public final class LoadModel extends EventDispatcher {
-		/**
-		 * 最大数量
-		 * 
-		 * @default 5
-		 */
-		public static const MAX : int = 5;
 		private var _list : Array;
 		private var _done : int;
 		private var _total : int;
@@ -41,13 +35,8 @@
 			_list = new Array();
 		}
 
-		/**
-		 * 获得是否有空闲
-		 * 
-		 * @return 闲
-		 */
-		public function hasFree() : Boolean {
-			return _list.length < MAX;
+		public function get total() : int {
+			return _list.length;
 		}
 
 		/**
@@ -56,9 +45,6 @@
 		 * @param data 加载数据
 		 */
 		public function add(data : LoadData) : void {
-			if (_list.length >= MAX) {
-				return;
-			}
 			_list.push(data);
 			data.addEventListener(Event.CHANGE, changeHandler);
 		}
@@ -84,6 +70,7 @@
 			_total = total;
 			_progress = 0;
 			_done = 0;
+			_list.length = 0;
 			dispatchEvent(new Event(Event.INIT));
 		}
 

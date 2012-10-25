@@ -1,4 +1,4 @@
-package gear.motion.easing {
+﻿package gear.motion.easing {
 	public class Linear {
 		public static function easeNone(t : Number, b : Number, c : Number, d : Number) : Number {
 			return c * t / d + b;

@@ -2,7 +2,6 @@
 	import gear.ui.core.GBase;
 	import gear.ui.data.GTextInputData;
 	import gear.ui.manager.UIManager;
-	import gear.utils.GStringUtil;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -29,14 +28,7 @@
 		 * @private
 		 */
 		protected var _data : GTextInputData;
-		/**
-		 * @private
-		 */
-		protected var _borderSkin : Sprite;
-		/**
-		 * @private
-		 */
-		protected var _disabledSkin : Sprite;
+		protected var _label : GLabel;
 		/**
 		 * @private
 		 */
@@ -50,9 +42,7 @@
 		 * @private
 		 */
 		override protected function create() : void {
-			_borderSkin = UIManager.getSkin(_data.borderAsset);
-			_disabledSkin = UIManager.getSkin(_data.disabledAsset);
-			_current = _borderSkin;
+			//_current = _data.borderSkin;
 			if (_data.textField == null) {
 				_textField = UIManager.getInputTextField();
 				_textField.defaultTextFormat = _data.textFormat;
@@ -62,14 +52,20 @@
 				_textField.maxChars = _data.maxChars;
 				_textField.displayAsPassword = _data.displayAsPassword;
 				_textField.text = _data.text;
-				_textField.x = 3;
 				if (_data.restrict.length > 0) {
 					_textField.restrict = _data.restrict;
 				}
 			} else {
 				_textField = _data.textField;
 			}
-			addChild(_borderSkin);
+			_textField.x = 3;
+			if (_data.labelData != null) {
+				_label = new GLabel(_data.labelData);
+				addChild(_label);
+				_current.x = _label.width + 3;
+				_textField.x = _label.width + 6;
+			}
+			addChild(_current);
 			addChild(_textField);
 		}
 
@@ -77,10 +73,10 @@
 		 * @private
 		 */
 		override protected function layout() : void {
-			_borderSkin.width = _width;
-			_borderSkin.height = _height;
-			_disabledSkin.width = _width;
-			_disabledSkin.height = _height;
+			_data.borderSkin.width = _width;
+			_data.borderSkin.height = _height;
+			_data.disabledSkin.width = _width;
+			_data.disabledSkin.height = _height;
 			_textField.y = Math.floor((_height - _textField.textHeight - 4) / 2);
 			_textField.width = _width - 4;
 		}
@@ -90,12 +86,12 @@
 		 */
 		override protected function onEnabled() : void {
 			if (_enabled) {
-				replace(_current, _borderSkin);
-				_current = _borderSkin;
+				//replace(_current, _data.borderSkin);
+				//_current = _data.borderSkin;
 				_textField.textColor = _data.color.upColor;
 			} else {
-				replace(_current, _disabledSkin);
-				_current = _disabledSkin;
+				//replace(_current, _data.disabledSkin);
+				//_current = _data.disabledSkin;
 				_textField.textColor = _data.color.disabledColor;
 			}
 		}
@@ -136,16 +132,12 @@
 		}
 
 		private function textInputHandler(event : TextEvent) : void {
-			if (_data.maxChars > 0 && GStringUtil.getDwordLength(_textField.text) >= _data.maxChars) {
-				event.preventDefault();
-				return;
-			}
-			event.stopImmediatePropagation();
 			var newEvent : TextEvent = new TextEvent(TextEvent.TEXT_INPUT, false, true);
 			newEvent.text = event.text;
 			dispatchEvent(newEvent);
-			if (newEvent.isDefaultPrevented())
+			if (newEvent.isDefaultPrevented()) {
 				event.preventDefault();
+			}
 		}
 
 		private function focusInHandler(event : FocusEvent) : void {

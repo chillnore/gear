@@ -3,16 +3,17 @@
 	 * 日志
 	 * 
 	 * @author bright
-	 * @version 20110923
+	 * @version 20121025
 	 * @example
-	 * <listing version="3.0"> Logger使用示例:
-	 * Logger.addAppender(new TraceAppender());
-	 * Logger.setLevel(Level.INFO);
-	 * Logger.debug("this is a debug!");
-	 * Logger.info("this is a info!");
-	 * Logger.warn("this is a warn!");
-	 * Logger.error("this is a error!");
-	 * Logger.fatal("this is a fatal!");
+	 * <listing version="3.0"> 
+	 * GLogger使用示例:
+	 * GLogger.addAppender(new TraceAppender());
+	 * GLogger.setLevel(Level.INFO);
+	 * GLogger.debug("this is a debug!");
+	 * GLogger.info("this is a info!");
+	 * GLogger.warn("this is a warn!");
+	 * GLogger.error("this is a error!");
+	 * GLogger.fatal("this is a fatal!");
 	 * </listing> 
 	 */
 	public final class GLogger {

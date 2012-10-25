@@ -4,10 +4,18 @@
 	import flash.geom.Rectangle;
 
 	/**
-	 * @version 20091115
+	 * 绘制工具
+	 * 
+	 * @version 20111206
 	 * @author bright
 	 */
 	public class GDrawUtil {
+		public static function drawLine(graphics : Graphics, sx : int, sy : int, ex : int, ey : int, color : uint = 0) : void {
+			graphics.lineStyle(1, color);
+			graphics.moveTo(sx, sy);
+			graphics.lineTo(ex, ey);
+		}
+
 		public static function drawRoundRectComplex(graphics : Graphics, x : int, y : int, width : int, height : int, topLeftRadius : int, topRightRadius : int, bottomLeftRadius : int, bottomRightRadius : int) : void {
 			var xw : int = x + width;
 			var yh : int = y + height;

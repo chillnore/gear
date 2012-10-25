@@ -1,7 +1,7 @@
 ﻿package gear.ui.manager {
 	import gear.log4a.GLogger;
-	import gear.net.AssetData;
-	import gear.net.RESManager;
+	import gear.net.GLoadUtil;
+	import gear.ui.bd.ScaleBitmapSprite;
 	import gear.ui.skin.ASSkin;
 	import gear.ui.skin.Skin;
 	import gear.utils.MathUtil;
@@ -28,7 +28,7 @@
 	 * UI管理器
 	 * 
 	 * @author bright
-	 * @version 20111121
+	 * @version 20120809
 	 */
 	public class UIManager {
 		public static const SHADOW : DropShadowFilter = new DropShadowFilter(1, 45, 0, 0.5, 1, 1);
@@ -59,6 +59,7 @@
 				defaultFont = "Monaco";
 			} else if (os.indexOf("Linux") != -1) {
 				defaultFont = "AR PL UMing CN";
+			} else if (os.indexOf("iPhone OS")) {
 			}
 		}
 
@@ -111,19 +112,16 @@
 			return rect.topLeft;
 		}
 
-		public static function getSkin(asset : AssetData) : Sprite {
-			if (asset == null) {
-				return null;
-			}
-			var skin : Sprite;
-			if (asset.libId == AssetData.AS_LIB) {
-				skin = ASSkin.getBy(asset);
+		public static function getSkinBy(key : String, lib : String) : DisplayObject {
+			var skin : DisplayObject;
+			if (lib == ASSkin.AS_LIB) {
+				skin = ASSkin.getThemeBy(key, lib);
 			} else {
-				skin = RESManager.getSkin(asset);
+				skin = GLoadUtil.getSkin(key, lib);
 				if (skin == null) {
-					skin = ASSkin.getBy(asset);
-				} else {
-					skin.mouseEnabled = skin.mouseChildren = false;
+					skin = ASSkin.getThemeBy(key, ASSkin.AS_LIB);
+				} else if (skin is Sprite) {
+					Sprite(skin).mouseEnabled = Sprite(skin).mouseChildren = false;
 				}
 			}
 			return skin;
@@ -304,8 +302,8 @@
 			}
 		}
 
-		public static function cloneSkin(value : Object) : DisplayObjectContainer {
-			if (value == null || !value is DisplayObjectContainer) {
+		public static function cloneSkin(value : Object) : DisplayObject {
+			if (value == null || !value is DisplayObject) {
 				return null;
 			}
 			if (value is Skin) {
@@ -316,14 +314,22 @@
 				var result : Sprite = new Sprite();
 				result.graphics.copyFrom(Sprite(value).graphics);
 				result.scale9Grid = Sprite(value).scale9Grid;
+				result.mouseEnabled = result.mouseChildren = false;
 				return result;
 			}
 			if (className == "flash.display::MovieClip") {
 				return null;
 			}
-			var ref : Object = value.constructor;
-			var clone_do : DisplayObjectContainer = new ref();
-			return clone_do;
+			if (value is ScaleBitmapSprite == false) {
+				var clone : DisplayObject = new value.constructor();
+				if (clone is DisplayObjectContainer) {
+					var doc : DisplayObjectContainer = DisplayObjectContainer(clone);
+					doc.mouseEnabled = doc.mouseChildren = false;
+				}
+			} else {
+				return value as DisplayObject;
+			}
+			return clone;
 		}
 
 		public static function calcAll(target : DisplayObjectContainer, max : int = 1000000) : int {

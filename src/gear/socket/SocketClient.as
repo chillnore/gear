@@ -11,12 +11,13 @@
 	import flash.net.Socket;
 	import flash.system.Security;
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 
 	/**
 	 * Socket客户端
 	 * 
 	 * @author bright
-	 * @version 20111111
+	 * @version 20111207
 	 */
 	public final class SocketClient extends EventDispatcher {
 		public static const IO_ERROR : String = "ioError";
@@ -29,6 +30,7 @@
 		private var _length : int;
 		private var _writeBytes : uint = 0;
 		private var _readBytes : uint = 0;
+		private var _test : Dictionary;
 
 		private function init() : void {
 			reset();
@@ -36,6 +38,7 @@
 			_socket.objectEncoding = ObjectEncoding.AMF3;
 			_data = new SocketData("default", "127.0.0.1", 1863);
 			_callPool = new CallPool();
+			_test = new Dictionary();
 			addSocketEvents();
 		}
 
@@ -100,8 +103,19 @@
 			init();
 		}
 
+		public function setDealStrategy(queue : Boolean) : void {
+			_callPool.queue = queue;
+		}
+
 		public function get data() : SocketData {
 			return _data;
+		}
+
+		/**
+		 * @param value 测试调用
+		 */
+		public function setTest(value : SocketCall) : void {
+			_test[value.method] = value;
 		}
 
 		/**
@@ -170,10 +184,15 @@
 		/**
 		 * call 远程调用
 		 * 
-		 * @param method 方法名称
+		 * @param method 方法名
 		 * @param args 参数数组
 		 */
 		public function call(method : String, ...args : Array) : void {
+			if (_test[method] != null) {
+				args.unshift(_test[method].call);
+				_test[method].invoke.apply(null, args);
+				return;
+			}
 			if (!_socket.connected) {
 				return;
 			}

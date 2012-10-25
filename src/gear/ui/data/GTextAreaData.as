@@ -1,8 +1,9 @@
 ﻿package gear.ui.data {
-	import gear.net.AssetData;
 	import gear.ui.core.GBaseData;
 	import gear.ui.manager.UIManager;
+	import gear.ui.skin.SkinStyle;
 
+	import flash.display.DisplayObject;
 	import flash.text.StyleSheet;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -12,7 +13,7 @@
 	 * @author bright
 	 */
 	public class GTextAreaData extends GBaseData {
-		public var bgAsset : AssetData = new AssetData("GTextArea_bgSkin");
+		public var bgSkin : DisplayObject;
 		/**
 		 * 绑定文本
 		 */
@@ -34,7 +35,7 @@
 			if (data == null) {
 				return;
 			}
-			data.bgAsset = bgAsset;
+			data.bgSkin = UIManager.cloneSkin(bgSkin) as DisplayObject;
 			data.textFormat = textFormat;
 			data.styleSheet = styleSheet;
 			data.textColor = textColor;
@@ -47,6 +48,7 @@
 		}
 
 		public function GTextAreaData() {
+			bgSkin = UIManager.getSkinBy(SkinStyle.textArea_bgSkin,"ui");
 			textColor = 0xFFFFFF;
 			textFieldFilters = UIManager.getEdgeFilters(0x000000, 0.7);
 			textFormat = new TextFormat();

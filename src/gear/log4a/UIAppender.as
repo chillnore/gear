@@ -1,7 +1,6 @@
 ﻿package gear.log4a {
-	import gear.net.AssetData;
+	import gear.gui.controls.GButton;
 	import gear.ui.containers.GTitleWindow;
-	import gear.ui.controls.GButton;
 	import gear.ui.controls.GTextArea;
 	import gear.ui.controls.GTextInput;
 	import gear.ui.core.GAlign;
@@ -41,8 +40,9 @@
 
 		private function initData() : void {
 			_data.modal = true;
-			_data.titleBarData.bgAsset = new AssetData("GTitleBar_bgSkin");
-			_data.panelData.bgSkin = UIManager.getSkin(new AssetData(SkinStyle.panel_bgSkin, AssetData.AS_LIB));
+			//TODO
+			_data.titleBarData.bgSkin =UIManager.getSkinBy("GTitleBar_bgSkin","ui");
+			_data.panelData.bgSkin = UIManager.getSkinBy(SkinStyle.panel_bgSkin,"ui");
 			_data.width = 800;
 			_data.height = 500;
 			_data.align = new GAlign(-1, -1, -1, -1, 0, 0);

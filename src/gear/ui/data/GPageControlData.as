@@ -1,11 +1,8 @@
 ﻿package gear.ui.data {
-	import gear.log4a.LogError;
 	import gear.ui.core.GAlign;
 	import gear.ui.core.GBaseData;
 
-	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import flash.text.TextField;
 
 
 	/**
@@ -57,37 +54,6 @@
 			labelData = new GLabelData();
 			labelData.align = GAlign.CENTER;
 			labelData.text = "1/1";
-		}
-
-		public function bindTo(value : Sprite) : void {
-			if (value == null) {
-				throw new LogError("bind target is null");
-			}
-			x = Math.round(value.x);
-			y = Math.round(value.y);
-			value.x = 0;
-			value.y = 0;
-			var prevSkin : MovieClip = value.getChildByName("prev_btn") as MovieClip;
-			if (prevSkin == null) {
-				throw new LogError("must has prev_btn");
-			}
-			var nextSkin : MovieClip = value.getChildByName("next_btn") as MovieClip;
-			if (nextSkin == null) {
-				throw new LogError("must has next_btn");
-			}
-			var label : TextField = value.getChildByName("label") as TextField;
-			if (label == null) {
-				throw new LogError("must has label");
-			}
-			bgSkin = value.getChildByName("bg") as Sprite;
-			width = bgSkin.width;
-			height = bgSkin.height;
-			prev_buttonData.bindTo(prevSkin);
-			prev_buttonData.labelData.text = "";
-			next_buttonData.bindTo(nextSkin);
-			next_buttonData.labelData.text = "";
-			labelData.bindTo(label);
-			labelData.align = null;
 		}
 
 		/**

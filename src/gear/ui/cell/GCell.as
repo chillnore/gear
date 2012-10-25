@@ -1,11 +1,11 @@
 ﻿package gear.ui.cell {
+	import gear.gui.controls.GIcon;
 	import gear.log4a.LogError;
-	import gear.ui.controls.GIcon;
 	import gear.ui.controls.GLabel;
 	import gear.ui.core.GAlign;
 	import gear.ui.core.GBase;
 	import gear.ui.core.PhaseState;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
 	import gear.ui.data.GLabelData;
 	import gear.ui.layout.GLayout;
 	import gear.ui.manager.UIManager;
@@ -96,10 +96,10 @@
 			}
 			addKeyLabels();
 			switch(_data.scaleMode) {
-				case ScaleMode.WIDTH_ONLY:
+				case GScaleMode.WIDTH_ONLY:
 					_height = _data.skin.height;
 					break;
-				case ScaleMode.NONE:
+				case GScaleMode.NONE:
 					_width = _data.skin.width;
 					_height = _data.skin.height;
 					break;
@@ -111,7 +111,7 @@
 		 * @inheritDoc
 		 */
 		override protected function layout() : void {
-			if (_data.scaleMode == ScaleMode.NONE) {
+			if (_data.scaleMode == GScaleMode.NONE) {
 				GLayout.layout(_key_lb);
 				return;
 			}

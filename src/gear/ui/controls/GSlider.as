@@ -1,11 +1,9 @@
 ﻿package gear.ui.controls {
 	import gear.ui.core.GBase;
 	import gear.ui.data.GSliderData;
-	import gear.ui.manager.UIManager;
 	import gear.ui.model.RangeModel;
 	import gear.utils.ColorMatrixUtil;
 
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.filters.ColorMatrixFilter;
@@ -21,9 +19,6 @@
 		public static const HORIZONTAL : String = "horizontal";
 		private var _data : GSliderData;
 		private var _direction : String = GSlider.HORIZONTAL;
-		private var _trackSkin : Sprite;
-		private var _thumbSkin : Sprite;
-		private var _barSkin : Sprite;
 		private var _model : RangeModel;
 		private var _zero : int = 0;
 		private var _cmf : ColorMatrixFilter;
@@ -32,17 +27,12 @@
 		 * @private
 		 */
 		override protected function create() : void {
-			_trackSkin = UIManager.getSkin(_data.trackAsset);
-			_trackSkin.mouseEnabled = true;
-			_thumbSkin = UIManager.getSkin(_data.thumbAsset);
-			_thumbSkin.mouseEnabled = true;
-			_barSkin = UIManager.getSkin(_data.barAsset);
-			_trackSkin.height = _data.height;
-			_barSkin.width = 0;
-			_barSkin.height = _data.height;
-			addChild(_trackSkin);
-			addChild(_barSkin);
-			addChild(_thumbSkin);
+			_data.trackSkin.height = _data.height;
+			_data.barSkin.width = 0;
+			_data.barSkin.height = _data.height;
+			addChild(_data.trackSkin);
+			addChild(_data.barSkin);
+			addChild(_data.thumbSkin);
 			_cmf = new ColorMatrixFilter(ColorMatrixUtil.adjustHue(60));
 		}
 
@@ -50,22 +40,22 @@
 		 * @private
 		 */
 		override protected function layout() : void {
-			_trackSkin.width = _width;
+			_data.trackSkin.width = _width;
 		}
 
 		private function reset() : void {
-			var w : int = _trackSkin.width - 1;
-			_thumbSkin.x = Math.round(_model.percent * w);
+			var w : int = _data.trackSkin.width - 1;
+			_data.thumbSkin.x = Math.round(_model.percent * w);
 			_zero = _model.zeroPercenr * w;
-			var position : int =Math.round(_model.percent * w);
+			var position : int = Math.round(_model.percent * w);
 			if (_model.value < 0) {
-				_barSkin.filters = [_cmf];
-				_barSkin.x = position;
-				_barSkin.width = _zero - position;
+				_data.barSkin.filters = [_cmf];
+				_data.barSkin.x = position;
+				_data.barSkin.width = _zero - position;
 			} else {
-				_barSkin.filters = null;
-				_barSkin.x = _zero;
-				_barSkin.width = position - _zero;
+				_data.barSkin.filters = null;
+				_data.barSkin.x = _zero;
+				_data.barSkin.width = position - _zero;
 			}
 		}
 
@@ -73,7 +63,7 @@
 		 * @private
 		 */
 		override protected function onShow() : void {
-			_thumbSkin.addEventListener(MouseEvent.MOUSE_DOWN, thumb_mouseDownHandler);
+			_data.thumbSkin.addEventListener(MouseEvent.MOUSE_DOWN, thumb_mouseDownHandler);
 			addEventListener(MouseEvent.CLICK, clickHandler);
 			addEventListener(MouseEvent.MOUSE_WHEEL, wheelHandler);
 		}
@@ -82,7 +72,7 @@
 		 * @private
 		 */
 		override protected function onHide() : void {
-			_thumbSkin.removeEventListener(MouseEvent.MOUSE_DOWN, thumb_mouseDownHandler);
+			_data.thumbSkin.removeEventListener(MouseEvent.MOUSE_DOWN, thumb_mouseDownHandler);
 			removeEventListener(MouseEvent.CLICK, clickHandler);
 			removeEventListener(MouseEvent.MOUSE_WHEEL, wheelHandler);
 		}
@@ -95,7 +85,7 @@
 		}
 
 		private function stage_mouseMoveHandler(event : MouseEvent) : void {
-			var w : int = _trackSkin.width - 1;
+			var w : int = _data.trackSkin.width - 1;
 			var position : int = Math.max(0, Math.min(w, mouseX));
 			var newValue : int = Math.round(position / w * (_model.max - _model.min) + _model.min);
 			_model.value = newValue;
@@ -111,7 +101,7 @@
 		}
 
 		private function clickHandler(event : MouseEvent) : void {
-			var w : int = _trackSkin.width - 1;
+			var w : int = _data.trackSkin.width - 1;
 			var position : int = Math.max(0, Math.min(w, mouseX));
 			var newValue : int = Math.round(position / w * (_model.max - _model.min) + _model.min);
 			_model.value = newValue;
@@ -215,9 +205,9 @@
 			}
 			_enabled = value;
 			if (_enabled) {
-				_thumbSkin.filters = [];
+				_data.thumbSkin.filters = [];
 			} else {
-				_thumbSkin.filters = [new ColorMatrixFilter(ColorMatrixUtil.GRAY)];
+				_data.thumbSkin.filters = [new ColorMatrixFilter(ColorMatrixUtil.GRAY)];
 			}
 		}
 	}

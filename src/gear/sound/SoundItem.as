@@ -13,6 +13,7 @@
 	 * @version 20100110
 	 */
 	public final class SoundItem extends EventDispatcher {
+		private var _key : String;
 		private var _sound : Sound;
 		private var _isLoop : Boolean;
 		private var _channel : SoundChannel;
@@ -34,10 +35,15 @@
 			}
 		}
 
-		public function SoundItem(sound : Sound = null, isLoop : Boolean = false) {
+		public function SoundItem(key : String, sound : Sound = null, isLoop : Boolean = false) {
+			_key = key;
 			_sound = (sound == null ? new Sound() : sound);
 			_isLoop = isLoop;
 			_time = 0;
+		}
+
+		public function get key() : String {
+			return _key;
 		}
 
 		public function get channel() : SoundChannel {

@@ -15,7 +15,7 @@
 		private var _item : Object;
 		private var _oldItem : Object;
 
-		public function GListEvent(type : String, state : int, index : int = 0, length : int = -1, item : Object = null, oldItem : Object = null) {
+		public function GListEvent(type : String, state : int, index : int =0, length : int = -1, item : Object = null, oldItem : Object = null) {
 			super(type, bubbles, cancelable);
 			_state = state;
 			_index = index;

@@ -1,9 +1,8 @@
 ﻿package gear.ui.cell {
 	import gear.log4a.LogError;
-	import gear.net.AssetData;
 	import gear.ui.core.GAlign;
 	import gear.ui.core.GBaseData;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
 	import gear.ui.data.GIconData;
 	import gear.ui.data.GLabelData;
 	import gear.ui.manager.UIManager;
@@ -13,10 +12,9 @@
 	import gear.ui.skin.tb.ToggleButtonSkin;
 	import gear.utils.BDUtil;
 
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
 	import flash.text.TextField;
-
 
 	/**
 	 * 单元格控件定义
@@ -75,14 +73,14 @@
 		 * 构造函数
 		 */
 		public function GCellData() {
-			var upSkin : Sprite = UIManager.getSkin(new AssetData(SkinStyle.cell_upSkin));
-			var overSkin : Sprite = UIManager.getSkin(new AssetData(SkinStyle.cell_overSkin));
-			var downSkin : Sprite = UIManager.getSkin(new AssetData(SkinStyle.cell_downSkin));
-			var disabledSkin : Sprite = UIManager.getSkin(new AssetData(SkinStyle.cell_disabledSkin));
-			var selectedUpSkin : Sprite = UIManager.getSkin(new AssetData(SkinStyle.cell_selectedUpSkin));
-			var selectedOverSkin : Sprite = UIManager.getSkin(new AssetData(SkinStyle.cell_selectedOverSkin));
-			var selectedDownSkin : Sprite = UIManager.getSkin(new AssetData(SkinStyle.cell_selectedDownSkin));
-			var selectedDisabledSkin : Sprite = UIManager.getSkin(new AssetData(SkinStyle.cell_selectedDisabledSkin));
+			var upSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_upSkin, "ui");
+			var overSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_overSkin, "ui");
+			var downSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_downSkin, "ui");
+			var disabledSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_disabledSkin, "ui");
+			var selectedUpSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_selectedUpSkin, "ui");
+			var selectedOverSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_selectedOverSkin, "ui");
+			var selectedDownSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_selectedDownSkin, "ui");
+			var selectedDisabledSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_selectedDisabledSkin, "ui");
 			skin = new ToggleButtonSkin(upSkin, overSkin, downSkin, disabledSkin, selectedUpSkin, selectedOverSkin, selectedDownSkin, selectedDisabledSkin);
 			lockIconData = new GIconData();
 			labelData = new GLabelData();
@@ -92,7 +90,7 @@
 			width = 80;
 			height = 22;
 			labelData.align = new GAlign(8, -1, -1, -1, -1, 0);
-			lockIconData.bitmapData = BDUtil.getBD(new AssetData("lock_icon"));
+			lockIconData.bitmapData = BDUtil.getBDBy("lock_icon", "uiLib");
 			lockIconData.align = GAlign.CENTER;
 		}
 
@@ -116,7 +114,7 @@
 				});
 			}
 			skin = new MCToggleButtonSkin(mc);
-			scaleMode = ScaleMode.NONE;
+			scaleMode = GScaleMode.NONE;
 		}
 
 		/**

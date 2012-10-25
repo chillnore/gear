@@ -5,9 +5,9 @@
 	 * 热键定义
 	 * 
 	 * @author bright
-	 * @version 20110920
+	 * @version 20111201
 	 */
-	public class HotKeyData {
+	public final class HotKeyData {
 		/**
 		 * 热键按下状态
 		 */
@@ -31,7 +31,7 @@
 		public function HotKeyData(keyCode : uint, callback : Function) {
 			_keyCode = keyCode;
 			_callback = callback;
-			_active = true;
+			_active = false;
 			_state = KEY_UP;
 		}
 
@@ -87,6 +87,9 @@
 				return false;
 			}
 			_state = KEY_DOWN;
+			if (!_active) {
+				return false;
+			}
 			try {
 				_callback.apply(null, [this]);
 			} catch(e : Error) {
@@ -103,6 +106,9 @@
 				return;
 			}
 			_state = KEY_UP;
+			if (!_active) {
+				return;
+			}
 			try {
 				_callback.apply(null, [this]);
 			} catch(e : Error) {

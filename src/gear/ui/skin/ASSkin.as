@@ -1,5 +1,4 @@
 ﻿package gear.ui.skin {
-	import gear.net.AssetData;
 	import gear.ui.theme.ITheme;
 
 	import flash.display.BitmapData;
@@ -14,6 +13,7 @@
 	 * @version 20111121
 	 */
 	public class ASSkin {
+		public static const AS_LIB : String = "asLib";
 		private static var _lib : Dictionary = new Dictionary(true);
 		private static var _list : Dictionary = new Dictionary(true);
 
@@ -53,16 +53,15 @@
 			_list[key] = skin;
 		}
 
-		public static function getBy(asset : AssetData) : Sprite {
-			var libId : String = (asset.libId == AssetData.SWF_LIB ? AssetData.AS_LIB : asset.libId);
-			var theme : ITheme = _lib[libId] as ITheme;
+		public static function getSkinBy(key : String) : Sprite {
+			var theme : ITheme = _lib[AS_LIB] as ITheme;
 			var skin : Sprite;
 			if (theme == null) {
 				skin = errorSkin;
 				skin.mouseEnabled = skin.mouseChildren = false;
 				return skin;
 			}
-			switch(asset.className) {
+			switch(key) {
 				case SkinStyle.errorSkin:
 					skin = errorSkin;
 					break;
@@ -71,9 +70,73 @@
 					break;
 				default:
 					try {
-						skin = theme[asset.className];
+						skin = theme[key];
 					} catch(e : Error) {
-						var s : Skin = _list[asset.className] as Skin;
+						var s : Skin = _list[key] as Skin;
+						if (s != null) {
+							skin = s.clone();
+						} else {
+							skin = errorSkin;
+						}
+					}
+					break;
+			}
+			skin.mouseEnabled = skin.mouseChildren = false;
+			return skin;
+		}
+
+		public static function getThemeBy(key : String, lib : String) : Sprite {
+			var theme : ITheme = _lib[lib] as ITheme;
+			var skin : Sprite;
+			if (theme == null) {
+				skin = errorSkin;
+				skin.mouseEnabled = skin.mouseChildren = false;
+				return skin;
+			}
+			switch(key) {
+				case SkinStyle.errorSkin:
+					skin = errorSkin;
+					break;
+				case SkinStyle.emptySkin:
+					skin = emptySkin;
+					break;
+				default:
+					try {
+						skin = theme[key];
+					} catch(e : Error) {
+						var s : Skin = _list[key] as Skin;
+						if (s != null) {
+							skin = s.clone();
+						} else {
+							skin = errorSkin;
+						}
+					}
+					break;
+			}
+			skin.mouseEnabled = skin.mouseChildren = false;
+			return skin;
+		}
+
+		public static function getBy(key : String, lib : String) : Sprite {
+			var theme : ITheme = _lib[lib] as ITheme;
+			var skin : Sprite;
+			if (theme == null) {
+				skin = errorSkin;
+				skin.mouseEnabled = skin.mouseChildren = false;
+				return skin;
+			}
+			switch(key) {
+				case SkinStyle.errorSkin:
+					skin = errorSkin;
+					break;
+				case SkinStyle.emptySkin:
+					skin = emptySkin;
+					break;
+				default:
+					try {
+						skin = theme[key];
+					} catch(e : Error) {
+						var s : Skin = _list[key] as Skin;
 						if (s != null) {
 							skin = s.clone();
 						} else {

@@ -1,4 +1,5 @@
 ﻿package gear.utils {
+	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 
 	/**
@@ -136,6 +137,22 @@
 		public static function isURL(url : String) : Boolean {
 			var pattern : RegExp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 			return (pattern.test(url));
+		}
+
+		public static function rectToString(rect : Rectangle) : String {
+			if (rect == null) {
+				return "";
+			}
+			return rect.x + "," + rect.y + "," + rect.width + "," + rect.height;
+		}
+
+		public static function stringToRect(value : String) : Rectangle {
+			var params : Array = value.split(",");
+			if (params.length != 4) {
+				return null;
+			} else {
+				return new Rectangle(params[0], params[1], params[2], params[3]);
+			}
 		}
 	}
 }

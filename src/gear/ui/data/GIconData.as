@@ -1,22 +1,16 @@
 ﻿package gear.ui.data {
-	import gear.net.AssetData;
 	import gear.ui.core.GBaseData;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
 
 	import flash.display.BitmapData;
-
 
 	/**
 	 * 图标控件定义
 	 * 
 	 * @author bright
-	 * @version 20101018
+	 * @version 20120815
 	 */
 	public class GIconData extends GBaseData {
-		/**
-		 * 图标元件定义
-		 */
-		public var asset : AssetData;
 		/**
 		 * 位图
 		 */
@@ -25,15 +19,14 @@
 		override protected function parse(source : *) : void {
 			super.parse(source);
 			var data : GIconData = source as GIconData;
-			if(data == null) {
+			if (data == null) {
 				return;
 			}
-			data.asset = asset;
 			data.bitmapData = bitmapData;
 		}
 
 		public function GIconData() {
-			scaleMode = ScaleMode.AUTO_SIZE;
+			scaleMode = GScaleMode.AUTO_SIZE;
 		}
 
 		override public function clone() : * {

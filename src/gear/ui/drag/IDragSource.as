@@ -1,5 +1,5 @@
 package gear.ui.drag {
-	import gear.ui.controls.GIcon;
+	import gear.gui.controls.GIcon;
 
 	/**
 	 * @version 20091101
@@ -7,5 +7,9 @@ package gear.ui.drag {
 	 */
 	public interface IDragSource {
 		function get dragImage() : GIcon;
+
+		function canDrag() : Boolean;
+
+		function get source() : *
 	}
 }

@@ -6,6 +6,19 @@
 	 * @version 20101011
 	 */
 	public class GFormatter {
+		public static function formatTime(value : int) : String {
+			var result : String = "";
+			var hour : int = value / 3600000;
+			result += (hour < 10 ? "0" + hour : hour);
+			value -= hour * 3600000;
+			var minute : int = value / 60000;
+			result += ":" + (minute < 10 ? ("0" + minute) : minute);
+			value -= minute * 60000;
+			var second : int = value / 1000;
+			result += ":" + (second < 10 ? "0" + second : second);
+			return result;
+		}
+
 		public static function formatDate(value : Date) : String {
 			var result : String = value.getFullYear() + "-";
 			var month : int = value.getMonth() + 1;

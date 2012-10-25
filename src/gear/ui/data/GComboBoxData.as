@@ -1,12 +1,10 @@
 ﻿package gear.ui.data {
-	import gear.net.AssetData;
+	import flash.display.DisplayObject;
 	import gear.ui.core.GAlign;
 	import gear.ui.core.GBaseData;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
 	import gear.ui.manager.UIManager;
-	import gear.ui.skin.button.ButtonSkin;
-
-	import flash.display.Sprite;
+	import gear.ui.skin.btn.ButtonSkin;
 
 
 	/**
@@ -24,24 +22,24 @@
 
 		public function GComboBoxData() {
 			buttonData = new GButtonData();
-			var upSkin : Sprite = UIManager.getSkin(new AssetData("GComboBox_upSkin"));
-			var overSkin : Sprite = UIManager.getSkin(new AssetData("GComboBox_overSkin"));
-			var downSkin : Sprite = UIManager.getSkin(new AssetData("GComboBox_downSkin"));
-			var disabledSkin : Sprite = UIManager.getSkin(new AssetData("GComboBox_disabledSkin"));
+			var upSkin : DisplayObject = UIManager.getSkinBy("GComboBox_upSkin", "ui");
+			var overSkin : DisplayObject = UIManager.getSkinBy("GComboBox_overSkin", "ui");
+			var downSkin : DisplayObject = UIManager.getSkinBy("GComboBox_downSkin", "ui");
+			var disabledSkin : DisplayObject = UIManager.getSkinBy("GComboBox_disabledSkin", "ui");
 			buttonData.skin = new ButtonSkin(upSkin, overSkin, downSkin, disabledSkin);
 			buttonData.labelData.align = new GAlign(5, -1, -1, -1, -1, 0);
 			textInputData = new GTextInputData();
 			arrow = new GButtonData();
-			upSkin = UIManager.getSkin(new AssetData("GComboBox_arrowUpSkin"));
-			overSkin = UIManager.getSkin(new AssetData("GComboBox_arrowOverSkin"));
-			downSkin = UIManager.getSkin(new AssetData("GComboBox_arrowDownSkin"));
-			disabledSkin = UIManager.getSkin(new AssetData("GComboBox_arrowDisabledSkin"));
+			upSkin = UIManager.getSkinBy("GComboBox_arrowUpSkin", "ui");
+			overSkin = UIManager.getSkinBy("GComboBox_arrowOverSkin", "ui");
+			downSkin = UIManager.getSkinBy("GComboBox_arrowDownSkin", "ui");
+			disabledSkin = UIManager.getSkinBy("GComboBox_arrowDisabledSkin", "ui");
 			arrow.skin = new ButtonSkin(upSkin, overSkin, downSkin, disabledSkin);
 			arrow.width = 18;
 			arrow.height = 22;
 			listData = new GListData();
 			listData.width = 100;
-			listData.scaleMode = ScaleMode.AUTO_HEIGHT;
+			listData.scaleMode = GScaleMode.AUTO_HEIGHT;
 			width = 100;
 			height = 22;
 		}

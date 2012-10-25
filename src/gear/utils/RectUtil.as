@@ -1,4 +1,4 @@
-package gear.utils {
+﻿package gear.utils {
 	import flash.geom.Rectangle;
 
 	/**
@@ -22,6 +22,25 @@ package gear.utils {
 
 		public static function overlaps(source : Rectangle, target : Rectangle) : Boolean {
 			return (target.x + target.width > source.x) && (target.x < source.x + source.width) && (target.y + target.height > source.y) && (target.y < source.y + source.height);
+		}
+
+		public static function stringToRect(value : String) : Rectangle {
+			var params : Array = value.split(",");
+			if (params.length < 4) {
+				return null;
+			} else {
+				return new Rectangle(params[0], params[1], params[2], params[3]);
+			}
+		}
+
+		public static function rectToString(value : Rectangle) : String {
+			return value.x + "," + value.y + "," + value.width + "," + value.height;
+		}
+
+		public static function flipH(source : Rectangle) : Rectangle {
+			var target : Rectangle = source.clone();
+			target.x = - source.x - source.width;
+			return target;
 		}
 	}
 }

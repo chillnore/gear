@@ -26,7 +26,7 @@
 		protected var _model : LoadModel;
 		protected var _timeout : Timer;
 
-		private function initData() : void {
+		protected function initData() : void {
 			_data.align = new GAlign(-1, -1, -1, -1, 0, 0);
 			_data.padding = 0;
 			_data.width = 400;
@@ -39,14 +39,14 @@
 			GLayout.layout(this);
 		}
 
-		private function initView() : void {
+		protected function initView() : void {
 			addLabels();
 			addProgressBars();
 			_timeout = new Timer(500, 1);
 			_timeout.addEventListener(TimerEvent.TIMER, timerHandler);
 		}
 
-		private function addLabels() : void {
+		protected function addLabels() : void {
 			var data : GLabelData = new GLabelData();
 			data.x = 10;
 			data.y = 10;
@@ -55,7 +55,7 @@
 			add(_label);
 		}
 
-		private function addProgressBars() : void {
+		protected function addProgressBars() : void {
 			var data : GProgressBarData = new GProgressBarData();
 			data.labelData.align = new GAlign(0, -1, 10, -1, -1, -1);
 			data.x = 10;
@@ -76,7 +76,7 @@
 			_timeout.start();
 		}
 
-		private function changeHandler(event : Event) : void {
+		protected function changeHandler(event : Event) : void {
 			_progressBar.value = _model.progress;
 			_progressBar.text = "speed:" + _model.speed + " KB/S";
 		}

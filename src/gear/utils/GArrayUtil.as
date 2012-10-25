@@ -1,15 +1,15 @@
 ﻿package gear.utils {
 	/**
-	 * Game Array Util
+	 * GArrayUtil
 	 * 
-	 * @author BrightLi
-	 * @version 20110905
+	 * @author bright
+	 * @version 20120629
 	 */
 	public class GArrayUtil {
 		public static function shuffle(value : Array) : void {
 			var source : Array = value.concat();
 			var index : int;
-			value.splice(0);
+			value.length = 0;
 			while (source.length > 0) {
 				index = MathUtil.random(0, source.length - 1);
 				value.push(source[index]);
@@ -17,12 +17,15 @@
 			}
 		}
 
-		public static function trim(value : Array) : Array {
-			var list : Array = new Array();
-			for each (var item:Object in value) {
-				if (item != null) list.push(item);
+		public static function trim(value : Array) : void {
+			var index : int = 0;
+			while (index < value.length) {
+				if (value[index] == null) {
+					value.splice(index, 1);
+				} else {
+					index++;
+				}
 			}
-			return list;
 		}
 
 		public static function repeat(value : *, total : int) : Array {
@@ -47,6 +50,23 @@
 				return -1;
 			else
 				return low;
+		}
+
+		public static function uniquePush(list : Array, item : Object) : void {
+			var index : int = list.indexOf(item);
+			if (index == -1) {
+				list.push(item);
+			}
+		}
+
+		public static function copyUnique(source : Array, target : Array) : void {
+			var index : int;
+			for each (var item:Object in target) {
+				index = source.indexOf(item);
+				if (index == -1) {
+					source.push(item);
+				}
+			}
 		}
 	}
 }

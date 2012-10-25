@@ -1,11 +1,10 @@
 ﻿package gear.ui.data {
-	import gear.net.AssetData;
+	import flash.display.DisplayObject;
+	import flash.display.Sprite;
 	import gear.ui.core.GBaseData;
 	import gear.ui.manager.UIManager;
 	import gear.ui.skin.SkinStyle;
-	import gear.ui.skin.button.ButtonSkin;
-
-	import flash.display.Sprite;
+	import gear.ui.skin.btn.ButtonSkin;
 
 
 	/**
@@ -15,10 +14,13 @@
 	public class GScrollBarData extends GBaseData {
 		public static const VERTICAL : int = 0;
 		public static const HORIZONTAL : int = 1;
-		public var trackAsset : AssetData = new AssetData(SkinStyle.scrollBar_trackSkin);
+		public var trackSkin : DisplayObject;
 		public var thumbButtonData : GButtonData;
+		public var upButtonData : GButtonData;
+		public var downButtonData : GButtonData;
 		public var direction : int = VERTICAL;
 		public var wheelSpeed : int = 2;
+		public var padding : int = 0;
 
 		override protected function parse(source : *) : void {
 			super.parse(source);
@@ -26,19 +28,44 @@
 			if (data == null) {
 				return;
 			}
-			data.trackAsset = trackAsset;
+			data.trackSkin = UIManager.cloneSkin(trackSkin);
 			data.thumbButtonData = (thumbButtonData ? thumbButtonData.clone() : null);
 			data.direction = direction;
 			data.wheelSpeed = wheelSpeed;
+			data.downButtonData = (downButtonData ? downButtonData.clone() : null);
+			data.upButtonData = (upButtonData ? upButtonData.clone() : null);
+			data.padding = padding;
 		}
 
 		public function GScrollBarData() {
 			thumbButtonData = new GButtonData();
-			var upSkin : Sprite = UIManager.getSkin(new AssetData(SkinStyle.scrollBar_thumbUpSkin));
-			var overSkin : Sprite = UIManager.getSkin(new AssetData(SkinStyle.scrollBar_thumbOverSkin));
-			var downSkin : Sprite = UIManager.getSkin(new AssetData(SkinStyle.scrollBar_thumbDownSkin));
+			var upSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.scrollBar_thumbUpSkin,"ui");
+			var overSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.scrollBar_thumbOverSkin,"ui");
+			var downSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.scrollBar_thumbDownSkin,"ui");
 			var disabledSkin : Sprite = null;
 			thumbButtonData.skin = new ButtonSkin(upSkin, overSkin, downSkin, disabledSkin);
+			//TODO
+			/*
+			upButtonData = new GButtonData();
+			upSkin = UIManager.getSkinBy(new AssetData("beibao_icon_shang_001"));
+			overSkin = UIManager.getSkinBy(new AssetData("beibao_icon_shang_002"));
+			downSkin = UIManager.getSkinBy(new AssetData("beibao_icon_shang_003"));
+			disabledSkin = null;
+			upButtonData.skin = new ButtonSkin(upSkin, overSkin, downSkin, disabledSkin);
+			upButtonData.x = -5;
+			upButtonData.width = 23;
+			upButtonData.height = 23;
+
+			downButtonData = new GButtonData();
+			upSkin = UIManager.getSkin(new AssetData("beibao_icon_xia_001"));
+			overSkin = UIManager.getSkin(new AssetData("beibao_icon_xia_002"));
+			downSkin = UIManager.getSkin(new AssetData("beibao_icon_xia_003"));
+			disabledSkin = null;
+			downButtonData.skin = new ButtonSkin(upSkin, overSkin, downSkin, disabledSkin);
+			downButtonData.width = 23;
+			downButtonData.height = 23;
+			downButtonData.x = -5;
+			 */
 			width = 14;
 			height = 100;
 		}

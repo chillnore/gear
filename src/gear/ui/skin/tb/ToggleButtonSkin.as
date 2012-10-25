@@ -7,12 +7,22 @@
 	import flash.display.DisplayObjectContainer;
 
 	/**
-	 * 模组按钮皮肤
+	 * 开关按钮皮肤
+	 * 
+	 * upSkin 正常 必选
+	 * overSkin 滑入 可选
+	 * downSkin 按下 可选
+	 * disabledSkin 禁用 可选
+	 * 
+	 * selectedUpSkin 选中 必选
+	 * selectedOverSkin 选中滑入 可选
+	 * selectedDownSkin 选中按下 可选
+	 * selectedDisabledSkin 选中禁用 可选
 	 * 
 	 * @author bright
-	 * @version 20110222
+	 * @version 20120814
 	 */
-	public class ToggleButtonSkin implements IToggleButtonSkin {
+	public final class ToggleButtonSkin implements IToggleButtonSkin {
 		private var _upSkin : DisplayObject;
 		private var _overSkin : DisplayObject;
 		private var _downSkin : DisplayObject;
@@ -106,11 +116,11 @@
 		}
 
 		public function get width() : int {
-			return 0;
+			return _upSkin.width;
 		}
 
 		public function get height() : int {
-			return 0;
+			return _upSkin.height;
 		}
 
 		public function set phase(value : int) : void {

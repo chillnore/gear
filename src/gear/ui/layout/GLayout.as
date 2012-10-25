@@ -1,8 +1,8 @@
 ﻿package gear.ui.layout {
+	import gear.gui.core.GBase;
 	import gear.ui.containers.GPanel;
 	import gear.ui.core.GAlign;
 	import gear.ui.core.GAlignMode;
-	import gear.ui.core.GBase;
 	import gear.ui.manager.UIManager;
 
 	import flash.display.DisplayObject;
@@ -13,7 +13,7 @@
 	 * 布局管理器
 	 * 
 	 * @author bright
-	 * @version 20101019
+	 * @version 20120815
 	 */
 	public class GLayout {
 		public static function getRect(target : DisplayObject, align : GAlign) : Rectangle {

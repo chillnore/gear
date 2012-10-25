@@ -1,5 +1,6 @@
 ﻿package gear.ui.model {
 	import gear.ui.drag.IDragItem;
+	import gear.utils.GArrayUtil;
 
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -70,6 +71,9 @@
 
 		public function set place(value : int) : void {
 			_place = value;
+			for (var i : int = 0; i < _source.length; i++) {
+				if (_source[i]) _source[i].place = value;
+			}
 		}
 
 		public function get place() : int {
@@ -80,7 +84,7 @@
 			_oldSource = _source.concat();
 			if (value == null) {
 				if (_source.length > 0) {
-					_source.splice(0);
+					_source.length = 0;
 				}
 			} else {
 				_source = value;
@@ -93,6 +97,8 @@
 							item.grid = i;
 						}
 					}
+				} else {
+					GArrayUtil.trim(_source);
 				}
 			}
 			dispatchEvent(new Event(Event.RESIZE));
@@ -124,7 +130,7 @@
 
 		public function clear() : void {
 			_oldSource = _source.concat();
-			_source.splice(0);
+			_source.length = 0;
 			if (_fireEvent) {
 				dispatchEvent(new GListEvent(GListEvent.CHANGE, ListState.RESET));
 			}
@@ -147,8 +153,9 @@
 				}
 				index = _source.push(item) - 1;
 				dispatchEvent(new Event(Event.RESIZE));
-				if (_fireEvent)
+				if (_fireEvent) {
 					dispatchEvent(new GListEvent(GListEvent.CHANGE, ListState.ADDED, index, -1, item));
+				}
 			}
 		}
 
@@ -158,7 +165,7 @@
 			if (_allowNull) {
 				setAt(index, item);
 			} else {
-				if (_max > 0 && size >= _max){
+				if (_max > 0 && size >= _max) {
 					return;
 				}
 				_source.splice(index, 0, item);
@@ -296,7 +303,7 @@
 			if (index != -1) {
 				if (isValid(index)) {
 					if (_fireEvent) {
-						dispatchEvent(new GListEvent(GListEvent.CHANGE, ListState.UPDATE, index, -1, getAt(index)));
+						dispatchEvent(new GListEvent(GListEvent.CHANGE, ListState.UPDATE, index, -1, getAt(index), getAt(index)));
 					}
 				}
 			} else {

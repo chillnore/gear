@@ -1,4 +1,6 @@
 ﻿package gear.net {
+	import flash.geom.Rectangle;
+
 	import gear.log4a.LogError;
 
 	import flash.display.DisplayObjectContainer;
@@ -8,7 +10,7 @@
 	 * 元件定义
 	 * 
 	 * @author bright
-	 * @version 20110923
+	 * @version 20120503
 	 */
 	public final class AssetData {
 		/**
@@ -18,7 +20,7 @@
 		/**
 		 * 界面库
 		 */
-		public static const SWF_LIB : String = "ui";
+		public static const SWF_LIB : String = "ui.swf";
 		/**
 		 * 类名称
 		 */
@@ -31,6 +33,10 @@
 		 * 绑定容器
 		 */
 		private var _parent : DisplayObjectContainer;
+		/**
+		 * 位图九宫格的缩放区域
+		 */
+		private var _scale9 : Rectangle;
 
 		/**
 		 * 构造函数
@@ -45,9 +51,13 @@
 		 * </listing> 
 		 * @see gear.net.RESManager
 		 */
-		public function AssetData(className : String, libId : String = SWF_LIB) {
+		public function AssetData(className : String = "none", libId : String = SWF_LIB) {
 			_className = className;
 			_libId = libId;
+		}
+
+		public function set className(value : String) : void {
+			_className = value;
 		}
 
 		/**
@@ -55,6 +65,10 @@
 		 */
 		public function get className() : String {
 			return _className;
+		}
+
+		public function set libId(value : String) : void {
+			_libId = value;
 		}
 
 		/**
@@ -81,6 +95,14 @@
 				throw new LogError("not found " + _className);
 			}
 			return skin;
+		}
+
+		public function set scale9(value : Rectangle) : void {
+			_scale9 = value;
+		}
+
+		public function get scale9() : Rectangle {
+			return _scale9;
 		}
 	}
 }

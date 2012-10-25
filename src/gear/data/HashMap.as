@@ -3,7 +3,6 @@
 
 	import flash.utils.Dictionary;
 
-
 	/**
 	 * 哈希表
 	 * 
@@ -37,8 +36,8 @@
 		 * @return 是否有值
 		 */
 		public function containsValue(value : *) : Boolean {
-			for each(var key:* in _keys) {
-				if(_values[key] == value)
+			for each (var key:* in _keys) {
+				if (_values[key] == value)
 					return true;
 			}
 			return false;
@@ -56,7 +55,7 @@
 		 * </listing>
 		 */
 		public function put(key : *, value : *) : void {
-			if(_values[key] != null) {
+			if (_values[key] != null) {
 				_values[key] = value;
 			} else {
 				_values[key] = value;
@@ -76,7 +75,7 @@
 		 * </listing>
 		 */
 		public function getBy(key : *) : * {
-			if(key == null) {
+			if (key == null) {
 				return null;
 			}
 			return _values[key];
@@ -110,10 +109,10 @@
 		 * </listing>
 		 */
 		public function removeBy(key : *) : int {
-			if(_values[key] != null) {
+			if (_values[key] != null) {
 				delete _values[key];
 				var index : int = this._keys.indexOf(key);
-				if(index == -1)
+				if (index == -1)
 					return -1;
 				_keys.splice(index, 1);
 				return index;
@@ -125,10 +124,10 @@
 		 * 清除所有的键值
 		 */
 		public function clear() : void {
-			for each(var key:* in _keys) {
+			for each (var key:* in _keys) {
 				delete _values[key];
 			}
-			_keys.splice(0);
+			_keys.length = 0;
 		}
 
 		/**
@@ -220,7 +219,7 @@
 		 */
 		public function toArray() : Array {
 			var list : Array = new Array();
-			for each(var key:Object in _keys) {
+			for each (var key:Object in _keys) {
 				list.push(_values[key]);
 			}
 			return list;
@@ -238,7 +237,7 @@
 		 */
 		public function toString() : String {
 			var out : String = "";
-			for each(var key:* in _keys) {
+			for each (var key:* in _keys) {
 				out += key + "=" + _values[key] + "\n";
 			}
 			return out;

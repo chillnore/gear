@@ -1,8 +1,8 @@
 ﻿package gear.ui.data {
-	import gear.net.AssetData;
 	import gear.ui.core.GAlign;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
 	import gear.ui.manager.UIManager;
+
 	/**
 	 * 对话框控件定义
 	 * 
@@ -73,7 +73,7 @@
 		}
 
 		public function GAlertData() {
-			bgSkin = UIManager.getSkin(new AssetData("GPanel_bgSkin"));
+			bgSkin = UIManager.getSkinBy("GPanel_bgSkin", "ui");
 			labelData = new GLabelData();
 			buttonData = new GButtonData();
 			buttonData.width = 65;
@@ -84,7 +84,7 @@
 			noLabel = "<b>否</b>";
 			hgap = vgap = 10;
 			modal = true;
-			scaleMode = ScaleMode.AUTO_SIZE;
+			scaleMode = GScaleMode.AUTO_SIZE;
 			align = GAlign.CENTER;
 			padding = 10;
 			minWidth = 150;

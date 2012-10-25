@@ -1,4 +1,4 @@
-package gear.render {
+﻿package gear.render {
 	/**
 	 * 渲染器接口
 	 * 

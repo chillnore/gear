@@ -1,19 +1,21 @@
 package gear.ui.data {
-	import gear.net.AssetData;
 	import gear.ui.core.GAlign;
 	import gear.ui.core.GBaseData;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
+	import gear.ui.manager.UIManager;
+
+	import flash.display.DisplayObject;
 
 	/**
-	 * @version 20091215
 	 * @author bright
 	 */
 	public class GTabData extends GBaseData {
-		public var upAsset : AssetData = new AssetData("GTab_upSkin");
-		public var overAsset : AssetData = new AssetData("GTab_overSkin");
-		public var disabledAsset : AssetData = new AssetData("GTab_disabledSkin");
-		public var selectedUpAsset : AssetData = new AssetData("GTab_selectedUpSkin");
-		public var selectedDisabledAsset : AssetData = new AssetData("GTab_selectedDisabledSkin");
+		public var upSkin : DisplayObject;
+		public var overSkin : DisplayObject;
+		public var downSkin : DisplayObject;
+		public var disabledSkin : DisplayObject;
+		public var selectedUpSkin : DisplayObject;
+		public var selectedDisabledSkin : DisplayObject;
 		public var labelData : GLabelData;
 		public var selected : Boolean = false;
 		public var padding : int = 7;
@@ -23,20 +25,19 @@ package gear.ui.data {
 			var data : GTabData = source as GTabData;
 			if (data == null)
 				return;
-			data.upAsset = upAsset;
-			data.overAsset = overAsset;
-			data.disabledAsset = disabledAsset;
-			data.selectedUpAsset = selectedUpAsset;
-			data.selectedDisabledAsset = selectedDisabledAsset;
+			data.upSkin = UIManager.cloneSkin(upSkin);
+			data.selectedUpSkin = UIManager.cloneSkin(selectedUpSkin);
 			data.labelData = (labelData ? labelData.clone() : null);
 			data.selected = selected;
 			data.padding = padding;
 		}
 
 		public function GTabData() {
-			scaleMode = ScaleMode.AUTO_WIDTH;
+			scaleMode = GScaleMode.AUTO_WIDTH;
 			width = 60;
 			height = 22;
+			upSkin = UIManager.getSkinBy("GTab_upSkin", "ui");
+			selectedUpSkin = UIManager.getSkinBy("GTab_selectedUpSkin", "ui");
 			labelData = new GLabelData();
 			labelData.color.upColor = 0xBEBEBE;
 			labelData.color.overColor = 0xFFFFFF;

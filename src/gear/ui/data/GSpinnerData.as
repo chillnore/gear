@@ -1,11 +1,10 @@
 ﻿package gear.ui.data {
-	import gear.net.AssetData;
+	import flash.display.DisplayObject;
 	import gear.ui.core.GBaseData;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
 	import gear.ui.manager.UIManager;
-	import gear.ui.skin.button.ButtonSkin;
+	import gear.ui.skin.btn.ButtonSkin;
 
-	import flash.display.Sprite;
 
 	/**
 	 * 选项器控件
@@ -30,25 +29,25 @@
 
 		public function GSpinnerData() {
 			upArrowData = new GButtonData();
-			var upSkin : Sprite = UIManager.getSkin(new AssetData("GSpinner_upArrow_upSkin"));
-			var overSkin : Sprite = UIManager.getSkin(new AssetData("GSpinner_upArrow_overSkin"));
-			var downSkin : Sprite = UIManager.getSkin(new AssetData("GSpinner_upArrow_downSkin"));
-			var disabledSkin : Sprite = UIManager.getSkin(new AssetData("GSpinner_upArrow_disabledSkin"));
+			var upSkin : DisplayObject = UIManager.getSkinBy("GSpinner_upArrow_upSkin", "ui");
+			var overSkin : DisplayObject = UIManager.getSkinBy("GSpinner_upArrow_overSkin", "ui");
+			var downSkin : DisplayObject = UIManager.getSkinBy("GSpinner_upArrow_downSkin", "ui");
+			var disabledSkin : DisplayObject = UIManager.getSkinBy("GSpinner_upArrow_disabledSkin", "ui");
 			upArrowData.skin = new ButtonSkin(upSkin, overSkin, downSkin, disabledSkin);
-			upArrowData.scaleMode = ScaleMode.NONE;
+			upArrowData.scaleMode = GScaleMode.NONE;
 			upArrowData.width = 18;
 			upArrowData.height = 11;
 			downArrowData = new GButtonData();
-			upSkin = UIManager.getSkin(new AssetData("GSpinner_downArrow_upSkin"));
-			overSkin = UIManager.getSkin(new AssetData("GSpinner_downArrow_overSkin"));
-			downSkin = UIManager.getSkin(new AssetData("GSpinner_downArrow_downSkin"));
-			disabledSkin = UIManager.getSkin(new AssetData("GSpinner_downArrow_disabledSkin"));
+			upSkin = UIManager.getSkinBy("GSpinner_downArrow_upSkin", "ui");
+			overSkin = UIManager.getSkinBy("GSpinner_downArrow_overSkin", "ui");
+			downSkin = UIManager.getSkinBy("GSpinner_downArrow_downSkin", "ui");
+			disabledSkin = UIManager.getSkinBy("GSpinner_downArrow_disabledSkin", "ui");
 			downArrowData.skin = new ButtonSkin(upSkin, overSkin, downSkin, disabledSkin);
-			downArrowData.scaleMode = ScaleMode.NONE;
+			downArrowData.scaleMode = GScaleMode.NONE;
 			downArrowData.width = 18;
 			downArrowData.height = 11;
 			textInputData = new GTextInputData();
-			scaleMode = ScaleMode.AUTO_WIDTH;
+			scaleMode = GScaleMode.AUTO_WIDTH;
 			width = 70;
 			height = 22;
 		}

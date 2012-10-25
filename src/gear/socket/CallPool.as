@@ -17,6 +17,8 @@
 		private var _callbacks : Dictionary;
 		private var _list : Array;
 		private var _timer : Timer;
+		// 是否为排队，间隔处理消息
+		private var _queue : Boolean = true;
 
 		private function timerHandler(event : TimerEvent) : void {
 			if (_list.length == 0) {
@@ -101,6 +103,10 @@
 		 * @param request CallData 反射数据
 		 */
 		public function addRequest(request : CallData) : void {
+			if (!_queue) {
+				execute(request);
+				return;
+			}
 			if (request == null) {
 				return;
 			}
@@ -129,6 +135,18 @@
 		 */
 		public function get size() : int {
 			return _list.length;
+		}
+
+		public function set queue(queue : Boolean) : void {
+			_queue = queue;
+			if (!queue) {
+				while (_list.length > 0) {
+					execute(_list.shift());
+				}
+				if (_timer.running) {
+					_timer.stop();
+				}
+			}
 		}
 	}
 }

@@ -6,7 +6,7 @@
 	 * DepthSort 深度排序(二分算法优化)
 	 * 
 	 * @author bright
-	 * @version 20110910
+	 * @version 20111202
 	 */
 	public final class DepthSort {
 		private var _layer : Sprite;
@@ -22,13 +22,7 @@
 			if (source.y < target.y) {
 				return -1;
 			}
-			if (source.x < target.x) {
-				return 1;
-			}
-			if (source.x > target.x) {
-				return -1;
-			}
-			return 0;
+			return 1;
 		}
 
 		/**
@@ -59,6 +53,9 @@
 		 * @param value DisplayObject
 		 */
 		public function add(value : DisplayObject) : void {
+			if (value.parent == _layer) {
+				return;
+			}
 			_layer.addChildAt(value, getIndex(value, 0, _layer.numChildren - 1));
 		}
 
@@ -68,6 +65,9 @@
 		 * @param value DisplayObject
 		 */
 		public function reset(value : DisplayObject) : void {
+			if (value.parent != _layer) {
+				return;
+			}
 			var index : int = _layer.getChildIndex(value);
 			if (index > 0 && compare(value, _layer.getChildAt(index - 1)) < 0) {
 				if (index == 1) {

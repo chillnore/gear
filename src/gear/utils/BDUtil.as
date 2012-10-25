@@ -1,10 +1,8 @@
 ﻿package gear.utils {
 	import gear.log4a.GLogger;
-	import gear.net.AssetData;
-	import gear.net.RESManager;
+	import gear.net.GLoadUtil;
 	import gear.render.BDList;
 	import gear.render.BDUnit;
-	import gear.ui.manager.UIManager;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -32,7 +30,7 @@
 	public final class BDUtil {
 		private static var _cache : Dictionary = new Dictionary(true);
 
-		private static function toBDList(mc : MovieClip) : BDList {
+		public static function toBDList(mc : MovieClip) : BDList {
 			if (mc == null) {
 				return null;
 			}
@@ -182,34 +180,44 @@
 			return new BDUnit(int(rect.x - w * 0.5), int(rect.y - h), cut);
 		}
 
-		public static function getBD(asset : AssetData, frame : int = 0) : BitmapData {
-			var skin : DisplayObject = UIManager.getSkin(asset);
+		public static function getBDBy(key : String, lib : String, frame : int = 0) : BitmapData {
+			var assetClass : Class = GLoadUtil.getClass(key, lib);
+			if (assetClass == null) {
+				GLogger.warn(key, lib);
+				return null;
+			}
+			var skin : * = new assetClass();
+			if (skin is BitmapData) {
+				return skin;
+			}
 			if (skin is Bitmap) {
 				return Bitmap(skin).bitmapData;
-			} else if (skin is Sprite) {
-				var bu : BDUnit = BDUtil.toBD(Sprite(skin));
-				if (bu != null) {
-					return bu.bd;
+			}
+			if (skin is Sprite) {
+				var unit : BDUnit = BDUtil.toBD(Sprite(skin));
+				if (unit != null) {
+					return unit.bd;
 				} else {
 					return null;
 				}
-			} else if (skin is MovieClip) {
-				var data : BDList = BDUtil.toBDList(MovieClip(skin));
-				if (data == null) {
+			}
+			if (skin is MovieClip) {
+				MovieClip(skin).stop();
+				var list : BDList = BDUtil.toBDList(MovieClip(skin));
+				if (list == null) {
 					return null;
 				}
 			}
-			return data.getAt(frame).bd;
+			return list.getAt(frame).bd;
 		}
 
-		public static function getBDList(asset : AssetData) : BDList {
-			var key : String = asset.key;
+		public static function getBDList(key : String, lib : String) : BDList {
 			if (_cache[key] != null) {
 				return _cache[key];
 			}
-			var data : BDList = BDUtil.toBDList(RESManager.getMC(asset));
+			var data : BDList = BDUtil.toBDList(GLoadUtil.getMC(key, lib));
 			if (data == null) {
-				GLogger.error(asset.key, "has error!");
+				GLogger.error(key, "has error!");
 				return null;
 			}
 			data.key = key;
@@ -217,8 +225,8 @@
 			return data;
 		}
 
-		public static function cutBD(asset : AssetData, widths : Array) : BDList {
-			var data : BDList = BDUtil.getBDList(asset);
+		public static function cutBD(key : String, lib : String, widths : Array) : BDList {
+			var data : BDList = BDUtil.getBDList(key, lib);
 			var source : BitmapData = data.getAt(0).bd;
 			var list : Vector.<BDUnit> = new Vector.<BDUnit>(widths.length, true);
 			var bd : BitmapData;

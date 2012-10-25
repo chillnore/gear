@@ -5,7 +5,6 @@
 	import gear.ui.events.GScrollBarEvent;
 	import gear.ui.manager.UIManager;
 
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.text.AntiAliasType;
 	import flash.text.TextField;
@@ -23,10 +22,6 @@
 		 * @private
 		 */
 		protected var _data : GTextAreaData;
-		/**
-		 * @private
-		 */
-		protected var _bgSkin : Sprite;
 		/**
 		 * @private
 		 */
@@ -56,8 +51,9 @@
 		 * @private
 		 */
 		override protected function create() : void {
-			_bgSkin = UIManager.getSkin(_data.bgAsset);
-			addChild(_bgSkin);
+			if(_data.bgSkin!=null){
+				addChild(_data.bgSkin);
+			}
 			if (_data.textField == null) {
 				_textField = UIManager.getTextField();
 				_textField.defaultTextFormat = _data.textFormat;
@@ -98,8 +94,8 @@
 		 * @private
 		 */
 		override protected function layout() : void {
-			_bgSkin.width = _width;
-			_bgSkin.height = _height;
+			_data.bgSkin.width = _width;
+			_data.bgSkin.height = _height;
 			_textField.width = _width - _data.padding * 2;
 			_textField.height = _height - _data.padding * 2;
 			reset();
@@ -115,6 +111,12 @@
 		}
 
 		protected function textInputHandler(event : Event) : void {
+			// if (_data.maxChars > 0 && GStringUtil.getDwordLength(_textField.text) >= _data.maxChars) {
+			// event.preventDefault();
+			// _textField.text=GStringUtil.truncateToFit(_textField.text,_data.maxChars);
+			// return;
+			// }
+			// event.stopImmediatePropagation();
 			if (_textField.numLines > 3) {
 				var lines : Array = _textField.htmlText.split("</P>");
 				trace(lines);

@@ -4,6 +4,7 @@
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
@@ -17,37 +18,53 @@
 	 * SWF文件加载器
 	 * 
 	 * @author bright
-	 * @version 20101015
+	 * @version 20121025
 	 */
-	public class SWFLoader extends RESLoader {
+	internal final class SwfLoader extends BinLoader {
 		private var _loader : Loader;
 		private var _domain : ApplicationDomain;
+		private var _content : DisplayObject;
+		private var _swfWidth : int;
+		private var _swfHeight : int;
 
-		override protected function onComplete() : void {
+		override protected function decode() : void {
 			_loader = new Loader();
-			var context : LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
-			try {
-				context["allowLoadBytesCodeExecution"] = true;
-			} catch(e : Error) {
-			}
+			var context : LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain, null);
+			context.allowCodeImport = true;
 			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
 			_loader.loadBytes(_byteArray, context);
 		}
 
 		private function completeHandler(event : Event) : void {
-			_loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, completeHandler);
-			_domain = LoaderInfo(event.currentTarget).applicationDomain;
-			_isLoadding = false;
-			_isLoaded = true;
-			GLogger.info(GStringUtil.format("load {0} complete", _libData.url));
-			dispatchEvent(new Event(Event.COMPLETE));
+			var loaderInfo : LoaderInfo = LoaderInfo(event.currentTarget);
+			loaderInfo.removeEventListener(Event.COMPLETE, completeHandler);
+			_domain = loaderInfo.applicationDomain;
+			_content = loaderInfo.content;
+			_swfHeight = loaderInfo.height;
+			_swfWidth = loaderInfo.width;
+			onComplete();
 		}
 
 		/**
-		 * @inheritDoc
+		 * SwfLoader加载器
+		 * 
+		 * @param url
+		 * @param key
 		 */
-		public function SWFLoader(data : LibData) {
-			super(data);
+		public function SwfLoader(url : String, key : String) {
+			super(url, key);
+		}
+
+		public function get content() : DisplayObject {
+			return _content;
+		}
+
+		public function get swfWidth() : int {
+			return _swfWidth;
+		}
+
+		public function get swfHeight() : int {
+			return _swfHeight;
 		}
 
 		public function get loader() : Loader {
@@ -68,33 +85,26 @@
 			return assetClass;
 		}
 
-		/**
-		 * 获得皮肤-支持BitmapData,Sprite,MovieClip基类的元件
-		 * 
-		 * @param className 类名称
-		 * @return 		 */
-		public function getSkin(className : String) : Sprite {
-			var assetClass : Class = getClass(className);
+		public function getSkinBy(key : String) : DisplayObject {
+			var assetClass : Class = getClass(key);
 			if (assetClass == null) {
 				return null;
 			}
-			var result : Object = new assetClass();
+			var result : * = new assetClass();
 			if (result is BitmapData) {
-				var sprite : Sprite = new Sprite();
-				sprite.addChild(new Bitmap(BitmapData(result)));
-				return sprite;
+				return  new Bitmap(result);
 			} else if (result is Sprite) {
 				return Sprite(result);
-			} else {
-				return null;
 			}
+			return null;
 		}
 
 		/**
 		 * 获得Sprite
 		 * 
 		 * @param asset 元件定义
-		 * @return Spte		 */
+		 * @return Sprite
+		 */
 		public function getSprite(className : String) : Sprite {
 			var assetClass : Class = getClass(className);
 			if (assetClass == null) {
@@ -102,7 +112,7 @@
 			}
 			var sprite : Sprite = new assetClass() as Sprite;
 			if (sprite == null) {
-				GLogger.warn(GStringUtil.format("{0} isn't a Sprite in {1}", className, _libData.url));
+				GLogger.warn(GStringUtil.format("{0} isn't a Sprite in {1}", className, _key));
 			}
 			return sprite;
 		}
@@ -111,7 +121,7 @@
 		 * 获得MovieClip
 		 * 
 		 * @param asset 元件定义
-		 * @return Movilip	 */
+		 * @return Movilip	     */
 		public function getMC(className : String) : MovieClip {
 			var assetClass : Class = getClass(className);
 			if (assetClass == null) {
@@ -119,8 +129,9 @@
 			}
 			var mc : MovieClip = new assetClass() as MovieClip;
 			if (mc == null) {
-				GLogger.warn(GStringUtil.format("{0} isn't a MovieClip in {1}", className, _libData.url));
+				GLogger.warn(GStringUtil.format("{0} isn't a MovieClip in {1}", className, _key));
 			}
+			mc.stop();
 			return mc;
 		}
 
@@ -137,7 +148,7 @@
 			}
 			var bd : BitmapData = new assetClass() as BitmapData;
 			if (bd == null) {
-				GLogger.warn(GStringUtil.format("{0} isn't a BitmapData in {1}", className, _libData.url));
+				GLogger.warn(GStringUtil.format("{0} isn't a BitmapData in {1}", className, _key));
 			}
 			return bd;
 		}
@@ -154,7 +165,7 @@
 				return null;
 			var sound : Sound = new assetClass() as Sound;
 			if (sound == null) {
-				GLogger.warn(GStringUtil.format("{0} isn't a Sound in {1}", className, _libData.url));
+				GLogger.warn(GStringUtil.format("{0} isn't a Sound in {1}", className, _key));
 			}
 			return sound;
 		}

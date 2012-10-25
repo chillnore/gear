@@ -4,7 +4,6 @@
 	import gear.ui.data.GPanelData;
 	import gear.ui.data.GScrollBarData;
 	import gear.ui.events.GScrollBarEvent;
-	import gear.ui.layout.GLayout;
 
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -192,7 +191,7 @@
 			}
 			_content.addChild(value);
 			if (value is GBase) {
-				GLayout.update(this, GBase(value));
+				//GLayout.update(this, GBase(value));
 			}
 		}
 

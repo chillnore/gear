@@ -1,4 +1,5 @@
 ﻿package gear.ui.controls {
+	import gear.gui.controls.GButton;
 	import gear.ui.containers.GPanel;
 	import gear.ui.core.GAlign;
 	import gear.ui.data.GAlertData;
@@ -14,9 +15,9 @@
 	 * 对话框控件
 	 * 
 	 * @author bright
-	 * @version 20101012
+	 * @version 20111128
 	 */
-	public final class GAlert extends GPanel {
+	public class GAlert extends GPanel {
 		public static const NONE : uint = 0x0000;
 		public static const OK : uint = 0x0004;
 		public static const CANCEL : uint = 0x0008;
@@ -263,6 +264,10 @@
 
 		public function get detail() : uint {
 			return _detail;
+		}
+
+		public function get textInput() : GTextInput {
+			return _textInput;
 		}
 	}
 }

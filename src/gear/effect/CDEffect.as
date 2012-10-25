@@ -1,4 +1,4 @@
-package gear.effect {
+﻿package gear.effect {
 	import gear.ui.model.RangeModel;
 	import gear.ui.skin.ASSkin;
 	import gear.utils.GDrawUtil;
@@ -25,7 +25,8 @@ package gear.effect {
 		private var _halfW : int;
 		private var _halfH : int;
 		private var _radius : int;
-
+		public var cdTime:int;
+		public var cdID:int;
 		private function model_changeHandler(event : Event) : void {
 			redrawMask();
 		}
@@ -55,7 +56,7 @@ package gear.effect {
 			_mask = new Shape();
 			addChild(_mask);
 			_shadow.mask = _mask;
-			_model = new RangeModel(0, 360, 360);
+			_model = new RangeModel();
 			_model.addEventListener(Event.CHANGE, model_changeHandler);
 		}
 

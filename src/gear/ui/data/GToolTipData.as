@@ -1,12 +1,11 @@
 ﻿package gear.ui.data {
-	import gear.net.AssetData;
 	import gear.ui.core.GAlignMode;
 	import gear.ui.core.GBaseData;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
 	import gear.ui.manager.UIManager;
 
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-
 
 	/**
 	 * 提示控件定义
@@ -18,7 +17,7 @@
 		/**
 		 * 背景元件定义
 		 */
-		public var bgSkin : Sprite;
+		public var bgSkin : DisplayObject;
 		/**
 		 * 标签元件定义
 		 */
@@ -52,12 +51,12 @@
 		}
 
 		public function GToolTipData() {
-			bgSkin = UIManager.getSkin(new AssetData("GToolTip_bgSkin"));
+			bgSkin = UIManager.getSkinBy("GToolTip_bgSkin", "ui");
 			labelData = new GLabelData();
 			padding = 5;
 			alginMode = GAlignMode.BOTTOM_RIGHT;
 			alginHGap = alginVGap = 0;
-			scaleMode = ScaleMode.AUTO_SIZE;
+			scaleMode = GScaleMode.AUTO_SIZE;
 		}
 
 		override public function clone() : * {

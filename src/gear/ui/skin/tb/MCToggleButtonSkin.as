@@ -8,10 +8,10 @@
 	import flash.utils.getQualifiedClassName;
 
 	/**
-	 * 模板按钮影片皮肤
+	 * 开关按钮影片皮肤
 	 * 
 	 * @author bright
-	 * @version 20110222
+	 * @version 20120814
 	 */
 	public class MCToggleButtonSkin implements IToggleButtonSkin {
 		private var _mc : MovieClip;

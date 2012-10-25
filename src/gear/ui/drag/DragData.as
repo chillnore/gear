@@ -17,7 +17,7 @@ package gear.ui.drag {
 
 		public var s_grid : int;
 
-		public var target : IDragItem;
+		private var _target : IDragItem;
 
 		public var t_place : int;
 
@@ -55,6 +55,14 @@ package gear.ui.drag {
 
 		public function get source() : IDragItem {
 			return _source;
+		}
+
+		public function get target() : IDragItem {
+			return _target;
+		}
+
+		public function set target(target : IDragItem) : void {
+			_target = target;
 		}
 	}
 }

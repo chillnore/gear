@@ -7,15 +7,17 @@
 	 * 加载数据
 	 * 
 	 * @author bright
-	 * @version 20101015
+	 * @version 20120502
 	 */
 	public final class LoadData extends EventDispatcher {
+		private var _key : String;
 		private var _bytesLoaded : uint;
 		private var _bytesTotal : uint;
 		private var _startTime : int;
 		private var _percent : int;
 
-		public function LoadData() {
+		public function LoadData(key:String) {
+			_key=key;
 		}
 
 		/**
@@ -24,6 +26,10 @@
 		public function reset() : void {
 			_percent = 0;
 			_startTime = getTimer();
+		}
+
+		public function get key() : String {
+			return _key;
 		}
 
 		/**
@@ -51,13 +57,13 @@
 		 * @param bytesTotal 全部字节数
 		 */
 		public function calcPercent(bytesLoaded : uint, bytesTotal : uint) : void {
-			if(isNaN(bytesTotal) || bytesTotal == 0) {
+			if (isNaN(bytesTotal) || bytesTotal == 0) {
 				return;
 			}
 			_bytesLoaded = bytesLoaded;
 			_bytesTotal = bytesTotal;
 			var percent : int = 100 * (_bytesLoaded / _bytesTotal);
-			if(_percent == percent) {
+			if (_percent == percent) {
 				return;
 			}
 			_percent = percent;

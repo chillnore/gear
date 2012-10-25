@@ -9,19 +9,23 @@
 	 * @version 20101009
 	 */
 	public class RangeModel extends EventDispatcher {
-		private var _key : Object;
-		private var _min : Number;
-		private var _max : Number;
-		private var _value : Number;
-		private var _percent : Number;
-		private var _oldPercent : Number;
-		private var _zeroPercent : Number;
+		protected var _key : Object;
+		protected var _min : Number;
+		protected var _max : Number;
+		protected var _value : Number;
+		protected var _oldValue : Number;
+		protected var _percent : Number;
+		protected var _oldPercent : Number;
+		protected var _zeroPercent : Number;
+		protected var _fireEvent : Boolean;
 
-		private function reset() : void {
+		protected function reset() : void {
 			_oldPercent = _percent;
 			_percent = (_value - _min) / (_max - _min);
 			_zeroPercent = (0 - _min) / (_max - _min);
-			dispatchEvent(new Event(Event.CHANGE));
+			if (_fireEvent) {
+				dispatchEvent(new Event(Event.CHANGE));
+			}
 		}
 
 		/**
@@ -35,9 +39,11 @@
 			_min = min;
 			_max = max;
 			_value = value;
+			_oldValue = _value;
 			_percent = (_value - _min) / (_max - _min);
 			_oldPercent = _percent;
 			_zeroPercent = (0 - _min) / (_max - _min);
+			_fireEvent = true;
 		}
 
 		public function resetRange(value : Number, min : Number, max : Number) : void {
@@ -56,8 +62,9 @@
 		}
 
 		public function set min(n : Number) : void {
-			if (_min == n)
+			if (_min == n) {
 				return;
+			}
 			_min = n;
 			reset();
 		}
@@ -67,8 +74,9 @@
 		}
 
 		public function set max(n : Number) : void {
-			if (_max == n)
+			if (_max == n) {
 				return;
+			}
 			_max = n;
 			reset();
 		}
@@ -82,12 +90,17 @@
 			if (_value == n) {
 				return;
 			}
+			_oldValue = _value;
 			_value = n;
 			reset();
 		}
 
 		public function get value() : Number {
 			return _value;
+		}
+
+		public function get oldValue() : Number {
+			return _oldValue;
 		}
 
 		public function get percent() : Number {
@@ -100,6 +113,10 @@
 
 		public function get zeroPercenr() : Number {
 			return _zeroPercent;
+		}
+
+		public function set fireEvent(value : Boolean) : void {
+			_fireEvent = value;
 		}
 	}
 }

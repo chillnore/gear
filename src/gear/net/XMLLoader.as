@@ -1,39 +1,32 @@
 ﻿package gear.net {
-	import gear.log4a.GLogger;
-	import gear.utils.GStringUtil;
-
-	import flash.events.Event;
-
 	/**
 	 * XML加载器
 	 * 
 	 * @author bright
-	 * @version 20101015
+	 * @version 20120502
 	 */
-	public final class XMLLoader extends RESLoader {
+	internal final class XMLLoader extends BinLoader {
 		private var _xml : XML;
 
 		/**
 		 * @inheritDoc
 		 */
-		override protected function onComplete() : void {
+		override protected function decode() : void {
 			try {
-				var s : String = _byteArray.readUTFBytes(_byteArray.length);
-				_xml = new XML(s);
-				_isLoadding = false;
-				_isLoaded = true;
-				GLogger.info(GStringUtil.format("load {0} complete", _libData.url));
-				dispatchEvent(new Event(Event.COMPLETE));
+				var value : String = _byteArray.readUTFBytes(_byteArray.length);
+				trace(value);
+				_xml = new XML(value);
+				onComplete();
 			} catch(e : TypeError) {
-				onError(e.getStackTrace());
+				onFailed();
 			}
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function XMLLoader(data : LibData) {
-			super(data);
+		public function XMLLoader(url : String, key : String) {
+			super(url, key);
 		}
 
 		/**
@@ -41,7 +34,7 @@
 		 * 
 		 * @return 
 		 */
-		public function getXML() : XML {
+		public function get xml() : XML {
 			return _xml;
 		}
 	}

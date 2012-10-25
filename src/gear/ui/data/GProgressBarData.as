@@ -1,9 +1,8 @@
 ﻿package gear.ui.data {
 	import gear.log4a.LogError;
-	import gear.net.AssetData;
 	import gear.ui.core.GAlign;
 	import gear.ui.core.GBaseData;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
 	import gear.ui.manager.UIManager;
 	import gear.ui.skin.SkinStyle;
 	import gear.ui.skin.pb.IPBSkin;
@@ -13,9 +12,9 @@
 	import gear.ui.skin.pb.PBSkin;
 	import gear.ui.skin.pb.PolledSkin;
 
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-
 
 	/**
 	 * 进度条控件
@@ -69,8 +68,8 @@
 		}
 
 		public function GProgressBarData() {
-			var trackSkin : Sprite = UIManager.getSkin(new AssetData(SkinStyle.progressBar_trackSkin));
-			var barSkin : Sprite = UIManager.getSkin(new AssetData(SkinStyle.progressBar_barSkin));
+			var trackSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.progressBar_trackSkin, "ui");
+			var barSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.progressBar_barSkin, "ui");
 			var polledSkin : Sprite = new PolledSkin();
 			skin = new PBSkin(trackSkin, barSkin, polledSkin);
 			labelData = new GLabelData();
@@ -90,7 +89,7 @@
 			x += Math.round(mc.x);
 			y += Math.round(mc.y);
 			skin = new MCPBSkin(mc);
-			scaleMode = ScaleMode.NONE;
+			scaleMode = GScaleMode.NONE;
 			align = null;
 		}
 

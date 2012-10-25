@@ -1,4 +1,4 @@
-package gear.render {
+﻿package gear.render {
 	import gear.log4a.GLogger;
 	import gear.log4a.LogError;
 
@@ -31,19 +31,7 @@ package gear.render {
 		}
 
 		private function enterFrameHandler(event : Event) : void {
-			_nowTime = getTimer();
-			elapsed = _nowTime - _lastTime;
-			_lastTime = getTimer();
-			for each (var render:IFrame in _list) {
-				render.refresh();
-			}
-			if (_onLast is Function) {
-				try {
-					_onLast();
-				} catch(e : Error) {
-					GLogger.error(e.getStackTrace());
-				}
-			}
+			render();
 		}
 
 		private function activateHandler(event : Event) : void {
@@ -71,6 +59,22 @@ package gear.render {
 			_stage.addEventListener(Event.ACTIVATE, activateHandler);
 		}
 
+		public function render() : void {
+			_nowTime = getTimer();
+			elapsed = _nowTime - _lastTime;
+			_lastTime = getTimer();
+			for each (var render:IFrame in _list) {
+				render.refresh();
+			}
+			if (_onLast is Function) {
+				try {
+					_onLast();
+				} catch(e : Error) {
+					GLogger.error(e.getStackTrace());
+				}
+			}
+		}
+
 		public function add(value : IFrame) : void {
 			if (_list.indexOf(value) != -1) {
 				return;
@@ -95,6 +99,10 @@ package gear.render {
 					_stage.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 				}
 			}
+		}
+
+		public function has(value : IFrame) : Boolean {
+			return _list.indexOf(value) != -1;
 		}
 
 		public function set onLast(value : Function) : void {

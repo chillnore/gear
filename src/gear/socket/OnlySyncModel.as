@@ -26,7 +26,7 @@
 			for each (var args:Array in _list) {
 				_socket.call.apply(null, args);
 			}
-			_list.splice(0);
+			_list.length = 0;
 			if (_timer.running) {
 				_timer.stop();
 			}
@@ -44,7 +44,7 @@
 			return -1;
 		}
 
-		public function OnlySyncModel(socket : SocketClient, delay : int = 500) {
+		public function OnlySyncModel(socket : SocketClient, delay : int = 300) {
 			_socket = socket;
 			_list = new Array();
 			_timer = new Timer(delay);
@@ -85,7 +85,7 @@
 		public function stop() : void {
 			if (_timer.running) {
 				_timer.stop();
-				_list.splice(0);
+				_list.length = 0;
 			}
 		}
 	}

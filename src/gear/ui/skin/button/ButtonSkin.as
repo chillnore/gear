@@ -9,7 +9,7 @@
 	 * 按钮皮肤
 	 * 
 	 * @author bright
-	 * @version 20110301
+	 * @version 20111125
 	 */
 	public class ButtonSkin implements IButtonSkin {
 		protected var _upSkin : DisplayObject;
@@ -32,10 +32,6 @@
 			if (_current.parent != parent) {
 				parent.addChild(_current);
 			}
-		}
-
-		public function clone() : IButtonSkin {
-			return new ButtonSkin(UIManager.cloneSkin(_upSkin), UIManager.cloneSkin(_overSkin), UIManager.cloneSkin(_downSkin), UIManager.cloneSkin(_disabledSkin));
 		}
 
 		public function setSize(width : int, height : int) : void {
@@ -75,6 +71,10 @@
 			} else if (value == PhaseState.DISABLED) {
 				_current = UIManager.replace(_current, _disabledSkin);
 			}
+		}
+
+		public function clone() : IButtonSkin {
+			return new ButtonSkin(UIManager.cloneSkin(_upSkin), UIManager.cloneSkin(_overSkin), UIManager.cloneSkin(_downSkin), UIManager.cloneSkin(_disabledSkin));
 		}
 	}
 }

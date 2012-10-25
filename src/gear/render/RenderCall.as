@@ -1,4 +1,4 @@
-package gear.render {
+﻿package gear.render {
 	import gear.log4a.GLogger;
 
 	/**

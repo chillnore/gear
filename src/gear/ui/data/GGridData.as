@@ -1,11 +1,11 @@
 ﻿package gear.ui.data {
-	import gear.net.AssetData;
 	import gear.ui.cell.GCell;
 	import gear.ui.cell.GCellData;
 	import gear.ui.controls.GAlert;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
 	import gear.ui.manager.UIManager;
 	import gear.utils.BDUtil;
+
 	/**
 	 * 格子控件定义
 	 * 
@@ -72,9 +72,9 @@
 		public function GGridData() {
 			alertData = new GAlertData();
 			alertData.parent = UIManager.root;
-			alertData.labelData.iconData.bitmapData = BDUtil.getBD(new AssetData("light_22"));
+			alertData.labelData.iconData.bitmapData = BDUtil.getBDBy("light_22", "uiLib");
 			alertData.flag = GAlert.YES | GAlert.NO;
-			scaleMode = ScaleMode.AUTO_SIZE;
+			scaleMode = GScaleMode.AUTO_SIZE;
 		}
 
 		/**

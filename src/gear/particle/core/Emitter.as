@@ -3,7 +3,7 @@ package gear.particle.core {
 	import gear.particle.counter.ICounter;
 	import gear.particle.counter.ZeroCounter;
 	import gear.particle.init.IInit;
-	import gear.pool.ObjectPool;
+	import gear.pool.ObjPool;
 	import gear.render.FrameRender;
 	import gear.render.IFrame;
 
@@ -18,13 +18,13 @@ package gear.particle.core {
 		protected var _particles : Array;
 		protected var _inits : Vector.<IInit>;
 		protected var _actions : Vector.<IAction>;
-		protected var _pool : ObjectPool;
+		protected var _pool : ObjPool;
 		protected var _counter : ICounter;
 		protected var _running : Boolean;
 		protected var _output : BitmapData;
 
 		protected function createParticle() : void {
-			var particle : Particle = Particle(_pool.getObject());
+			var particle : Particle = Particle(_pool.borrowObj());
 			var len : int = _inits.length;
 			for (var i : int = 0;i < len;++i) {
 				_inits[i].init(this, particle);
@@ -73,7 +73,7 @@ package gear.particle.core {
 			_particles = new Array();
 			_inits = new Vector.<IInit>();
 			_actions = new Vector.<IAction>();
-			_pool = new ObjectPool(Particle);
+			_pool = new ObjPool(Particle);
 			_running = false;
 			_counter = new ZeroCounter();
 		}
@@ -136,7 +136,7 @@ package gear.particle.core {
 					if ( particle.isDead ) {
 						_particles.splice(i, 1);
 						particle.reset();
-						_pool.returnObject(particle);
+						_pool.returnObj(particle);
 					}
 				}
 			}

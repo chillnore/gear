@@ -16,7 +16,7 @@
 		private var _mode : int;
 		private var _scale : int;
 		private var _padding : int;
-		private var _percent : Number;
+		private var _percent : Number=-1;
 
 		public function PBSkin(trackSkin : DisplayObject, barSkin : DisplayObject, polledSkin : DisplayObject) {
 			_trackSkin = trackSkin;
@@ -68,7 +68,7 @@
 		}
 
 		public function set percent(value : Number) : void {
-			if (_percent == value) return;
+			//if (_percent == value) return;
 			_percent = value;
 			var width : int = Math.round(_percent * (_trackSkin.width - _padding * 2));
 			if (_scale == PBScale.SCALE) {

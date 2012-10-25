@@ -10,7 +10,7 @@
 	 * 标签控件定义
 	 * 
 	 * @author bright
-	 * @version 20101110
+	 * @version 20120815
 	 */
 	public class GLabelData extends GBaseData {
 		/**
@@ -28,7 +28,7 @@
 		/**
 		 * 色彩定义
 		 */
-		public var color : GColor;
+		public var color : GStateColor;
 		/**
 		 * 文本滤镜数组
 		 */
@@ -84,7 +84,7 @@
 
 		public function GLabelData() {
 			iconData = new GIconData();
-			color = new GColor();
+			color = new GStateColor();
 			color.upColor = 0xEFEFEF;
 			color.overColor = 0xEFEFEF;
 			color.downColor = 0xEFEFEF;

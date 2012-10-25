@@ -1,4 +1,5 @@
 ﻿package gear.ui.controls {
+	import gear.gui.controls.GButton;
 	import gear.ui.core.GBase;
 	import gear.ui.data.GSpinnerData;
 	import gear.ui.model.GListEvent;

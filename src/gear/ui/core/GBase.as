@@ -1,8 +1,5 @@
 ﻿package gear.ui.core {
-	import gear.effect.GEffect;
-	import gear.motion.GEase;
 	import gear.ui.controls.GToolTip;
-	import gear.ui.layout.GLayout;
 	import gear.ui.manager.GToolTipManager;
 	import gear.ui.manager.UIManager;
 
@@ -15,7 +12,7 @@
 	 * 控件抽象基类
 	 * 
 	 * @author bright
-	 * @version 20110923
+	 * @version 20111201
 	 */
 	public class GBase extends Sprite {
 		public static const SHOW : String = "show";
@@ -35,6 +32,7 @@
 		 * 控件高度
 		 */
 		protected var _height : int;
+		protected var _changed : Boolean;
 		/**
 		 * @private
 		 * 是否启用
@@ -50,6 +48,8 @@
 		 * 提示控件
 		 */
 		protected var _toolTip : GToolTip;
+		protected var _sizeChange : Boolean;
+		protected var _resizeChange : Boolean;
 
 		private function addToStageHandler(event : Event) : void {
 			if (parent == UIManager.root) {
@@ -57,8 +57,10 @@
 			} else {
 				parent.addEventListener(Event.RESIZE, resizeHandler);
 			}
-			GLayout.layout(this);
-			layout();
+			stage.addEventListener(Event.RENDER, renderHandler);
+			if (_changed) {
+				stage.invalidate();
+			}
 			onShow();
 			dispatchEvent(new Event(SHOW));
 		}
@@ -69,13 +71,17 @@
 			} else {
 				parent.removeEventListener(Event.RESIZE, resizeHandler);
 			}
+			stage.removeEventListener(Event.RENDER, renderHandler);
 			onHide();
 			dispatchEvent(new Event(HIDE));
 		}
 
 		private function resizeHandler(event : Event) : void {
-			GLayout.layout(this);
 			onResize();
+		}
+
+		private function renderHandler(event : Event) : void {
+			onRender();
 		}
 
 		/**
@@ -99,7 +105,6 @@
 				GToolTipManager.add(this);
 			}
 			create();
-			layout();
 		}
 
 		/**
@@ -114,6 +119,19 @@
 		 * 布局
 		 */
 		protected function layout() : void {
+		}
+
+		/**
+		 * 需要渲染
+		 */
+		protected function changed() : void {
+			_changed = true;
+			if (stage != null) {
+				stage.invalidate();
+			}
+		}
+
+		protected function render() : void {
 		}
 
 		/**
@@ -156,24 +174,8 @@
 		}
 
 		protected function onResize() : void {
-		}
-
-		/**
-		 * @private
-		 */
-		protected function showEffect_endHandler(event : Event) : void {
-			var effect : GEase = GEase(event.target);
-			effect.removeEventListener(GEffect.END, showEffect_endHandler);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function hideEffect_endHandler(event : Event) : void {
-			var effect : GEase = GEase(event.target);
-			effect.removeEventListener(GEffect.END, hideEffect_endHandler);
-			parent.removeChild(this);
-			alpha = 1;
+			_resizeChange = true;
+			changed();
 		}
 
 		/**
@@ -184,12 +186,22 @@
 		 */
 		public function GBase(base : GBaseData) {
 			_base = base;
+			_changed = true;
+			_sizeChange = true;
+			_resizeChange = true;
 			init();
 			_enabled = true;
 			enabled = _base.enabled;
 			filters = _base.filters;
 			addEventListener(Event.ADDED_TO_STAGE, addToStageHandler);
 			addEventListener(Event.REMOVED_FROM_STAGE, removeFromStageHandler);
+		}
+
+		public function onRender() : void {
+			if (_changed) {
+				render();
+				_changed = false;
+			}
 		}
 
 		public function set align(value : GAlign) : void {
@@ -227,7 +239,7 @@
 		 * @param h int 高度
 		 */
 		public function setSize(w : int, h : int) : void {
-			if (_base.scaleMode == ScaleMode.NONE) {
+			if (_base.scaleMode == GScaleMode.NONE) {
 				return;
 			}
 			var newWidth : int = Math.max(_base.minWidth, Math.min(_base.maxWidth, w));
@@ -236,7 +248,7 @@
 				return;
 			}
 			switch(_base.scaleMode) {
-				case ScaleMode.WIDTH_ONLY:
+				case GScaleMode.WIDTH_ONLY:
 					_width = newWidth;
 					break;
 				default:
@@ -244,7 +256,8 @@
 					_height = newHeight;
 					break;
 			}
-			layout();
+			_sizeChange = true;
+			changed();
 			dispatchEvent(new Event(Event.RESIZE));
 		}
 
@@ -254,10 +267,10 @@
 		 * @param value 宽度
 		 */
 		override public function set width(value : Number) : void {
-			if (_base.scaleMode == ScaleMode.NONE) {
+			if (_base.scaleMode == GScaleMode.NONE) {
 				return;
 			}
-			if (_base.scaleMode == ScaleMode.HEIGHT_ONLY) {
+			if (_base.scaleMode == GScaleMode.HEIGHT_ONLY) {
 				return;
 			}
 			var newWidth : int = Math.max(_base.minWidth, Math.min(_base.maxWidth, Math.floor(value)));
@@ -265,14 +278,16 @@
 				return;
 			}
 			_width = newWidth;
-			layout();
+			_sizeChange = true;
+			changed();
 			dispatchEvent(new Event(Event.RESIZE));
 		}
 
 		/**
 		 * 获得控件宽度
 		 * 
-		 * @return 		 */
+		 * @return 		
+		 */
 		override public function get width() : Number {
 			return _width;
 		}
@@ -282,10 +297,10 @@
 		 * @param value 高度
 		 */
 		override public function set height(value : Number) : void {
-			if (_base.scaleMode == ScaleMode.NONE) {
+			if (_base.scaleMode == GScaleMode.NONE) {
 				return;
 			}
-			if (_base.scaleMode == ScaleMode.WIDTH_ONLY) {
+			if (_base.scaleMode == GScaleMode.WIDTH_ONLY) {
 				return;
 			}
 			var newHeight : int = Math.max(_base.minHeight, Math.min(_base.maxHeight, Math.floor(value)));
@@ -293,7 +308,8 @@
 				return;
 			}
 			_height = newHeight;
-			layout();
+			_sizeChange = true;
+			changed();
 			dispatchEvent(new Event(Event.RESIZE));
 		}
 
@@ -336,17 +352,12 @@
 				return;
 			}
 			if (parent != null) {
-				var depth : int = parent.getChildIndex(this);
-				var target : int = parent.numChildren - 1;
-				if (depth < target) {
-					parent.swapChildrenAt(depth, target);
-				}
+				parent.setChildIndex(this, parent.numChildren - 1);
 			} else {
 				_base.parent.addChild(this);
 			}
 			if (_base.showEffect != null) {
 				_base.showEffect.start();
-				_base.showEffect.addEventListener(GEffect.END, showEffect_endHandler);
 			}
 		}
 
@@ -359,12 +370,19 @@
 			}
 			if (_base.hideEffect != null) {
 				_base.hideEffect.start();
-				_base.hideEffect.addEventListener(GEffect.END, hideEffect_endHandler);
 			} else {
 				if (_base.parent == null) {
 					_base.parent = parent;
 				}
 				parent.removeChild(this);
+			}
+		}
+
+		public function switchShow() : void {
+			if (parent == null) {
+				show();
+			} else {
+				hide();
 			}
 		}
 

@@ -1,4 +1,5 @@
 ﻿package gear.ui.containers {
+	import gear.ui.data.GTabData;
 	import gear.ui.controls.GTab;
 	import gear.ui.core.GBase;
 	import gear.ui.data.GTabbedPanelData;
@@ -89,6 +90,21 @@
 		public function addTab(title : String, component : GBase) : void {
 			var tab : GTab = new GTab(_data.tabData);
 			tab.text = title;
+			var lastTab : GTab = _group.model.getLast() as GTab;
+			if (lastTab) {
+				tab.x = lastTab.x + lastTab.width - 1;
+				tab.y = 0;
+			}
+			addChild(tab);
+			_group.model.add(tab);
+			_viewStack.add(component);
+			if (_group.selectionModel.index == -1) {
+				_group.selectionModel.index = 0;
+			}
+		}
+		
+		public function addIconTab(data:GTabData, component : GBase) : void {
+			var tab : GTab = new GTab(data);
 			var lastTab : GTab = _group.model.getLast() as GTab;
 			if (lastTab) {
 				tab.x = lastTab.x + lastTab.width - 1;

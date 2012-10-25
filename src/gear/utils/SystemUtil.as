@@ -4,6 +4,7 @@
 	import flash.net.LocalConnection;
 	import flash.system.Capabilities;
 	import flash.system.System;
+	import flash.system.fscommand;
 
 	public class SystemUtil {
 		public static function flipH(source : DisplayObject) : void {
@@ -67,6 +68,14 @@
 			result += date.getMinutes() + ":";
 			result += date.getSeconds();
 			return result;
+		}
+
+		public static function exit() : void {
+			if(Capabilities.playerType=="StandAlone"){
+				fscommand("quit");
+			}else{
+				JSUtil.reload();
+			}
 		}
 	}
 }

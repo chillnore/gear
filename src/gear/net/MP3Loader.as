@@ -1,6 +1,5 @@
 ﻿package gear.net {
 	import gear.log4a.GLogger;
-	import gear.utils.GStringUtil;
 
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -9,15 +8,14 @@
 	import flash.media.Sound;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
-	import flash.net.URLVariables;
 
 	/**
 	 * MP3加载器
 	 * 
 	 * @author bright
-	 * @version 20101015
+	 * @version 20120502
 	 */
-	public final class MP3Loader extends ALoader {
+	internal final class MP3Loader extends ALoader {
 		private var _sound : Sound;
 
 		private function addListeners() : void {
@@ -37,17 +35,13 @@
 		private function ioErrorHandler(event : IOErrorEvent) : void {
 			removeListeners();
 			_sound.close();
-			_isLoadding = _isLoaded = false;
-			GLogger.error(GStringUtil.format("load {0} ioError!", _libData.url));
-			dispatchEvent(new Event(ALoader.ERROR));
+			onFailed();
 		}
 
 		private function securityErrorHandler(event : SecurityErrorEvent) : void {
 			removeListeners();
 			_sound.close();
-			_isLoadding = _isLoaded = false;
-			GLogger.error(GStringUtil.format("load {0} security error!", _libData.url));
-			dispatchEvent(new Event(ALoader.ERROR));
+			onFailed();
 		}
 
 		private function progressHandler(event : ProgressEvent) : void {
@@ -56,29 +50,24 @@
 
 		private function completeHandler(event : Event) : void {
 			removeListeners();
-			dispatchEvent(event);
+			onComplete();
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function MP3Loader(data : LibData) {
-			super(data);
+		public function MP3Loader(url : String, key : String) {
+			super(url, key);
 		}
 
 		/**
 		 * @inheritDoc
 		 */
 		override public function load() : void {
-			if (_isLoadding || _isLoaded) {
-				return;
-			}
-			_isLoadding = true;
 			_sound = new Sound();
 			addListeners();
 			_loadData.reset();
-			var request : URLRequest = new URLRequest(_libData.url);
-			request.data = new URLVariables("version=" + _libData.version);
+			var request : URLRequest = new URLRequest(_url);
 			request.method = URLRequestMethod.GET;
 			try {
 				_sound.load(request);

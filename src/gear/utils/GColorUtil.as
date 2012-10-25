@@ -16,7 +16,7 @@
 		 * @param brite Number -255 to 255.
 		 * @return New RGB color.
 		 */
-		public static function adjustBrightness(rgb : uint, brite : Number) : uint {
+		public static function adjustBrightness(rgb : uint, brite : int) : uint {
 			brite = Math.max(-255, Math.min(255, brite));
 			var r : Number = Math.max(Math.min(((rgb >> 16) & 0xFF) + brite, 255), 0);
 			var g : Number = Math.max(Math.min(((rgb >> 8) & 0xFF) + brite, 255), 0);
@@ -29,7 +29,7 @@
 		 * @param brite Number -100 to 100.
 		 * @return New RGB color.
 		 */
-		public static function adjustBrightness2(rgb : uint, brite : Number) : uint {
+		public static function adjustBrightness2(rgb : uint, brite :int) : uint {
 			brite = Math.max(-100, Math.min(100, brite));
 			var r : Number;
 			var g : Number;

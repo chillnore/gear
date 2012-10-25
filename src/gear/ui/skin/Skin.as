@@ -9,9 +9,7 @@
 	 * @version 20100725
 	 */
 	public class Skin extends Sprite {
-
 		protected var _width : int;
-
 		protected var _height : int;
 
 		protected function init() : void {
@@ -46,7 +44,8 @@
 		}
 
 		override public function set width(value : Number) : void {
-			if(_width == value)return;
+			if (_width == value) return;
+			super.width = value;
 			_width = value;
 			layout();
 		}
@@ -56,7 +55,8 @@
 		}
 
 		override public function set height(value : Number) : void {
-			if(_height == value)return;
+			if (_height == value) return;
+			super.height = value;
 			_height = value;
 			layout();
 		}
@@ -65,12 +65,12 @@
 			return _height;
 		}
 
-		public function moveTo(newX : int,newY : int) : void {
+		public function moveTo(newX : int, newY : int) : void {
 			x = newX;
 			y = newY;
 		}
 
-		public function setSize(w : int,h : int) : void {
+		public function setSize(w : int, h : int) : void {
 			_width = w;
 			_height = h;
 			layout();

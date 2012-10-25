@@ -1,4 +1,4 @@
-package gear.effect {
+﻿package gear.effect {
 	import gear.render.RenderCall;
 	import gear.render.FrameRender;
 

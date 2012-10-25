@@ -6,14 +6,18 @@
 	/**
 	 * 对齐控制
 	 * 
-	 * @version 20100115
 	 * @author bright
+	 * @version 20120815
 	 */
 	public class GAlign extends Object {
 		/**
 		 * 居中对齐
 		 */
 		public static const CENTER : GAlign = new GAlign(-1, -1, -1, -1, 0, 0);
+		public static const LIFT : GAlign = new GAlign(0);
+		public static const RIGHT : GAlign = new GAlign(-1, 0);
+		public static const UP : GAlign = new GAlign(-1, -1, 0);
+		public static const bottom : GAlign = new GAlign(-1, -1, -1, 0);
 		/**
 		 * @private
 		 */
@@ -40,7 +44,7 @@
 		protected var _verticalCenter : int = -1;
 
 		/**
-		 * 构造函数
+		 * 对齐
 		 * 
 		 * @param left 距离左侧的距离
 		 * @param right 距离右侧的距离
