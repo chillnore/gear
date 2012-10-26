@@ -1,8 +1,8 @@
-package gear.images {
+package gear.codec {
 	import flash.display.BitmapData;
 	import flash.utils.ByteArray;
 
-	public class PNGEncoder {
+	public class PngEncoder {
 		private static var crcTable : Array;
 		private static var crcTableComputed : Boolean = false;
 
