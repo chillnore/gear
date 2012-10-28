@@ -6,7 +6,7 @@
 	 * 对象池
 	 * 
 	 * @author bright
-	 * @version 20120516
+	 * @version 20121025
 	 */
 	public class ObjPool implements IDispose {
 		protected var _class : Class;
