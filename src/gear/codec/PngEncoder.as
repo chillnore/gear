@@ -2,7 +2,7 @@ package gear.codec {
 	import flash.display.BitmapData;
 	import flash.utils.ByteArray;
 	/**
-	 * png ±àÂë
+	 * png æ–‡ä»¶ç¼–ç 
 	 * 
 	 * @author bright
 	 * @version 20121025
