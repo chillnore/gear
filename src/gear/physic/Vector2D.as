@@ -1,4 +1,10 @@
 package gear.physic {
+	/**
+	 * 向量
+	 * 
+	 * @author bright
+	 * @version 20121029
+	 */
 	public class Vector2D {
 		public var x : Number;
 		public var y : Number;

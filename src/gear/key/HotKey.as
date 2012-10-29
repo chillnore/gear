@@ -11,7 +11,7 @@
 	 * 热键控制
 	 * 
 	 * @author  bright
-	 * @version 20121014
+	 * @version 20121029
 	 */
 	public class HotKey {
 		public static const NONE : uint = 0;
