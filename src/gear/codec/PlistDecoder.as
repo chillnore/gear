@@ -200,7 +200,7 @@ package gear.codec {
 		}
 
 		private function getBytes(src : ByteArray, startIndex : int, length : int) : ByteArray {
-			var dest : ByteArray = new ByteArray;
+			var dest : ByteArray = new ByteArray();
 			src.position = startIndex;
 			src.readBytes(dest, 0, length);
 			return dest;
