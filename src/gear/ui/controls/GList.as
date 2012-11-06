@@ -2,7 +2,7 @@
 	import gear.ui.cell.GCell;
 	import gear.ui.cell.GCellData;
 	import gear.ui.containers.GScrollView;
-	import gear.ui.core.GScaleMode;
+	import gear.ui.core.ScaleMode;
 	import gear.ui.data.GListData;
 	import gear.ui.model.GListEvent;
 	import gear.ui.model.ListModel;
@@ -89,14 +89,14 @@
 		 * @private
 		 */
 		private function resetSize(rows : int) : void {
-			if (_base.scaleMode == GScaleMode.AUTO_SIZE) {
+			if (_base.scaleMode == ScaleMode.AUTO_SIZE) {
 				_width = _cellWidth + _listData.padding * 2;
 				if (rows > 0) {
 					_height = _cellHeight * rows + (rows - 1) * _listData.hGap + _listData.padding * 2;
 				} else {
 					_height = Math.max(_base.minHeight, _listData.padding * 2);
 				}
-			} else if (_base.scaleMode == GScaleMode.AUTO_HEIGHT) {
+			} else if (_base.scaleMode == ScaleMode.AUTO_HEIGHT) {
 				_width = Math.max(_width, _cellWidth + _listData.padding * 2);
 				if (rows > 0) {
 					_height = _cellHeight * rows + (rows - 1) * _listData.hGap + _listData.padding * 2;
@@ -245,7 +245,7 @@
 			var item : Object = event.item;
 			switch(event.state) {
 				case ListState.RESET:
-					var size : int = (_data.scaleMode == GScaleMode.AUTO_HEIGHT ? _model.size : (_model.max > 0 ? _model.max : _model.size));
+					var size : int = (_data.scaleMode == ScaleMode.AUTO_HEIGHT ? _model.size : (_model.max > 0 ? _model.max : _model.size));
 					if (_cells.length != size) {
 						removeCells();
 						addCells();
@@ -273,7 +273,7 @@
 					_cells.push(cell);
 					addChild(cell);
 					addCellEvents(cell);
-					if (_data.scaleMode == GScaleMode.AUTO_HEIGHT) {
+					if (_data.scaleMode == ScaleMode.AUTO_HEIGHT) {
 						height = _cellHeight * _model.size + (_model.size - 1) * _listData.hGap + _listData.padding * 2;
 					} else {
 						super.reset();
@@ -297,7 +297,7 @@
 					if (index < _selectionModel.index || index == _selectionModel.index) {
 						_selectionModel.index -= 1;
 					}
-					if (_data.scaleMode == GScaleMode.AUTO_HEIGHT) {
+					if (_data.scaleMode == ScaleMode.AUTO_HEIGHT) {
 						height = _cellHeight * _model.size + (_model.size - 1) * _listData.hGap + _listData.padding * 2;
 					} else {
 						super.reset();
@@ -333,7 +333,7 @@
 					if (event.index <= _selectionModel.index) {
 						_selectionModel.index += 1;
 					}
-					if (_data.scaleMode == GScaleMode.AUTO_HEIGHT) {
+					if (_data.scaleMode == ScaleMode.AUTO_HEIGHT) {
 						height = _cellHeight * _model.size + (_model.size - 1) * _listData.hGap + _listData.padding * 2;
 					} else {
 						super.reset();
@@ -378,11 +378,11 @@
 		public function get selectionModel() : SelectionModel {
 			return _selectionModel;
 		}
-
-		public function get cells() : Array {
+		
+		public function get cells () : Array {
 			return _cells;
 		}
-
+		
 		/**
 		 * 设置列表模型
 		 * 

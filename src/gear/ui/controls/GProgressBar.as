@@ -1,6 +1,6 @@
 ﻿package gear.ui.controls {
 	import gear.ui.core.GBase;
-	import gear.ui.core.GScaleMode;
+	import gear.ui.core.ScaleMode;
 	import gear.ui.data.GProgressBarData;
 	import gear.ui.layout.GLayout;
 	import gear.ui.skin.pb.PolledSkin;
@@ -8,7 +8,7 @@
 	 * 进度条控件
 	 * 
 	 * @author bright
-	 * @version 20121105
+	 * @version 201001015
 	 */
 	public class GProgressBar extends GBase {
 		/**
@@ -47,10 +47,10 @@
 			_max = _data.max;
 			addChild(_label);
 			switch(_data.scaleMode) {
-				case GScaleMode.WIDTH_ONLY:
+				case ScaleMode.WIDTH_ONLY:
 					_height = _data.skin.height;
 					break;
-				case GScaleMode.NONE:
+				case ScaleMode.NONE:
 					if (_data.skin != null) {
 						_width = _data.skin.width;
 						_height = _data.skin.height;

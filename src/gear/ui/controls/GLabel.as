@@ -2,7 +2,7 @@
 	import gear.ui.cell.LabelSource;
 	import gear.ui.core.GBase;
 	import gear.ui.data.GLabelData;
-	import gear.ui.manager.GUIUtil;
+	import gear.ui.manager.UIManager;
 	import gear.utils.BDUtil;
 	import gear.utils.GStringUtil;
 
@@ -39,7 +39,7 @@
 			_icon = new GIcon(_data.iconData);
 			addChild(_icon);
 			if (_data.textField == null) {
-				_textField = GUIUtil.getTextField();
+				_textField = UIManager.getTextField();
 				_textField.defaultTextFormat = _data.textFormat;
 				_textField.styleSheet = _data.styleSheet;
 				_textField.textColor = _data.color.upColor;
