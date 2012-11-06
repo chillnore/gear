@@ -1,5 +1,5 @@
 package gear.ui.drag {
-	import gear.gui.controls.GIcon;
+	import gear.ui.controls.GIcon;
 
 	/**
 	 * @version 20091101

@@ -1,6 +1,6 @@
 ﻿package gear.ui.data {
 	import gear.ui.core.GBaseData;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.skin.SkinStyle;
 
 	import flash.display.DisplayObject;
@@ -39,8 +39,8 @@
 			if (data == null) {
 				return;
 			}
-			data.borderSkin = UIManager.cloneSkin(borderSkin) as Sprite;
-			data.disabledSkin = UIManager.cloneSkin(disabledSkin) as Sprite;
+			data.borderSkin = GUIUtil.cloneSkin(borderSkin) as Sprite;
+			data.disabledSkin = GUIUtil.cloneSkin(disabledSkin) as Sprite;
 			data.labelData = (labelData ? labelData.clone() : null);
 			data.textFormat = textFormat;
 			data.color = color.clone();
@@ -53,13 +53,13 @@
 		}
 
 		public function GTextInputData() {
-			borderSkin = UIManager.getSkinBy(SkinStyle.textInput_borderSkin, "ui");
-			disabledSkin = UIManager.getSkinBy(SkinStyle.textInput_disabledSkin, "ui");
+			borderSkin = GUIUtil.getSkinBy(SkinStyle.textInput_borderSkin, "ui");
+			disabledSkin = GUIUtil.getSkinBy(SkinStyle.textInput_disabledSkin, "ui");
 			width = 103;
 			height = 22;
 			textFormat = new TextFormat();
-			textFormat.font = UIManager.defaultFont;
-			textFormat.size = UIManager.defaultSize;
+			textFormat.font = GUIUtil.defaultFont;
+			textFormat.size = GUIUtil.defaultSize;
 			textFormat.kerning = true;
 			color = new GStateColor();
 			color.upColor = 0xEFEFEF;

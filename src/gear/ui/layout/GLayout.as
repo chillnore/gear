@@ -1,9 +1,9 @@
 ﻿package gear.ui.layout {
-	import gear.gui.core.GBase;
 	import gear.ui.containers.GPanel;
 	import gear.ui.core.GAlign;
 	import gear.ui.core.GAlignMode;
-	import gear.ui.manager.UIManager;
+	import gear.ui.core.GBase;
+	import gear.ui.manager.GUIUtil;
 
 	import flash.display.DisplayObject;
 	import flash.geom.Point;
@@ -23,9 +23,9 @@
 			var w : int;
 			var h : int;
 			var parent : DisplayObject = target.parent;
-			if (parent == null || parent == UIManager.root) {
-				w = UIManager.stageWidth;
-				h = UIManager.stageHeight;
+			if (parent == null || parent == GUIUtil.root) {
+				w = GUIUtil.stageWidth;
+				h = GUIUtil.stageHeight;
 			} else if (parent is GPanel) {
 				w = parent.width - (GPanel(parent).padding << 1);
 				h = parent.height - (GPanel(parent).padding << 1);
@@ -70,9 +70,9 @@
 			}
 			var w : int;
 			var h : int;
-			if (parent == UIManager.root) {
-				w = UIManager.stageWidth;
-				h = UIManager.stageHeight;
+			if (parent == GUIUtil.root) {
+				w = GUIUtil.stageWidth;
+				h = GUIUtil.stageHeight;
 			} else if (parent is GPanel) {
 				w = parent.width - (GPanel(parent).padding << 1);
 				h = parent.height - (GPanel(parent).padding << 1);
@@ -121,9 +121,9 @@
 			}
 			var w : int;
 			var h : int;
-			if (target.parent == UIManager.root) {
-				w = UIManager.stageWidth;
-				h = UIManager.stageHeight;
+			if (target.parent == GUIUtil.root) {
+				w = GUIUtil.stageWidth;
+				h = GUIUtil.stageHeight;
 			} else if (target.parent.name == "content") {
 				var panel : GPanel = GPanel(target.parent.parent);
 				w = panel.width - panel.padding * 2;
@@ -163,6 +163,9 @@
 			}
 		}
 
+		/**
+		 * 布局Tip
+		 */
 		public static function layoutTip(source : DisplayObject, target : DisplayObject, mode : int, hgap : int = 3, vgap : int = 3, pointX : int = 0, pointY : int = 0) : void {
 			if (source == null || target == null) {
 				return;
@@ -170,8 +173,8 @@
 			var newX : int = 0;
 			var newY : int = 0;
 			var p : Point = source.localToGlobal(new Point(pointX, pointY));
-			var w : int = UIManager.stageWidth;
-			var h : int = UIManager.stageHeight;
+			var w : int = GUIUtil.stageWidth;
+			var h : int = GUIUtil.stageHeight;
 			switch(mode) {
 				case GAlignMode.TOP_LEFT:
 					newX = p.x - target.width - hgap;

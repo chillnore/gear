@@ -1,27 +1,21 @@
 ﻿package gear.ui.controls {
-	import gear.gui.controls.GButton;
 	import gear.ui.core.GBase;
 	import gear.ui.data.GScrollBarData;
 	import gear.ui.events.GScrollBarEvent;
 
-	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 
 	/**
 	 * 滚动条控件
 	 * 
 	 * @author bright
-	 * @version 20101015
+	 * @version 20121105
 	 */
 	public class GScrollBar extends GBase {
 		/**
 		 * @private
 		 */
 		protected var _data : GScrollBarData;
-		/**
-		 * @private
-		 */
-		protected var _trackSkin : Sprite;
 		/**
 		 * @private
 		 */
@@ -65,11 +59,10 @@
 		 * @private
 		 */
 		override protected function create() : void {
-			//_trackSkin = UIManager.getSkin(_data.trackAsset);
 			_thumb_btn = new GButton(_data.thumbButtonData);
 			_up_btn = new GButton(_data.upButtonData);
 			_down_btn = new GButton(_data.downButtonData);
-			addChild(_trackSkin);
+			addChild(_data.trackSkin);
 			addChild(_thumb_btn);
 			addChild(_up_btn);
 			addChild(_down_btn);
@@ -80,9 +73,9 @@
 		 * @private
 		 */
 		override protected function layout() : void {
-			_trackSkin.y = _up_btn.height + _data.padding - 2;
-			_trackSkin.width = _width - 1;
-			_trackSkin.height = _height - _up_btn.height - _down_btn.height - _data.padding * 2 ;
+			_data.trackSkin.y = _up_btn.height + _data.padding - 2;
+			_data.trackSkin.width = _width - 1;
+			_data.trackSkin.height = _height - _up_btn.height - _down_btn.height - _data.padding * 2 ;
 			_thumb_btn.width = _width - 1;
 			reset();
 		}
@@ -96,8 +89,8 @@
 				_thumb_btn.height = 12;
 				_thumb_btn.visible = false;
 			} else {
-				_thumb_btn.height = Math.max(12, Math.round(_pageSize / per * _trackSkin.height));
-				_thumb_btn.y = Math.round((_trackSkin.height - _thumb_btn.height) * (_value - _min) / (_max - _min)) + _up_btn.height + _data.padding - 2;
+				_thumb_btn.height = Math.max(12, Math.round(_pageSize / per * _data.trackSkin.height));
+				_thumb_btn.y = Math.round((_data.trackSkin.height - _thumb_btn.height) * (_value - _min) / (_max - _min)) + _up_btn.height + _data.padding - 2;
 				_thumb_btn.visible = true;
 			}
 			_up_btn.y = -4;
@@ -160,8 +153,8 @@
 		 * @private
 		 */
 		protected function stage_mouseMoveHandler(event : MouseEvent) : void {
-			var position : int = Math.max(0, Math.min(_trackSkin.height - _thumb_btn.height, mouseY - _thumbScrollOffset - _up_btn.height));
-			var newScrollPosition : int = Math.round(position / (_trackSkin.height - _thumb_btn.height) * (_max - _min) + _min);
+			var position : int = Math.max(0, Math.min(_data.trackSkin.height - _thumb_btn.height, mouseY - _thumbScrollOffset - _up_btn.height));
+			var newScrollPosition : int = Math.round(position / (_data.trackSkin.height - _thumb_btn.height) * (_max - _min) + _min);
 			if (_value != newScrollPosition) {
 				var oldScrollPosition : int = _value;
 				_value = newScrollPosition;
@@ -174,7 +167,6 @@
 		 * @private
 		 */
 		protected function stage_mouseUpHandler(event : MouseEvent) : void {
-			trace("mouse up");
 			stage.removeEventListener(MouseEvent.MOUSE_MOVE, stage_mouseMoveHandler);
 			stage.removeEventListener(MouseEvent.MOUSE_UP, stage_mouseUpHandler);
 			_thumb_btn.removeEventListener(MouseEvent.MOUSE_UP, stage_mouseUpHandler);

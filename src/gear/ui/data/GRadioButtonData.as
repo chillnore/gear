@@ -1,9 +1,11 @@
 ﻿package gear.ui.data {
 	import gear.ui.core.GBaseData;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.skin.ASSkin;
 	import gear.ui.skin.SkinStyle;
+	import gear.utils.BDUtil;
 
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 
 	/**
@@ -12,8 +14,8 @@
 	 */
 	public class GRadioButtonData extends GBaseData {
 		public var upSkin : DisplayObject;
-		public var upIcon : DisplayObject;
-		public var selectedUpIcon : DisplayObject;
+		public var upIcon : BitmapData;
+		public var selectedUpIcon : BitmapData;
 		public var labelData : GLabelData;
 		public var selected : Boolean = false;
 		public var padding : int = 2;
@@ -25,7 +27,7 @@
 			if (data == null) {
 				return;
 			}
-			data.upSkin = UIManager.cloneSkin(upSkin);
+			data.upSkin = GUIUtil.cloneSkin(upSkin);
 			data.upIcon = upIcon;
 			data.selectedUpIcon = selectedUpIcon;
 			data.labelData = labelData.clone();
@@ -36,8 +38,8 @@
 
 		public function GRadioButtonData() {
 			upSkin = ASSkin.emptySkin;
-			upIcon = UIManager.getSkinBy(SkinStyle.radioButton_upIcon, "ui");
-			selectedUpIcon = UIManager.getSkinBy(SkinStyle.radioButton_selectedUpIcon, "ui");
+			upIcon = BDUtil.getBDBy(SkinStyle.radioButton_upIcon, "ui");
+			selectedUpIcon = BDUtil.getBDBy(SkinStyle.radioButton_selectedUpIcon, "ui");
 			labelData = new GLabelData();
 			width = 70;
 			height = 18;

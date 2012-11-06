@@ -1,5 +1,4 @@
 ﻿package gear.ui.controls {
-	import gear.gui.controls.GIcon;
 	import gear.ui.cell.GCell;
 	import gear.ui.cell.GCellData;
 	import gear.ui.containers.GPanel;
@@ -14,7 +13,7 @@
 	import gear.ui.drag.IDragSource;
 	import gear.ui.drag.IDragTarget;
 	import gear.ui.layout.GLayout;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.model.GListEvent;
 	import gear.ui.model.ListModel;
 	import gear.ui.model.ListState;
@@ -248,11 +247,10 @@
 					return;
 				}
 				// 为cell添加事件
-				UIManager.root.stage.removeEventListener(MouseEvent.MOUSE_MOVE, stage_mouseMoveHandler);
-				UIManager.root.stage.removeEventListener(MouseEvent.MOUSE_UP, stage_mouseUpHandler);
+				GUIUtil.root.stage.removeEventListener(MouseEvent.MOUSE_MOVE, stage_mouseMoveHandler);
+				GUIUtil.root.stage.removeEventListener(MouseEvent.MOUSE_UP, stage_mouseUpHandler);
 				_dragCell = GCell(event.currentTarget);
-
-				if (_dragCell.toolTip != null) _dragCell.toolTip.hide();
+				// if (_dragCell.toolTip != null) _dragCell.toolTip.hide();
 				if (_dragCell is IDragSource && _dragCell.source is IDragItem) {
 					// 取出cell的数据
 					_dragData.reset(this, _dragCell.source);
@@ -266,7 +264,7 @@
 			if (_gridData.allowDrag) {
 				_dragCell = GCell(event.currentTarget);
 				if (!IDragSource(_dragCell).canDrag()) return;
-				if (_dragCell.toolTip != null) _dragCell.toolTip.hide();
+				//if (_dragCell.toolTip != null) _dragCell.toolTip.hide();
 				if (_dragCell is IDragSource && _dragCell.source is IDragItem) {
 					_dragData.reset(this, _dragCell.source);
 					dragStart();
@@ -283,8 +281,8 @@
 				// return;
 				// }
 				if (!IDragSource(_dragCell).canDrag() || _dragCell == null || _dragCell.source == null) return;
-				if (_dragCell.toolTip != null) _dragCell.toolTip.hide();
-				// _dragImage = IDragSource(_dragCell).dragImage;
+				//if (_dragCell.toolTip != null) _dragCell.toolTip.hide();
+				_dragImage = IDragSource(_dragCell).dragImage;
 				// 复制拖动的数据
 				_dragData.reset(this, _dragCell.source);
 				// dragStart();
@@ -294,8 +292,8 @@
 				if (index != -1) {
 					_selectionModel.index = _pageModel.base + index;
 				}
-				UIManager.root.stage.addEventListener(MouseEvent.MOUSE_MOVE, stage_mouseMoveHandler);
-				UIManager.root.stage.addEventListener(MouseEvent.MOUSE_UP, stage_mouseUpHandler);
+				GUIUtil.root.stage.addEventListener(MouseEvent.MOUSE_MOVE, stage_mouseMoveHandler);
+				GUIUtil.root.stage.addEventListener(MouseEvent.MOUSE_UP, stage_mouseUpHandler);
 			}
 		}
 
@@ -361,8 +359,8 @@
 		protected function stage_mouseMoveHandler(event : MouseEvent) : void {
 			if (_isAddMouseIcon == false) {
 				_dragCell.enabled = false;
-				UIManager.dragModal = true;
-				UIManager.root.stage.addChild(_dragImage);
+				GUIUtil.dragModal = true;
+				GUIUtil.root.stage.addChild(_dragImage);
 				Mouse.hide();
 				_isAddMouseIcon = true;
 			}
@@ -376,9 +374,9 @@
 		 * @private
 		 */
 		override protected function stage_mouseUpHandler(event : MouseEvent) : void {
-			var hitTarget : DisplayObject = UIManager.hitTest(stage.mouseX, stage.mouseY);
+			var hitTarget : DisplayObject = GUIUtil.hitTest(stage.mouseX, stage.mouseY);
 			if (_dragImage != null) {
-				if (UIManager.atParent(hitTarget, this)) {
+				if (GUIUtil.atParent(hitTarget, this)) {
 					if (!_model.allowNull) {
 						if (_dragData.split != null) {
 							_dragData.source.count += _dragData.split.count;
@@ -494,9 +492,9 @@
 				if (_dragData.state != DragState.CANCEL)
 					_dragData.source.syncMove(_dragData.s_place, _dragData.s_grid, _dragData.t_place, _dragData.t_grid, _dragData.split == null ? "" : _dragData.split.key, _dragData.splitCount);
 			} else {
-				if (!UIManager.atParent(hitTarget, this)) {
+				if (!GUIUtil.atParent(hitTarget, this)) {
 					var outside : Boolean = true;
-					if (UIManager.atParent(hitTarget, _menuTrigger)) {
+					if (GUIUtil.atParent(hitTarget, _menuTrigger)) {
 						outside = false;
 					}
 					if (outside) {
@@ -515,9 +513,9 @@
 		}
 
 		private function dragStart() : void {
-			UIManager.dragModal = true;
+			GUIUtil.dragModal = true;
 			_dragCell.enabled = false;
-			// _dragImage = IDragSource(_dragCell).dragImage;
+			_dragImage = IDragSource(_dragCell).dragImage;
 			stage.addChild(_dragImage);
 			_dragImage.x = int(stage.mouseX - _dragImage.width * 0.5);
 			_dragImage.y = int(stage.mouseY - _dragImage.height * 0.5);
@@ -534,7 +532,7 @@
 			if (stage.hasEventListener(MouseEvent.MOUSE_UP) && _menuTrigger == null) {
 				stage.removeEventListener(MouseEvent.MOUSE_UP, stage_mouseUpHandler);
 			}
-			UIManager.dragModal = false;
+			GUIUtil.dragModal = false;
 			if (_dragImage.parent) _dragImage.parent.removeChild(_dragImage);
 			_dragImage = null;
 			if (_dragCell.source != null && _refs.indexOf(_dragCell.source) == -1) {
@@ -703,7 +701,7 @@
 			for each (cell in _selectedCells) {
 				cell.selected = false;
 			}
-			_selectedCells.length = 0;
+			_selectedCells.splice(0);
 			if (!_pageModel.atCurrentPage(_selectionModel.index)) {
 				_selectionModel.index = -1;
 				return;
@@ -858,7 +856,7 @@
 		 * @inheritDoc
 		 */
 		public function dragEnter(dragData : DragData) : Boolean {
-			if (!UIManager.atParent(dragData.hitTarget, this)) {
+			if (!GUIUtil.atParent(dragData.hitTarget, this)) {
 				return false;
 			}
 

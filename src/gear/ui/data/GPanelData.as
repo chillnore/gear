@@ -1,6 +1,6 @@
 ﻿package gear.ui.data {
 	import gear.ui.core.GBaseData;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.skin.SkinStyle;
 
 	import flash.display.DisplayObject;
@@ -23,14 +23,14 @@
 			if (data == null) {
 				return;
 			}
-			data.bgSkin = UIManager.cloneSkin(bgSkin) as DisplayObject;
+			data.bgSkin = GUIUtil.cloneSkin(bgSkin);
 			data.modal = modal;
 			data.padding = padding;
 			data.scrollBarData = scrollBarData.clone();
 		}
 
 		public function GPanelData() {
-			bgSkin = UIManager.getSkinBy(SkinStyle.panel_bgSkin, "ui");
+			bgSkin = GUIUtil.getSkinBy(SkinStyle.panel_bgSkin, "ui");
 			width = 100;
 			height = 100;
 		}

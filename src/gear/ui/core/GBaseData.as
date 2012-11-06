@@ -1,15 +1,15 @@
 ﻿package gear.ui.core {
-	import gear.ui.effect.IEffect;
 	import gear.ui.controls.GToolTip;
 	import gear.ui.data.GToolTipData;
+	import gear.ui.effect.IEffect;
 
 	import flash.display.DisplayObjectContainer;
 
 	/**
-	 * GComponent 控件定义类
+	 * GBaseData 控件定义基类
 	 * 
 	 * @author bright
-	 * @version 20110106
+	 * @version 20121105
 	 */
 	public class GBaseData {
 		/**

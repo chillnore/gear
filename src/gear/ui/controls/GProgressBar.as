@@ -8,7 +8,7 @@
 	 * 进度条控件
 	 * 
 	 * @author bright
-	 * @version 201001015
+	 * @version 20121105
 	 */
 	public class GProgressBar extends GBase {
 		/**

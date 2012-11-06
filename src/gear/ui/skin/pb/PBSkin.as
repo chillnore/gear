@@ -1,5 +1,5 @@
 ﻿package gear.ui.skin.pb {
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -64,7 +64,7 @@
 		}
 
 		public function clone() : IPBSkin {
-			return new PBSkin(UIManager.cloneSkin(_trackSkin), UIManager.cloneSkin(_barSkin), UIManager.cloneSkin(_polledSkin));
+			return new PBSkin(GUIUtil.cloneSkin(_trackSkin), GUIUtil.cloneSkin(_barSkin), GUIUtil.cloneSkin(_polledSkin));
 		}
 
 		public function set percent(value : Number) : void {

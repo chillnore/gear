@@ -1,6 +1,6 @@
 ﻿package gear.ui.data {
 	import gear.ui.core.GBaseData;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 
 	import flash.text.StyleSheet;
 	import flash.text.TextField;
@@ -91,11 +91,11 @@
 			color.selectedColor = 0xEFEFEF;
 			color.disabledColor = 0xEFEFEF;
 			textFormat = new TextFormat();
-			textFormat.font = UIManager.defaultFont;
-			textFormat.size = UIManager.defaultSize;
+			textFormat.font = GUIUtil.defaultFont;
+			textFormat.size = GUIUtil.defaultSize;
 			textFormat.leading = 3;
 			textFormat.kerning = true;
-			styleSheet = UIManager.defaultCSS;
+			styleSheet = GUIUtil.defaultCSS;
 			hGap = 1;
 			text = "";
 			htmlText = "";

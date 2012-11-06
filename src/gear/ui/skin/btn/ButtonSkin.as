@@ -1,6 +1,6 @@
 ﻿package gear.ui.skin.btn {
 	import gear.ui.core.PhaseState;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -67,18 +67,18 @@
 
 		public function set phase(value : int) : void {
 			if (value == PhaseState.UP) {
-				_current = UIManager.replace(_current, _upSkin);
+				_current = GUIUtil.replace(_current, _upSkin);
 			} else if (value == PhaseState.OVER) {
-				_current = UIManager.replace(_current, _overSkin);
+				_current = GUIUtil.replace(_current, _overSkin);
 			} else if (value == PhaseState.DOWN) {
-				_current = UIManager.replace(_current, _downSkin);
+				_current = GUIUtil.replace(_current, _downSkin);
 			} else if (value == PhaseState.DISABLED) {
-				_current = UIManager.replace(_current, _disabledSkin);
+				_current = GUIUtil.replace(_current, _disabledSkin);
 			}
 		}
 
 		public function clone() : IButtonSkin {
-			return new ButtonSkin(UIManager.cloneSkin(_upSkin), UIManager.cloneSkin(_overSkin), UIManager.cloneSkin(_downSkin), UIManager.cloneSkin(_disabledSkin));
+			return new ButtonSkin(GUIUtil.cloneSkin(_upSkin), GUIUtil.cloneSkin(_overSkin), GUIUtil.cloneSkin(_downSkin), GUIUtil.cloneSkin(_disabledSkin));
 		}
 	}
 }

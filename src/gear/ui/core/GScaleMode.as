@@ -3,7 +3,7 @@
 	 * ScaleMode 缩放模式
 	 * 
 	 * @author bright
-	 * @version 20120822
+	 * @version 20121107
 	 */
 	public class GScaleMode {
 		/**

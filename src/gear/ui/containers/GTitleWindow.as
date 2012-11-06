@@ -3,7 +3,7 @@
 
 	import gear.ui.core.GBase;
 	import gear.ui.data.GTitleWindowData;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.manager.ViewManage;
 	import gear.ui.skin.ASSkin;
 	import gear.utils.MathUtil;
@@ -88,8 +88,8 @@
 				var topLeft : Point = parent.localToGlobal(MathUtil.ZERO_POINT);
 				_modalSkin.x = -topLeft.x;
 				_modalSkin.y = -topLeft.y;
-				_modalSkin.width = UIManager.root.stage.stageWidth;
-				_modalSkin.height = UIManager.root.stage.stageHeight;
+				_modalSkin.width = GUIUtil.root.stage.stageWidth;
+				_modalSkin.height = GUIUtil.root.stage.stageHeight;
 				parent.addChildAt(_modalSkin, parent.numChildren - 1);
 				parent.swapChildrenAt(parent.getChildIndex(this), parent.numChildren - 1);
 			}
@@ -101,7 +101,7 @@
 
 		override public function show() : void {
 			super.show();
-			if (name.indexOf("View") != -1&&parent==UIManager.root) {
+			if (name.indexOf("View") != -1&&parent==GUIUtil.root) {
 				ViewManage.add(this);
 			}
 		}
@@ -191,8 +191,8 @@
 			if (_modalSkin == null) {
 				return;
 			}
-			_modalSkin.width = UIManager.root.stage.stageWidth;
-			_modalSkin.height = UIManager.root.stage.stageHeight;
+			_modalSkin.width = GUIUtil.root.stage.stageWidth;
+			_modalSkin.height = GUIUtil.root.stage.stageHeight;
 		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿package gear.ui.skin.btn {
-	import gear.log4a.LogError;
+	import gear.log4a.GLogError;
 	import gear.ui.core.PhaseState;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
@@ -24,7 +24,7 @@
 
 		public function MCButtonSkin(mc : MovieClip) {
 			if (mc == null) {
-				throw new LogError("mc is null!");
+				throw new GLogError("mc is null!");
 			}
 			_mc = mc;
 			_mc.gotoAndStop(1);
@@ -53,7 +53,7 @@
 				_downFrame = 3;
 				_disabledFrame = 4;
 			} else {
-				throw new LogError("nonsupport totalFrames=" + _mc.totalFrames);
+				throw new GLogError("nonsupport totalFrames=" + _mc.totalFrames);
 			}
 		}
 
@@ -71,8 +71,8 @@
 			} else if (value == PhaseState.DISABLED) {
 				_mc.gotoAndStop(_disabledFrame);
 			}
-			if (UIManager.root != null) {
-				UIManager.root.stage.invalidate();
+			if (GUIUtil.root != null) {
+				GUIUtil.root.stage.invalidate();
 			}
 		}
 

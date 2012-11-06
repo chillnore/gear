@@ -20,7 +20,7 @@
 	public class GToolTipManager {
 		public static const LIFT:int = 0;
 		public static const RIGHT:int = 1;
-		public static var tipContainer:DisplayObjectContainer=UIManager.root;
+		public static var tipContainer:DisplayObjectContainer=GUIUtil.root;
 		private static var token:uint;
 		private static function toolTip_rollOverHandler(event : MouseEvent) : void {
 			var target : * = event.currentTarget;
@@ -72,8 +72,8 @@
 		private static function checkBound( toolTip:DisplayObject, targetBounds:Rectangle ):void
 		{
 			var leftBound:int = 0;
-			var rightBound:int = UIManager.root.stage.stageWidth;
-			var bottomBound:int = UIManager.root.stage.stageHeight;
+			var rightBound:int = GUIUtil.root.stage.stageWidth;
+			var bottomBound:int = GUIUtil.root.stage.stageHeight;
 			var toolTipBounds:Rectangle = toolTip.getBounds( tipContainer );
 			if (toolTipBounds.left < 0)
 			{

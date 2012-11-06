@@ -1,5 +1,5 @@
 ﻿package gear.net {
-	import gear.log4a.LogError;
+	import gear.log4a.GLogError;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -14,7 +14,7 @@
 	 * Game Load Util 游戏资源管理器
 	 * 
 	 * @author bright
-	 * @version 20120503
+	 * @version 20121105
 	 */
 	public final class GLoadUtil {
 		private static var _created : Dictionary = new Dictionary();
@@ -26,15 +26,19 @@
 		 * @throws LogError 不能被实例化
 		 */
 		public function GLoadUtil() {
-			throw (new LogError("Class cannot be instantiated"));
+			throw (new GLogError("Class cannot be instantiated"));
 		}
 
 		/**
 		 * 创建加载器-工厂模式
 		 * 
+		 * @example
+		 * var loader:ALoader=GLoadUtil.create("assets/ui.swf");
+		 * loader.addEventListener(Event.COMPLETE,completeHandler);
+		 * loader.load();
+		 * 
 		 * @param url URL地址
 		 * @param key 别名
-		 * 
 		 * @return ALoader 抽象加载器
 		 */
 		public static function create(url : String, key : String = null) : ALoader {

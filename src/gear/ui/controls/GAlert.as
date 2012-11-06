@@ -1,5 +1,4 @@
 ﻿package gear.ui.controls {
-	import gear.gui.controls.GButton;
 	import gear.ui.containers.GPanel;
 	import gear.ui.core.GAlign;
 	import gear.ui.data.GAlertData;

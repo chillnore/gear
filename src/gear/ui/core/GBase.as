@@ -1,207 +1,113 @@
 ﻿package gear.ui.core {
-	import gear.ui.controls.GToolTip;
-	import gear.ui.manager.GToolTipManager;
-	import gear.ui.manager.UIManager;
+	import gear.ui.layout.GLayout;
+	import gear.ui.manager.GUIUtil;
+	import gear.utils.MathUtil;
 
-	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.geom.Point;
 
 	/**
-	 * 控件抽象基类
+	 * Game UI基类
 	 * 
 	 * @author bright
-	 * @version 20111201
+	 * @version 20121105
 	 */
 	public class GBase extends Sprite {
 		public static const SHOW : String = "show";
 		public static const HIDE : String = "hide";
-		/**
-		 * @private
-		 * 基础定义
-		 */
 		protected var _base : GBaseData;
-		/**
-		 * @private
-		 * 控件宽度
-		 */
-		protected var _width : int;
-		/**
-		 * @private
-		 * 控件高度
-		 */
-		protected var _height : int;
-		protected var _changed : Boolean;
-		/**
-		 * @private
-		 * 是否启用
-		 */
 		protected var _enabled : Boolean;
-		/**
-		 * @private
-		 * 数据源
-		 */
+		protected var _width : int;
+		protected var _height : int;
+		protected var _renders : Vector.<Function>;
 		protected var _source : *;
-		/**
-		 * @private
-		 * 提示控件
-		 */
-		protected var _toolTip : GToolTip;
-		protected var _sizeChange : Boolean;
-		protected var _resizeChange : Boolean;
 
-		private function addToStageHandler(event : Event) : void {
-			if (parent == UIManager.root) {
+		protected function addToStageHandler(event : Event) : void {
+			if (parent == GUIUtil.root) {
 				stage.addEventListener(Event.RESIZE, resizeHandler);
 			} else {
 				parent.addEventListener(Event.RESIZE, resizeHandler);
 			}
 			stage.addEventListener(Event.RENDER, renderHandler);
-			if (_changed) {
+			if (_renders.length > 0) {
 				stage.invalidate();
 			}
 			onShow();
 			dispatchEvent(new Event(SHOW));
 		}
 
-		private function removeFromStageHandler(event : Event) : void {
-			if (parent == UIManager.root) {
-				stage.removeEventListener(Event.RESIZE, resizeHandler);
-			} else {
-				parent.removeEventListener(Event.RESIZE, resizeHandler);
-			}
+		protected function removedFromStageHandler(event : Event) : void {
 			stage.removeEventListener(Event.RENDER, renderHandler);
-			onHide();
-			dispatchEvent(new Event(HIDE));
 		}
 
 		private function resizeHandler(event : Event) : void {
-			onResize();
+			addRender(onResize);
 		}
 
-		private function renderHandler(event : Event) : void {
-			onRender();
+		protected function renderHandler(event : Event) : void {
+			render();
 		}
 
-		/**
-		 * @private
-		 * 初如化控件
-		 */
-		protected function init() : void {
-			moveTo(_base.x, _base.y);
-			_width = _base.width;
-			_height = _base.height;
-			alpha = _base.alpha;
-			visible = _base.visible;
-			if (_base.showEffect != null) {
-				_base.showEffect.target = this;
+		protected function addRender(value : Function) : void {
+			if (_renders.indexOf(value) != -1) {
+				return;
 			}
-			if (_base.hideEffect != null) {
-				_base.hideEffect.target = this;
-			}
-			if (_base.toolTipData != null) {
-				_toolTip = new _base.toolTip(_base.toolTipData);
-				GToolTipManager.add(this);
-			}
-			create();
-		}
-
-		/**
-		 * @private
-		 * 创建
-		 */
-		protected function create() : void {
-		}
-
-		/**
-		 * @private
-		 * 布局
-		 */
-		protected function layout() : void {
-		}
-
-		/**
-		 * 需要渲染
-		 */
-		protected function changed() : void {
-			_changed = true;
+			_renders.push(value);
 			if (stage != null) {
 				stage.invalidate();
 			}
 		}
 
-		protected function render() : void {
-		}
-
 		/**
-		 * @private
-		 * 替换皮肤
+		 * 初始化
 		 * 
-		 * @param source 源皮肤
-		 * @param target 目标皮肤
+		 * @private
 		 */
-		protected function replace(source : Sprite, target : Sprite) : Sprite {
-			if (source == null || source.parent == null || target == null || source == target) {
-				return source;
-			}
-			var index : int = source.parent.getChildIndex(source);
-			var parent : DisplayObjectContainer = source.parent;
-			source.parent.removeChild(source);
-			parent.addChildAt(target, index);
-			return target;
+		protected function init() : void {
+			_renders = new Vector.<Function>();
+			create();
+			alpha = _base.alpha;
+			visible = _base.visible;
+			moveTo(_base.x, _base.y);
+			setSize(_base.width, _base.height);
+			addEventListener(Event.ADDED_TO_STAGE, addToStageHandler);
+			addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
 		/**
-		 * @private
-		 * 当显示时
+		 * @private 创建
+		 */
+		protected function create() : void {
+		}
+
+		/**
+		 * @private 布局
+		 */
+		protected function layout() : void {
+		}
+
+		protected function onResize() : void {
+			GLayout.layout(this);
+		}
+
+		protected function onEnabled() : void {
+		}
+
+		/**
+		 * @private 当显示时
 		 */
 		protected function onShow() : void {
 		}
 
 		/**
-		 * @private
-		 * 当隐藏时
+		 * @private 当隐藏时
 		 */
 		protected function onHide() : void {
 		}
 
-		/**
-		 * @private
-		 * 当启用状态改变时-需要子类扩展
-		 */
-		protected function onEnabled() : void {
-		}
-
-		protected function onResize() : void {
-			_resizeChange = true;
-			changed();
-		}
-
-		/**
-		 * 构造函数
-		 * 
-		 * @param base 控件基础定义
-		 * @see gear.ui.data.GComponentData
-		 */
 		public function GBase(base : GBaseData) {
 			_base = base;
-			_changed = true;
-			_sizeChange = true;
-			_resizeChange = true;
 			init();
-			_enabled = true;
-			enabled = _base.enabled;
-			filters = _base.filters;
-			addEventListener(Event.ADDED_TO_STAGE, addToStageHandler);
-			addEventListener(Event.REMOVED_FROM_STAGE, removeFromStageHandler);
-		}
-
-		public function onRender() : void {
-			if (_changed) {
-				render();
-				_changed = false;
-			}
 		}
 
 		public function set align(value : GAlign) : void {
@@ -223,104 +129,6 @@
 			y = newY;
 		}
 
-		public function set position(value : Point) : void {
-			x = value.x;
-			y = value.y;
-		}
-
-		public function get position() : Point {
-			return new Point(x, y);
-		}
-
-		/**
-		 * setSize 设置尺寸
-		 * 
-		 * @param w int 宽度
-		 * @param h int 高度
-		 */
-		public function setSize(w : int, h : int) : void {
-			if (_base.scaleMode == GScaleMode.NONE) {
-				return;
-			}
-			var newWidth : int = Math.max(_base.minWidth, Math.min(_base.maxWidth, w));
-			var newHeight : int = Math.max(_base.minHeight, Math.min(_base.maxHeight, h));
-			if (_width == newWidth && _height == newHeight) {
-				return;
-			}
-			switch(_base.scaleMode) {
-				case GScaleMode.WIDTH_ONLY:
-					_width = newWidth;
-					break;
-				default:
-					_width = newWidth;
-					_height = newHeight;
-					break;
-			}
-			_sizeChange = true;
-			changed();
-			dispatchEvent(new Event(Event.RESIZE));
-		}
-
-		/**
-		 * 设置控件宽度
-		 * 
-		 * @param value 宽度
-		 */
-		override public function set width(value : Number) : void {
-			if (_base.scaleMode == GScaleMode.NONE) {
-				return;
-			}
-			if (_base.scaleMode == GScaleMode.HEIGHT_ONLY) {
-				return;
-			}
-			var newWidth : int = Math.max(_base.minWidth, Math.min(_base.maxWidth, Math.floor(value)));
-			if (_width == newWidth) {
-				return;
-			}
-			_width = newWidth;
-			_sizeChange = true;
-			changed();
-			dispatchEvent(new Event(Event.RESIZE));
-		}
-
-		/**
-		 * 获得控件宽度
-		 * 
-		 * @return 		
-		 */
-		override public function get width() : Number {
-			return _width;
-		}
-
-		/**
-		 * 设置控件高度
-		 * @param value 高度
-		 */
-		override public function set height(value : Number) : void {
-			if (_base.scaleMode == GScaleMode.NONE) {
-				return;
-			}
-			if (_base.scaleMode == GScaleMode.WIDTH_ONLY) {
-				return;
-			}
-			var newHeight : int = Math.max(_base.minHeight, Math.min(_base.maxHeight, Math.floor(value)));
-			if (_height == newHeight) {
-				return;
-			}
-			_height = newHeight;
-			_sizeChange = true;
-			changed();
-			dispatchEvent(new Event(Event.RESIZE));
-		}
-
-		/**
-		 * 获得控件高度
-		 * @return 高度
-		 */
-		override public function get height() : Number {
-			return _height;
-		}
-
 		/**
 		 * 设置启用状态
 		 * 
@@ -335,13 +143,68 @@
 			onEnabled();
 		}
 
+		public function render() : void {
+			var update : Function;
+			while (_renders.length > 0) {
+				update = _renders.shift();
+				update.apply();
+			}
+		}
+
 		/**
-		 * 获得启用状态
+		 * setSize 设置尺寸
 		 * 
-		 * @return 启用
+		 * @param w int 宽度
+		 * @param h int 高度
 		 */
-		public function get enabled() : Boolean {
-			return _enabled;
+		public function setSize(w : int, h : int) : void {
+			var oldW : int = _width;
+			var oldH : int = _height;
+			width = w;
+			height = h;
+			if (oldW != _width || oldH != _height) {
+				dispatchEvent(new Event(Event.RESIZE));
+			}
+		}
+
+		/**
+		 * 设置宽度
+		 * 
+		 * @param value 宽度
+		 */
+		override public function set width(value : Number) : void {
+			if (_base.scaleMode == GScaleMode.NONE || _base.scaleMode == GScaleMode.AUTO_SIZE) {
+				return;
+			}
+			if (_base.scaleMode == GScaleMode.AUTO_HEIGHT) {
+				return;
+			}
+			var newW : int = MathUtil.clamp(Math.round(value), _base.minWidth, _base.maxWidth);
+			if (_width == newW) {
+				return;
+			}
+			_width = newW;
+			addRender(layout);
+		}
+
+		/**
+		 * 设置高度
+		 * 
+		 * @param value 高度
+		 */
+		override public function set height(value : Number) : void {
+			if (_base.scaleMode == GScaleMode.NONE || _base.scaleMode == GScaleMode.AUTO_SIZE ) {
+				return;
+			}
+			if (_base.scaleMode == GScaleMode.AUTO_WIDTH) {
+				return;
+			}
+			var newH : int = MathUtil.clamp(Math.round(value), _base.minHeight, _base.maxHeight);
+			if (_height == newH) {
+				return;
+			}
+			_height = newH;
+			addRender(layout);
 		}
 
 		/**
@@ -356,9 +219,6 @@
 			} else {
 				_base.parent.addChild(this);
 			}
-			if (_base.showEffect != null) {
-				_base.showEffect.start();
-			}
 		}
 
 		/**
@@ -368,14 +228,10 @@
 			if (parent == null) {
 				return;
 			}
-			if (_base.hideEffect != null) {
-				_base.hideEffect.start();
-			} else {
-				if (_base.parent == null) {
-					_base.parent = parent;
-				}
-				parent.removeChild(this);
+			if (_base.parent == null) {
+				_base.parent = parent;
 			}
+			parent.removeChild(this);
 		}
 
 		public function switchShow() : void {
@@ -384,15 +240,6 @@
 			} else {
 				hide();
 			}
-		}
-
-		/**
-		 * 获得提示控件
-		 * 
-		 * @return 提示控件		
-		 */
-		public function get toolTip() : GToolTip {
-			return _toolTip as GToolTip;
 		}
 
 		/**

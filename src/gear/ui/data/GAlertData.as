@@ -1,7 +1,7 @@
 ﻿package gear.ui.data {
 	import gear.ui.core.GAlign;
 	import gear.ui.core.GScaleMode;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 
 	/**
 	 * 对话框控件定义
@@ -73,7 +73,7 @@
 		}
 
 		public function GAlertData() {
-			bgSkin = UIManager.getSkinBy("GPanel_bgSkin", "ui");
+			bgSkin = GUIUtil.getSkinBy("GPanel_bgSkin", "ui");
 			labelData = new GLabelData();
 			buttonData = new GButtonData();
 			buttonData.width = 65;

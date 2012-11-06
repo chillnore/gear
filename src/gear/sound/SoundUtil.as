@@ -1,6 +1,6 @@
 ﻿package gear.sound {
 	import gear.log4a.GLogger;
-	import gear.log4a.LogError;
+	import gear.log4a.GLogError;
 	import gear.net.GLoadUtil;
 
 	import flash.events.Event;
@@ -39,7 +39,7 @@
 
 		public function SoundUtil() {
 			if (!_creating) {
-				throw (new LogError("Class cannot be instantiated.Use RESManager.instance instead."));
+				throw (new GLogError("Class cannot be instantiated.Use RESManager.instance instead."));
 			}
 			init();
 		}

@@ -1,5 +1,4 @@
 ﻿package gear.ui.controls {
-	import gear.gui.controls.GIcon;
 	import gear.ui.data.GIconData;
 	import gear.ui.data.GRadioButtonData;
 
@@ -33,7 +32,7 @@
 			data.x = _data.padding;
 			_icon = new GIcon(data);
 			_selected = _data.selected;
-			// _icon.bitmapData = (_data.selected ? _data.selectedUpIcon : _data.upIcon);
+			_icon.bitmapData = (_data.selected ? _data.selectedUpIcon : _data.upIcon);
 			_label = new GLabel(_data.labelData);
 			addChild(_data.upSkin);
 			addChild(_icon);
@@ -71,7 +70,7 @@
 		 * @private
 		 */
 		override protected function onSelect() : void {
-			//_icon.bitmapData = (_selected ? _selected_upIcon : _upIcon);
+			_icon.bitmapData = (_selected ? _data.selectedUpIcon :_data.upIcon);
 		}
 
 		/**

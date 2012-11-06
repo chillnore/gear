@@ -1,6 +1,6 @@
 ﻿package gear.render {
 	import gear.log4a.GLogger;
-	import gear.log4a.LogError;
+	import gear.log4a.GLogError;
 
 	import flash.display.Stage;
 	import flash.events.Event;
@@ -40,7 +40,7 @@
 
 		public function FrameRender() {
 			if (!_creating) {
-				throw (new LogError("Class cannot be instantiated.Use RenderControl.instance instead."));
+				throw (new GLogError("Class cannot be instantiated.Use RenderControl.instance instead."));
 			}
 			init();
 		}

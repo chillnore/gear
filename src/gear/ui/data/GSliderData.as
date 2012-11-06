@@ -1,7 +1,7 @@
 package gear.ui.data {
 	import gear.ui.core.GBaseData;
 	import gear.ui.core.GScaleMode;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.skin.SkinStyle;
 
 	import flash.display.DisplayObject;
@@ -23,15 +23,15 @@ package gear.ui.data {
 			if (data == null) {
 				return;
 			}
-			data.trackSkin = UIManager.cloneSkin(trackSkin);
-			data.barSkin = UIManager.cloneSkin(barSkin);
-			data.thumbSkin = UIManager.cloneSkin(thumbSkin);
+			data.trackSkin = GUIUtil.cloneSkin(trackSkin);
+			data.barSkin = GUIUtil.cloneSkin(barSkin);
+			data.thumbSkin = GUIUtil.cloneSkin(thumbSkin);
 		}
 
 		public function GSliderData() {
-			trackSkin = UIManager.getSkinBy(SkinStyle.slider_trackSkin, "ui");
-			barSkin = UIManager.getSkinBy(SkinStyle.slider_barSkin, "ui");
-			thumbSkin = UIManager.getSkinBy(SkinStyle.slider_thumbSkin, "ui");
+			trackSkin = GUIUtil.getSkinBy(SkinStyle.slider_trackSkin, "ui");
+			barSkin = GUIUtil.getSkinBy(SkinStyle.slider_barSkin, "ui");
+			thumbSkin = GUIUtil.getSkinBy(SkinStyle.slider_thumbSkin, "ui");
 			width = 100;
 			height = 10;
 			scaleMode = GScaleMode.WIDTH_ONLY;

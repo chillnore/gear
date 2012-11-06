@@ -1,8 +1,8 @@
 ﻿package gear.ui.containers {
-	import gear.ui.data.GTabData;
-	import gear.ui.controls.GTab;
+	import gear.ui.controls.GToggleButton;
 	import gear.ui.core.GBase;
 	import gear.ui.data.GTabbedPanelData;
+	import gear.ui.data.GToggleButtonData;
 	import gear.ui.group.GToggleGroup;
 
 	import flash.events.Event;
@@ -88,9 +88,9 @@
 		 * @param component 选项控件
 		 */
 		public function addTab(title : String, component : GBase) : void {
-			var tab : GTab = new GTab(_data.tabData);
+			var tab : GToggleButton = new GToggleButton(_data.tabData);
 			tab.text = title;
-			var lastTab : GTab = _group.model.getLast() as GTab;
+			var lastTab : GToggleButton = GToggleButton(_group.model.getLast());
 			if (lastTab) {
 				tab.x = lastTab.x + lastTab.width - 1;
 				tab.y = 0;
@@ -102,10 +102,10 @@
 				_group.selectionModel.index = 0;
 			}
 		}
-		
-		public function addIconTab(data:GTabData, component : GBase) : void {
-			var tab : GTab = new GTab(data);
-			var lastTab : GTab = _group.model.getLast() as GTab;
+
+		public function addIconTab(data : GToggleButtonData, component : GBase) : void {
+			var tab : GToggleButton = new GToggleButton(data);
+			var lastTab : GToggleButton = GToggleButton(_group.model.getLast());
 			if (lastTab) {
 				tab.x = lastTab.x + lastTab.width - 1;
 				tab.y = 0;

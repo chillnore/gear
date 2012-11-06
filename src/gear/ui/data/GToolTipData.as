@@ -2,7 +2,7 @@
 	import gear.ui.core.GAlignMode;
 	import gear.ui.core.GBaseData;
 	import gear.ui.core.GScaleMode;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -42,7 +42,7 @@
 			if (data == null) {
 				return;
 			}
-			data.bgSkin = Sprite(UIManager.cloneSkin(bgSkin));
+			data.bgSkin = Sprite(GUIUtil.cloneSkin(bgSkin));
 			data.labelData = labelData;
 			data.padding = padding;
 			data.alginMode = alginMode;
@@ -51,7 +51,7 @@
 		}
 
 		public function GToolTipData() {
-			bgSkin = UIManager.getSkinBy("GToolTip_bgSkin", "ui");
+			bgSkin = GUIUtil.getSkinBy("GToolTip_bgSkin", "ui");
 			labelData = new GLabelData();
 			padding = 5;
 			alginMode = GAlignMode.BOTTOM_RIGHT;

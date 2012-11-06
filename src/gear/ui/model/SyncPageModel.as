@@ -1,5 +1,5 @@
 ﻿package gear.ui.model {
-	import gear.log4a.LogError;
+	import gear.log4a.GLogError;
 
 	import flash.events.Event;
 	import flash.utils.getTimer;
@@ -53,7 +53,7 @@
 		public function SyncPageModel(syncData : Class, pageSize : int = 10, model : ListModel = null) {
 			super(pageSize, model);
 			if (syncData == null || !syncData is SyncPageData) {
-				throw new LogError("data must is SyncPageData");
+				throw new GLogError("data must is SyncPageData");
 			}
 			_syncData = syncData;
 			_list = new Array();

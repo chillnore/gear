@@ -1,25 +1,26 @@
 ﻿package gear.ui.cell {
-	import gear.gui.controls.GIcon;
-	import gear.log4a.LogError;
+	import gear.log4a.GLogError;
+	import gear.ui.controls.GIcon;
 	import gear.ui.controls.GLabel;
 	import gear.ui.core.GAlign;
 	import gear.ui.core.GBase;
-	import gear.ui.core.PhaseState;
 	import gear.ui.core.GScaleMode;
+	import gear.ui.core.PhaseState;
 	import gear.ui.data.GLabelData;
 	import gear.ui.layout.GLayout;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 
+
 	/**
 	 * 单元格控件
 	 * 
 	 * @author bright
-	 * @version 20101015
+	 * @version 20121105
 	 */
 	public class GCell extends GBase {
 		/**
@@ -86,7 +87,7 @@
 		 */
 		override protected function create() : void {
 			if (_data.skin == null) {
-				throw LogError("GCellData.skin is null!");
+				throw GLogError("GCellData.skin is null!");
 			}
 			_data.skin.addTo(this);
 			_data.skin.phase = PhaseState.UP;
@@ -316,7 +317,7 @@
 			var data : GLabelData = new GLabelData();
 			data.text = _data.hotKey;
 			data.color.upColor = 0xFFFFFF;
-			data.textFieldFilters = UIManager.getEdgeFilters(0x000000, 0.9);
+			data.textFieldFilters = GUIUtil.getEdgeFilters(0x000000, 0.9);
 			data.align = new GAlign(-1, 0, -1, 0, -1, -1);
 			_key_lb = new GLabel(data);
 			addChild(_key_lb);

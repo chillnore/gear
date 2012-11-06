@@ -1,11 +1,11 @@
 ﻿package gear.ui.cell {
-	import gear.log4a.LogError;
+	import gear.log4a.GLogError;
 	import gear.ui.core.GAlign;
 	import gear.ui.core.GBaseData;
 	import gear.ui.core.GScaleMode;
 	import gear.ui.data.GIconData;
 	import gear.ui.data.GLabelData;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.skin.SkinStyle;
 	import gear.ui.skin.tb.IToggleButtonSkin;
 	import gear.ui.skin.tb.MCToggleButtonSkin;
@@ -73,14 +73,14 @@
 		 * 构造函数
 		 */
 		public function GCellData() {
-			var upSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_upSkin, "ui");
-			var overSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_overSkin, "ui");
-			var downSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_downSkin, "ui");
-			var disabledSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_disabledSkin, "ui");
-			var selectedUpSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_selectedUpSkin, "ui");
-			var selectedOverSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_selectedOverSkin, "ui");
-			var selectedDownSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_selectedDownSkin, "ui");
-			var selectedDisabledSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.cell_selectedDisabledSkin, "ui");
+			var upSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_upSkin, "ui");
+			var overSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_overSkin, "ui");
+			var downSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_downSkin, "ui");
+			var disabledSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_disabledSkin, "ui");
+			var selectedUpSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_selectedUpSkin, "ui");
+			var selectedOverSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_selectedOverSkin, "ui");
+			var selectedDownSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_selectedDownSkin, "ui");
+			var selectedDisabledSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_selectedDisabledSkin, "ui");
 			skin = new ToggleButtonSkin(upSkin, overSkin, downSkin, disabledSkin, selectedUpSkin, selectedOverSkin, selectedDownSkin, selectedDisabledSkin);
 			lockIconData = new GIconData();
 			labelData = new GLabelData();
@@ -96,7 +96,7 @@
 
 		public function bindTo(mc : MovieClip) : void {
 			if (mc == null) {
-				throw new LogError("GCellData.bindTo:mc is null!");
+				throw new GLogError("GCellData.bindTo:mc is null!");
 			}
 			mc.gotoAndStop(1);
 			x = Math.round(mc.x);

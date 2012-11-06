@@ -18,7 +18,7 @@
 	 */
 	public final class GLogger {
 		private static var _appenders : Array;
-		private static var _level : Level = Level.ALL_LEVEL;
+		private static var _level : GLevel = GLevel.ALL_LEVEL;
 		private static var _creating : Boolean = false;
 
 		/**
@@ -26,14 +26,14 @@
 		 * @param level 日志层级
 		 * @param message 消息数组
 		 */
-		private static function forcedLog(level : Level, message : Array) : void {
+		private static function forcedLog(level : GLevel, message : Array) : void {
 			if (level.compareTo(GLogger._level)) {
 				return;
 			}
-			GLogger.callAppenders(new LoggingData(level, message));
+			GLogger.callAppenders(new GLoggingData(level, message));
 		}
 
-		private static function callAppenders(event : LoggingData) : void {
+		private static function callAppenders(event : GLoggingData) : void {
 			for each (var appender:IAppender in GLogger._appenders) {
 				appender.append(event);
 			}
@@ -55,7 +55,7 @@
 		 * 
 		 * @param level 层级
 		 */
-		public static function setLevel(level : Level) : void {
+		public static function setLevel(level : GLevel) : void {
 			GLogger._level = level;
 		}
 
@@ -64,7 +64,7 @@
 		 * 
 		 * @param appender 日志输出源接口
 		 */
-		public static function addAppender(appender : IAppender) : void {
+		public static function addAppender(appender : IAppender) :void {
 			if (GLogger._appenders == null) {
 				GLogger._appenders = new Array();
 			}
@@ -79,7 +79,7 @@
 		 * @param message 消息数组
 		 */
 		public static function fatal(...message : Array) : void {
-			GLogger.forcedLog(Level.FATAL_LEVEL, message);
+			GLogger.forcedLog(GLevel.FATAL_LEVEL, message);
 		}
 
 		/**
@@ -88,7 +88,7 @@
 		 * @param message 消息数组
 		 */
 		public static function error(...message : Array) : void {
-			GLogger.forcedLog(Level.ERROR_LEVEL, message);
+			GLogger.forcedLog(GLevel.ERROR_LEVEL, message);
 		}
 
 		/**
@@ -97,7 +97,7 @@
 		 * @param message 消息数组
 		 */
 		public static function warn(...message : Array) : void {
-			GLogger.forcedLog(Level.WARN_LEVEL, message);
+			GLogger.forcedLog(GLevel.WARN_LEVEL, message);
 		}
 
 		/**
@@ -106,7 +106,7 @@
 		 * @param message 消息数组
 		 */
 		public static function info(...message : Array) : void {
-			GLogger.forcedLog(Level.INFO_LEVEL, message);
+			GLogger.forcedLog(GLevel.INFO_LEVEL, message);
 		}
 
 		/**
@@ -115,7 +115,7 @@
 		 * @param message 消息数组
 		 */
 		public static function debug(...message : Array) : void {
-			GLogger.forcedLog(Level.DEBUG_LEVEL, message);
+			GLogger.forcedLog(GLevel.DEBUG_LEVEL, message);
 		}
 	}
 }

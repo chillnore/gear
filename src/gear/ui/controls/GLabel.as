@@ -1,9 +1,8 @@
 ﻿package gear.ui.controls {
-	import gear.gui.controls.GIcon;
 	import gear.ui.cell.LabelSource;
 	import gear.ui.core.GBase;
 	import gear.ui.data.GLabelData;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.utils.BDUtil;
 	import gear.utils.GStringUtil;
 
@@ -17,7 +16,7 @@
 	 * 标签控件
 	 * 
 	 * @author bright
-	 * @version 20120814
+	 * @version 20120416
 	 */
 	public class GLabel extends GBase {
 		/**
@@ -32,15 +31,6 @@
 		 * @private
 		 */
 		protected var _textField : TextField;
-		/**
-		 * @private
-		 */
-		protected var _text : String;
-		protected var _textColor : uint;
-		protected var _htmlText : String;
-		protected var _textChange : Boolean;
-		protected var _textColorChange : Boolean;
-		protected var _htmlTextChange : Boolean;
 
 		/**
 		 * @private
@@ -49,7 +39,7 @@
 			_icon = new GIcon(_data.iconData);
 			addChild(_icon);
 			if (_data.textField == null) {
-				_textField = UIManager.getTextField();
+				_textField = GUIUtil.getTextField();
 				_textField.defaultTextFormat = _data.textFormat;
 				_textField.styleSheet = _data.styleSheet;
 				_textField.textColor = _data.color.upColor;
@@ -61,10 +51,9 @@
 			_textField.mouseEnabled = false;
 			_textField.selectable = true;
 			if (_data.text.length > 0) {
-				text = _data.text;
-			}
-			if (_data.htmlText.length > 0) {
-				htmlText = _data.htmlText;
+				_textField.text = _data.text;
+			} else if (_data.htmlText.length > 0) {
+				_textField.htmlText = _data.htmlText;
 			}
 			if (_data.textFieldAlpha < 1) {
 				blendMode = BlendMode.LAYER;
@@ -102,29 +91,8 @@
 			_textField.y = (_height - textH) >> 1;
 		}
 
-		override protected function render() : void {
-			if (!_changed) {
-				return;
-			}
-			_changed = false;
-			if (_textChange) {
-				_textField.text = _text;
-				_textChange = false;
-				layout();
-			}
-			if (_textColorChange) {
-				_textField.textColor = _textColor;
-				_textColorChange = false;
-			}
-			if (_htmlTextChange) {
-				_textField.htmlText = _htmlText;
-				_htmlTextChange = false;
-				layout();
-			}
-		}
-
 		/**
-		 * 标签控件
+		 * @inheritDoc
 		 */
 		public function GLabel(data : GLabelData) {
 			_data = data;
@@ -151,9 +119,8 @@
 		 * @param value 文本
 		 */
 		public function set text(value : String) : void {
-			_text = GStringUtil.truncateToFit(value, _data.maxLength);
-			_textChange = true;
-			changed();
+			_textField.text = GStringUtil.truncateToFit(value, _data.maxLength);
+			layout();
 		}
 
 		/**
@@ -162,40 +129,37 @@
 		 * @return value 文本	
 		 */
 		public function get text() : String {
-			return _text;
+			return _textField.text;
 		}
 
 		/**
 		 * @param value uint 设置文本颜色
 		 */
 		public function set textColor(value : uint) : void {
-			_textColor = value;
-			_textColorChange = true;
-			changed();
+			_textField.textColor = value;
 		}
 
 		/**
 		 * @param value String 设置HTML文本
 		 */
 		public function set htmlText(value : String) : void {
-			_htmlText = value;
-			_htmlTextChange = true;
-			changed();
+			_textField.htmlText = value;
+			layout();
 		}
 
 		/**
 		 * @return String HTML
 		 */
 		public function get htmlText() : String {
-			return _htmlText;
+			return _textField.htmlText;
 		}
 
 		/**
 		 * clear 清除文本
 		 */
 		public function clear() : void {
-			text = "";
-			htmlText = "";
+			_textField.text = "";
+			layout();
 		}
 
 		/**
@@ -212,6 +176,10 @@
 				text = String(value);
 			}
 			_source = value;
+		}
+
+		public function get textField() : TextField {
+			return _textField;
 		}
 	}
 }

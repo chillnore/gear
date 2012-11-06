@@ -1,25 +1,26 @@
 ﻿package gear.ui.data {
-	import gear.net.AssetData;
 	import gear.ui.core.GBaseData;
 	import gear.ui.core.GScaleMode;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.skin.SkinStyle;
+
+	import flash.display.DisplayObject;
 
 	/**
 	 * 聊天提示控件定义
 	 * 
 	 * @author bright
-	 * @version 20101018
+	 * @version 20121105
 	 */
 	public class GChatTipData extends GBaseData {
 		/**
 		 * 边框元件定义
 		 */
-		public var bodyAsset : AssetData;
+		public var bodySkin : DisplayObject;
 		/**
 		 * 尾部元件定义
 		 */
-		public var tailAsset : AssetData;
+		public var tailSkin : DisplayObject;
 		/**
 		 * 标签控件定义
 		 */
@@ -39,10 +40,11 @@
 		override protected function parse(source : *) : void {
 			super.parse(source);
 			var data : GChatTipData = source as GChatTipData;
-			if (data == null)
+			if (data == null) {
 				return;
-			data.bodyAsset = bodyAsset;
-			data.tailAsset = tailAsset;
+			}
+			data.bodySkin = GUIUtil.cloneSkin(bodySkin);
+			data.tailSkin = GUIUtil.cloneSkin(tailSkin);
 			data.labelData = (labelData == null ? null : labelData.clone());
 		}
 
@@ -52,11 +54,11 @@
 			minHeight = 30;
 			maxWidth = 240;
 			maxHeight = 200;
-			bodyAsset = new AssetData(SkinStyle.chatTip_bodySkin);
-			tailAsset = new AssetData(SkinStyle.chatTip_tailSkin);
+			bodySkin = GUIUtil.getSkinBy(SkinStyle.chatTip_bodySkin, "ui");
+			tailSkin = GUIUtil.getSkinBy(SkinStyle.chatTip_tailSkin, "ui");
 			labelData = new GLabelData();
 			labelData.color.upColor = 0x000000;
-			labelData.textFieldFilters = UIManager.getEdgeFilters(0xFFFFFF, 1);
+			labelData.textFieldFilters = GUIUtil.getEdgeFilters(0xFFFFFF, 1);
 			labelData.textFieldFilters = null;
 			labelData.maxLength = 48;
 			gap = 7;

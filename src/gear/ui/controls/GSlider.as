@@ -12,7 +12,7 @@
 	 * 滑块控件
 	 * 
 	 * @author BrightLi
-	 * @version 20101015
+	 * @version 20121105
 	 */
 	public class GSlider extends GBase {
 		public static const VERTICAL : String = "vertical";
@@ -47,7 +47,7 @@
 			var w : int = _data.trackSkin.width - 1;
 			_data.thumbSkin.x = Math.round(_model.percent * w);
 			_zero = _model.zeroPercenr * w;
-			var position : int = Math.round(_model.percent * w);
+			var position : int =Math.round(_model.percent * w);
 			if (_model.value < 0) {
 				_data.barSkin.filters = [_cmf];
 				_data.barSkin.x = position;
@@ -78,8 +78,9 @@
 		}
 
 		private function thumb_mouseDownHandler(event : MouseEvent) : void {
-			if (!_enabled)
+			if (!_enabled){
 				return;
+			}
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, stage_mouseMoveHandler, false, 0, true);
 			stage.addEventListener(MouseEvent.MOUSE_UP, stage_mouseUpHandler, false, 0, true);
 		}

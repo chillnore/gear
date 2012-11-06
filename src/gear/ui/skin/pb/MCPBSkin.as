@@ -1,6 +1,6 @@
 ﻿package gear.ui.skin.pb {
-	import gear.log4a.LogError;
-	import gear.ui.manager.UIManager;
+	import gear.log4a.GLogError;
+	import gear.ui.manager.GUIUtil;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -22,7 +22,7 @@
 
 		public function MCPBSkin(mc : MovieClip) {
 			if (mc == null) {
-				throw new LogError("mc is null!");
+				throw new GLogError("mc is null!");
 			}
 			_mc = mc;
 			_mc.gotoAndStop(1);
@@ -67,7 +67,7 @@
 		}
 
 		public function clone() : IPBSkin {
-			return new MCPBSkin(UIManager.cloneSkin(_mc) as MovieClip);
+			return new MCPBSkin(GUIUtil.cloneSkin(_mc) as MovieClip);
 		}
 
 		public function get width() : int {

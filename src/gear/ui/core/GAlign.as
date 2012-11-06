@@ -1,13 +1,13 @@
 ﻿package gear.ui.core {
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 
 	import flash.display.DisplayObject;
 
 	/**
 	 * 对齐控制
 	 * 
+	 * @version 20100115
 	 * @author bright
-	 * @version 20120815
 	 */
 	public class GAlign extends Object {
 		/**
@@ -44,7 +44,7 @@
 		protected var _verticalCenter : int = -1;
 
 		/**
-		 * 对齐
+		 * 构造函数
 		 * 
 		 * @param left 距离左侧的距离
 		 * @param right 距离右侧的距离
@@ -63,8 +63,8 @@
 		}
 
 		public static function getStageCenter(target : DisplayObject, targetX : int, targetY : int) : GAlign {
-			var centerX : int = UIManager.stageWidth * 0.5;
-			var centerY : int = UIManager.stageHeight * 0.5;
+			var centerX : int = GUIUtil.stageWidth * 0.5;
+			var centerY : int = GUIUtil.stageHeight * 0.5;
 			var offsetX : int = targetX - centerX + target.width * 0.5;
 			var offsetY : int = targetY - centerY + target.height * 0.5;
 			return new GAlign(-1, -1, -1, -1, offsetX, offsetY);

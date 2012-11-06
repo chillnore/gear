@@ -207,7 +207,7 @@
 			for each (cell in _selectedCells) {
 				cell.selected = false;
 			}
-			_selectedCells.length = 0;
+			_selectedCells.splice(0);
 			cell = _cells[_selectionModel.index] as GCell;
 			if (cell != null) {
 				cell.selected = true;

@@ -1,5 +1,5 @@
 ﻿package gear.ui.skin.tb {
-	import gear.log4a.LogError;
+	import gear.log4a.GLogError;
 	import gear.ui.core.PhaseState;
 
 	import flash.display.DisplayObject;
@@ -92,7 +92,7 @@
 				_selectedDownFrame = 6;
 				_disabledFrame = 1;
 			} else {
-				throw new LogError("nonsupport totalFrames=" + _mc.totalFrames);
+				throw new GLogError("nonsupport totalFrames=" + _mc.totalFrames);
 			}
 		}
 

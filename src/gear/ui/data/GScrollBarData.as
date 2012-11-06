@@ -2,14 +2,16 @@
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import gear.ui.core.GBaseData;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.skin.SkinStyle;
 	import gear.ui.skin.btn.ButtonSkin;
 
 
 	/**
-	 * @version 20091215
+	 * 滚动条控件定义
+	 * 
 	 * @author bright
+	 * @version 20121105
 	 */
 	public class GScrollBarData extends GBaseData {
 		public static const VERTICAL : int = 0;
@@ -28,7 +30,7 @@
 			if (data == null) {
 				return;
 			}
-			data.trackSkin = UIManager.cloneSkin(trackSkin);
+			data.trackSkin = GUIUtil.cloneSkin(trackSkin);
 			data.thumbButtonData = (thumbButtonData ? thumbButtonData.clone() : null);
 			data.direction = direction;
 			data.wheelSpeed = wheelSpeed;
@@ -39,9 +41,9 @@
 
 		public function GScrollBarData() {
 			thumbButtonData = new GButtonData();
-			var upSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.scrollBar_thumbUpSkin,"ui");
-			var overSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.scrollBar_thumbOverSkin,"ui");
-			var downSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.scrollBar_thumbDownSkin,"ui");
+			var upSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.scrollBar_thumbUpSkin,"ui");
+			var overSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.scrollBar_thumbOverSkin,"ui");
+			var downSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.scrollBar_thumbDownSkin,"ui");
 			var disabledSkin : Sprite = null;
 			thumbButtonData.skin = new ButtonSkin(upSkin, overSkin, downSkin, disabledSkin);
 			//TODO

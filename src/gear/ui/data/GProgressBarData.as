@@ -1,9 +1,9 @@
 ﻿package gear.ui.data {
-	import gear.log4a.LogError;
+	import gear.log4a.GLogError;
 	import gear.ui.core.GAlign;
 	import gear.ui.core.GBaseData;
 	import gear.ui.core.GScaleMode;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.skin.SkinStyle;
 	import gear.ui.skin.pb.IPBSkin;
 	import gear.ui.skin.pb.MCPBSkin;
@@ -68,8 +68,8 @@
 		}
 
 		public function GProgressBarData() {
-			var trackSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.progressBar_trackSkin, "ui");
-			var barSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.progressBar_barSkin, "ui");
+			var trackSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.progressBar_trackSkin, "ui");
+			var barSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.progressBar_barSkin, "ui");
 			var polledSkin : Sprite = new PolledSkin();
 			skin = new PBSkin(trackSkin, barSkin, polledSkin);
 			labelData = new GLabelData();
@@ -83,7 +83,7 @@
 
 		public function bindTo(mc : MovieClip) : void {
 			if (mc == null) {
-				throw new LogError("bind target is null!");
+				throw new GLogError("bind target is null!");
 			}
 			mc.gotoAndStop(1);
 			x += Math.round(mc.x);

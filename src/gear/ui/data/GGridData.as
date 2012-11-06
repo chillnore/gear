@@ -3,7 +3,7 @@
 	import gear.ui.cell.GCellData;
 	import gear.ui.controls.GAlert;
 	import gear.ui.core.GScaleMode;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.utils.BDUtil;
 
 	/**
@@ -71,7 +71,7 @@
 
 		public function GGridData() {
 			alertData = new GAlertData();
-			alertData.parent = UIManager.root;
+			alertData.parent = GUIUtil.root;
 			alertData.labelData.iconData.bitmapData = BDUtil.getBDBy("light_22", "uiLib");
 			alertData.flag = GAlert.YES | GAlert.NO;
 			scaleMode = GScaleMode.AUTO_SIZE;

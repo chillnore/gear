@@ -1,7 +1,7 @@
 ﻿package gear.ui.controls {
-	import gear.log4a.LogError;
-	import gear.ui.core.PhaseState;
+	import gear.log4a.GLogError;
 	import gear.ui.core.GScaleMode;
+	import gear.ui.core.PhaseState;
 	import gear.ui.data.GToggleButtonData;
 	import gear.ui.layout.GLayout;
 
@@ -11,7 +11,7 @@
 	 * 双模按钮控件
 	 * 
 	 * @author bright
-	 * @verison 20101015
+	 * @verison 20121105
 	 */
 	public class GToggleButton extends GToggleBase {
 		/**
@@ -32,7 +32,7 @@
 		 */
 		override protected function create() : void {
 			if (_data.skin == null) {
-				throw LogError("GToggleButtonData.skin is null!");
+				throw GLogError("GToggleButtonData.skin is null!");
 			}
 			_data.skin.addTo(this);
 			_data.skin.selected = _data.selected;
@@ -163,9 +163,8 @@
 			} else if (_phase == PhaseState.DOWN) {
 				_label.textColor = _data.labelData.color.downColor;
 			}
-			if (_selected){
+			if (_selected)
 				_label.textColor = _data.labelData.color.selectedColor;
-			}
 			_data.skin.phase = _phase;
 		}
 
@@ -176,6 +175,10 @@
 			_data = data;
 			super(data);
 			selected = _data.selected;
+		}
+
+		public function set text(value : String) : void {
+			_label.text = value;
 		}
 	}
 }

@@ -1,5 +1,5 @@
 ﻿package gear.rpc {
-	import gear.log4a.LogError;
+	import gear.log4a.GLogError;
 	import gear.log4a.GLogger;
 	import gear.render.RenderCall;
 	import gear.render.FrameRender;
@@ -82,7 +82,7 @@
 
 		public function Service(gateway : String) : void {
 			if (gateway == null || gateway.length < 1) {
-				throw new LogError("gateway valid");
+				throw new GLogError("gateway valid");
 			}
 			_gateway = gateway;
 			_timer = new RenderCall(timerHandler);

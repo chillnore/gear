@@ -1,7 +1,7 @@
 ﻿package gear.net {
 	import flash.geom.Rectangle;
 
-	import gear.log4a.LogError;
+	import gear.log4a.GLogError;
 
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
@@ -92,7 +92,7 @@
 		public function getSkin() : Sprite {
 			var skin : Sprite = _parent.getChildByName(_className) as Sprite;
 			if (skin == null) {
-				throw new LogError("not found " + _className);
+				throw new GLogError("not found " + _className);
 			}
 			return skin;
 		}

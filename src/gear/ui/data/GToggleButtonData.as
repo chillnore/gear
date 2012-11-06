@@ -1,7 +1,7 @@
 ﻿package gear.ui.data {
 	import gear.ui.core.GAlign;
 	import gear.ui.core.GBaseData;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.skin.SkinStyle;
 	import gear.ui.skin.tb.IToggleButtonSkin;
 	import gear.ui.skin.tb.ToggleButtonSkin;
@@ -9,10 +9,10 @@
 	import flash.display.DisplayObject;
 
 	/**
-	 * GToggleButtonData 开关按钮控件定义
+	 * 开关按钮控件定义
 	 * 
 	 * @author bright
-	 * @verison 20120814
+	 * @verison 20121105
 	 */
 	public class GToggleButtonData extends GBaseData {
 		public var skin : IToggleButtonSkin;
@@ -36,14 +36,14 @@
 		}
 
 		public function GToggleButtonData() {
-			var upSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.button_upSkin, "ui");
-			var overSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.button_overSkin, "ui");
-			var downSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.button_downSkin, "ui");
-			var disabledSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.button_disabledSkin, "ui");
-			var selectedUpSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.button_selectedUpSkin, "ui");
-			var selectedOverSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.button_selectedOverSkin, "ui");
-			var selectedDownSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.button_selectedDownSkin, "ui");
-			var selectedDisabledSkin : DisplayObject = UIManager.getSkinBy(SkinStyle.button_selectedDisabledSkin, "ui");
+			var upSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_upSkin, "ui");
+			var overSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_overSkin, "ui");
+			var downSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_downSkin, "ui");
+			var disabledSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_disabledSkin, "ui");
+			var selectedUpSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_selectedUpSkin, "ui");
+			var selectedOverSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_selectedOverSkin, "ui");
+			var selectedDownSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_selectedDownSkin, "ui");
+			var selectedDisabledSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_selectedDisabledSkin, "ui");
 			skin = new ToggleButtonSkin(upSkin, overSkin, downSkin, disabledSkin, selectedUpSkin, selectedOverSkin, selectedDownSkin, selectedDisabledSkin);
 			width = 70;
 			height = 24;

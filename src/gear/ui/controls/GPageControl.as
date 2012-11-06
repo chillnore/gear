@@ -1,5 +1,4 @@
 ﻿package gear.ui.controls {
-	import gear.gui.controls.GButton;
 	import gear.ui.core.GBase;
 	import gear.ui.core.GScaleMode;
 	import gear.ui.data.GPageControlData;
@@ -8,7 +7,7 @@
 	import gear.ui.drag.IDragItem;
 	import gear.ui.drag.IDragTarget;
 	import gear.ui.layout.GLayout;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.model.PageModel;
 
 	import flash.events.Event;
@@ -158,12 +157,12 @@
 		 * @inheritDoc
 		 */
 		public function dragEnter(dragData : DragData) : Boolean {
-			if (UIManager.atParent(dragData.hitTarget, _prev_btn)) {
+			if (GUIUtil.atParent(dragData.hitTarget, _prev_btn)) {
 				_model.prevPage();
 				dragData.state = DragState.NEXT;
 				return true;
 			}
-			if (UIManager.atParent(dragData.hitTarget, _next_btn)) {
+			if (GUIUtil.atParent(dragData.hitTarget, _next_btn)) {
 				_model.nextPage();
 				dragData.state = DragState.NEXT;
 				return true;

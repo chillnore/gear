@@ -1,6 +1,6 @@
 ﻿package gear.ui.data {
 	import gear.ui.core.GBaseData;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.skin.SkinStyle;
 
 	import flash.display.DisplayObject;
@@ -35,7 +35,7 @@
 			if (data == null) {
 				return;
 			}
-			data.bgSkin = UIManager.cloneSkin(bgSkin) as DisplayObject;
+			data.bgSkin = GUIUtil.cloneSkin(bgSkin) as DisplayObject;
 			data.textFormat = textFormat;
 			data.styleSheet = styleSheet;
 			data.textColor = textColor;
@@ -48,15 +48,15 @@
 		}
 
 		public function GTextAreaData() {
-			bgSkin = UIManager.getSkinBy(SkinStyle.textArea_bgSkin,"ui");
+			bgSkin = GUIUtil.getSkinBy(SkinStyle.textArea_bgSkin,"ui");
 			textColor = 0xFFFFFF;
-			textFieldFilters = UIManager.getEdgeFilters(0x000000, 0.7);
+			textFieldFilters = GUIUtil.getEdgeFilters(0x000000, 0.7);
 			textFormat = new TextFormat();
-			textFormat.font = UIManager.defaultFont;
+			textFormat.font = GUIUtil.defaultFont;
 			textFormat.size = 12;
 			textFormat.leading = 2;
 			textFormat.kerning = true;
-			styleSheet = UIManager.defaultCSS;
+			styleSheet = GUIUtil.defaultCSS;
 			width = 104;
 			height = 104;
 		}

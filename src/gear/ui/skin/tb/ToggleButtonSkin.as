@@ -1,7 +1,7 @@
 ﻿package gear.ui.skin.tb {
-	import gear.log4a.LogError;
+	import gear.log4a.GLogError;
 	import gear.ui.core.PhaseState;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -37,20 +37,20 @@
 
 		private function update() : void {
 			if (_phase == PhaseState.UP) {
-				_current = UIManager.replace(_current, (_selected ? _selectedUpSkin : _upSkin));
+				_current = GUIUtil.replace(_current, (_selected ? _selectedUpSkin : _upSkin));
 			} else if (_phase == PhaseState.OVER) {
-				_current = UIManager.replace(_current, (_selected ? _selectedOverSkin : _overSkin));
+				_current = GUIUtil.replace(_current, (_selected ? _selectedOverSkin : _overSkin));
 			} else if (_phase == PhaseState.DOWN) {
-				_current = UIManager.replace(_current, (_selected ? _selectedDownSkin : _downSkin));
+				_current = GUIUtil.replace(_current, (_selected ? _selectedDownSkin : _downSkin));
 			} else if (_phase == PhaseState.DISABLED) {
-				_current = UIManager.replace(_current, (_selected ? _selectedDisabledSkin : _disabledSkin));
+				_current = GUIUtil.replace(_current, (_selected ? _selectedDisabledSkin : _disabledSkin));
 			}
 		}
 
 		public function ToggleButtonSkin(upSkin : DisplayObject, overSkin : DisplayObject, downSkin : DisplayObject, disabledSkin : DisplayObject, selectedUpSkin : DisplayObject, selectedOverSkin : DisplayObject, selectedDownSkin : DisplayObject, selectedDisabledSkin : DisplayObject) {
 			_upSkin = upSkin;
 			if (_upSkin == null) {
-				throw new LogError("upSkin is null!");
+				throw new GLogError("upSkin is null!");
 			}
 			_overSkin = overSkin;
 			_downSkin = downSkin;
@@ -112,7 +112,7 @@
 		}
 
 		public function clone() : IToggleButtonSkin {
-			return new ToggleButtonSkin(UIManager.cloneSkin(_upSkin), UIManager.cloneSkin(_overSkin), UIManager.cloneSkin(_downSkin), UIManager.cloneSkin(_disabledSkin), UIManager.cloneSkin(_selectedUpSkin), UIManager.cloneSkin(_selectedOverSkin), UIManager.cloneSkin(_selectedDownSkin), UIManager.cloneSkin(_selectedDisabledSkin));
+			return new ToggleButtonSkin(GUIUtil.cloneSkin(_upSkin), GUIUtil.cloneSkin(_overSkin), GUIUtil.cloneSkin(_downSkin), GUIUtil.cloneSkin(_disabledSkin), GUIUtil.cloneSkin(_selectedUpSkin), GUIUtil.cloneSkin(_selectedOverSkin), GUIUtil.cloneSkin(_selectedDownSkin), GUIUtil.cloneSkin(_selectedDisabledSkin));
 		}
 
 		public function get width() : int {

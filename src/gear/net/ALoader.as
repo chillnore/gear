@@ -1,6 +1,6 @@
 ﻿package gear.net {
 	import gear.log4a.GLogger;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.utils.GStringUtil;
 
 	import flash.events.Event;
@@ -29,7 +29,7 @@
 		protected var _source : *;
 
 		protected function crossdomain() : void {
-			if (UIManager.url != null && UIManager.url.indexOf("http://") != -1) {
+			if (GUIUtil.url != null && GUIUtil.url.indexOf("http://") != -1) {
 				var crossDomain : String = GStringUtil.getCrossDomainUrl(_url);
 				if (crossDomain != null) {
 					Security.loadPolicyFile(crossDomain);

@@ -1,6 +1,6 @@
 ﻿package gear.ui.containers {
-	import gear.gui.controls.GButton;
 	import gear.log4a.GLogger;
+	import gear.ui.controls.GButton;
 	import gear.ui.controls.GLabel;
 	import gear.ui.core.GBase;
 	import gear.ui.core.GScaleMode;
@@ -11,7 +11,7 @@
 	 * 标题条控件
 	 * 
 	 * @author bright
-	 * @version 20101018
+	 * @version 20121105
 	 */
 	public class GTitleBar extends GBase {
 		/**

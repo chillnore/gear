@@ -2,7 +2,7 @@
 	import gear.motion.easing.Cubic;
 	import gear.ui.color.GColor;
 	import gear.ui.core.GBaseData;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.skin.ASSkin;
 	import gear.ui.skin.BarSkin;
 	import gear.ui.skin.SkinStyle;
@@ -24,7 +24,7 @@
 		public var ease : Function;
 
 		public function BloodBarData() {
-			trackSkin = UIManager.getSkinBy(SkinStyle.progressBar_trackSkin, ASSkin.AS_LIB);
+			trackSkin = GUIUtil.getSkinBy(SkinStyle.progressBar_trackSkin, ASSkin.AS_LIB);
 			oldBarSkin = new BarSkin(GColorUtil.adjustBrightness(GColor.GREEN, 127), 0.7);
 			barSkin = new BarSkin(GColor.GREEN);
 			padding = 0;
