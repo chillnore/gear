@@ -2,11 +2,7 @@
 	import gear.ui.core.GBase;
 	import gear.ui.data.GCheckBoxData;
 	import gear.ui.data.GIconData;
-	import gear.ui.manager.UIManager;
-	import gear.utils.BDUtil;
 
-	import flash.display.BitmapData;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 
@@ -24,18 +20,6 @@
 		/**
 		 * @private
 		 */
-		protected var _upSkin : Sprite;
-		/**
-		 * @private
-		 */
-		protected var _upIcon : BitmapData;
-		/**
-		 * @private
-		 */
-		protected var _selected_upIcon : BitmapData;
-		/**
-		 * @private
-		 */
 		protected var _icon : GIcon;
 		/**
 		 * @private
@@ -50,16 +34,13 @@
 		 * @private
 		 */
 		override protected function create() : void {
-			_upSkin = UIManager.getSkin(_data.upAsset);
 			var data : GIconData = new GIconData();
 			data.x = _data.padding;
 			_icon = new GIcon(data);
-			_upIcon = BDUtil.getBD(_data.upIcon);
-			_selected_upIcon = BDUtil.getBD(_data.selectedUpIcon);
 			_selected = _data.selected;
-			_icon.bitmapData = (_selected ? _selected_upIcon : _upIcon);
+			_icon.bitmapData = (_selected ? _data.selectedUpIcon : _data.upIcon);
 			_label = new GLabel(_data.labelData);
-			addChild(_upSkin);
+			addChild(_data.upSkin);
 			addChild(_icon);
 			addChild(_label);
 		}
@@ -73,8 +54,8 @@
 			_height = Math.max(_icon.height, _label.height) + _data.padding * 2;
 			_icon.y = Math.floor((_height - _icon.height) / 2);
 			_label.y = Math.floor((_height - _label.height) / 2);
-			_upSkin.width = _width;
-			_upSkin.height = _height;
+			_data.upSkin.width = _width;
+			_data.upSkin.height = _height;
 		}
 
 		/**
@@ -127,7 +108,7 @@
 				return;
 			}
 			_selected = value;
-			_icon.bitmapData = _selected ? _selected_upIcon : _upIcon;
+			_icon.bitmapData = _selected ? _data.selectedUpIcon : _data.upIcon;
 			if (_selected) {
 				dispatchEvent(new Event(Event.SELECT));
 			}

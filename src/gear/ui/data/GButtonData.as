@@ -44,10 +44,10 @@
 		public function GButtonData() {
 			width = 70;
 			height = 24;
-			var upSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_upSkin, "ui");
-			var overSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_overSkin, "ui");
-			var downSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_downSkin, "ui");
-			var disabledSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_disabledSkin, "ui");
+			var upSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.button_upSkin, "ui");
+			var overSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.button_overSkin, "ui");
+			var downSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.button_downSkin, "ui");
+			var disabledSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.button_disabledSkin, "ui");
 			skin = new ButtonSkin(upSkin, overSkin, downSkin, disabledSkin);
 			labelData = new GLabelData();
 			labelData.align = new GAlign(-1, -1, -1, -1, 0, 0);

@@ -11,7 +11,7 @@
 			var index : int;
 			value.length = 0;
 			while (source.length > 0) {
-				index = MathUtil.random(0, source.length - 1);
+				index = GMathUtil.random(0, source.length - 1);
 				value.push(source[index]);
 				source.splice(index, 1);
 			}

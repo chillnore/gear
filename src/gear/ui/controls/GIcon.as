@@ -1,14 +1,13 @@
 ﻿package gear.ui.controls {
-	import gear.ui.core.GBase;
-	import gear.ui.core.ScaleMode;
-	import gear.ui.data.GIconData;
-	import gear.utils.BDUtil;
-	import gear.utils.ColorMatrixUtil;
-
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.filters.ColorMatrixFilter;
 	import flash.geom.Point;
+	
+	import gear.ui.core.GBase;
+	import gear.ui.core.GScaleMode;
+	import gear.ui.data.GIconData;
+	import gear.utils.ColorMatrixUtil;
 
 	/**
 	 * 图标控件
@@ -43,13 +42,8 @@
 		 */
 		override protected function create() : void {
 			_bitmap = new Bitmap();
-			if (_data.key != null) {
-				_bd = BDUtil.getBDBy(_data.key, _data.lib);
-			} else {
-				_bd = _data.bitmapData;
-			}
 			addChild(_bitmap);
-			bitmapData = _bd;
+			bitmapData = _data.bitmapData;
 		}
 
 		/**
@@ -74,7 +68,7 @@
 			if (_bd != null) {
 				_bitmap.bitmapData = _bd;
 				_bitmap.smoothing = true;
-				if (_data.scaleMode == ScaleMode.AUTO_SIZE) {
+				if (_data.scaleMode == GScaleMode.AUTO_SIZE) {
 					_width = _bd.width - 1;
 					_height = _bd.height - 1;
 				} else {

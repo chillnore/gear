@@ -4,7 +4,7 @@
 	import gear.ui.controls.GAlert;
 	import gear.ui.core.GScaleMode;
 	import gear.ui.manager.GUIUtil;
-	import gear.utils.BDUtil;
+	import gear.utils.GBDUtil;
 
 	/**
 	 * 格子控件定义
@@ -72,7 +72,7 @@
 		public function GGridData() {
 			alertData = new GAlertData();
 			alertData.parent = GUIUtil.root;
-			alertData.labelData.iconData.bitmapData = BDUtil.getBDBy("light_22", "uiLib");
+			alertData.labelData.iconData.bitmapData = GBDUtil.getBDBy("light_22", "uiLib");
 			alertData.flag = GAlert.YES | GAlert.NO;
 			scaleMode = GScaleMode.AUTO_SIZE;
 		}

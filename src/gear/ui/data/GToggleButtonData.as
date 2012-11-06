@@ -36,14 +36,14 @@
 		}
 
 		public function GToggleButtonData() {
-			var upSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_upSkin, "ui");
-			var overSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_overSkin, "ui");
-			var downSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_downSkin, "ui");
-			var disabledSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_disabledSkin, "ui");
-			var selectedUpSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_selectedUpSkin, "ui");
-			var selectedOverSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_selectedOverSkin, "ui");
-			var selectedDownSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_selectedDownSkin, "ui");
-			var selectedDisabledSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.button_selectedDisabledSkin, "ui");
+			var upSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.button_upSkin, "ui");
+			var overSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.button_overSkin, "ui");
+			var downSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.button_downSkin, "ui");
+			var disabledSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.button_disabledSkin, "ui");
+			var selectedUpSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.button_selectedUpSkin, "ui");
+			var selectedOverSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.button_selectedOverSkin, "ui");
+			var selectedDownSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.button_selectedDownSkin, "ui");
+			var selectedDisabledSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.button_selectedDisabledSkin, "ui");
 			skin = new ToggleButtonSkin(upSkin, overSkin, downSkin, disabledSkin, selectedUpSkin, selectedOverSkin, selectedDownSkin, selectedDisabledSkin);
 			width = 70;
 			height = 24;

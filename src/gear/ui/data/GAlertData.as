@@ -73,7 +73,7 @@
 		}
 
 		public function GAlertData() {
-			bgSkin = GUIUtil.getSkinBy("GPanel_bgSkin", "ui");
+			bgSkin = GUIUtil.getSkin("GPanel_bgSkin", "ui");
 			labelData = new GLabelData();
 			buttonData = new GButtonData();
 			buttonData.width = 65;

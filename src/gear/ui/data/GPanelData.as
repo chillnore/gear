@@ -30,7 +30,7 @@
 		}
 
 		public function GPanelData() {
-			bgSkin = GUIUtil.getSkinBy(SkinStyle.panel_bgSkin, "ui");
+			bgSkin = GUIUtil.getSkin(SkinStyle.panel_bgSkin, "ui");
 			width = 100;
 			height = 100;
 		}

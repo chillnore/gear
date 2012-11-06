@@ -1,7 +1,7 @@
 ﻿package gear.ui.skin {
 	import gear.utils.GColorUtil;
 	import gear.utils.GDrawUtil;
-	import gear.utils.MathUtil;
+	import gear.utils.GMathUtil;
 
 	import flash.display.GradientType;
 	import flash.display.Graphics;
@@ -24,7 +24,7 @@
 			GDrawUtil.drawFillBorder(g, 0x000000, 0.05, 1, 1, 48, 48);
 			GDrawUtil.drawRect(g, _color, _alpha, 2, 2, 46, 46);
 			var mtx : Matrix = new Matrix();
-			mtx.createGradientBox(46, 46, MathUtil.angleToRadian(90), 2, 2);
+			mtx.createGradientBox(46, 46, GMathUtil.angleToRadian(90), 2, 2);
 			var lightColor : uint = GColorUtil.adjustBrightness(_color, 63);
 			g.beginGradientFill(GradientType.LINEAR, [lightColor, _color], [_alpha, _alpha], [0, 255], mtx);
 			g.drawRect(2, 2, 46, 46);

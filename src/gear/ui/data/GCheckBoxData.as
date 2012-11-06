@@ -2,7 +2,7 @@
 	import gear.ui.core.GBaseData;
 	import gear.ui.manager.GUIUtil;
 	import gear.ui.skin.SkinStyle;
-	import gear.utils.BDUtil;
+	import gear.utils.GBDUtil;
 
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -63,9 +63,9 @@
 		}
 
 		public function GCheckBoxData() {
-			upSkin = GUIUtil.getSkinBy(SkinStyle.emptySkin, "ui");
-			upIcon = BDUtil.getBDBy(SkinStyle.checkBox_upIcon, "ui");
-			selectedUpIcon = BDUtil.getBDBy(SkinStyle.checkBox_selectedUpIcon, "ui");
+			upSkin = GUIUtil.getSkin(SkinStyle.emptySkin, "ui");
+			upIcon = GBDUtil.getBDBy(SkinStyle.checkBox_upIcon, "ui");
+			selectedUpIcon = GBDUtil.getBDBy(SkinStyle.checkBox_selectedUpIcon, "ui");
 			labelData = new GLabelData();
 			labelData.text = "Label";
 			selected = false;

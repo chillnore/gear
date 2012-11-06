@@ -1,16 +1,16 @@
 ﻿package gear.ui.controls {
-	import gear.ui.cell.LabelSource;
-	import gear.ui.core.GBase;
-	import gear.ui.data.GLabelData;
-	import gear.ui.manager.UIManager;
-	import gear.utils.BDUtil;
-	import gear.utils.GStringUtil;
-
 	import flash.display.BlendMode;
 	import flash.geom.Rectangle;
 	import flash.text.StyleSheet;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
+	
+	import gear.ui.cell.LabelSource;
+	import gear.ui.core.GBase;
+	import gear.ui.data.GLabelData;
+	import gear.ui.manager.GUIUtil;
+	import gear.utils.GBDUtil;
+	import gear.utils.GStringUtil;
 
 	/**
 	 * 标签控件
@@ -39,7 +39,7 @@
 			_icon = new GIcon(_data.iconData);
 			addChild(_icon);
 			if (_data.textField == null) {
-				_textField = UIManager.getTextField();
+				_textField = GUIUtil.getTextField();
 				_textField.defaultTextFormat = _data.textFormat;
 				_textField.styleSheet = _data.styleSheet;
 				_textField.textColor = _data.color.upColor;
@@ -76,7 +76,7 @@
 			var textH : int = 0;
 			var rect : Rectangle;
 			if (_textField.text.length > 0) {
-				rect = BDUtil.getDOSize(_textField);
+				rect = GBDUtil.getDOSize(_textField);
 				textW = rect.x * 2 + rect.width;
 				textH = rect.y * 2 + rect.height;
 			}

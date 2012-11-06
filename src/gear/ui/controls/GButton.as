@@ -1,7 +1,7 @@
 ﻿package gear.ui.controls {
 	import gear.ui.core.GBase;
+	import gear.ui.core.GScaleMode;
 	import gear.ui.core.PhaseState;
-	import gear.ui.core.ScaleMode;
 	import gear.ui.data.GButtonData;
 	import gear.ui.layout.GLayout;
 
@@ -43,10 +43,10 @@
 			_label = new  GLabel(_data.labelData);
 			addChild(_label);
 			switch(_data.scaleMode) {
-				case ScaleMode.WIDTH_ONLY:
+				case GScaleMode.WIDTH_ONLY:
 					_height = _data.skin.height;
 					break;
-				case ScaleMode.NONE:
+				case GScaleMode.NONE:
 					if (_data.skin != null) {
 						_width = _data.skin.width;
 						_height = _data.skin.height;
@@ -61,7 +61,7 @@
 		 * @private
 		 */
 		override protected function layout() : void {
-			if (_data.scaleMode == ScaleMode.NONE) {
+			if (_data.scaleMode == GScaleMode.NONE) {
 				GLayout.layout(_label);
 				return;
 			}

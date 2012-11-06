@@ -6,7 +6,7 @@
 	import gear.ui.manager.GUIUtil;
 	import gear.ui.manager.ViewManage;
 	import gear.ui.skin.ASSkin;
-	import gear.utils.MathUtil;
+	import gear.utils.GMathUtil;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -85,7 +85,7 @@
 		 */
 		override protected function onShow() : void {
 			if (_data.modal) {
-				var topLeft : Point = parent.localToGlobal(MathUtil.ZERO_POINT);
+				var topLeft : Point = parent.localToGlobal(GMathUtil.ZERO_POINT);
 				_modalSkin.x = -topLeft.x;
 				_modalSkin.y = -topLeft.y;
 				_modalSkin.width = GUIUtil.root.stage.stageWidth;

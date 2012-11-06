@@ -1,5 +1,5 @@
 ﻿package gear.geom {
-	import gear.utils.MathUtil;
+	import gear.utils.GMathUtil;
 
 	import flash.geom.Point;
 
@@ -61,7 +61,7 @@
 		 * @return 水平线上的随机点
 		 */
 		public function getRandomPoint() : Point {
-			var x : int = _x + MathUtil.random(0, _width);
+			var x : int = _x + GMathUtil.random(0, _width);
 			return new Point(x, _y);
 		}
 

@@ -41,9 +41,9 @@
 
 		public function GScrollBarData() {
 			thumbButtonData = new GButtonData();
-			var upSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.scrollBar_thumbUpSkin,"ui");
-			var overSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.scrollBar_thumbOverSkin,"ui");
-			var downSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.scrollBar_thumbDownSkin,"ui");
+			var upSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.scrollBar_thumbUpSkin,"ui");
+			var overSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.scrollBar_thumbOverSkin,"ui");
+			var downSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.scrollBar_thumbDownSkin,"ui");
 			var disabledSkin : Sprite = null;
 			thumbButtonData.skin = new ButtonSkin(upSkin, overSkin, downSkin, disabledSkin);
 			//TODO

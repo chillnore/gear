@@ -51,7 +51,7 @@
 		}
 
 		public function GToolTipData() {
-			bgSkin = GUIUtil.getSkinBy("GToolTip_bgSkin", "ui");
+			bgSkin = GUIUtil.getSkin("GToolTip_bgSkin", "ui");
 			labelData = new GLabelData();
 			padding = 5;
 			alginMode = GAlignMode.BOTTOM_RIGHT;

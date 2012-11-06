@@ -3,7 +3,7 @@
 	import gear.ui.data.GScrollBarData;
 	import gear.ui.data.GTextAreaData;
 	import gear.ui.events.GScrollBarEvent;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 
 	import flash.events.Event;
 	import flash.text.AntiAliasType;
@@ -55,7 +55,7 @@
 				addChild(_data.bgSkin);
 			}
 			if (_data.textField == null) {
-				_textField = UIManager.getTextField();
+				_textField = GUIUtil.getTextField();
 				_textField.defaultTextFormat = _data.textFormat;
 				_textField.styleSheet = _data.styleSheet;
 				_textField.textColor = _data.textColor;

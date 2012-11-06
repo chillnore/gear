@@ -3,7 +3,7 @@
 	import gear.ui.manager.GUIUtil;
 	import gear.ui.skin.ASSkin;
 	import gear.ui.skin.SkinStyle;
-	import gear.utils.BDUtil;
+	import gear.utils.GBDUtil;
 
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -38,8 +38,8 @@
 
 		public function GRadioButtonData() {
 			upSkin = ASSkin.emptySkin;
-			upIcon = BDUtil.getBDBy(SkinStyle.radioButton_upIcon, "ui");
-			selectedUpIcon = BDUtil.getBDBy(SkinStyle.radioButton_selectedUpIcon, "ui");
+			upIcon = GBDUtil.getBDBy(SkinStyle.radioButton_upIcon, "ui");
+			selectedUpIcon = GBDUtil.getBDBy(SkinStyle.radioButton_selectedUpIcon, "ui");
 			labelData = new GLabelData();
 			width = 70;
 			height = 18;

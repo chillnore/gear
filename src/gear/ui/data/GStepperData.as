@@ -36,19 +36,19 @@
 		public function GStepperData() {
 			labelData = new GLabelData();
 			upArrowData = new GButtonData();
-			var upSkin : DisplayObject = GUIUtil.getSkinBy("GSpinner_upArrow_upSkin","ui");
-			var overSkin : DisplayObject = GUIUtil.getSkinBy("GSpinner_upArrow_overSkin","ui");
-			var downSkin : DisplayObject = GUIUtil.getSkinBy("GSpinner_upArrow_downSkin","ui");
-			var disabledSkin : DisplayObject = GUIUtil.getSkinBy("GSpinner_upArrow_disabledSkin","ui");
+			var upSkin : DisplayObject = GUIUtil.getSkin("GSpinner_upArrow_upSkin","ui");
+			var overSkin : DisplayObject = GUIUtil.getSkin("GSpinner_upArrow_overSkin","ui");
+			var downSkin : DisplayObject = GUIUtil.getSkin("GSpinner_upArrow_downSkin","ui");
+			var disabledSkin : DisplayObject = GUIUtil.getSkin("GSpinner_upArrow_disabledSkin","ui");
 			upArrowData.skin = new ButtonSkin(upSkin, overSkin, downSkin, disabledSkin);
 			upArrowData.scaleMode = GScaleMode.NONE;
 			upArrowData.width = 18;
 			upArrowData.height = 11;
 			downArrowData = new GButtonData();
-			upSkin = GUIUtil.getSkinBy("GSpinner_downArrow_upSkin","ui");
-			overSkin = GUIUtil.getSkinBy("GSpinner_downArrow_overSkin","ui");
-			downSkin = GUIUtil.getSkinBy("GSpinner_downArrow_downSkin","ui");
-			disabledSkin = GUIUtil.getSkinBy("GSpinner_downArrow_disabledSkin","ui");
+			upSkin = GUIUtil.getSkin("GSpinner_downArrow_upSkin","ui");
+			overSkin = GUIUtil.getSkin("GSpinner_downArrow_overSkin","ui");
+			downSkin = GUIUtil.getSkin("GSpinner_downArrow_downSkin","ui");
+			disabledSkin = GUIUtil.getSkin("GSpinner_downArrow_disabledSkin","ui");
 			downArrowData.skin = new ButtonSkin(upSkin, overSkin, downSkin, disabledSkin);
 			downArrowData.scaleMode = GScaleMode.NONE;
 			downArrowData.width = 18;

@@ -10,7 +10,7 @@
 	import gear.ui.skin.tb.IToggleButtonSkin;
 	import gear.ui.skin.tb.MCToggleButtonSkin;
 	import gear.ui.skin.tb.ToggleButtonSkin;
-	import gear.utils.BDUtil;
+	import gear.utils.GBDUtil;
 
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -73,14 +73,14 @@
 		 * 构造函数
 		 */
 		public function GCellData() {
-			var upSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_upSkin, "ui");
-			var overSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_overSkin, "ui");
-			var downSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_downSkin, "ui");
-			var disabledSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_disabledSkin, "ui");
-			var selectedUpSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_selectedUpSkin, "ui");
-			var selectedOverSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_selectedOverSkin, "ui");
-			var selectedDownSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_selectedDownSkin, "ui");
-			var selectedDisabledSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.cell_selectedDisabledSkin, "ui");
+			var upSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.cell_upSkin, "ui");
+			var overSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.cell_overSkin, "ui");
+			var downSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.cell_downSkin, "ui");
+			var disabledSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.cell_disabledSkin, "ui");
+			var selectedUpSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.cell_selectedUpSkin, "ui");
+			var selectedOverSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.cell_selectedOverSkin, "ui");
+			var selectedDownSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.cell_selectedDownSkin, "ui");
+			var selectedDisabledSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.cell_selectedDisabledSkin, "ui");
 			skin = new ToggleButtonSkin(upSkin, overSkin, downSkin, disabledSkin, selectedUpSkin, selectedOverSkin, selectedDownSkin, selectedDisabledSkin);
 			lockIconData = new GIconData();
 			labelData = new GLabelData();
@@ -90,7 +90,7 @@
 			width = 80;
 			height = 22;
 			labelData.align = new GAlign(8, -1, -1, -1, -1, 0);
-			lockIconData.bitmapData = BDUtil.getBDBy("lock_icon", "uiLib");
+			lockIconData.bitmapData = GBDUtil.getBDBy("lock_icon", "uiLib");
 			lockIconData.align = GAlign.CENTER;
 		}
 

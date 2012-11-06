@@ -1,6 +1,6 @@
 ﻿package gear.ui.theme {
 	import gear.utils.GDrawUtil;
-	import gear.utils.MathUtil;
+	import gear.utils.GMathUtil;
 
 	import flash.display.GradientType;
 	import flash.display.Graphics;
@@ -21,7 +21,7 @@
 			GDrawUtil.drawFillBorder(g, 0xFFFFFF, 0.1, 0, 0, 20, 20);
 			GDrawUtil.drawFillBorder(g, 0x000000, 0.7, 1, 1, 18, 18);
 			var mtx : Matrix = new Matrix();
-			mtx.createGradientBox(16, 16, MathUtil.angleToRadian(90), 2, 2);
+			mtx.createGradientBox(16, 16, GMathUtil.angleToRadian(90), 2, 2);
 			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xFFFFFF], [0.1, 0], [0, 255], mtx);
 			g.drawRect(2, 2, 16, 16);
 			g.endFill();
@@ -38,7 +38,7 @@
 			GDrawUtil.drawFillBorder(g, 0xFFFFFF, 0.1, 0, 0, 20, 20);
 			GDrawUtil.drawFillBorder(g, 0x000000, 0.7, 1, 1, 18, 18);
 			var mtx : Matrix = new Matrix();
-			mtx.createGradientBox(16, 16, MathUtil.angleToRadian(90), 2, 2);
+			mtx.createGradientBox(16, 16, GMathUtil.angleToRadian(90), 2, 2);
 			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xFFFFFF], [0.15, 0.05], [0, 255], mtx);
 			g.drawRect(2, 2, 16, 16);
 			g.endFill();
@@ -55,7 +55,7 @@
 			GDrawUtil.drawFillBorder(g, 0xFFFFFF, 0.1, 0, 0, 20, 20);
 			GDrawUtil.drawFillBorder(g, 0x000000, 0.7, 1, 1, 18, 18);
 			var mtx : Matrix = new Matrix();
-			mtx.createGradientBox(16, 16, MathUtil.angleToRadian(90), 2, 2);
+			mtx.createGradientBox(16, 16, GMathUtil.angleToRadian(90), 2, 2);
 			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xFFFFFF], [0.05, 0], [0, 255], mtx);
 			g.drawRect(2, 2, 16, 16);
 			g.endFill();
@@ -72,7 +72,7 @@
 			GDrawUtil.drawFillBorder(g, 0xFFFFFF, 0.05, 0, 0, 20, 20);
 			GDrawUtil.drawFillBorder(g, 0x000000, 0.4, 1, 1, 18, 18);
 			var mtx : Matrix = new Matrix();
-			mtx.createGradientBox(16, 16, MathUtil.angleToRadian(90), 2, 2);
+			mtx.createGradientBox(16, 16, GMathUtil.angleToRadian(90), 2, 2);
 			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xFFFFFF], [0.08, 0], [0, 255], mtx);
 			g.drawRect(2, 2, 16, 16);
 			g.endFill();
@@ -89,7 +89,7 @@
 			GDrawUtil.drawFillBorder(g, 0xFFFFFF, 0.1, 0, 0, 20, 20);
 			GDrawUtil.drawFillBorder(g, 0x000000, 0.7, 1, 1, 18, 18);
 			var mtx : Matrix = new Matrix();
-			mtx.createGradientBox(16, 16, MathUtil.angleToRadian(90), 2, 2);
+			mtx.createGradientBox(16, 16, GMathUtil.angleToRadian(90), 2, 2);
 			g.beginGradientFill(GradientType.LINEAR, [0x000000, 0x000000], [0.5, 0.4], [0, 255], mtx);
 			g.drawRect(2, 2, 16, 16);
 			g.endFill();
@@ -106,7 +106,7 @@
 			GDrawUtil.drawFillBorder(g, 0xFFFFFF, 0.1, 0, 0, 20, 20);
 			GDrawUtil.drawFillBorder(g, 0x000000, 0.7, 1, 1, 18, 18);
 			var mtx : Matrix = new Matrix();
-			mtx.createGradientBox(16, 16, MathUtil.angleToRadian(90), 2, 2);
+			mtx.createGradientBox(16, 16, GMathUtil.angleToRadian(90), 2, 2);
 			g.beginGradientFill(GradientType.LINEAR, [0x000000, 0x000000], [0.4, 0.3], [0, 255], mtx);
 			g.drawRect(2, 2, 16, 16);
 			g.endFill();
@@ -123,7 +123,7 @@
 			GDrawUtil.drawFillBorder(g, 0xFFFFFF, 0.1, 0, 0, 20, 20);
 			GDrawUtil.drawFillBorder(g, 0x000000, 0.7, 1, 1, 18, 18);
 			var mtx : Matrix = new Matrix();
-			mtx.createGradientBox(16, 16, MathUtil.angleToRadian(90), 2, 2);
+			mtx.createGradientBox(16, 16, GMathUtil.angleToRadian(90), 2, 2);
 			g.beginGradientFill(GradientType.LINEAR, [0x000000, 0x000000], [0.5, 0.4], [0, 255], mtx);
 			g.drawRect(2, 2, 16, 16);
 			g.endFill();
@@ -140,7 +140,7 @@
 			GDrawUtil.drawFillBorder(g, 0xFFFFFF, 0.05, 0, 0, 20, 20);
 			GDrawUtil.drawFillBorder(g, 0x000000, 0.4, 1, 1, 18, 18);
 			var mtx : Matrix = new Matrix();
-			mtx.createGradientBox(16, 16, MathUtil.angleToRadian(90), 2, 2);
+			mtx.createGradientBox(16, 16, GMathUtil.angleToRadian(90), 2, 2);
 			g.beginGradientFill(GradientType.LINEAR, [0x000000, 0x000000], [0.3, 0.2], [0, 255], mtx);
 			g.drawRect(2, 2, 16, 16);
 			g.endFill();
@@ -169,7 +169,7 @@
 			GDrawUtil.drawFillBorder(g, 0x000000, 0.05, 1, 1, 18, 18);
 			GDrawUtil.drawRect(g, 0xFF6600, 1, 2, 2, 16, 16);
 			var mtx : Matrix = new Matrix();
-			mtx.createGradientBox(16, 16, MathUtil.angleToRadian(90), 2, 2);
+			mtx.createGradientBox(16, 16, GMathUtil.angleToRadian(90), 2, 2);
 			g.beginGradientFill(GradientType.LINEAR, [0xFFCC00, 0xFF6600], [1, 1], [0, 255], mtx);
 			g.drawRect(2, 2, 16, 16);
 			g.endFill();
@@ -186,7 +186,7 @@
 			GDrawUtil.drawRect(g, 0x000000, 0.7, 0, 0, 20, 20);
 			GDrawUtil.drawFillBorder(g, 0x000000, 0.7, 0, 0, 20, 20);
 			var mtx : Matrix = new Matrix();
-			mtx.createGradientBox(18, 18, MathUtil.angleToRadian(90), 1, 1);
+			mtx.createGradientBox(18, 18, GMathUtil.angleToRadian(90), 1, 1);
 			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xFFFFFF], [0.08, 0], [0, 255], mtx);
 			g.drawRect(1, 1, 18, 18);
 			g.endFill();
@@ -255,7 +255,7 @@
 			GDrawUtil.drawRect(g, 0x000000, 0.7, 0, 0, 20, 20);
 			GDrawUtil.drawFillBorder(g, 0x000000, 0.7, 0, 0, 20, 20);
 			var mtx : Matrix = new Matrix();
-			mtx.createGradientBox(18, 18, MathUtil.angleToRadian(90), 1, 1);
+			mtx.createGradientBox(18, 18, GMathUtil.angleToRadian(90), 1, 1);
 			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xFFFFFF], [0.08, 0], [0, 255], mtx);
 			g.drawRect(1, 1, 18, 18);
 			g.endFill();

@@ -1,5 +1,5 @@
 ﻿package gear.key {
-	import gear.utils.DictUtil;
+	import gear.utils.GDictUtil;
 
 	import flash.display.Stage;
 	import flash.events.Event;
@@ -78,7 +78,7 @@
 
 		public function clear() : void {
 			resetKeys();
-			DictUtil.clear(_dict);
+			GDictUtil.clear(_dict);
 		}
 
 		/**

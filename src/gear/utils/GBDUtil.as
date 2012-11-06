@@ -27,7 +27,7 @@
 	 * @version 20100930
 	 * @author bright
 	 */
-	public final class BDUtil {
+	public final class GBDUtil {
 		private static var _cache : Dictionary = new Dictionary(true);
 
 		public static function toBDList(mc : MovieClip) : BDList {
@@ -133,7 +133,7 @@
 				ty = gap;
 			} else {
 				source = new BitmapData(rect.width, rect.height, true, 0);
-				source.copyPixels(bd, rect, MathUtil.ZERO_POINT);
+				source.copyPixels(bd, rect, GMathUtil.ZERO_POINT);
 				sx = (w - gap * 2) / rect.width;
 				sy = (h - gap * 2) / rect.height;
 				s = Math.min(Math.min(sx, sy), 1);
@@ -158,7 +158,7 @@
 				return source;
 			}
 			var bd : BitmapData = new BitmapData(rect.width, rect.height, true, 0);
-			bd.copyPixels(source, rect, MathUtil.ZERO_POINT);
+			bd.copyPixels(source, rect, GMathUtil.ZERO_POINT);
 			point.x += rect.x;
 			point.y += rect.y;
 			return bd;
@@ -175,7 +175,7 @@
 			resize.draw(source, mtx, null, null, null, true);
 			var rect : Rectangle = resize.getColorBoundsRect(0xFF000000, 0x00000000, false);
 			var cut : BitmapData = new BitmapData(rect.width, rect.height, true, 0);
-			cut.copyPixels(resize, rect, MathUtil.ZERO_POINT);
+			cut.copyPixels(resize, rect, GMathUtil.ZERO_POINT);
 			resize.dispose();
 			return new BDUnit(int(rect.x - w * 0.5), int(rect.y - h), cut);
 		}
@@ -194,7 +194,7 @@
 				return Bitmap(skin).bitmapData;
 			}
 			if (skin is Sprite) {
-				var unit : BDUnit = BDUtil.toBD(Sprite(skin));
+				var unit : BDUnit = GBDUtil.toBD(Sprite(skin));
 				if (unit != null) {
 					return unit.bd;
 				} else {
@@ -203,7 +203,7 @@
 			}
 			if (skin is MovieClip) {
 				MovieClip(skin).stop();
-				var list : BDList = BDUtil.toBDList(MovieClip(skin));
+				var list : BDList = GBDUtil.toBDList(MovieClip(skin));
 				if (list == null) {
 					return null;
 				}
@@ -215,7 +215,7 @@
 			if (_cache[key] != null) {
 				return _cache[key];
 			}
-			var data : BDList = BDUtil.toBDList(GLoadUtil.getMC(key, lib));
+			var data : BDList = GBDUtil.toBDList(GLoadUtil.getMC(key, lib));
 			if (data == null) {
 				GLogger.error(key, "has error!");
 				return null;
@@ -226,7 +226,7 @@
 		}
 
 		public static function cutBD(key : String, lib : String, widths : Array) : BDList {
-			var data : BDList = BDUtil.getBDList(key, lib);
+			var data : BDList = GBDUtil.getBDList(key, lib);
 			var source : BitmapData = data.getAt(0).bd;
 			var list : Vector.<BDUnit> = new Vector.<BDUnit>(widths.length, true);
 			var bd : BitmapData;
@@ -235,7 +235,7 @@
 			for (var i : int = 0;i < widths.length;i++) {
 				rect.width = widths[i];
 				bd = new BitmapData(rect.width, rect.height, true, 0);
-				bd.copyPixels(source, rect, MathUtil.ZERO_POINT);
+				bd.copyPixels(source, rect, GMathUtil.ZERO_POINT);
 				rect.x += rect.width;
 				list[i] = new BDUnit(0, 0, bd);
 			}
@@ -276,7 +276,7 @@
 			shape.graphics.endFill();
 			var mask_bd : BitmapData = new BitmapData(width, height, true, 0);
 			mask_bd.draw(shape);
-			bd.copyPixels(bd, bd.rect, MathUtil.ZERO_POINT, mask_bd, MathUtil.ZERO_POINT, false);
+			bd.copyPixels(bd, bd.rect, GMathUtil.ZERO_POINT, mask_bd, GMathUtil.ZERO_POINT, false);
 			var ref : Bitmap = new Bitmap();
 			ref.y = p_source.height;
 			ref.bitmapData = bd;

@@ -1,7 +1,7 @@
 ﻿package gear.ui.skin.pb {
 	import gear.ui.skin.Skin;
 	import gear.utils.GDrawUtil;
-	import gear.utils.MathUtil;
+	import gear.utils.GMathUtil;
 
 	import flash.display.GradientType;
 	import flash.display.Graphics;
@@ -38,7 +38,7 @@
 			GDrawUtil.drawFillBorder(g, 0x000000, 0.03, 0, 0, 20, 20);
 			GDrawUtil.drawFillBorder(g, 0x000000, 0.05, 1, 1, 18, 18);
 			var mtx : Matrix = new Matrix();
-			mtx.createGradientBox(16, 16, MathUtil.angleToRadian(90), 2, 2);
+			mtx.createGradientBox(16, 16, GMathUtil.angleToRadian(90), 2, 2);
 			g.beginGradientFill(GradientType.LINEAR, [0xCCCCCC, 0x666666], [1, 1], [0, 255], mtx);
 			g.drawRect(2, 2, 16, 16);
 			g.endFill();

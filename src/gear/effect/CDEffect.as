@@ -2,7 +2,7 @@
 	import gear.ui.model.RangeModel;
 	import gear.ui.skin.ASSkin;
 	import gear.utils.GDrawUtil;
-	import gear.utils.MathUtil;
+	import gear.utils.GMathUtil;
 
 	import flash.display.BitmapData;
 	import flash.display.Graphics;
@@ -65,7 +65,7 @@
 			_height = h;
 			_halfW = _width * 0.5;
 			_halfH = _height * 0.5;
-			_radius = MathUtil.getDistance(0, 0, _halfW, _halfH);
+			_radius = GMathUtil.getDistance(0, 0, _halfW, _halfH);
 			redrawShadow();
 			redrawMask();
 		}

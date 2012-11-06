@@ -1,5 +1,5 @@
 ﻿package gear.data {
-	import gear.utils.MathUtil;
+	import gear.utils.GMathUtil;
 
 	import flash.utils.Dictionary;
 
@@ -203,7 +203,7 @@
 		 * </listing>
 		 */
 		public function get randomValue() : * {
-			return _values[_keys[MathUtil.random(0, _keys.length - 1)]];
+			return _values[_keys[GMathUtil.random(0, _keys.length - 1)]];
 		}
 
 		/**

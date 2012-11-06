@@ -24,7 +24,7 @@
 		public var ease : Function;
 
 		public function BloodBarData() {
-			trackSkin = GUIUtil.getSkinBy(SkinStyle.progressBar_trackSkin, ASSkin.AS_LIB);
+			trackSkin = GUIUtil.getSkin(SkinStyle.progressBar_trackSkin, ASSkin.AS_LIB);
 			oldBarSkin = new BarSkin(GColorUtil.adjustBrightness(GColor.GREEN, 127), 0.7);
 			barSkin = new BarSkin(GColor.GREEN);
 			padding = 0;

@@ -1,13 +1,13 @@
 ﻿package gear.ui.controls {
 	import gear.ui.core.GBase;
-	import gear.ui.core.ScaleMode;
+	import gear.ui.core.GScaleMode;
 	import gear.ui.data.GPageControlData;
 	import gear.ui.drag.DragData;
 	import gear.ui.drag.DragState;
 	import gear.ui.drag.IDragItem;
 	import gear.ui.drag.IDragTarget;
 	import gear.ui.layout.GLayout;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.model.PageModel;
 
 	import flash.events.Event;
@@ -56,9 +56,9 @@
 			addChild(_next_btn);
 			addChild(_page_lb);
 			switch(_data.scaleMode) {
-				case ScaleMode.WIDTH_ONLY:
+				case GScaleMode.WIDTH_ONLY:
 					break;
-				case ScaleMode.NONE:
+				case GScaleMode.NONE:
 					if (_data.bgSkin != null) {
 						_width = _data.bgSkin.width;
 						_height = _data.bgSkin.height;
@@ -157,12 +157,12 @@
 		 * @inheritDoc
 		 */
 		public function dragEnter(dragData : DragData) : Boolean {
-			if (UIManager.atParent(dragData.hitTarget, _prev_btn)) {
+			if (GUIUtil.atParent(dragData.hitTarget, _prev_btn)) {
 				_model.prevPage();
 				dragData.state = DragState.NEXT;
 				return true;
 			}
-			if (UIManager.atParent(dragData.hitTarget, _next_btn)) {
+			if (GUIUtil.atParent(dragData.hitTarget, _next_btn)) {
 				_model.nextPage();
 				dragData.state = DragState.NEXT;
 				return true;

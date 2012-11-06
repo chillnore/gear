@@ -4,7 +4,7 @@
 	import gear.ui.layout.GLayout;
 	import gear.ui.model.ListModel;
 	import gear.ui.model.SelectionModel;
-	import gear.utils.BDUtil;
+	import gear.utils.GBDUtil;
 	import gear.utils.GDrawUtil;
 
 	import flash.display.Bitmap;
@@ -67,7 +67,7 @@
 			if (bd == null) {
 				return;
 			}
-			_bitmap.bitmapData = BDUtil.getResizeBD(bd, _width, _height);
+			_bitmap.bitmapData = GBDUtil.getResizeBD(bd, _width, _height);
 			_bitmap.smoothing = true;
 		}
 

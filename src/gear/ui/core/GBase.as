@@ -1,7 +1,7 @@
 ﻿package gear.ui.core {
 	import gear.ui.layout.GLayout;
 	import gear.ui.manager.GUIUtil;
-	import gear.utils.MathUtil;
+	import gear.utils.GMathUtil;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -179,7 +179,7 @@
 			if (_base.scaleMode == GScaleMode.AUTO_HEIGHT) {
 				return;
 			}
-			var newW : int = MathUtil.clamp(Math.round(value), _base.minWidth, _base.maxWidth);
+			var newW : int = GMathUtil.clamp(Math.round(value), _base.minWidth, _base.maxWidth);
 			if (_width == newW) {
 				return;
 			}
@@ -199,7 +199,7 @@
 			if (_base.scaleMode == GScaleMode.AUTO_WIDTH) {
 				return;
 			}
-			var newH : int = MathUtil.clamp(Math.round(value), _base.minHeight, _base.maxHeight);
+			var newH : int = GMathUtil.clamp(Math.round(value), _base.minHeight, _base.maxHeight);
 			if (_height == newH) {
 				return;
 			}

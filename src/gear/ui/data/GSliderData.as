@@ -29,9 +29,9 @@ package gear.ui.data {
 		}
 
 		public function GSliderData() {
-			trackSkin = GUIUtil.getSkinBy(SkinStyle.slider_trackSkin, "ui");
-			barSkin = GUIUtil.getSkinBy(SkinStyle.slider_barSkin, "ui");
-			thumbSkin = GUIUtil.getSkinBy(SkinStyle.slider_thumbSkin, "ui");
+			trackSkin = GUIUtil.getSkin(SkinStyle.slider_trackSkin, "ui");
+			barSkin = GUIUtil.getSkin(SkinStyle.slider_barSkin, "ui");
+			thumbSkin = GUIUtil.getSkin(SkinStyle.slider_thumbSkin, "ui");
 			width = 100;
 			height = 10;
 			scaleMode = GScaleMode.WIDTH_ONLY;

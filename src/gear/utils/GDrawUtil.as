@@ -124,18 +124,18 @@
 			}
 			var d : int = e - s;
 			g.moveTo(x, y);
-			var t : Point = Point.polar(r, MathUtil.angleToRadian(s));
+			var t : Point = Point.polar(r, GMathUtil.angleToRadian(s));
 			t.offset(x, y);
 			g.lineTo(t.x, t.y);
-			var da : Number = MathUtil.toUAngle(d) / 8;
-			var cd : Number = r / MathUtil.cos(da * 0.5);
+			var da : Number = GMathUtil.toUAngle(d) / 8;
+			var cd : Number = r / GMathUtil.cos(da * 0.5);
 			var sa : Number = s;
 			var c : Point;
 			for (var i : int = 0;i < 8;i++) {
 				sa += da;
-				c = Point.polar(cd, MathUtil.angleToRadian(sa - da * 0.5));
+				c = Point.polar(cd, GMathUtil.angleToRadian(sa - da * 0.5));
 				c.offset(x, y);
-				t = Point.polar(r, MathUtil.angleToRadian(sa));
+				t = Point.polar(r, GMathUtil.angleToRadian(sa));
 				t.offset(x, y);
 				g.curveTo(c.x, c.y, t.x, t.y);
 			}
@@ -155,8 +155,8 @@
 			var cy : int;
 			var angleMid : int;
 			if (segs > 0) {
-				ax = x + Math.round(MathUtil.cos(startAngle) * radius);
-				ay = y + Math.round(MathUtil.sin(startAngle) * radius);
+				ax = x + Math.round(GMathUtil.cos(startAngle) * radius);
+				ay = y + Math.round(GMathUtil.sin(startAngle) * radius);
 				if (continueFlag == true) {
 					g.lineTo(ax, ay);
 				} else {
@@ -165,10 +165,10 @@
 				for (var i : int = 0;i < segs;i++) {
 					angle += theta;
 					angleMid = angle - Math.round(theta / 2);
-					bx = x + Math.round(MathUtil.cos(angle) * radius);
-					by = y - Math.round(MathUtil.sin(angle) * radius);
-					cx = x + Math.round(MathUtil.cos(angleMid) * radius / MathUtil.cos(theta / 2));
-					cy = y - Math.round(MathUtil.sin(angleMid) * radius / MathUtil.cos(theta / 2));
+					bx = x + Math.round(GMathUtil.cos(angle) * radius);
+					by = y - Math.round(GMathUtil.sin(angle) * radius);
+					cx = x + Math.round(GMathUtil.cos(angleMid) * radius / GMathUtil.cos(theta / 2));
+					cy = y - Math.round(GMathUtil.sin(angleMid) * radius / GMathUtil.cos(theta / 2));
 					g.curveTo(cx, cy, bx, by);
 				}
 			}

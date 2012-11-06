@@ -1,5 +1,5 @@
 package gear.game.path {
-	import gear.utils.MathUtil;
+	import gear.utils.GMathUtil;
 
 	import flash.geom.Point;
 
@@ -11,15 +11,15 @@ package gear.game.path {
 	 */
 	public class PathUtil {
 		public static function lineToPath(startX : int, startY : int, endX : int, endY : int, radius : int) : Array {
-			var distance : Number = MathUtil.getDistance(startX, startY, endX, endY);
+			var distance : Number = GMathUtil.getDistance(startX, startY, endX, endY);
 			var diameter : int = radius * 2;
 			var cutX : int;
 			var cutY : int;
 			if (distance > diameter) {
 				var count : int = Math.ceil((distance + radius) / diameter);
-				var angle : int = MathUtil.getAngle(startX, startY, endX, endY);
-				cutX = Math.round(diameter * MathUtil.cos(angle));
-				cutY = Math.round(diameter * MathUtil.sin(angle));
+				var angle : int = GMathUtil.getAngle(startX, startY, endX, endY);
+				cutX = Math.round(diameter * GMathUtil.cos(angle));
+				cutY = Math.round(diameter * GMathUtil.sin(angle));
 				var list : Array = new Array();
 				for (var i : int = 0;i < count;i++) {
 					list[i] = new Point(startX, startY);

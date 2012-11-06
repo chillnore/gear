@@ -2,7 +2,7 @@
 	import gear.ui.cell.GCell;
 	import gear.ui.core.GBase;
 	import gear.ui.data.GComboBoxData;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 	import gear.ui.model.ListModel;
 	import gear.ui.model.SelectionModel;
 
@@ -86,7 +86,7 @@
 			} else {
 				var global : Point = localToGlobal(new Point(0, _height));
 				_list.moveTo(global.x, global.y);
-				UIManager.root.addChild(_list);
+				GUIUtil.root.addChild(_list);
 			}
 		}
 
@@ -129,10 +129,10 @@
 
 		private function stage_mouseDownHandler(event : MouseEvent) : void {
 			var target : DisplayObject = event.target as DisplayObject;
-			if (UIManager.atParent(target, _list)) {
+			if (GUIUtil.atParent(target, _list)) {
 				return;
 			}
-			if (UIManager.atParent(target, this)) {
+			if (GUIUtil.atParent(target, this)) {
 				return;
 			}
 			_list.hide();

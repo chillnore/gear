@@ -1,7 +1,7 @@
-package gear.utils {
+﻿package gear.utils {
 	import flash.utils.Dictionary;
 
-	public class DictionaryUtil {
+	public class GDictUtil {
 		public static function isEmpty(dict : Dictionary) : Boolean {
 			var item : Object;
 			for each (item in dict) {
@@ -25,6 +25,12 @@ package gear.utils {
 				values.push(value);
 			}
 			return values;
+		}
+
+		public static function clear(dict : Dictionary) : void {
+			for (var key:Object in dict) {
+				delete dict[key];
+			}
 		}
 	}
 }

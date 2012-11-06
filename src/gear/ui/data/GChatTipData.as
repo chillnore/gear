@@ -54,8 +54,8 @@
 			minHeight = 30;
 			maxWidth = 240;
 			maxHeight = 200;
-			bodySkin = GUIUtil.getSkinBy(SkinStyle.chatTip_bodySkin, "ui");
-			tailSkin = GUIUtil.getSkinBy(SkinStyle.chatTip_tailSkin, "ui");
+			bodySkin = GUIUtil.getSkin(SkinStyle.chatTip_bodySkin, "ui");
+			tailSkin = GUIUtil.getSkin(SkinStyle.chatTip_tailSkin, "ui");
 			labelData = new GLabelData();
 			labelData.color.upColor = 0x000000;
 			labelData.textFieldFilters = GUIUtil.getEdgeFilters(0xFFFFFF, 1);

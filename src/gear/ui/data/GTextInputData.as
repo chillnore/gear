@@ -53,8 +53,8 @@
 		}
 
 		public function GTextInputData() {
-			borderSkin = GUIUtil.getSkinBy(SkinStyle.textInput_borderSkin, "ui");
-			disabledSkin = GUIUtil.getSkinBy(SkinStyle.textInput_disabledSkin, "ui");
+			borderSkin = GUIUtil.getSkin(SkinStyle.textInput_borderSkin, "ui");
+			disabledSkin = GUIUtil.getSkin(SkinStyle.textInput_disabledSkin, "ui");
 			width = 103;
 			height = 22;
 			textFormat = new TextFormat();

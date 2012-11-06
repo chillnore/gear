@@ -48,7 +48,7 @@
 		}
 
 		public function GTextAreaData() {
-			bgSkin = GUIUtil.getSkinBy(SkinStyle.textArea_bgSkin,"ui");
+			bgSkin = GUIUtil.getSkin(SkinStyle.textArea_bgSkin,"ui");
 			textColor = 0xFFFFFF;
 			textFieldFilters = GUIUtil.getEdgeFilters(0x000000, 0.7);
 			textFormat = new TextFormat();

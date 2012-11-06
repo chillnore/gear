@@ -1,7 +1,7 @@
 ﻿package gear.ui.controls {
-	import gear.log4a.LogError;
+	import gear.log4a.GLogError;
+	import gear.ui.core.GScaleMode;
 	import gear.ui.core.PhaseState;
-	import gear.ui.core.ScaleMode;
 	import gear.ui.data.GToggleButtonData;
 	import gear.ui.layout.GLayout;
 
@@ -32,7 +32,7 @@
 		 */
 		override protected function create() : void {
 			if (_data.skin == null) {
-				throw LogError("GToggleButtonData.skin is null!");
+				throw GLogError("GToggleButtonData.skin is null!");
 			}
 			_data.skin.addTo(this);
 			_data.skin.selected = _data.selected;
@@ -40,10 +40,10 @@
 			_label = new GLabel(_data.labelData);
 			addChild(_label);
 			switch(_data.scaleMode) {
-				case ScaleMode.WIDTH_ONLY:
+				case GScaleMode.WIDTH_ONLY:
 					_height = _data.skin.height;
 					break;
-				case ScaleMode.NONE:
+				case GScaleMode.NONE:
 					_width = _data.skin.width;
 					_height = _data.skin.height;
 					break;
@@ -54,7 +54,7 @@
 		 * @private
 		 */
 		override protected function layout() : void {
-			if (_data.scaleMode == ScaleMode.NONE) {
+			if (_data.scaleMode == GScaleMode.NONE) {
 				GLayout.layout(_label);
 				return;
 			}
@@ -175,6 +175,10 @@
 			_data = data;
 			super(data);
 			selected = _data.selected;
+		}
+
+		public function set text(value : String) : void {
+			_label.text = value;
 		}
 	}
 }

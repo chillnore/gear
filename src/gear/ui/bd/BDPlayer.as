@@ -9,7 +9,7 @@
 	import gear.ui.core.GBase;
 	import gear.ui.core.GBaseData;
 	import gear.utils.ColorMatrixUtil;
-	import gear.utils.MathUtil;
+	import gear.utils.GMathUtil;
 
 	import flash.display.Bitmap;
 	import flash.filters.ColorMatrixFilter;
@@ -331,7 +331,7 @@
 				}
 				_frame = -1;
 			}
-			value = MathUtil.clamp(value, 0, _frames.length - 1);
+			value = GMathUtil.clamp(value, 0, _frames.length - 1);
 			_current = value;
 			update(_frames[_current]);
 		}

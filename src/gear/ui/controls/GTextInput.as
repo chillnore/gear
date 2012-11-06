@@ -1,9 +1,9 @@
 ﻿package gear.ui.controls {
 	import gear.ui.core.GBase;
 	import gear.ui.data.GTextInputData;
-	import gear.ui.manager.UIManager;
+	import gear.ui.manager.GUIUtil;
 
-	import flash.display.Sprite;
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
@@ -36,7 +36,7 @@
 		/**
 		 * @private
 		 */
-		protected var _current : Sprite;
+		protected var _current : DisplayObject;
 
 		/**
 		 * @private
@@ -44,7 +44,7 @@
 		override protected function create() : void {
 			_current = _data.borderSkin;
 			if (_data.textField == null) {
-				_textField = UIManager.getInputTextField();
+				_textField = GUIUtil.getInputTextField();
 				_textField.defaultTextFormat = _data.textFormat;
 				_textField.condenseWhite = true;
 				_textField.textColor = _data.color.upColor;
@@ -86,11 +86,11 @@
 		 */
 		override protected function onEnabled() : void {
 			if (_enabled) {
-				replace(_current, _data.borderSkin);
+				GUIUtil.replace(_current, _data.borderSkin);
 				_current = _data.borderSkin;
 				_textField.textColor = _data.color.upColor;
 			} else {
-				replace(_current, _data.disabledSkin);
+				GUIUtil.replace(_current, _data.disabledSkin);
 				_current = _data.disabledSkin;
 				_textField.textColor = _data.color.disabledColor;
 			}
@@ -177,7 +177,7 @@
 			if (_textField.text.length > 0) {
 				_textField.setSelection(0, _textField.text.length);
 			}
-			UIManager.root.stage.focus = _textField;
+			GUIUtil.root.stage.focus = _textField;
 		}
 
 		/**
@@ -185,12 +185,12 @@
 		 */
 		public function setFocus(focus : Boolean = true) : void {
 			if (focus) {
-				if (UIManager.root.stage.focus != _textField) {
-					UIManager.root.stage.focus = _textField;
+				if (GUIUtil.root.stage.focus != _textField) {
+					GUIUtil.root.stage.focus = _textField;
 				}
 			} else {
-				if (UIManager.root.stage.focus == _textField) {
-					UIManager.root.stage.focus = null;
+				if (GUIUtil.root.stage.focus == _textField) {
+					GUIUtil.root.stage.focus = null;
 				}
 			}
 		}
@@ -199,7 +199,7 @@
 		 * @return Boolean 是否为焦点
 		 */
 		public function isFocus() : Boolean {
-			return UIManager.root.stage.focus == _textField;
+			return GUIUtil.root.stage.focus == _textField;
 		}
 
 		/**

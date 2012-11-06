@@ -68,8 +68,8 @@
 		}
 
 		public function GProgressBarData() {
-			var trackSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.progressBar_trackSkin, "ui");
-			var barSkin : DisplayObject = GUIUtil.getSkinBy(SkinStyle.progressBar_barSkin, "ui");
+			var trackSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.progressBar_trackSkin, "ui");
+			var barSkin : DisplayObject = GUIUtil.getSkin(SkinStyle.progressBar_barSkin, "ui");
 			var polledSkin : Sprite = new PolledSkin();
 			skin = new PBSkin(trackSkin, barSkin, polledSkin);
 			labelData = new GLabelData();

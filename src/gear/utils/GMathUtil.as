@@ -10,7 +10,7 @@
 	 * @author bright
 	 * @version 20111207
 	 */
-	public class MathUtil {
+	public class GMathUtil {
 		public static const ZERO_POINT : Point = new Point(0, 0);
 		private static var _cosLock : Array;
 		private static var _sinLock : Array;
@@ -30,23 +30,23 @@
 		}
 
 		public static function cos(angle : int) : Number {
-			if (MathUtil._cosLock == null) {
-				MathUtil._cosLock = new Array(360);
+			if (GMathUtil._cosLock == null) {
+				GMathUtil._cosLock = new Array(360);
 				for (var i : int = 0;i < 360;i++) {
-					MathUtil._cosLock[i] = Math.cos(i * Math.PI / 180);
+					GMathUtil._cosLock[i] = Math.cos(i * Math.PI / 180);
 				}
 			}
-			return MathUtil._cosLock[MathUtil.toUAngle(angle)];
+			return GMathUtil._cosLock[GMathUtil.toUAngle(angle)];
 		}
 
 		public static function sin(angle : int) : Number {
-			if (MathUtil._sinLock == null) {
-				MathUtil._sinLock = new Array(360);
+			if (GMathUtil._sinLock == null) {
+				GMathUtil._sinLock = new Array(360);
 				for (var i : int = 0;i < 360;i++) {
-					MathUtil._sinLock[i] = Math.sin(i * Math.PI / 180);
+					GMathUtil._sinLock[i] = Math.sin(i * Math.PI / 180);
 				}
 			}
-			return MathUtil._sinLock[MathUtil.toUAngle(angle)];
+			return GMathUtil._sinLock[GMathUtil.toUAngle(angle)];
 		}
 
 		public static function toIntRect(rect : Rectangle) : Rectangle {
@@ -99,7 +99,7 @@
 		}
 
 		public static function randomBoolean() : Boolean {
-			var i : int = MathUtil.random(0, 1);
+			var i : int = GMathUtil.random(0, 1);
 			return i == 0;
 		}
 
@@ -118,8 +118,8 @@
 		}
 
 		public static function rotate(x : int, y : int, angle : int, tx : int = 0, ty : int = 0) : Point {
-			var xr : int = Math.round(x * MathUtil.cos(angle)) - Math.round(y * MathUtil.sin(angle)) + tx;
-			var yr : int = Math.round(x * MathUtil.sin(angle)) + Math.round(y * MathUtil.cos(angle)) + ty;
+			var xr : int = Math.round(x * GMathUtil.cos(angle)) - Math.round(y * GMathUtil.sin(angle)) + tx;
+			var yr : int = Math.round(x * GMathUtil.sin(angle)) + Math.round(y * GMathUtil.cos(angle)) + ty;
 			return new Point(xr, yr);
 		}
 
@@ -148,14 +148,14 @@
 		}
 
 		public static function getLastInsertPoint(source : Point, target : Point, radius : int) : Point {
-			var distance : Number = MathUtil.getTwoPointDistance(source, target);
+			var distance : Number = GMathUtil.getTwoPointDistance(source, target);
 			var diameter : int = radius * 2;
 			var cut : Point = new Point();
 			if (distance > diameter) {
 				var count : int = Math.ceil(distance / diameter) - 1;
-				var angle : int = MathUtil.getTwoPointAngle(source, target);
-				cut.x = count * diameter * MathUtil.cos(angle);
-				cut.y = count * diameter * MathUtil.sin(angle);
+				var angle : int = GMathUtil.getTwoPointAngle(source, target);
+				cut.x = count * diameter * GMathUtil.cos(angle);
+				cut.y = count * diameter * GMathUtil.sin(angle);
 				return source.add(cut);
 			} else {
 				return source;

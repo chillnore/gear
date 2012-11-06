@@ -22,18 +22,18 @@
 
 		public function GComboBoxData() {
 			buttonData = new GButtonData();
-			var upSkin : DisplayObject = GUIUtil.getSkinBy("GComboBox_upSkin", "ui");
-			var overSkin : DisplayObject = GUIUtil.getSkinBy("GComboBox_overSkin", "ui");
-			var downSkin : DisplayObject = GUIUtil.getSkinBy("GComboBox_downSkin", "ui");
-			var disabledSkin : DisplayObject = GUIUtil.getSkinBy("GComboBox_disabledSkin", "ui");
+			var upSkin : DisplayObject = GUIUtil.getSkin("GComboBox_upSkin", "ui");
+			var overSkin : DisplayObject = GUIUtil.getSkin("GComboBox_overSkin", "ui");
+			var downSkin : DisplayObject = GUIUtil.getSkin("GComboBox_downSkin", "ui");
+			var disabledSkin : DisplayObject = GUIUtil.getSkin("GComboBox_disabledSkin", "ui");
 			buttonData.skin = new ButtonSkin(upSkin, overSkin, downSkin, disabledSkin);
 			buttonData.labelData.align = new GAlign(5, -1, -1, -1, -1, 0);
 			textInputData = new GTextInputData();
 			arrow = new GButtonData();
-			upSkin = GUIUtil.getSkinBy("GComboBox_arrowUpSkin", "ui");
-			overSkin = GUIUtil.getSkinBy("GComboBox_arrowOverSkin", "ui");
-			downSkin = GUIUtil.getSkinBy("GComboBox_arrowDownSkin", "ui");
-			disabledSkin = GUIUtil.getSkinBy("GComboBox_arrowDisabledSkin", "ui");
+			upSkin = GUIUtil.getSkin("GComboBox_arrowUpSkin", "ui");
+			overSkin = GUIUtil.getSkin("GComboBox_arrowOverSkin", "ui");
+			downSkin = GUIUtil.getSkin("GComboBox_arrowDownSkin", "ui");
+			disabledSkin = GUIUtil.getSkin("GComboBox_arrowDisabledSkin", "ui");
 			arrow.skin = new ButtonSkin(upSkin, overSkin, downSkin, disabledSkin);
 			arrow.width = 18;
 			arrow.height = 22;
