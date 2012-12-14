@@ -1,11 +1,13 @@
 ﻿package gear.utils {
+	import flash.utils.ByteArray;
+
 	/**
 	 * GFormatter 格式化工具类
 	 * 
 	 * @author bright
-	 * @version 20101011
+	 * @version 20121112
 	 */
-	public class GFormatter {
+	public final class GFormatter {
 		public static function formatTime(value : int) : String {
 			var result : String = "";
 			var hour : int = value / 3600000;
@@ -49,6 +51,21 @@
 				len = count;
 			}
 			return split.join(",");
+		}
+
+		public static function formatByteArray(value : ByteArray) : String {
+			if (value == null) {
+				return "null";
+			}
+			value.position = 0;
+			var str : String = "";
+			for (var i : int = 0;i < value.length;i++) {
+				if (i > 0) {
+					str += ",";
+				}
+				str += value[i].toString(16);
+			}
+			return str;
 		}
 	}
 }

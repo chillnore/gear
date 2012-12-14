@@ -1,7 +1,13 @@
 ﻿package gear.utils {
 	import flash.utils.Dictionary;
 
-	public class GDictUtil {
+	/**
+	 * 字典工具类
+	 * 
+	 * @author bright
+	 * @version 20121112
+	 */
+	public final class GDictUtil {
 		public static function isEmpty(dict : Dictionary) : Boolean {
 			var item : Object;
 			for each (item in dict) {

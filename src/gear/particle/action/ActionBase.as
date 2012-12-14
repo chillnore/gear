@@ -1,4 +1,4 @@
-package gear.particle.action {
+﻿package gear.particle.action {
 	import gear.particle.core.Emitter;
 	import gear.particle.core.Particle;
 
@@ -8,6 +8,9 @@ package gear.particle.action {
 	 */
 	public class ActionBase implements IAction {
 		protected var _priority : int;
+
+		public function ActionBase() {
+		}
 
 		public function update(emitter : Emitter, particle : Particle, elapsed : int) : void {
 		}

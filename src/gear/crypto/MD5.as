@@ -1,5 +1,5 @@
 ﻿package gear.crypto {
-	import gear.utils.IntUtil;
+	import gear.utils.GIntUtil;
 
 	import flash.utils.ByteArray;
 
@@ -53,7 +53,7 @@
 		 */
 		private static function transform(func : Function, a : int, b : int, c : int, d : int, x : int, s : int, t : int) : int {
 			var tmp : int = a + int(func(b, c, d)) + x + t;
-			return IntUtil.rol(tmp, s) + b;
+			return GIntUtil.rol(tmp, s) + b;
 		}
 
 		/**
@@ -343,7 +343,7 @@
 			_digest.writeInt(c);
 			_digest.writeInt(d);
 			_digest.position = 0;
-			return IntUtil.toHex(a) + IntUtil.toHex(b) + IntUtil.toHex(c) + IntUtil.toHex(d);
+			return GIntUtil.toHex(a) + GIntUtil.toHex(b) + GIntUtil.toHex(c) + GIntUtil.toHex(d);
 		}
 	}
 }

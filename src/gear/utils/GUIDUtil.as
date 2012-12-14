@@ -1,11 +1,13 @@
-package gear.utils {
+﻿package gear.utils {
 	import flash.utils.ByteArray;
 
 	/**
-	 * @version 20091215
+	 * UID工具类
+	 * 
 	 * @author bright
+	 * @version 20121112
 	 */
-	public class GUIDUtil {
+	public final class GUIDUtil {
 		private static const ALPHA_CHAR_CODES : Array = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70];
 
 		private static function getDigit(hex : String) : uint {

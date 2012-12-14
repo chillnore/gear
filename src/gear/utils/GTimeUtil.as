@@ -1,12 +1,15 @@
-package gear.utils {
+﻿package gear.utils {
 	import gear.log4a.GLogger;
 
 	import flash.utils.getTimer;
 
 	/**
+	 * 时间工具类
+	 * 
 	 * @author bright
+	 * @version 20121112
 	 */
-	public class GTimeUtil {
+	public final class GTimeUtil {
 		private static var _time : int;
 
 		public static function start() : void {

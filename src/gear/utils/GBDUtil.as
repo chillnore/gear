@@ -1,15 +1,14 @@
 ﻿package gear.utils {
 	import gear.log4a.GLogger;
 	import gear.net.GLoadUtil;
-	import gear.render.BDList;
-	import gear.render.BDUnit;
+	import gear.render.GBDList;
+	import gear.render.GBDUnit;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.BitmapDataChannel;
 	import flash.display.DisplayObject;
 	import flash.display.GradientType;
-	import flash.display.IBitmapDrawable;
 	import flash.display.MovieClip;
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -19,18 +18,19 @@
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 
 	/**
-	 * BitmapData Util
+	 * 位图工具类
 	 * 
-	 * @version 20100930
 	 * @author bright
+	 * @version 20121112
 	 */
 	public final class GBDUtil {
 		private static var _cache : Dictionary = new Dictionary(true);
 
-		public static function toBDList(mc : MovieClip) : BDList {
+		public static function mcToBDList(mc : MovieClip) : GBDList {
 			if (mc == null) {
 				return null;
 			}
@@ -39,7 +39,7 @@
 			var mtx : Matrix = new Matrix();
 			mc.gotoAndStop(1);
 			var total : int = mc.totalFrames;
-			var list : Vector.<BDUnit>=new Vector.<BDUnit>(total, true);
+			var list : Vector.<GBDUnit>=new Vector.<GBDUnit>(total, true);
 			var bd : BitmapData;
 			for (var i : int = 0;i < total ;i++) {
 				if (mc.numChildren == 0) {
@@ -49,33 +49,33 @@
 				if (mc.numChildren == 1) {
 					bp = mc.getChildAt(0) as Bitmap;
 					if (bp != null) {
-						list[i] = new BDUnit(bp.x, bp.y, bp.bitmapData);
+						list[i] = new GBDUnit(bp.x, bp.y, bp.bitmapData);
 						mc.nextFrame();
 						continue;
 					}
 				}
-				bounds = mc.getBounds(mc);
+				bounds =mc.getBounds(mc);
 				if (bounds.width < 1 || bounds.height < 1) {
 					continue;
 				}
 				bd = new BitmapData(bounds.width, bounds.height, true, 0);
 				mtx.identity();
 				mtx.translate(-bounds.x, -bounds.y);
-				bd.draw(mc, mtx);
-				list[i] = new BDUnit(bounds.x, bounds.y, bd);
+				bd.draw(mc, mtx, null, null, null, true);
+				list[i] = new GBDUnit(bounds.x, bounds.y, bd);
 				mc.nextFrame();
 			}
-			return new BDList(list);
+			return new GBDList(list);
 		}
 
-		private static function toBD(skin : Sprite) : BDUnit {
+		public static function spriteToBD(skin : Sprite) : GBDUnit {
 			if (skin == null || skin.numChildren < 1) {
 				return null;
 			}
 			var bp : Bitmap = skin.getChildAt(0) as Bitmap;
 			if (bp != null) {
 				bp.bitmapData.lock();
-				return new BDUnit(bp.x, bp.y, bp.bitmapData);
+				return new GBDUnit(bp.x, bp.y, bp.bitmapData);
 			}
 			var rect : Rectangle = skin.getBounds(skin);
 			if (rect.width < 1 || rect.height < 1) {
@@ -85,29 +85,29 @@
 			var mtx : Matrix = new Matrix();
 			mtx.translate(Math.floor(-rect.x), Math.floor(-rect.y));
 			bd.draw(skin, mtx, null, null, null, true);
-			return new BDUnit(rect.x, rect.y, bd);
+			return new GBDUnit(rect.x, rect.y, bd);
 		}
 
-		public static function getResizeBD(source : IBitmapDrawable, w : int, h : int) : BitmapData {
+		public static function shapeToBD(value : Shape) : BitmapData {
+			var rect : Rectangle = value.getBounds(value);
+			if (rect.width < 1 || rect.height < 1) {
+				return null;
+			}
+			var bd : BitmapData = new BitmapData(rect.width, rect.height, true, 0);
+			var mtx : Matrix = new Matrix();
+			mtx.translate(Math.floor(-rect.x), Math.floor(-rect.y));
+			bd.draw(value, mtx, null, null, null, true);
+			return bd;
+		}
+
+		public static function resizeBD(source : BitmapData, w : int, h : int) : BitmapData {
 			if (source == null) {
 				return null;
 			}
-			var sw : int = 0;
-			var sh : int = 0;
-			if (source is DisplayObject) {
-				sw = DisplayObject(source).width;
-				sh = DisplayObject(source).height;
-			} else if (source is BitmapData) {
-				sw = BitmapData(source).width;
-				sh = BitmapData(source).height;
-			} else {
-				GLogger.error("unkown type");
-				return null;
-			}
-			var a : Number = w / sw;
-			var d : Number = h / sh;
+			var a : Number = w / source.width;
+			var d : Number = h / source.height;
 			var mtx : Matrix = new Matrix(a, 0, 0, d, 0, 0);
-			var target : BitmapData = new BitmapData(w, h, true, 0);
+			var target : BitmapData = new BitmapData(w, h, source.transparent, 0);
 			target.draw(source, mtx, null, null, null, true);
 			return target;
 		}
@@ -152,19 +152,7 @@
 			return source.getColorBoundsRect(0xFF000000, 0x00000000, false);
 		}
 
-		public static function getCutBD(source : BitmapData, point : Point) : BitmapData {
-			var rect : Rectangle = source.getColorBoundsRect(0xFF000000, 0x00000000, false);
-			if (rect.equals(source.rect)) {
-				return source;
-			}
-			var bd : BitmapData = new BitmapData(rect.width, rect.height, true, 0);
-			bd.copyPixels(source, rect, GMathUtil.ZERO_POINT);
-			point.x += rect.x;
-			point.y += rect.y;
-			return bd;
-		}
-
-		public static function getResizeCutBD(source : BitmapData, scale : Number) : BDUnit {
+		public static function getResizeCutBD(source : BitmapData, scale : Number) : GBDUnit {
 			var w : int = Math.ceil(source.width * scale);
 			var h : int = Math.ceil(source.height * scale);
 			if (w < 1 || h < 1)
@@ -177,7 +165,7 @@
 			var cut : BitmapData = new BitmapData(rect.width, rect.height, true, 0);
 			cut.copyPixels(resize, rect, GMathUtil.ZERO_POINT);
 			resize.dispose();
-			return new BDUnit(int(rect.x - w * 0.5), int(rect.y - h), cut);
+			return new GBDUnit(int(rect.x - w * 0.5), int(rect.y - h), cut);
 		}
 
 		public static function getBDBy(key : String, lib : String, frame : int = 0) : BitmapData {
@@ -194,7 +182,7 @@
 				return Bitmap(skin).bitmapData;
 			}
 			if (skin is Sprite) {
-				var unit : BDUnit = GBDUtil.toBD(Sprite(skin));
+				var unit : GBDUnit = GBDUtil.spriteToBD(Sprite(skin));
 				if (unit != null) {
 					return unit.bd;
 				} else {
@@ -203,7 +191,7 @@
 			}
 			if (skin is MovieClip) {
 				MovieClip(skin).stop();
-				var list : BDList = GBDUtil.toBDList(MovieClip(skin));
+				var list : GBDList = GBDUtil.mcToBDList(MovieClip(skin));
 				if (list == null) {
 					return null;
 				}
@@ -211,11 +199,79 @@
 			return list.getAt(frame).bd;
 		}
 
-		public static function getBDList(key : String, lib : String) : BDList {
+		/**
+		 * 按格子切图
+		 */
+		public static function cutGridBD(source : BitmapData, gw : int, gh: int, ox : int = 0, oy : int = 0,filters:Array=null) : GBDList {
+			if(source==null){
+				return null;
+			}
+			var row : int = source.width/gw;
+			var col : int = source.height/gh;
+			if (ox == 0) {
+				ox = -gw * 0.5;
+			}
+			if (oy == 0) {
+				oy = -gh * 0.5;
+			}
+			var list : Vector.<GBDUnit> = new Vector.<GBDUnit>();
+			var bd : BitmapData;
+			var rect : Rectangle = new Rectangle(0, 0, gw, gh);
+			var offset : Point = new Point();
+			var r : int;
+			var c : int;
+			var next:int=0;
+			for (c = 0;c < col;c++) {
+				if(filters!=null&&filters.indexOf(c)!=-1){
+					continue;
+				}
+				rect.y = c * gh;
+				for (r = 0;r < row;r++) {
+					rect.x = r * gw;
+					bd = new BitmapData(rect.width, rect.height, true, 0);
+					bd.copyPixels(source, rect, GMathUtil.ZERO_POINT);
+					offset.setTo(ox, oy);
+					bd = cutAlphaBD(bd, offset);
+					list[next++] = new GBDUnit(offset.x, offset.y, bd);
+				}
+			}
+			return new GBDList(list);
+		}
+
+		/**
+		 * 切掉透明像素,释放源图，并重算偏移
+		 */
+		public static function cutAlphaBD(source : BitmapData, point : Point) : BitmapData {
+			// 不透明位图直接返回
+			if (!source.transparent) {
+				return source;
+			}
+			var rect : Rectangle = source.getColorBoundsRect(0xFF000000, 0x00000000, false);
+			if (rect.equals(source.rect)) {
+				return source;
+			}
+			var bd : BitmapData = new BitmapData(rect.width, rect.height, true, 0);
+			bd.copyPixels(source, rect, GMathUtil.ZERO_POINT);
+			source.dispose();
+			point.x += rect.x;
+			point.y += rect.y;
+			return bd;
+		}
+
+		/**
+		 * 使用选定的压缩程序算法压缩此 BitmapData 对象，并返回一个新 ByteArray 对象。
+		 */
+		public static function encodeBD(source : BitmapData, compressor : Object) : ByteArray {
+			var output : ByteArray = new ByteArray();
+			source.encode(source.rect, compressor, output);
+			return output;
+		}
+
+		public static function getBDList(key : String, lib : String) : GBDList {
 			if (_cache[key] != null) {
 				return _cache[key];
 			}
-			var data : BDList = GBDUtil.toBDList(GLoadUtil.getMC(key, lib));
+			var data : GBDList = GBDUtil.mcToBDList(GLoadUtil.getMC(key, lib));
 			if (data == null) {
 				GLogger.error(key, "has error!");
 				return null;
@@ -225,10 +281,14 @@
 			return data;
 		}
 
-		public static function cutBD(key : String, lib : String, widths : Array) : BDList {
-			var data : BDList = GBDUtil.getBDList(key, lib);
-			var source : BitmapData = data.getAt(0).bd;
-			var list : Vector.<BDUnit> = new Vector.<BDUnit>(widths.length, true);
+		/**
+		 * 切割竖条位图数组
+		 */
+		public static function cutBD(source:BitmapData, widths : Array) : GBDList {
+			if(source==null||widths==null||widths.length<1){
+				return null;
+			}
+			var list : Vector.<GBDUnit> = new Vector.<GBDUnit>(widths.length, true);
 			var bd : BitmapData;
 			var rect : Rectangle = new Rectangle();
 			rect.height = source.height;
@@ -237,9 +297,9 @@
 				bd = new BitmapData(rect.width, rect.height, true, 0);
 				bd.copyPixels(source, rect, GMathUtil.ZERO_POINT);
 				rect.x += rect.width;
-				list[i] = new BDUnit(0, 0, bd);
+				list[i] = new GBDUnit(0, 0, bd);
 			}
-			return new BDList(list);
+			return new GBDList(list);
 		}
 
 		public static function toGaryBD(source : BitmapData) : BitmapData {
@@ -247,7 +307,7 @@
 				return null;
 			}
 			var bd : BitmapData = source.clone();
-			bd.applyFilter(bd, bd.rect, bd.rect.topLeft, ColorMatrixUtil.GRAY_FILTER);
+			bd.applyFilter(bd, bd.rect, bd.rect.topLeft, GColorMatrixUtil.GRAY_FILTER);
 			return bd;
 		}
 
@@ -293,23 +353,7 @@
 			return bd;
 		}
 
-		public static function getCircle(radius : int) : BitmapData {
-			var key : String = "circle_" + radius;
-			if (_cache[key] != null) {
-				return _cache[key];
-			}
-			var shape : Shape = new Shape();
-			shape.graphics.beginFill(0xFF0000, 1);
-			shape.graphics.drawCircle(radius, radius, radius);
-			shape.graphics.endFill();
-			var bd : BitmapData = new BitmapData(radius * 2, radius * 2, true, 0);
-			bd.draw(shape);
-			bd.lock();
-			_cache[key] = bd;
-			return bd;
-		}
-
-		public static function getDOSize(value : DisplayObject) : Rectangle {
+		public static function getSize(value : DisplayObject) : Rectangle {
 			var rect : Rectangle = value.getBounds(value);
 			var bd : BitmapData = new BitmapData(rect.width, rect.height, true, 0);
 			var mtx : Matrix = new Matrix();
@@ -320,11 +364,11 @@
 			return rect;
 		}
 
-		public static function mergeBDUnit(value : Array) : BDUnit {
-			var source : BDUnit = BDUnit(value[0]).clone();
+		public static function mergeBDUnit(value : Array) : GBDUnit {
+			var source : GBDUnit = GBDUnit(value[0]).clone();
 			var s_rect : Rectangle = source.rect;
 			var total : int = value.length;
-			var target : BDUnit;
+			var target : GBDUnit;
 			var t_rect : Rectangle;
 			var u_rect : Rectangle;
 			for (var i : int = 1;i < total;i++) {
@@ -342,6 +386,41 @@
 				}
 			}
 			return source;
+		}
+
+		public static function scale9(source : BitmapData, scale9 : Rectangle, width : int, height : int) : BitmapData {
+			if (source == null) {
+				return null;
+			}
+			if (source.width == width && source.height == height) {
+				return source;
+			}
+			if (width < 1 || height < 1) {
+				return null;
+			}
+			width = Math.max(width, source.width - scale9.width);
+			height = Math.max(height, source.height - scale9.height);
+			var target : BitmapData = new BitmapData(width, height, source.transparent, 0x0);
+			var rows : Array = [0, scale9.top, scale9.bottom, source.height];
+			var cols : Array = [0, scale9.left, scale9.right, source.width];
+			var newRows : Array = [0, scale9.top, height - (source.height - scale9.bottom), height];
+			var newCols : Array = [0, scale9.left, width - (source.width - scale9.right), width];
+			var newRect : Rectangle;
+			var clipRect : Rectangle;
+			var mtx : Matrix = new Matrix();
+			for (var i : int = 0; i < 3; i++) {
+				for (var j : int = 0; j < 3; j++) {
+					newRect = new Rectangle(cols[i], rows[j], cols[i + 1] - cols[i], rows[j + 1] - rows[j]);
+					clipRect = new Rectangle(newCols[i], newRows[j], newCols[i + 1] - newCols[i], newRows[j + 1] - newRows[j]);
+					mtx.identity();
+					mtx.a = clipRect.width / newRect.width;
+					mtx.d = clipRect.height / newRect.height;
+					mtx.tx = clipRect.x - newRect.x * mtx.a;
+					mtx.ty = clipRect.y - newRect.y * mtx.d;
+					target.draw(source, mtx, null, null, clipRect, false);
+				}
+			}
+			return target;
 		}
 	}
 }

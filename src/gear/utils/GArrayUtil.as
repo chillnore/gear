@@ -1,11 +1,11 @@
 ﻿package gear.utils {
 	/**
-	 * GArrayUtil
+	 * 数组工具类
 	 * 
 	 * @author bright
-	 * @version 20120629
+	 * @version 20121112
 	 */
-	public class GArrayUtil {
+	public final class GArrayUtil {
 		public static function shuffle(value : Array) : void {
 			var source : Array = value.concat();
 			var index : int;

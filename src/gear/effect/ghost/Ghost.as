@@ -1,8 +1,8 @@
 ﻿package gear.effect.ghost {
-	import gear.pool.ObjPool;
-	import gear.render.BDUnit;
-	import gear.render.FrameRender;
-	import gear.render.IFrame;
+	import gear.pool.GObjPool;
+	import gear.render.GBDUnit;
+	import gear.render.GFrameRender;
+	import gear.render.IGFrame;
 
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
@@ -10,10 +10,10 @@
 	/**
 	 * @author flashpf
 	 */
-	public class Ghost extends Sprite implements IFrame {
-		public static const pool : ObjPool = new ObjPool(Ghost);
+	public class Ghost extends Sprite implements IGFrame {
+		public static const pool : GObjPool = new GObjPool(Ghost);
 		protected var _bitmap : Bitmap;
-		protected var _unit : BDUnit;
+		protected var _unit : GBDUnit;
 		protected var _count : int;
 
 		public function Ghost() : void {
@@ -21,14 +21,14 @@
 			addChild(_bitmap);
 		}
 
-		public function reset(newX : int, newY : int, z : int, unit : BDUnit) : void {
+		public function reset(newX : int, newY : int, z : int, unit : GBDUnit) : void {
 			x = newX;
 			y = newY - 1;
 			_unit = unit;
 			_bitmap.x = unit.offsetX;
 			_bitmap.y = z + unit.offsetY;
 			_count = 0;
-			FrameRender.instance.add(this);
+			GFrameRender.instance.add(this);
 		}
 
 		public function refresh() : void {
@@ -37,7 +37,7 @@
 				if (parent != null) {
 					parent.removeChild(this);
 				}
-				FrameRender.instance.remove(this);
+				GFrameRender.instance.remove(this);
 				pool.returnObj(this);
 				return;
 			}

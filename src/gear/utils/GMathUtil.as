@@ -10,7 +10,7 @@
 	 * @author bright
 	 * @version 20111207
 	 */
-	public class GMathUtil {
+	public final class GMathUtil {
 		public static const ZERO_POINT : Point = new Point(0, 0);
 		private static var _cosLock : Array;
 		private static var _sinLock : Array;

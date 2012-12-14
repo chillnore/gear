@@ -1,4 +1,4 @@
-package gear.particle.init {
+﻿package gear.particle.init {
 	import gear.particle.core.Emitter;
 	import gear.particle.core.Particle;
 
@@ -7,6 +7,10 @@ package gear.particle.init {
 	 */
 	public class InitBase implements IInit {
 		protected var _priority : int;
+		
+		public function InitBase(){
+			
+		}
 
 		public function init(emitter : Emitter, particle : Particle) : void {
 		}

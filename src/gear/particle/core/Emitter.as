@@ -3,22 +3,22 @@ package gear.particle.core {
 	import gear.particle.counter.ICounter;
 	import gear.particle.counter.ZeroCounter;
 	import gear.particle.init.IInit;
-	import gear.pool.ObjPool;
-	import gear.render.FrameRender;
-	import gear.render.IFrame;
+	import gear.pool.GObjPool;
+	import gear.render.GFrameRender;
+	import gear.render.IGFrame;
 
 	import flash.display.BitmapData;
 
 	/**
 	 * @author Administrator
 	 */
-	public class Emitter implements IFrame {
+	public class Emitter implements IGFrame {
 		protected var _delay : int;
 		protected var _offset : int;
 		protected var _particles : Array;
 		protected var _inits : Vector.<IInit>;
 		protected var _actions : Vector.<IAction>;
-		protected var _pool : ObjPool;
+		protected var _pool : GObjPool;
 		protected var _counter : ICounter;
 		protected var _running : Boolean;
 		protected var _output : BitmapData;
@@ -73,7 +73,7 @@ package gear.particle.core {
 			_particles = new Array();
 			_inits = new Vector.<IInit>();
 			_actions = new Vector.<IAction>();
-			_pool = new ObjPool(Particle);
+			_pool = new GObjPool(Particle);
 			_running = false;
 			_counter = new ZeroCounter();
 		}
@@ -108,13 +108,13 @@ package gear.particle.core {
 				createParticle();
 			}
 			if (_output != null) {
-				FrameRender.instance.add(this);
+				GFrameRender.instance.add(this);
 			}
 		}
 
 		public function update() : void {
 			var i : int;
-			var len : int = _counter.updateEmitter(this, FrameRender.elapsed);
+			var len : int = _counter.updateEmitter(this, GFrameRender.elapsed);
 			var particle : Particle;
 			for ( i = 0; i < len; ++i ) {
 				createParticle();
@@ -128,7 +128,7 @@ package gear.particle.core {
 					action = _actions[j];
 					for ( i = len2 - 1; i >= 0; --i ) {
 						particle = _particles[i];
-						action.update(this, particle, FrameRender.elapsed);
+						action.update(this, particle, GFrameRender.elapsed);
 					}
 				}
 				for ( i = len2; i--; ) {
@@ -143,7 +143,7 @@ package gear.particle.core {
 		}
 
 		public function skipFrame(frame : int) : void {
-			FrameRender.elapsed = _delay;
+			GFrameRender.elapsed = _delay;
 			_counter.startEmitter(this);
 			for (var i : int = 0;i < frame;i++) {
 				update();
@@ -155,7 +155,7 @@ package gear.particle.core {
 				return;
 			}
 			if (_delay > 33) {
-				_offset += FrameRender.elapsed;
+				_offset += GFrameRender.elapsed;
 				if (_offset < _delay) {
 					return;
 				}

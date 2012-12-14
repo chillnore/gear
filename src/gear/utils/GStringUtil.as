@@ -6,9 +6,9 @@
 	 * 字符串工具类
 	 * 
 	 * @author bright
-	 * @version 20110916
+	 * @version 20121112
 	 */
-	public class GStringUtil {
+	public final class GStringUtil {
 		private static function isWhitespace(character : String) : Boolean {
 			switch (character) {
 				case " ":

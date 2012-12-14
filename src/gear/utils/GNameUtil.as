@@ -1,26 +1,45 @@
 ﻿package gear.utils {
+	import flash.display.DisplayObject;
 	import flash.utils.getQualifiedClassName;
 
-	public class GNameUtil {
+	public final class GNameUtil {
 		private static var _counter : int = 0;
 
+		/**
+		 * 获得唯一的名字
+		 */
 		public static function createUniqueName(object : Object) : String {
-			if (!object) return null;
+			if (object == null) {
+				return null;
+			}
 			var name : String = getQualifiedClassName(object);
 			var index : int = name.indexOf("::");
-			if (index != -1) name = name.substr(index + 2);
+			if (index != -1) {
+				name = name.substr(index + 2);
+			}
 			var charCode : int = name.charCodeAt(name.length - 1);
-			if (charCode >= 48 && charCode <= 57) name += "_";
+			if (charCode >= 48 && charCode <= 57) {
+				name += "_";
+			}
 			return name + _counter++;
 		}
 
-		public static function getUnqualifiedClassName(object : Object) : String {
-			var name : String;
-			if (object is String) name = object as String;
-			else name = getQualifiedClassName(object);
-			var index : int = name.indexOf("::");
-			if (index != -1) name = name.substr(index + 2);
-			return name;
+		/**
+		 * 获得路径名字
+		 */
+		public static function getPathName(displayObject : DisplayObject) : String {
+			var result : String;
+			try {
+				for (var o : DisplayObject = displayObject;o != null;o = o.parent) {
+					if (o.parent && o.stage && o.parent == o.stage) {
+						break;
+					}
+					var s : String = "id" in o && o["id"] ? o["id"] : o.name;
+					result = (result == null) ? s : s + "." + result;
+				}
+			} catch (e : SecurityError) {
+			}
+			return result;
 		}
 	}
 }

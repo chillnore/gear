@@ -20,7 +20,7 @@ package gear.particle.init {
 			if ( _max == _min ) {
 				particle.color = _min;
 			} else {
-				particle.color = GColorUtil.interpolateColors(_min, _max, Math.random());
+				particle.color = GColorUtil.getAlphaColor(_min, _max, Math.random());
 			}
 		}
 	}

@@ -1,62 +1,67 @@
 ﻿package gear.net {
 	import gear.log4a.GLogger;
 
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-
 	/**
 	 * 加载组
 	 * 
 	 * @author bright
-	 * @version 20121025
+	 * @version 20121108
 	 */
-	public final class GLoadGroup extends EventDispatcher {
-		public static const MAX : int = 5;
+	public final class GLoadGroup {
 		private var _isLoading : Boolean;
-		private var _list : Array;
-		private var _model : LoadModel;
+		private var _waitings : Vector.<String>;
+		private var _onDone : Function;
+		private var _onLoaded : Function;
+		private var _onFailed:Function;
 
-		private function loadNext() : void {
-			if (_list.length < 1) {
-				return;
+		private function loaded(key : String) : void {
+			var index : int = _waitings.indexOf(key);
+			if (index != -1) {
+				_waitings.splice(index, 1);
+				if(_onLoaded!=null){
+					try{
+						_onLoaded(key);
+					}catch(e:Error){
+						GLogger.error(e.getStackTrace());
+					}
+				}
 			}
-			var loader : ALoader = ALoader(_list.shift());
-			_model.add(loader.loadData);
-			loader.addEventListener(Event.COMPLETE, completeHandler);
-			loader.addEventListener(ALoader.FAILED, failedHandler);
-			loader.load();
-		}
-
-		private function completeHandler(event : Event) : void {
-			removeLoader(ALoader(event.currentTarget));
-		}
-
-		private function failedHandler(event : Event) : void {
-			removeLoader(ALoader(event.currentTarget));
-		}
-
-		private function removeLoader(loader : ALoader) : void {
-			loader.removeEventListener(Event.COMPLETE, completeHandler);
-			loader.removeEventListener(ALoader.FAILED, failedHandler);
-			_model.remove(loader.loadData);
-			if (_list.length > 0 || _model.total > 0) {
-				loadNext();
-			} else {
-				onComplete();
+			if (_waitings.length <1) {
+				done();
 			}
 		}
+		
+		private function failed(key : String) : void {
+			var index : int = _waitings.indexOf(key);
+			if (index != -1) {
+				_waitings.splice(index, 1);
+				if(_onFailed!=null){
+					try{
+						_onFailed(key);
+					}catch(e:Error){
+						GLogger.error(e.getStackTrace());
+					}
+				}
+			}
+			if (_waitings.length <1) {
+				done();
+			}
+		}
 
-		private  function onComplete() : void {
+		private function done() : void {
 			_isLoading = false;
-			_model.end();
-			GLogger.info("LoadGroup load all done!");
-			dispatchEvent(new Event(Event.COMPLETE));
+			if (_onDone != null) {
+				try {
+					_onDone();
+				} catch(e : Error) {
+					GLogger.error(e.getStackTrace());
+				}
+			}
 		}
 
 		public function GLoadGroup() {
 			_isLoading = false;
-			_list = new Array();
-			_model = new LoadModel();
+			_waitings = new Vector.<String>();
 		}
 
 		/**
@@ -64,54 +69,31 @@
 		 * 
 		 * @param value LibData
 		 */
-		public function add(url : String, key : String = null) : void {
-			if (key == null) {
-				key = FileType.getKey(url);
-			}
-			if (GLoadUtil.isLoaded(key)) {
+		public function add(url : String, automatch : Boolean = true) : void {
+			var loader : AGLoader = GLoadUtil.create(url, automatch);
+			if (loader.state != GLoadState.NONE) {
 				return;
 			}
-			var loader : ALoader = GLoadUtil.create(url, key);
-			if (_list.indexOf(loader) != -1) {
-				return;
-			}
-			if (loader.isFailed) {
-				return;
-			}
-			_list.push(loader);
-		}
-
-		/**
-		 * 获得加载模型
-		 * 
-		 * @return 加载模型
-		 * @see ar.net.LoadModel		 
-		 */
-		public function get model() : LoadModel {
-			return _model;
+			_waitings.push(loader.key);
 		}
 
 		/**
 		 * 开始加载
 		 */
-		public function load() : void {
-			if (_list.length == 0) {
-				onComplete();
-				return;
-			}
+		public function load(onDone : Function, onLoaded : Function = null,onFailed:Function=null) : void {
 			if (_isLoading) {
 				return;
 			}
 			_isLoading = true;
-			_model.reset(_list.length);
-			var total : int = Math.min(_list.length, MAX);
-			var loader : ALoader;
-			for (var i : int = 0;i < total;i++) {
-				loader = ALoader(_list.shift());
-				_model.add(loader.loadData);
-				loader.addEventListener(Event.COMPLETE, completeHandler);
-				loader.addEventListener(ALoader.FAILED, failedHandler);
-				loader.load();
+			_onDone = onDone;
+			_onLoaded = onLoaded;
+			_onFailed=onFailed;
+			if (_waitings.length == 0) {
+				done();
+				return;
+			}
+			for each (var key:String in _waitings) {
+				GLoadUtil.load(key, loaded, failed);
 			}
 		}
 	}

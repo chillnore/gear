@@ -1,6 +1,6 @@
 ﻿package gear.effect {
-	import gear.render.RenderCall;
-	import gear.render.FrameRender;
+	import gear.render.GRenderCall;
+	import gear.render.GFrameRender;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -17,7 +17,7 @@
 		protected var _delay : int;
 		protected var _duration : int;
 		protected var _target : Sprite;
-		protected var _timer : RenderCall;
+		protected var _timer : GRenderCall;
 
 		protected function onChangeTarget() : void {
 		}
@@ -28,7 +28,7 @@
 		public function GEffect(duration : int, delay : int = 60) {
 			_duration = duration;
 			_delay = delay;
-			_timer = new RenderCall(next, delay);
+			_timer = new GRenderCall(next, delay);
 		}
 
 		public function set target(value : Sprite) : void {
@@ -46,11 +46,11 @@
 				return;
 			}
 			next();
-			FrameRender.instance.add(_timer);
+			GFrameRender.instance.add(_timer);
 		}
 
 		public function stop() : void {
-			FrameRender.instance.remove(_timer);
+			GFrameRender.instance.remove(_timer);
 			dispatchEvent(new Event(GEffect.END));
 		}
 

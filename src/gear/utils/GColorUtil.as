@@ -1,16 +1,16 @@
 ﻿package gear.utils {
-	import gear.ui.color.ARGB;
+	import gear.color.GARGB;
 
 	import flash.display.BitmapData;
 	import flash.geom.ColorTransform;
 
 	/**
-	 * Game Color Util
+	 * 色彩工具类
 	 * 
 	 * @author bright
-	 * @version 20101008
+	 * @version 20121112
 	 */
-	public class GColorUtil {
+	public final class GColorUtil {
 		/**
 		 * @param rgb uint Original RGB color.
 		 * @param brite Number -255 to 255.
@@ -29,7 +29,7 @@
 		 * @param brite Number -100 to 100.
 		 * @return New RGB color.
 		 */
-		public static function adjustBrightness2(rgb : uint, brite :int) : uint {
+		public static function adjustBrightness2(rgb : uint, brite : int) : uint {
 			brite = Math.max(-100, Math.min(100, brite));
 			var r : Number;
 			var g : Number;
@@ -72,7 +72,7 @@
 		}
 
 		public static function getColorTransform(color : uint) : ColorTransform {
-			var argb : ARGB = new ARGB();
+			var argb : GARGB = new GARGB();
 			argb.parse(color);
 			var rm : Number = argb.red / 255;
 			var gm : Number = argb.green / 255;
@@ -80,13 +80,16 @@
 			return new ColorTransform(rm, gm, bm, 1, 0, 0, 0, 0);
 		}
 
-		public static function interpolateColors(color1 : uint, color2 : uint, ratio : Number) : uint {
-			var inv : Number = 1 - ratio;
-			var red : uint = Math.round(( ( color1 >>> 16 ) & 255 ) * ratio + ( ( color2 >>> 16 ) & 255 ) * inv);
-			var green : uint = Math.round(( ( color1 >>> 8 ) & 255 ) * ratio + ( ( color2 >>> 8 ) & 255 ) * inv);
-			var blue : uint = Math.round(( ( color1 ) & 255 ) * ratio + ( ( color2 ) & 255 ) * inv);
-			var alpha : uint = Math.round(( ( color1 >>> 24 ) & 255 ) * ratio + ( ( color2 >>> 24 ) & 255 ) * inv);
-			return ( alpha << 24 ) | ( red << 16 ) | ( green << 8 ) | blue;
+		/**
+		 * 实际显示颜色 = 前景颜色*Alpha + 背景颜色*(1-Alpha)
+		 */
+		public static function getAlphaColor(fc : uint,  alpha : Number,bc : uint=0xffffff) : uint {
+			var inv : Number = 1 - alpha;
+			var a : int = ((fc >> 24) & 0xff) * alpha + ((bc >> 24) & 0xff) * inv;
+			var r : int = ((fc >> 16) & 0xff) * alpha + ((bc >> 16) & 0xff) * inv;
+			var g : int = ((fc >> 8) & 0xff) * alpha + ((bc >> 8) & 0xff) * inv;
+			var b : int = (fc & 0xff) * alpha + (bc & 0xff) * inv;
+			return (a << 24) | (r << 16) | (g << 8) | b;
 		}
 	}
 }

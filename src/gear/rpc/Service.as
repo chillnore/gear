@@ -1,8 +1,8 @@
 ﻿package gear.rpc {
 	import gear.log4a.GLogError;
 	import gear.log4a.GLogger;
-	import gear.render.RenderCall;
-	import gear.render.FrameRender;
+	import gear.render.GRenderCall;
+	import gear.render.GFrameRender;
 
 	import flash.events.AsyncErrorEvent;
 	import flash.events.ErrorEvent;
@@ -42,7 +42,7 @@
 		private var _timestamp : int;
 		private var _test : Dictionary;
 		private var _nc : NetConnection;
-		private var _timer : RenderCall;
+		private var _timer : GRenderCall;
 		private var _pollCall : Amf3Call;
 
 		private function netStatusHandler(event : NetStatusEvent) : void {
@@ -85,7 +85,7 @@
 				throw new GLogError("gateway valid");
 			}
 			_gateway = gateway;
-			_timer = new RenderCall(timerHandler);
+			_timer = new GRenderCall(timerHandler);
 			_test = new Dictionary();
 			_nc = new NetConnection();
 			_nc.objectEncoding = ObjectEncoding.AMF3;
@@ -129,11 +129,11 @@
 			_pollCall = call;
 			_pollCall.merge(_prefix);
 			_timer.delay = delay;
-			FrameRender.instance.add(_timer);
+			GFrameRender.instance.add(_timer);
 		}
 
 		public function stopPoll() : void {
-			FrameRender.instance.remove(_timer);
+			GFrameRender.instance.remove(_timer);
 		}
 	}
 }
