@@ -27,14 +27,19 @@
 		protected var _align : GAlign;
 		protected var _enabled : Boolean;
 		protected var _padding : GPadding;
-		protected var _topInt : int;
+		protected var _isTop:Boolean;
 		protected var _events : Vector.<Object>;
 		protected var _renders : Vector.<Function>;
 		protected var _isRender : Boolean;
-		protected var _source:*;
+		protected var _source : *;
 
 		protected function addToStageHandler(event : Event) : void {
 			if (parent == GUIUtil.root) {
+				if(_isTop&&GUIUtil.tops.indexOf(this)==-1){
+					GUIUtil.tops.push(this);
+				}
+				var index:int=(_isTop?parent.numChildren-1:parent.numChildren-GUIUtil.tops.length-1);
+				parent.setChildIndex(this, index);
 				addEvent(stage, Event.RESIZE, stageResizeHandler);
 			}
 			if (_renders.length > 0) {
@@ -44,6 +49,13 @@
 		}
 
 		protected function removedFromStageHandler(event : Event) : void {
+			if(_isTop&&parent==GUIUtil.root){
+				var index:int=GUIUtil.tops.indexOf(this);
+				if(index!=-1){
+					GUIUtil.tops.splice(index,1);
+				}
+			}
+			removeAllEvent();
 			onHide();
 		}
 
@@ -157,6 +169,10 @@
 
 		public function GBase() {
 			init();
+		}
+
+		public function setParent(value : DisplayObjectContainer) : void {
+			_parent = value;
 		}
 
 		public final function render() : void {
@@ -280,7 +296,7 @@
 				parent.setChildIndex(this, parent.numChildren - 1);
 			} else {
 				if (_parent == null) {
-					_parent = GUIUtil.root;
+					_parent=GUIUtil.root;
 				}
 				_parent.addChild(this);
 			}
@@ -298,12 +314,12 @@
 			}
 			parent.removeChild(this);
 		}
-		
-		public function set source(value:*):void{
-			_source=value;
+
+		public function set source(value : *) : void {
+			_source = value;
 		}
-		
-		public function get source():*{
+
+		public function get source() : * {
 			return _source;
 		}
 	}

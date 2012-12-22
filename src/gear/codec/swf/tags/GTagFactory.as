@@ -5,12 +5,12 @@
 	public class GTagFactory {
 		public static function create(type : int) : IGSwfTag {
 			switch(type) {
-				case GTagEnd.TYPE:
-					return new GTagEnd();
+				case GSwfTagEnd.TYPE:
+					return new GSwfTagEnd();
 				case GTagShowFrame.TYPE:
 					return new GTagShowFrame();
-				case GTagDefineShape.TYPE:
-					return new GTagDefineShape();
+				case GSwfTagDefineShape.TYPE:
+					return null;
 				case GTagSetBackgroundColor.TYPE:
 					return new GTagSetBackgroundColor();
 				case GTagPlaceObject2.TYPE:

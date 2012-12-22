@@ -32,6 +32,7 @@
 		protected var _model : GRangeModel;
 		protected var _fade : GRenderCall;
 		protected var _isSub : Boolean;
+		protected var _autoHide:Boolean;
 		protected var _hide : uint;
 
 		override protected function preinit() : void {
@@ -42,7 +43,7 @@
 			GDrawUtil.drawFillRect(g, 0x000000, 0.05, 1, 1, 48, 48);
 			GDrawUtil.drawFillRect(g, 0x000000, 0.2, 1, 1, 48, 1);
 			_trackSkin.setAt(GPhase.UP, GBDUtil.shapeToBD(skin));
-			_trackSkin.scale9Grid = new Rectangle(4, 4, 42, 42);
+			_trackSkin.scale9Grid = new Rectangle(2, 2, 46, 46);
 			_oldBarSkin = new GPhaseSkin();
 			g.clear();
 			GDrawUtil.drawFillBorder(g, 0, 0.6, 0, 0, 50, 50);
@@ -61,7 +62,8 @@
 			_model = new GRangeModel();
 			_model.onChange = modelOnChange;
 			_fade = new GRenderCall(checkFade);
-			setSize(100, 10);
+			_autoHide=true;
+			setSize(60, 6);
 		}
 
 		override protected function create() : void {
@@ -93,7 +95,9 @@
 			}
 			_fade.reset();
 			GFrameRender.instance.add(_fade);
-			// hideWait();
+			if(_autoHide){
+				hideWait();
+			}
 		}
 
 		protected function resetBars() : void {
@@ -129,6 +133,10 @@
 		}
 
 		public function GBloodBar() {
+		}
+		
+		public function set autoHide(value:Boolean):void{
+			_autoHide=value;
 		}
 
 		/**

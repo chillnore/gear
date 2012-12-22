@@ -1,9 +1,4 @@
 ﻿package gear.utils {
-	import gear.log4a.GLogger;
-	import gear.net.GLoadUtil;
-	import gear.render.GBDList;
-	import gear.render.GBDUnit;
-
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.BitmapDataChannel;
@@ -20,6 +15,11 @@
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+	import gear.gui.bd.GBDList;
+	import gear.gui.bd.GBDUnit;
+	import gear.log4a.GLogger;
+	import gear.net.GLoadUtil;
+
 
 	/**
 	 * 位图工具类
@@ -242,7 +242,6 @@
 		 * 切掉透明像素,释放源图，并重算偏移
 		 */
 		public static function cutAlphaBD(source : BitmapData, point : Point) : BitmapData {
-			// 不透明位图直接返回
 			if (!source.transparent) {
 				return source;
 			}
@@ -284,7 +283,7 @@
 		/**
 		 * 切割竖条位图数组
 		 */
-		public static function cutBD(source:BitmapData, widths : Array) : GBDList {
+		public static function cutBD(source:BitmapData, widths :Vector.<uint>) : GBDList {
 			if(source==null||widths==null||widths.length<1){
 				return null;
 			}

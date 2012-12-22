@@ -63,8 +63,8 @@
 			_nowTime = getTimer();
 			elapsed = _nowTime - _lastTime;
 			_lastTime = getTimer();
-			for each (var render:IGFrame in _list) {
-				render.refresh();
+			for each (var frame:IGFrame in _list) {
+				frame.refresh();
 			}
 			if (_onLast is Function) {
 				try {
@@ -76,6 +76,9 @@
 		}
 
 		public function add(value : IGFrame) : void {
+			if(value==null){
+				return;
+			}
 			if (_list.indexOf(value) != -1) {
 				return;
 			}

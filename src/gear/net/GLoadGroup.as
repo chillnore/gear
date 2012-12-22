@@ -9,50 +9,15 @@
 	 */
 	public final class GLoadGroup {
 		private var _isLoading : Boolean;
-		private var _waitings : Vector.<String>;
-		private var _onDone : Function;
+		private var _loaders : Vector.<AGLoader>;
+		private var _onFinish : Function;
 		private var _onLoaded : Function;
-		private var _onFailed:Function;
 
-		private function loaded(key : String) : void {
-			var index : int = _waitings.indexOf(key);
-			if (index != -1) {
-				_waitings.splice(index, 1);
-				if(_onLoaded!=null){
-					try{
-						_onLoaded(key);
-					}catch(e:Error){
-						GLogger.error(e.getStackTrace());
-					}
-				}
-			}
-			if (_waitings.length <1) {
-				done();
-			}
-		}
-		
-		private function failed(key : String) : void {
-			var index : int = _waitings.indexOf(key);
-			if (index != -1) {
-				_waitings.splice(index, 1);
-				if(_onFailed!=null){
-					try{
-						_onFailed(key);
-					}catch(e:Error){
-						GLogger.error(e.getStackTrace());
-					}
-				}
-			}
-			if (_waitings.length <1) {
-				done();
-			}
-		}
-
-		private function done() : void {
+		private function finish() : void {
 			_isLoading = false;
-			if (_onDone != null) {
+			if (_onFinish!=null) {
 				try {
-					_onDone();
+					_onFinish();
 				} catch(e : Error) {
 					GLogger.error(e.getStackTrace());
 				}
@@ -61,7 +26,29 @@
 
 		public function GLoadGroup() {
 			_isLoading = false;
-			_waitings = new Vector.<String>();
+			_loaders = new Vector.<AGLoader>();
+		}
+
+		internal function loadNext(loader : AGLoader) : void {
+			var index : int = _loaders.indexOf(loader);
+			if (index == -1) {
+				return;
+			}
+			_loaders.splice(index, 1);
+			if(_onLoaded!=null){
+				try{
+					_onLoaded(loader.key);
+				}catch(e:Error){
+					GLogger.error(e.getStackTrace());
+				}
+			}
+			if (_loaders.length < 1) {
+				finish();
+			}
+		}
+		
+		internal function get isFinish():Boolean{
+			return _loaders.length<1;
 		}
 
 		/**
@@ -69,31 +56,35 @@
 		 * 
 		 * @param value LibData
 		 */
-		public function add(url : String, automatch : Boolean = true) : void {
-			var loader : AGLoader = GLoadUtil.create(url, automatch);
-			if (loader.state != GLoadState.NONE) {
+		public function add(url : String) : void {
+			var loader : AGLoader = GLoadUtil.create(url);
+			if(loader.state==GLoadState.COMPLETE||loader.state==GLoadState.FAILED){
 				return;
 			}
-			_waitings.push(loader.key);
+			if (_loaders.indexOf(loader) == -1) {
+				_loaders.push(loader);
+			}
 		}
 
 		/**
 		 * 开始加载
 		 */
-		public function load(onDone : Function, onLoaded : Function = null,onFailed:Function=null) : void {
+		public function load(onFinish : Function, onLoaded : Function = null) : void {
 			if (_isLoading) {
 				return;
 			}
 			_isLoading = true;
-			_onDone = onDone;
+			_onFinish = onFinish;
 			_onLoaded = onLoaded;
-			_onFailed=onFailed;
-			if (_waitings.length == 0) {
-				done();
-				return;
-			}
-			for each (var key:String in _waitings) {
-				GLoadUtil.load(key, loaded, failed);
+			if (_loaders.length > 0) {
+				if (GLoadUtil.groups.indexOf(this) == -1) {
+					GLoadUtil.groups.push(this);
+				}
+				for each (var loader:AGLoader in _loaders) {
+					GLoadUtil.startLoad(loader);
+				}
+			} else {
+				finish();
 			}
 		}
 	}

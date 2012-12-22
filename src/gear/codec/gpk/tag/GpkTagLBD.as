@@ -1,12 +1,12 @@
 ﻿package gear.codec.gpk.tag {
-	import gear.codec.core.GLoadBytes;
-	import gear.render.GBDList;
-	import gear.render.GBDUnit;
-
 	import flash.display.BitmapData;
 	import flash.display.JPEGXREncoderOptions;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+	import gear.codec.core.GLoadBytes;
+	import gear.gui.bd.GBDList;
+	import gear.gui.bd.GBDUnit;
+
 
 	/**
 	 * @author bright
@@ -65,8 +65,8 @@
 			var ba:ByteArray;
 			var loadBytes : GLoadBytes;
 			for (var i : int = 0;i < _total;i++) {
-				offsetX = input.readUnsignedShort();
-				offsetY = input.readUnsignedShort();
+				offsetX = input.readShort();
+				offsetY = input.readShort();
 				ba = new ByteArray();
 				input.readBytes(ba, 0, input.readUnsignedInt());
 				loadBytes = new GLoadBytes(ba, onLoadDone, i, offsetX, offsetY);

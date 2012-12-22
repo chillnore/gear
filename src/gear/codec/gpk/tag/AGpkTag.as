@@ -24,6 +24,10 @@
 		public function AGpkTag() {
 		}
 		
+		public function set key(value:String):void{
+			_key=value;
+		}
+		
 		public function get key():String{
 			return _key;
 		}

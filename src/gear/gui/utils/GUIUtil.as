@@ -29,8 +29,12 @@
 	public final class GUIUtil {
 		public static const SHADOW : DropShadowFilter = new DropShadowFilter(1, 45, 0, 0.5, 1, 1);
 		public static var defaultFont : String = "Tahoma";
-		public static var defaultSize : int = 12;
-		public static var theme:IGTheme=new GASTheme;
+		// 默认字体尺寸
+		public static var defaultFontSize : int = 12;
+		// 默认主题
+		public static var theme : IGTheme = new GASTheme;
+		// 置顶数组
+		public static var tops : Vector.<DisplayObject>=new Vector.<DisplayObject>();
 		private static var _defaultCSS : StyleSheet;
 		private static var _root : Sprite;
 		private static var _url : String;
@@ -89,8 +93,8 @@
 		 * @param edgeColor 描边颜色
 		 * @param edgeAlpha 描边透明度 @default 1
 		 */
-		public static function getEdgeFilters(edgeColor : uint, edgeAlpha : Number = 1) : Array {
-			return [new GlowFilter(edgeColor, edgeAlpha, 2, 2, 17, 1, false, false)];
+		public static function getEdgeFilters(edgeColor : uint) : Array {
+			return [new GlowFilter(edgeColor,1, 2, 2, 1.5, 1, false, false)];
 		}
 
 		public static function getOffset(value : DisplayObject) : Point {
@@ -101,7 +105,7 @@
 		public static function getTextFormat() : TextFormat {
 			var textFormat : TextFormat = new TextFormat();
 			textFormat.font = defaultFont;
-			textFormat.size = defaultSize;
+			textFormat.size = defaultFontSize;
 			textFormat.leading = 3;
 			textFormat.kerning = true;
 			return textFormat;

@@ -1,6 +1,7 @@
 ﻿package gear.gui.bd {
 	/**
-	 * @author flashpf
+	 * @author bright
+	 * @version 20121215
 	 */
 	public class GPlayData {
 		protected var _delay : int;

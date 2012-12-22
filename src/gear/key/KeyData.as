@@ -11,7 +11,7 @@ package gear.key {
 		}
 
 		public function reset() : void {
-			keyCode = HotKey.NONE;
+			keyCode = GHotKey.NONE;
 			time = 0;
 		}
 	}

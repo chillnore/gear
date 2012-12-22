@@ -20,9 +20,8 @@
 
 		protected function complete() : void {
 			_state = GLoadState.COMPLETE;
-			GLoadUtil.setLoaded(this);
+			GLogger.info(GStringUtil.format("加载 {0} 完成", _url));
 			GLoadUtil.loadNext(this);
-			GLogger.info(GStringUtil.format("load {0} complete", _url));
 			if (_onLoaded == null) {
 				return;
 			}
@@ -35,8 +34,8 @@
 
 		protected function failed() : void {
 			_state = GLoadState.FAILED;
+			GLogger.warn(GStringUtil.format("加载 {0} 失败!", _url));
 			GLoadUtil.loadNext(this);
-			GLogger.info(GStringUtil.format("load {0} failed", _url));
 			if (_onFailed == null) {
 				return;
 			}
@@ -54,7 +53,7 @@
 		 */
 		public function AGLoader(url : String) {
 			_url = url;
-			_key=GFileType.getKey(url);
+			_key = GFileType.getKey(url);
 			_state = GLoadState.NONE;
 		}
 
@@ -86,15 +85,15 @@
 		 * 开始加载
 		 */
 		public function load() : void {
-			if (_state != GLoadState.NONE&&_state!=GLoadState.WAITING) {
+			if (_state != GLoadState.NONE && _state != GLoadState.WAITING) {
 				return;
 			}
 			_state = GLoadState.LOADING;
 			startLoad();
 		}
-		
-		public function wait():void{
-			_state=GLoadState.WAITING;
+
+		public function wait() : void {
+			_state = GLoadState.WAITING;
 		}
 	}
 }

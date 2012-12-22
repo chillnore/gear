@@ -24,8 +24,9 @@
 				return angle;
 			}
 			angle %= 360;
-			if (angle < 0)
+			if (angle < 0) {
 				angle += 360;
+			}
 			return angle;
 		}
 
@@ -57,11 +58,16 @@
 			return rect;
 		}
 
-		public static function getMinStep(d : int, step : int) : int {
-			if (d > 0) {
-				return (d < step ? d : step);
+		public static function min(source : int, target: int) : int {
+			if (source > 0) {
+				return (source < target ? source : target);
 			}
-			return (d > -step ? d : -step);
+			return (source > -target ? source : -target);
+		}
+		
+		
+		public static function ceil(value : Number) : int {
+			return Math.ceil(value > 0 ? value : -value);
 		}
 
 		public static function clamp(n : Number, min : Number, max : Number) : Number {
@@ -79,11 +85,34 @@
 			var dy : Number = endY - startY;
 			return Math.round(Math.atan2(dy, dx) / Math.PI * 180);
 		}
-
+		
 		public static function getTwoPointAngle(start : Point, end : Point) : int {
 			var dx : Number = end.x - start.x;
 			var dy : Number = end.y - start.y;
 			return Math.round(Math.atan2(dy, dx) / Math.PI * 180);
+		}
+
+		public static function getDir(startX : int, startY : int, endX : int, endY : int) : int {
+			var dx : Number = endX - startX;
+			var dy : Number = endY - startY;
+			var angle : int = toUAngle(Math.round(Math.atan2(dy, dx) / Math.PI * 180));
+			if (angle > 337 || angle < 23) {
+				return 0;
+			} else if (angle > 292) {
+				return 7;
+			} else if (angle > 247) {
+				return 6;
+			} else if (angle > 202) {
+				return 5;
+			} else if (angle > 157) {
+				return 4;
+			} else if (angle > 112) {
+				return 3;
+			} else if (angle > 67) {
+				return 2;
+			} else {
+				return 1;
+			}
 		}
 
 		public static function random(min : int, max : int) : int {
@@ -190,10 +219,6 @@
 					return -angle;
 				}
 			}
-		}
-
-		public static function ceil(value : Number) : int {
-			return Math.ceil(value > 0 ? value : -value);
 		}
 	}
 }

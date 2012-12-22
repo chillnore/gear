@@ -1,15 +1,19 @@
 ﻿package gear.codec.gpk {
-	import gear.codec.gpk.tag.AGpkTag;
-	import gear.codec.gpk.tag.GpkTagFactory;
-	import gear.log4a.GLogError;
-	import gear.log4a.GLogger;
-	import gear.render.GBDList;
-
+	import flash.display.BitmapData;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+	import gear.codec.gpk.tag.AGpkTag;
+	import gear.codec.gpk.tag.GpkTagFactory;
+	import gear.gui.bd.GBDList;
+	import gear.log4a.GLogError;
+	import gear.log4a.GLogger;
+
 
 	/**
+	 * Gpk 资源包
+	 * 
 	 * @author bright
+	 * @version 20121219
 	 */
 	public final class Gpk {
 		private var _magic : String;
@@ -19,7 +23,7 @@
 		private var _tags : Vector.<AGpkTag>;
 		private var _total : int;
 		private var _count : int;
-		private var _onComplete : Function;
+		private var _onFinish : Function;
 		private var _content : Dictionary;
 
 		private function encodeHeader() : void {
@@ -54,7 +58,7 @@
 				tagSize = _input.readUnsignedInt();
 				end = _input.position + tagSize;
 				tag = GpkTagFactory.create(tagType);
-				tag.decode(_input, onTagDone);
+				tag.decode(_input, onTagFinish);
 				if (_input.position != end) {
 					GLogger.warn("解码标签长度不匹配!标签类型=" + tagType + ",当前位置=" + _input.position + ",结束位置=" + end);
 					_input.position = end;
@@ -63,16 +67,17 @@
 			_input.clear();
 		}
 
-		private function onTagDone(tag : AGpkTag) : void {
+		private function onTagFinish(tag : AGpkTag) : void {
+			addTag(tag);
 			tag.addTo(_content);
 			if (++_count<_total) {
 				return;
 			}
-			if (_onComplete == null) {
+			if (_onFinish == null) {
 				return;
 			}
 			try {
-				_onComplete();
+				_onFinish();
 			} catch(e : Error) {
 				GLogger.debug(e.getStackTrace());
 			}
@@ -86,9 +91,9 @@
 			_content = new Dictionary();
 		}
 
-		public function decode(input : ByteArray, onDone : Function) : void {
+		public function decode(input : ByteArray, onFinish : Function) : void {
 			_input = input;
-			_onComplete = onDone;
+			_onFinish = onFinish;
 			decodeHeader();
 			decodeTags();
 		}
@@ -106,13 +111,26 @@
 		public function addTag(value : AGpkTag) : void {
 			_tags.push(value);
 		}
-
-		public function getBDList(key : String) : GBDList {
-			return _content[key] as GBDList;
+		
+		public function getTag(key:String):AGpkTag{
+			for each(var tag:AGpkTag in _tags){
+				if(tag.key==key){
+					return tag;
+				}
+			}
+			return null;
 		}
-
+		
 		public function getAMF(key : String) : * {
 			return _content[key];
+		}
+		
+		public function getSBD(key : String) :BitmapData{
+			return _content[key] as BitmapData;
+		}
+
+		public function getLBD(key : String) : GBDList {
+			return _content[key] as GBDList;
 		}
 	}
 }

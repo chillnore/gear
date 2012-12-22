@@ -1,17 +1,15 @@
 ﻿package gear.gui.bd {
+	import flash.display.Bitmap;
+	import flash.filters.ColorMatrixFilter;
+
 	import gear.core.IDispose;
 	import gear.gui.core.GBase;
 	import gear.log4a.GLogger;
 	import gear.pool.GObjPool;
-	import gear.render.GBDList;
-	import gear.render.GBDUnit;
 	import gear.render.GFrameRender;
 	import gear.render.IGFrame;
 	import gear.utils.GColorMatrixUtil;
 	import gear.utils.GMathUtil;
-
-	import flash.display.Bitmap;
-	import flash.filters.ColorMatrixFilter;
 
 	/**
 	 * 位图播放器
@@ -32,18 +30,18 @@
 		protected var _loop : int;
 		protected var _wait : int;
 		protected var _reverse : Boolean;
-		protected var _flipH : Boolean;
-		protected var _flipHChange : Boolean;
 		protected var _shadow : Bitmap;
 		protected var _cmf : ColorMatrixFilter;
 		protected var _onChange : Function;
 		protected var _onComplete : Function;
-		protected var _dirs:int;
-		protected var _dir:int;
-		
-		override protected function preinit():void{
-			_dirs=1;
-			_dir=0;
+		protected var _dirs : int;
+		protected var _dir : int;
+		protected var _dirChange:Boolean;
+
+		override protected function preinit() : void {
+			_dirs = 1;
+			_dir = 0;
+			enabled = false;
 		}
 
 		/**
@@ -69,7 +67,7 @@
 			var total : int;
 			var i : int;
 			if (value == null || value.length < 1) {
-				total = _list.total/_dirs;
+				total = _list.total / _dirs;
 				for (i = 0;i < total;i++) {
 					_frames.push(i);
 				}
@@ -85,11 +83,11 @@
 			_frame = -1;
 			_wait = 0;
 			_reverse = false;
-			update(_current);
+			update();
 		}
 
-		protected function update(value : int) : void {
-			var frame : int = _frames[value];
+		protected function update() : void {
+			var frame : int = _frames[_current];
 			if (frame < 0 || frame >= _list.total) {
 				_frame = -1;
 				_bitmap.bitmapData = null;
@@ -99,14 +97,15 @@
 				return;
 			}
 			if (_frame == frame) {
-				if (!_flipHChange) {
-					_flipHChange = false;
+				if(_dirChange){
+					_dirChange=false;
+				}else{
 					return;
 				}
 			}
 			_frame = frame;
-			var index:int=(_dirs>1?_frame*_dirs+_dir:_frame);
-			var unit : GBDUnit = _list.getAt(index, _flipH);
+			var index : int = (_dirs > 1 ? _frame * _dirs + _dir : _frame);
+			var unit : GBDUnit = _list.getAt(index, false);
 			if (unit == null) {
 				return;
 			}
@@ -114,7 +113,7 @@
 			_bitmap.y = unit.offsetY;
 			_bitmap.bitmapData = unit.bd;
 			if (_shadow != null) {
-				unit = _list.getShadowAt(index, _flipH);
+				unit = _list.getShadowAt(index, false);
 				if (unit != null) {
 					_shadow.x = unit.offsetX;
 					_shadow.y = unit.offsetY;
@@ -237,7 +236,7 @@
 			_frame = -1;
 			_wait = 0;
 			_reverse = false;
-			update(_frames[_current]);
+			update();
 			if (_frames.length > 1) {
 				GFrameRender.instance.add(this);
 			} else {
@@ -265,7 +264,7 @@
 				return;
 			}
 			_current--;
-			update(_current);
+			update();
 		}
 
 		/**
@@ -277,7 +276,7 @@
 				return;
 			}
 			_current++;
-			update(_current);
+			update();
 		}
 
 		/**
@@ -326,7 +325,7 @@
 			}
 			value = GMathUtil.clamp(value, 0, _frames.length - 1);
 			_current = value;
-			update(_frames[_current]);
+			update();
 		}
 
 		public function get current() : int {
@@ -343,7 +342,7 @@
 		}
 
 		public function get unit() : GBDUnit {
-			return _list.getAt(_frame, _flipH);
+			return _list.getAt(_frame, false);
 		}
 
 		/**
@@ -353,23 +352,6 @@
 		 */
 		public function get total() : int {
 			return _frames.length;
-		}
-
-		/**
-		 * 是否翻转
-		 * 
-		 * @param value ture翻转false不翻转
-		 */
-		public function set flipH(value : Boolean) : void {
-			if (_flipH == value) {
-				return;
-			}
-			_flipH = value;
-			_flipHChange = true;
-		}
-
-		public function get flipH() : Boolean {
-			return _flipH;
 		}
 
 		public function set shadow(value : Bitmap) : void {
@@ -436,7 +418,7 @@
 			} else {
 				_current++;
 			}
-			update(_current);
+			update();
 			if (_onChange is Function) {
 				try {
 					_onChange(this);
@@ -461,13 +443,37 @@
 		public function get reverse() : Boolean {
 			return _reverse;
 		}
-		
-		public function set dirs(value:int):void{
-			_dirs=value;
+
+		/**
+		 * 0 无方向
+		 * 1 两方向需翻转
+		 * 2 两方向不翻转
+		 * 3 四方向需翻转
+		 * 4 四方向不翻转
+		 * 5 八方向需翻转
+		 * 8 八方向不翻转
+		 */
+		public function set dirs(value : int) : void {
+			_dirs = value;
 		}
-		
-		public function set dir(value:int):void{
-			_dir=value;
+
+		/**
+		 * 设置方向值 
+		 */
+		public function set dir(value : int) : void {
+			value = value % 8;
+			if(_dir==value){
+				return;
+			}
+			_dir = value;
+			_dirChange=true;
+			if(_list!=null){
+				update();
+			}
+		}
+
+		public function get dir() : int {
+			return _dir;
 		}
 
 		/**

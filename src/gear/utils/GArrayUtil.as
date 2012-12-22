@@ -60,6 +60,9 @@
 		}
 
 		public static function copyUnique(source : Array, target : Array) : void {
+			if (source == null || target == null || target.length < 1) {
+				return;
+			}
 			var index : int;
 			for each (var item:Object in target) {
 				index = source.indexOf(item);

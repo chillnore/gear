@@ -3,6 +3,7 @@
 
 	/**
 	 * @author bright
+	 * @version 20121215
 	 */
 	public class GSwfShapeWithStyle {
 		protected var _fillStyles : Vector.<GSwfFillStyle>;
@@ -30,7 +31,7 @@
 			}
 			var typeFlag : int;
 			while (true) {
-				// data.resetBitPos();
+				data.resetBitPos();
 				typeFlag = data.readUB(1);
 				if (typeFlag == 1) {
 					var straightFlag : int = data.readUB(1);
@@ -50,6 +51,7 @@
 						}
 						deltaX;
 						deltaY;
+						trace(deltaX,deltaY);
 					} else {
 						bits = data.readUB(4) + 2;
 						var controlDeltaX : int = data.readSB(bits);

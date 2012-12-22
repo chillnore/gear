@@ -14,10 +14,4 @@
 		    		-window-title 'Gear API'" />
 		</exec>
 	</target>
-	<target name="gear swc">
-		<fdt.loadProjectProperties projectname="gear" />
-		<fdt.launch.library projectname="${FDTProject}"
-			compilerarguments=" -target-player=${FDTProjectPlayerVersion}"
-			target="${FDTProjectPath}/bin/gear.swc" />
-	</target>
 </project>

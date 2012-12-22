@@ -3,13 +3,13 @@
 	 * 对齐定义
 	 * 
 	 * @author bright
-	 * @version 20121128
+	 * @version 20121217
 	 */
 	public final class GAlign {
 		// 居中对齐
 		public static const CENTER : GAlign = new GAlign(-1, -1, -1, -1, 0, 0);
 		// 铺满
-		public static const FULL : GAlign = new GAlign(20, 20, 20, 20, -1, -1);
+		public static const FULL : GAlign = new GAlign(0, 0, 0, 0, -1, -1);
 		// 左对齐
 		protected var _left : int;
 		// 右对齐

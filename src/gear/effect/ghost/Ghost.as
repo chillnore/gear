@@ -1,11 +1,11 @@
 ﻿package gear.effect.ghost {
+	import flash.display.Bitmap;
+	import flash.display.Sprite;
+	import gear.gui.bd.GBDUnit;
 	import gear.pool.GObjPool;
-	import gear.render.GBDUnit;
 	import gear.render.GFrameRender;
 	import gear.render.IGFrame;
 
-	import flash.display.Bitmap;
-	import flash.display.Sprite;
 
 	/**
 	 * @author flashpf

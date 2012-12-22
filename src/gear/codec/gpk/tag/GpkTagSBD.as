@@ -31,12 +31,6 @@
 		public function GpkTagSBD(key : String="none", bd : BitmapData=null) : void {
 			_key = key;
 			_bd = bd;
-			if (_bd != null) {
-				var jpeg : JPEGXREncoderOptions = new JPEGXREncoderOptions();
-				jpeg.quantization = 30;
-				_ba = new ByteArray();
-				_bd.encode(_bd.rect, jpeg, _ba);
-			}
 		}
 
 		override public function encode(output : ByteArray) : void {
@@ -44,6 +38,10 @@
 			var start : int = output.position;
 			output.writeUnsignedInt(0);
 			output.writeUTF(_key);
+			var jpeg : JPEGXREncoderOptions = new JPEGXREncoderOptions();
+			jpeg.quantization = 30;
+			_ba = new ByteArray();
+			_bd.encode(_bd.rect, jpeg, _ba);
 			output.writeUnsignedInt(_ba.length);
 			output.writeBytes(_ba);
 			var end : int = output.position;

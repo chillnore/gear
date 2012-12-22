@@ -4,7 +4,6 @@
 	import gear.gui.core.GBase;
 	import gear.gui.core.GScaleMode;
 	import gear.pool.GObjPool;
-	import gear.render.GBDList;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -36,44 +35,40 @@
 		}
 
 		protected function update() : void {
-			var unit : String;
+			var i : int;
 			var index : int;
 			var cut_bd : BitmapData;
-			var width : int = 0;
-			var bds : Array = new Array();
-			var i : int;
+			var bds : Vector.<BitmapData>=new Vector.<BitmapData>(_text.length, true);
+			var w : int = 0;
 			for (i = 0;i < _text.length;i++) {
-				unit = _text.charAt(i);
-				index = _chars.indexOf(unit);
+				index = _chars.indexOf(_text.charAt(i));
 				if (index != -1) {
 					cut_bd = _list.getAt(index).bd;
-					width += cut_bd.width;
-					if (bds.length > 0) {
-						width += _gap;
+					w += cut_bd.width;
+					if (i > 0) {
+						w += _gap;
 					}
-					bds.push(cut_bd);
+					bds[i] = cut_bd;
 				}
 			}
-			var bd : BitmapData = new BitmapData(width, _height, true, 0);
+			var bd : BitmapData = new BitmapData(w, _height, true, 0);
 			var point : Point = new Point();
-			for (i = 0;i < bds.length;i++) {
-				cut_bd = bds[i];
+			for each (cut_bd in bds) {
 				bd.copyPixels(cut_bd, cut_bd.rect, point, null, null, true);
 				point.x += cut_bd.width + _gap;
 			}
 			_bitmap.bitmapData = bd;
-			_width=_bitmap.width;
-			_height=_bitmap.height;
+			_width = _bitmap.width;
 		}
 
-		public function GBDFont(list : GBDList, chars : Array, gap : int = 0) {
+		public function GBDFont(list : GBDList, chars : String, gap : int = 0) {
 			_list = list;
-			_chars = chars;
+			_chars = chars.split("");
 			_gap = gap;
 			_height = list.getAt(0).bd.height;
 		}
-		
-		override public function get width():Number{
+
+		override public function get width() : Number {
 			render();
 			return _width;
 		}

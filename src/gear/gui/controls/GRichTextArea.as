@@ -63,7 +63,7 @@
 		}
 		
 		protected function getFormat(color:uint):ElementFormat{
-			var format:ElementFormat=new ElementFormat(new FontDescription(GUIUtil.defaultFont),GUIUtil.defaultSize);
+			var format:ElementFormat=new ElementFormat(new FontDescription(GUIUtil.defaultFont),GUIUtil.defaultFontSize);
 			format.color=color;
 			return format;
 		}

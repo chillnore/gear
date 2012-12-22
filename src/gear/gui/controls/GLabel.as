@@ -114,5 +114,9 @@
 			_textChanged = true;
 			addRender(update);
 		}
+		
+		public function set textFieldFilters(value:Array):void{
+			_textField.filters=value;
+		}
 	}
 }

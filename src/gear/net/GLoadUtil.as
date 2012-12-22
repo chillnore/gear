@@ -1,14 +1,15 @@
 ﻿package gear.net {
-	import gear.codec.gpk.Gpk;
-	import gear.codec.xlsx.GWorkSheet;
-	import gear.log4a.GLogError;
-
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.media.Sound;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+
+	import gear.codec.gpk.Gpk;
+	import gear.codec.xlsx.GWorkSheet;
+	import gear.gui.bd.GBDList;
+	import gear.log4a.GLogError;
 
 	/**
 	 * 加载管理器
@@ -19,6 +20,8 @@
 	public final class GLoadUtil {
 		// 最大并发加载数
 		public static const MAX : int = 5;
+		// 加载组
+		internal static var groups : Vector.<GLoadGroup>=new Vector.<GLoadGroup>();
 		// 创建队列
 		private static var _created : Dictionary = new Dictionary();
 		// 加载完成队列
@@ -28,16 +31,32 @@
 		// 等待加载队列
 		private static var _waits : Vector.<AGLoader>=new Vector.<AGLoader>();
 
-		internal static function loadNext(value : AGLoader) : void {
-			var index : int = _loadings.indexOf(value);
+		internal static function loadNext(loader : AGLoader) : void {
+			var index : int = _loadings.indexOf(loader);
 			if (index != -1) {
 				_loadings.splice(index, 1);
+			}
+			if(loader.state==GLoadState.COMPLETE){
+				_loaded[loader.key]=loader;
+			}
+			var group:GLoadGroup;
+			var finishs:Vector.<GLoadGroup>=new Vector.<GLoadGroup>();
+			for each (group in groups) {
+				group.loadNext(loader);
+				if(group.isFinish){
+					finishs.push(group);
+				}
+			}
+			for each(group in finishs){
+				index=groups.indexOf(group);
+				if(index!=-1){
+					groups.splice(index,1);
+				}
 			}
 			if (_waits.length < 1) {
 				return;
 			}
-			var loader : AGLoader = _waits.shift();
-			loader.load();
+			_waits.shift().load();
 		}
 
 		/**
@@ -56,15 +75,10 @@
 		 * @param automatch 自动匹配文件类型
 		 * @return ALoader 抽象加载器
 		 */
-		internal static function create(url : String, automatch : Boolean = true) : AGLoader {
+		internal static function create(url : String) : AGLoader {
 			var key : String = GFileType.getKey(url);
 			var loader : AGLoader = _created[key];
 			if (loader != null) {
-				return loader;
-			}
-			if (!automatch) {
-				loader = new GBinLoader(url);
-				_created[key] = loader;
 				return loader;
 			}
 			var type : int = GFileType.getType(url);
@@ -106,19 +120,9 @@
 			_created[key] = loader;
 			return loader;
 		}
-
-		public static function setLoaded(value : AGLoader) : void {
-			_loaded[value.key] = value;
-		}
-
-		public static function load(url : String, onLoaded : Function, onFailed : Function = null,automatch:Boolean=true) : void {
-			var loader : AGLoader = create(url,automatch);
-			if (loader.state != GLoadState.NONE) {
-				return;
-			}
-			loader.onLoaded = onLoaded;
-			loader.onFailed = onFailed;
-			if (_loadings.length <MAX) {
+		
+		internal static function startLoad(loader:AGLoader) : void {
+			if (_loadings.length < MAX) {
 				_loadings.push(loader);
 				loader.load();
 			} else {
@@ -127,18 +131,51 @@
 			}
 		}
 
+		public static function load(url : String, onLoaded : Function, onFailed : Function = null) : void {
+			var loader : AGLoader = create(url);
+			if (loader.state != GLoadState.NONE) {
+				return;
+			}
+			loader.onLoaded = onLoaded;
+			loader.onFailed = onFailed;
+			startLoad(loader);
+		}
+
 		public static function getByteArray(key : String) : ByteArray {
 			var loader : GBinLoader = _loaded[key] as GBinLoader;
 			return loader != null ? loader.byteArray : null;
 		}
 
-		public static function getGpkAMF(key : String,lib:String) :* {
+		public static function getGpk(lib : String) : Gpk {
 			var loader : GpkLoader = _loaded[lib] as GpkLoader;
-			if(loader==null){
+			return loader != null ? loader.gpk : null;
+		}
+
+		public static function getGpkAMF(key : String, lib : String) : * {
+			var loader : GpkLoader = _loaded[lib] as GpkLoader;
+			if (loader == null) {
 				return null;
 			}
-			var gpk:Gpk=loader.gpk;
+			var gpk : Gpk = loader.gpk;
 			return gpk != null ? gpk.getAMF(key) : null;
+		}
+
+		public static function getGpkSBD(key : String, lib : String) : BitmapData {
+			var loader : GpkLoader = _loaded[lib] as GpkLoader;
+			if (loader == null) {
+				return null;
+			}
+			var gpk : Gpk = loader.gpk;
+			return gpk != null ? gpk.getSBD(key) : null;
+		}
+
+		public static function getGpkLBD(key : String, lib : String) : GBDList {
+			var loader : GpkLoader = _loaded[lib] as GpkLoader;
+			if (loader == null) {
+				return null;
+			}
+			var gpk : Gpk = loader.gpk;
+			return gpk != null ? gpk.getLBD(key) : null;
 		}
 
 		public static function getImg(key : String) : BitmapData {
