@@ -36,11 +36,15 @@
 		protected var _onComplete : Function;
 		protected var _dirs : int;
 		protected var _dir : int;
-		protected var _dirChange:Boolean;
+		protected var _oldDir : int;
+		protected var _dirChange : Boolean;
+		protected var _isTurn : Boolean;
 
 		override protected function preinit() : void {
 			_dirs = 1;
-			_dir = 0;
+			_oldDir = _dir = 0;
+			_dirChange = false;
+			_isTurn = true;
 			enabled = false;
 		}
 
@@ -67,7 +71,7 @@
 			var total : int;
 			var i : int;
 			if (value == null || value.length < 1) {
-				total = _list.total / _dirs;
+				total = _list.length / _dirs;
 				for (i = 0;i < total;i++) {
 					_frames.push(i);
 				}
@@ -88,7 +92,7 @@
 
 		protected function update() : void {
 			var frame : int = _frames[_current];
-			if (frame < 0 || frame >= _list.total) {
+			if (frame < 0 || frame >= _list.length) {
 				_frame = -1;
 				_bitmap.bitmapData = null;
 				if (_shadow != null) {
@@ -97,14 +101,18 @@
 				return;
 			}
 			if (_frame == frame) {
-				if(_dirChange){
-					_dirChange=false;
-				}else{
+				if (_dirChange) {
+					_dirChange = false;
+				} else {
 					return;
 				}
 			}
 			_frame = frame;
-			var index : int = (_dirs > 1 ? _frame * _dirs + _dir : _frame);
+			var d:int=_dir;
+			if(_isTurn&&_oldDir!=_dir){
+				d=_oldDir=GMathUtil.getTurnDir(_oldDir, _dir);
+			}
+			var index : int = (_dirs < 1 ? _frame : (_frame * _dirs + d));
 			var unit : GBDUnit = _list.getAt(index, false);
 			if (unit == null) {
 				return;
@@ -317,7 +325,7 @@
 				return;
 			}
 			if (_frames.length == 0) {
-				var total : int = _list.total;
+				var total : int = _list.length;
 				for (var i : int = 0;i < total;i++) {
 					_frames.push(i);
 				}
@@ -462,12 +470,13 @@
 		 */
 		public function set dir(value : int) : void {
 			value = value % 8;
-			if(_dir==value){
+			if (_dir == value) {
 				return;
 			}
+			_oldDir = _dir;
 			_dir = value;
-			_dirChange=true;
-			if(_list!=null){
+			_dirChange = true;
+			if (_list != null) {
 				update();
 			}
 		}

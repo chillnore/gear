@@ -98,7 +98,7 @@
 				}
 			} else {
 				for (i = 0;i < _source.length;i++) {
-					_target[i] = GBDUtil.resizeBD(_source[i],_width,_height);
+					_target[i] = GBDUtil.scaleBD(_source[i],_width,_height);
 				}
 			}
 			update();

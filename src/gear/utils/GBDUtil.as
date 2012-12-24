@@ -1,4 +1,5 @@
 ﻿package gear.utils {
+	import flash.display.StageQuality;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.BitmapDataChannel;
@@ -15,11 +16,11 @@
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+
 	import gear.gui.bd.GBDList;
 	import gear.gui.bd.GBDUnit;
 	import gear.log4a.GLogger;
 	import gear.net.GLoadUtil;
-
 
 	/**
 	 * 位图工具类
@@ -30,6 +31,9 @@
 	public final class GBDUtil {
 		private static var _cache : Dictionary = new Dictionary(true);
 
+		/**
+		 * 转换MovieClip为位图数组
+		 */
 		public static function mcToBDList(mc : MovieClip) : GBDList {
 			if (mc == null) {
 				return null;
@@ -54,14 +58,18 @@
 						continue;
 					}
 				}
-				bounds =mc.getBounds(mc);
+				bounds = mc.getBounds(mc);
 				if (bounds.width < 1 || bounds.height < 1) {
 					continue;
 				}
 				bd = new BitmapData(bounds.width, bounds.height, true, 0);
 				mtx.identity();
 				mtx.translate(-bounds.x, -bounds.y);
-				bd.draw(mc, mtx, null, null, null, true);
+				if (GSystemUtil.version < 11.3) {
+					bd.draw(mc, mtx, null, null, null, true);
+				} else {
+					bd.drawWithQuality(mc, mtx, null, null, null, true, StageQuality.HIGH_16X16_LINEAR);
+				}
 				list[i] = new GBDUnit(bounds.x, bounds.y, bd);
 				mc.nextFrame();
 			}
@@ -100,7 +108,7 @@
 			return bd;
 		}
 
-		public static function resizeBD(source : BitmapData, w : int, h : int) : BitmapData {
+		public static function scaleBD(source : BitmapData, w : int, h : int) : BitmapData {
 			if (source == null) {
 				return null;
 			}
@@ -202,12 +210,12 @@
 		/**
 		 * 按格子切图
 		 */
-		public static function cutGridBD(source : BitmapData, gw : int, gh: int, ox : int = 0, oy : int = 0,filters:Array=null) : GBDList {
-			if(source==null){
+		public static function cutGridBD(source : BitmapData, gw : int, gh : int, ox : int = 0, oy : int = 0, filters : Array = null) : GBDList {
+			if (source == null) {
 				return null;
 			}
-			var row : int = source.width/gw;
-			var col : int = source.height/gh;
+			var row : int = source.width / gw;
+			var col : int = source.height / gh;
 			if (ox == 0) {
 				ox = -gw * 0.5;
 			}
@@ -220,9 +228,9 @@
 			var offset : Point = new Point();
 			var r : int;
 			var c : int;
-			var next:int=0;
+			var next : int = 0;
 			for (c = 0;c < col;c++) {
-				if(filters!=null&&filters.indexOf(c)!=-1){
+				if (filters != null && filters.indexOf(c) != -1) {
 					continue;
 				}
 				rect.y = c * gh;
@@ -272,7 +280,7 @@
 			}
 			var data : GBDList = GBDUtil.mcToBDList(GLoadUtil.getMC(key, lib));
 			if (data == null) {
-				GLogger.error(key, "has error!");
+				GLogger.error(key, lib, "has error!");
 				return null;
 			}
 			data.key = key;
@@ -283,8 +291,8 @@
 		/**
 		 * 切割竖条位图数组
 		 */
-		public static function cutBD(source:BitmapData, widths :Vector.<uint>) : GBDList {
-			if(source==null||widths==null||widths.length<1){
+		public static function cutBD(source : BitmapData, widths : Vector.<uint>) : GBDList {
+			if (source == null || widths == null || widths.length < 1) {
 				return null;
 			}
 			var list : Vector.<GBDUnit> = new Vector.<GBDUnit>(widths.length, true);
@@ -365,7 +373,7 @@
 
 		public static function mergeBDUnit(value : Array) : GBDUnit {
 			var source : GBDUnit = GBDUnit(value[0]).clone();
-			var s_rect : Rectangle = source.rect;
+			var s_rect : Rectangle = source.bound;
 			var total : int = value.length;
 			var target : GBDUnit;
 			var t_rect : Rectangle;
@@ -375,7 +383,7 @@
 				if (target == null) {
 					continue;
 				}
-				t_rect = target.rect;
+				t_rect = target.bound;
 				if (!s_rect.containsRect(t_rect)) {
 					u_rect = s_rect.union(t_rect);
 					source.resetBD(s_rect.x - u_rect.x, s_rect.y - u_rect.y, u_rect.width, u_rect.height);

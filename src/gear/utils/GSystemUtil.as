@@ -13,6 +13,9 @@
 	 * @version 20121112
 	 */
 	public final class GSystemUtil {
+		
+		private static var _version:Number;
+		
 		public static function flipH(source : DisplayObject) : void {
 			var matrix : Matrix = source.transform.matrix;
 			matrix.a = -1;
@@ -27,8 +30,12 @@
 			source.transform.matrix = matrix;
 		}
 
-		public static function getFPVersion() : int {
-			return Capabilities.version.split(" ")[1].split(",")[0];
+		public static function get version() : Number{
+			if(isNaN(_version)){
+				var params:Array=Capabilities.version.split(" ")[1].split(",");
+				_version=parseInt(params[0])+parseInt(params[1])/10;
+			}
+			return _version;
 		}
 
 		public static function getInfo() : String {

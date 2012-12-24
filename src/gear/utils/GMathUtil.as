@@ -58,14 +58,13 @@
 			return rect;
 		}
 
-		public static function min(source : int, target: int) : int {
+		public static function min(source : int, target : int) : int {
 			if (source > 0) {
 				return (source < target ? source : target);
 			}
 			return (source > -target ? source : -target);
 		}
-		
-		
+
 		public static function ceil(value : Number) : int {
 			return Math.ceil(value > 0 ? value : -value);
 		}
@@ -85,7 +84,7 @@
 			var dy : Number = endY - startY;
 			return Math.round(Math.atan2(dy, dx) / Math.PI * 180);
 		}
-		
+
 		public static function getTwoPointAngle(start : Point, end : Point) : int {
 			var dx : Number = end.x - start.x;
 			var dy : Number = end.y - start.y;
@@ -113,6 +112,42 @@
 			} else {
 				return 1;
 			}
+		}
+		
+		public static function getOffsetDir(dx:int,dy:int):int{
+			if (dx > 0) {
+				if (dy > 0) {
+					return 1;
+				} else if (dy < 0) {
+					return 7;
+				} else {
+					return 0;
+				}
+			} else if (dx < 0) {
+				if (dy > 0) {
+					return 3;
+				} else if (dy < 0) {
+					return 5;
+				} else {
+					return 4;
+				}
+			} else {
+				if (dy > 0) {
+					return 2;
+				} else if (dy < 0) {
+					return 6;
+				}
+			}
+			return -1;
+		}
+
+		public static function getTurnDir(start : int, end : int) : int {
+			var dir : int = start + (start < end ? ((end - start) > 4 ? -1 : 1) : ((start - end) > 4 ? 1 : -1));
+			dir = dir % 8;
+			if (dir < 0) {
+				dir = dir + 8;
+			}
+			return dir;
 		}
 
 		public static function random(min : int, max : int) : int {
@@ -192,16 +227,19 @@
 		}
 
 		public static function getCrossAngle(source : int, target : int) : int {
-			if (source == target)
+			if (source == target) {
 				return 0;
-			if (source >= 360)
+			}
+			if (source >= 360) {
 				source -= 360;
-			else if (source < 0)
+			} else if (source < 0) {
 				source += 360;
-			if (target >= 360)
+			}
+			if (target >= 360) {
 				target -= 360;
-			else if (target < 0)
+			} else if (target < 0) {
 				target += 360;
+			}
 			var angle : int;
 			if (source < target) {
 				angle = target - source;

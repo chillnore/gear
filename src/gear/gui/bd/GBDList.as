@@ -118,6 +118,12 @@
 			_hasFlipH = false;
 			_hasShadow = false;
 		}
+		
+		public function set scale(value:Number):void{
+			for each(var unit:GBDUnit in _list){
+				unit.scale=value;
+			}
+		}
 
 		public function create(hasFlipH : Boolean, hasShadow : Boolean) : void {
 			_hasFlipH = hasFlipH;
@@ -178,7 +184,7 @@
 			return null;
 		}
 		
-		public function set total(value:int):void{
+		public function set length(value:int):void{
 			_list.length=value;
 		}
 
@@ -187,7 +193,7 @@
 		 * 
 		 * @return 总帧数
 		 */
-		public function get total() : int {
+		public function get length() : int {
 			return _list.length;
 		}
 

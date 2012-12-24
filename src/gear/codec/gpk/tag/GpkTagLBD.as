@@ -38,7 +38,7 @@
 			output.writeUTF(_key);
 			var compressor : JPEGXREncoderOptions = new JPEGXREncoderOptions();
 			compressor.quantization = 30;
-			output.writeShort(_list.total);
+			output.writeShort(_list.length);
 			var ba : ByteArray;
 			for each (var unit:GBDUnit in _list.list) {
 				output.writeShort(unit.offsetX);

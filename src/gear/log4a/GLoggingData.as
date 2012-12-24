@@ -5,31 +5,30 @@
 	 * 日志数据
 	 * 
 	 * @author bright
-	 * @version 20121221
+	 * @version 20121224
 	 */
 	public final class GLoggingData {
 		private var _level : GLevel;
 		private var _message : Array;
-		private var _timeStamp : String;
 		private var _code : String;
-		
-		private static function vectorToString(target :Vector.<*>):String {
+
+		private static function vectorToString(target : Vector) : String {
 			var code : String = "";
 			var len : int = target.length;
-			for(var i : int = 0;i < len;i++) {
-				if(i > 0){
+			for (var i : int = 0;i < len;i++) {
+				if (i > 0) {
 					code += ",";
 				}
 				code += encode(target[i]);
 			}
 			return "[" + code + "]";
 		}
-		
-		private static function arrayToString(target : Array):String {
+
+		private static function arrayToString(target : Array) : String {
 			var code : String = "";
 			var len : int = target.length;
-			for(var i : int = 0;i < len;i++) {
-				if(i > 0){
+			for (var i : int = 0;i < len;i++) {
+				if (i > 0) {
 					code += ",";
 				}
 				code += encode(target[i]);
@@ -66,20 +65,20 @@
 			if (target == null) {
 				return "null";
 			}
-			if(target is String){
-				return "\""+target+"\"";
+			if (target is String) {
+				return "\"" + target + "\"";
 			}
 			if (target is Number) {
 				if (isNaN(target)) {
 					return "NaN";
-				}else{
+				} else {
 					return String(target);
 				}
 			}
-			if(target is Array){
+			if (target is Array) {
 				return arrayToString(target);
 			}
-			if(target is Vector.<*>){
+			if (target is Vector.<*>) {
 				return vectorToString(target);
 			}
 			var name : String = getQualifiedClassName(target).split("::").pop();
@@ -101,7 +100,6 @@
 		public function GLoggingData(level : GLevel, message : Array) {
 			_level = level;
 			_message = message;
-			_timeStamp = null;
 		}
 
 		public function get level() : GLevel {

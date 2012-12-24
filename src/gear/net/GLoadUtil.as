@@ -1,15 +1,16 @@
 ﻿package gear.net {
+	import gear.codec.gpk.Gpk;
+	import gear.codec.xlsx.GWorkSheet;
+	import gear.gui.bd.GBDList;
+	import gear.log4a.GLogError;
+	import gear.log4a.GLogger;
+
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.media.Sound;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
-
-	import gear.codec.gpk.Gpk;
-	import gear.codec.xlsx.GWorkSheet;
-	import gear.gui.bd.GBDList;
-	import gear.log4a.GLogError;
 
 	/**
 	 * 加载管理器
@@ -65,7 +66,7 @@
 		 * @throws LogError 不能被实例化
 		 */
 		public function GLoadUtil() {
-			throw (new GLogError("Class cannot be instantiated"));
+			throw (new GLogError("静态类不能构造!"));
 		}
 
 		/**
@@ -140,6 +141,14 @@
 			loader.onFailed = onFailed;
 			startLoad(loader);
 		}
+		
+		public static function unload(key:String):void{
+			var loader:AGLoader=_loaded[key];
+			if(loader!=null){
+				//loader.unload();
+				delete _loaded[key];
+			}
+		}
 
 		public static function getByteArray(key : String) : ByteArray {
 			var loader : GBinLoader = _loaded[key] as GBinLoader;
@@ -172,6 +181,7 @@
 		public static function getGpkLBD(key : String, lib : String) : GBDList {
 			var loader : GpkLoader = _loaded[lib] as GpkLoader;
 			if (loader == null) {
+				GLogger.warn("在"+lib+"中找不到"+key);
 				return null;
 			}
 			var gpk : Gpk = loader.gpk;

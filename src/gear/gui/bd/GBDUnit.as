@@ -1,4 +1,5 @@
 ﻿package gear.gui.bd {
+	import gear.utils.GBDUtil;
 	import gear.core.IDispose;
 
 	import flash.display.BitmapData;
@@ -13,7 +14,7 @@
 	 */
 	public final class GBDUnit implements IDispose {
 		private var _bd : BitmapData;
-		private var _rect : Rectangle;
+		private var _bound : Rectangle;
 
 		/**
 		 * 构造函数
@@ -23,31 +24,44 @@
 		 */
 		public function GBDUnit(offsetX : int, offsetY : int, bd : BitmapData) {
 			_bd = bd;
-			_rect = _bd.rect.clone();
-			_rect.x = offsetX;
-			_rect.y = offsetY;
+			_bound = _bd.rect.clone();
+			_bound.x = offsetX;
+			_bound.y = offsetY;
 		}
 
 		public function resetBD(dx : int, dy : int, w : int, h : int) : void {
 			var bd : BitmapData = new BitmapData(w, h, true, 0);
 			bd.copyPixels(_bd, _bd.rect, new Point(dx, dy));
 			_bd = bd;
-			_rect.x -= dx;
-			_rect.y -= dy;
-			_rect.width = w;
-			_rect.height = h;
+			_bound.x -= dx;
+			_bound.y -= dy;
+			_bound.width = w;
+			_bound.height = h;
 		}
 
 		public function mergeBD(dx : int, dy : int, unit : GBDUnit) : void {
 			_bd.copyPixels(unit.bd, unit.bd.rect, new Point(dx, dy), null, null, true);
 		}
+		
+		public function set scale(value:Number):void{
+			_bound.x=_bound.x*value;
+			_bound.y=_bound.y*value;
+			_bound.width=_bound.width*value;
+			_bound.height=_bound.height*value;
+			if(_bd==null){
+				return;
+			}
+			var newBD:BitmapData=GBDUtil.scaleBD(_bd,_bound.width,_bound.height);
+			_bd.dispose();
+			_bd=newBD;
+		}
 
 		public function get offsetX() : int {
-			return _rect.x;
+			return _bound.x;
 		}
 
 		public function get offsetY() : int {
-			return _rect.y;
+			return _bound.y;
 		}
 
 		/**
@@ -59,15 +73,15 @@
 			return _bd;
 		}
 
-		public function get rect() : Rectangle {
-			return _rect;
+		public function get bound() : Rectangle {
+			return _bound;
 		}
 
 		/**
 		 * @inheritDoc
 		 */
 		public function dispose() : void {
-			_rect = null;
+			_bound = null;
 			if (_bd != null) {
 				_bd.dispose();
 				_bd = null;
@@ -75,7 +89,7 @@
 		}
 
 		public function clone() : GBDUnit {
-			var result : GBDUnit = new GBDUnit(_rect.x, _rect.y, _bd.clone());
+			var result : GBDUnit = new GBDUnit(_bound.x, _bound.y, _bd.clone());
 			return result;
 		}
 	}
