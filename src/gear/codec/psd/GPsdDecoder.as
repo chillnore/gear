@@ -14,7 +14,6 @@
 	import flash.filters.GlowFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.system.Worker;
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
 
@@ -552,8 +551,6 @@
 		}
 
 		private function parseChannelImageData(layer : GPsdLayer) : void {
-			if (Worker.current.isPrimordial) {
-			}
 			for each (var channel:GPsdChannel in layer.channels) {
 				channel.compression = _data.readUnsignedShort();
 				trace("channelImageData", layer.name, layer.channelCount, channel.compression, channel.id, channel.length);

@@ -94,8 +94,6 @@
 		}
 
 		/**
-		 * @param level Level 日志层级
-		 * @param message Array 消息数组
 		 */
 		public function GLogData(level : GLevel, message : Array) {
 			_level = level;
