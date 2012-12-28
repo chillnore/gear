@@ -12,7 +12,7 @@
 		/**
 		 * @inheritDoc
 		 */
-		public function format(data : GLoggingData, separator : String = "\n"):String {
+		public function format(data : GLogData, separator : String = "\n"):String {
 			var result : String = "[" + data.level.name + "]";
 			result += data.toString() + separator;
 			return result;

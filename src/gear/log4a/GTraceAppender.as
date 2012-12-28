@@ -14,7 +14,7 @@
 		/**
 		 * @inheritDoc
 		 */
-		override public function append(data : GLoggingData) : void {
+		override public function append(data : GLogData) : void {
 			var message : String = _formatter.format(data, "");
 			trace(message);
 		}

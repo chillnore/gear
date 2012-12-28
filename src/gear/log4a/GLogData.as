@@ -7,7 +7,7 @@
 	 * @author bright
 	 * @version 20121227
 	 */
-	public final class GLoggingData {
+	public final class GLogData {
 		private var _level : GLevel;
 		private var _message : Array;
 		private var _code : String;
@@ -53,7 +53,7 @@
 					if (code.length > 0) {
 						code += ",";
 					}
-					code += key + ":" + GLoggingData.encode(value);
+					code += key + ":" + GLogData.encode(value);
 				}
 			} else {
 				return "<" + name + ">";
@@ -97,7 +97,7 @@
 		 * @param level Level 日志层级
 		 * @param message Array 消息数组
 		 */
-		public function GLoggingData(level : GLevel, message : Array) {
+		public function GLogData(level : GLevel, message : Array) {
 			_level = level;
 			_message = message;
 		}
@@ -118,7 +118,7 @@
 					if (result.length > 0) {
 						result += " ";
 					}
-					result += GLoggingData.encode(item);
+					result += GLogData.encode(item);
 				}
 			}
 			return result;
@@ -126,7 +126,7 @@
 
 		public function toString() : String {
 			if (_code == null) {
-				_code = GLoggingData.toCode(_message);
+				_code = GLogData.toCode(_message);
 			}
 			return _code;
 		}

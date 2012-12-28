@@ -11,6 +11,6 @@
 		 * 
 		 * @param data 日志数据
 		 */
-		function append(data : GLoggingData):void;
+		function append(data : GLogData):void;
 	}
 }

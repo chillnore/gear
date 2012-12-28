@@ -17,7 +17,7 @@
 		/**
 		 * @inheritDoc
 		 */
-		public function format(data : GLoggingData, separator : String = "\n") : String {
+		public function format(data : GLogData, separator : String = "\n") : String {
 			var result : String = "<p class='" + data.level.name.toLowerCase() + "'>[" + data.level.name + "]";
 			result += data.toString() + "</p>";
 			return result;

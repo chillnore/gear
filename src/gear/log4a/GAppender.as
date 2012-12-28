@@ -17,7 +17,7 @@
 		/**
 		 * @inheritDoc
 		 */
-		public function append(data : GLoggingData) : void {
+		public function append(data : GLogData) : void {
 			data;
 			throw new GLogError("You muse override append");
 		}

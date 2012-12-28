@@ -30,10 +30,10 @@
 			if (level.compareTo(GLogger._level)) {
 				return;
 			}
-			GLogger.callAppenders(new GLoggingData(level, message));
+			GLogger.callAppenders(new GLogData(level, message));
 		}
 
-		private static function callAppenders(event : GLoggingData) : void {
+		private static function callAppenders(event : GLogData) : void {
 			for each (var appender:IAppender in GLogger._appenders) {
 				appender.append(event);
 			}

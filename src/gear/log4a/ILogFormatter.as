@@ -12,6 +12,6 @@
 		 * @param data 日志数据
 		 * @param separator 行分隔符 @default "\n"
 		 */
-		function format(data : GLoggingData, separator : String = "\n"):String;
+		function format(data : GLogData, separator : String = "\n"):String;
 	}
 }

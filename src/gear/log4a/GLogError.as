@@ -9,7 +9,7 @@
 	 */
 	public class GLogError extends Error {
 		public function GLogError(...log : Array) {
-			super(GLoggingData.toCode(log));
+			super(GLogData.toCode(log));
 			GLogger.error(log);
 		}
 	}
