@@ -5,7 +5,7 @@
 	 * 日志数据
 	 * 
 	 * @author bright
-	 * @version 20121224
+	 * @version 20121227
 	 */
 	public final class GLoggingData {
 		private var _level : GLevel;
