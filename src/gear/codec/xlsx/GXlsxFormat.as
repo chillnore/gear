@@ -57,10 +57,10 @@
 			if (key == null) {
 				return;
 			}
-			var value : * = _data[row][column];
-			if (value == null) {
+			if(_data[row]==null||_data[row][column]==null){
 				return;
 			}
+			var value : * = _data[row][column];
 			switch(type) {
 				case "String":
 					item[key] = StringUtil.trim(String(value));
@@ -74,26 +74,20 @@
 				case "Number":
 					item[key] = Number(value);
 					break;
-				case "Array.<uint>":
-					item[key] = toArrayUint(value);
+				case "Vector.<int>":
+					item[key] = toVectorInt(value);
 					break;
-				case "Array.<int>":
-					item[key] = toArrayInt(value);
+				case "Vector.<uint>":
+					item[key] = toVectorUint(value);
 					break;
-				case "Array.<String>":
-					item[key] = toArrayString(value);
+				case "Vector.<String>":
+					item[key] = toVectorString(value);
 					break;
-				case "Array.<Array.<int>>":
-					item[key] = toArrayArrayInt(value);
+				case "Vector.<Vector.<int>>":
+					item[key] = toVectorVectorInt(value);
 					break;
-				case "Array.<Rectangle>":
-					item[key] = toArrayRectObj(value);
-					break;
-				case "Array.<Point>":
-					item[key] = toArrayPointObj(value);
-					break;
-				case "Array.<PlayData>":
-					item[key] = toArrayPlayData(value);
+				case "Vector.<Rectangle>":
+					item[key] = toVectorRectObj(value);
 					break;
 				case "Rectangle":
 					item[key] = toRectObj(value);
@@ -110,78 +104,67 @@
 			}
 		}
 
-		private function toArrayUint(value : String) : Array {
+		private function toVectorInt(value : String) : Vector.<int> {
 			var source : Array = value.split(",");
 			if (source.length < 1) {
 				return null;
 			}
 			var total : int = source.length;
-			var target : Array = new Array();
-			for (var i : int = 0;i < total;i++) {
-				target[i] = uint(source[i]);
-			}
-			return target;
-		}
-
-		private function toArrayInt(value : String) : Array {
-			var source : Array = value.split(",");
-			if (source.length < 1) {
-				return null;
-			}
-			var total : int = source.length;
-			var target : Array = new Array();
+			var target : Vector.<int> = new Vector.<int>(total, true);
 			for (var i : int = 0;i < total;i++) {
 				target[i] = int(source[i]);
 			}
 			return target;
 		}
 
-		private function toArrayPlayData(value : String) : Array {
-			var params : Array = value.split("_");
-			var target : Array = new Array();
-			var object : Object;
-			var data : Array;
-			for (var i : int = 0;i < params.length;i++) {
-				object = new Object();
-				data = toArrayInt(params[i]);
-				object.delay = data.shift();
-				object.frames = data;
-				target.push(object);
-			}
-			return target;
-		}
-
-		private function toArrayString(value : String) : Array {
+		private function toVectorUint(value : String) : Vector.<uint> {
 			var source : Array = value.split(",");
 			if (source.length < 1) {
 				return null;
 			}
 			var total : int = source.length;
-			var target : Array = new Array();
+			var target : Vector.<uint> = new Vector.<uint>(total, true);
+			for (var i : int = 0;i < total;i++) {
+				target[i] = uint(source[i]);
+			}
+			return target;
+		}
+
+		private function toVectorString(value : String) : Vector.<String> {
+			var source : Array = value.split(",");
+			if (source.length < 1) {
+				return null;
+			}
+			var total : int = source.length;
+			var target : Vector.<String> = new Vector.<String>();
 			for (var i : int = 0;i < total;i++) {
 				target[i] = String(source[i]);
 			}
 			return target;
 		}
 
-		private function toArrayArrayInt(value : String) : Array {
+		private function toVectorVectorInt(value : String) : Vector.<Vector.<int>> {
 			var source : Array = value.split("_");
 			if (source.length < 1) {
 				return null;
 			}
 			var total : int = source.length;
-			var target : Array = new Array();
+			var target : Vector.<Vector.<int>>=new Vector.<Vector.<int>>();
 			for (var i : int = 0;i < total;i++) {
-				target[i] = String(source[i]).split(",");
+				target[i] = toVectorInt(String(source[i]));
 			}
 			return target;
 		}
 
-		private function toArrayRectObj(value : String) : Array {
-			var params : Array = value.split("_");
-			var target : Array = new Array();
-			for (var i : int = 0;i < params.length;i++) {
-				target.push(toRectObj(params[i]));
+		private function toVectorRectObj(value : String) : Vector.<Object> {
+			var source : Array = value.split("_");
+			if (source.length < 1) {
+				return null;
+			}
+			var total : int = source.length;
+			var target : Vector.<Object> = new Vector.<Object>(total, true);
+			for (var i : int = 0;i < total;i++) {
+				target[i] = toRectObj(source[i]);
 			}
 			return target;
 		}
@@ -192,23 +175,6 @@
 				return null;
 			}
 			return {x:int(params[0]), y:int(params[1]), width:int(params[2]), height:int(params[3])};
-		}
-
-		private function toArrayPointObj(value : String) : Array {
-			var params : Array = value.split("_");
-			var target : Array = new Array();
-			for (var i : int = 0;i < params.length;i++) {
-				target.push(toPointObj(params[i]));
-			}
-			return target;
-		}
-
-		private function toPointObj(value : String) : Object {
-			var params : Array = value.split(",");
-			if (params.length < 2) {
-				return null;
-			}
-			return {x:int(params[0]), y:int(params[1])};
 		}
 
 		public function GXlsxFormat(data : Array) {

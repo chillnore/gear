@@ -12,7 +12,7 @@
 		private var _message : Array;
 		private var _code : String;
 
-		private static function vectorToString(target : Vector) : String {
+		private static function vectorToString(target :Vector.<*>) : String {
 			var code : String = "";
 			var len : int = target.length;
 			for (var i : int = 0;i < len;i++) {

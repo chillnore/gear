@@ -23,7 +23,7 @@
 		protected var _list : GBDList;
 		protected var _delay : int;
 		protected var _frame : int;
-		protected var _frames : Array;
+		protected var _frames:Vector.<int>;
 		protected var _current : int;
 		protected var _offset : int;
 		protected var _count : int;
@@ -66,7 +66,7 @@
 			GFrameRender.instance.remove(this);
 		}
 
-		protected function resetFrames(value : Array) : void {
+		protected function resetFrames(value :Vector.<int>) : void {
 			_frames.length = 0;
 			var total : int;
 			var i : int;
@@ -135,7 +135,7 @@
 		 */
 		public function GBDPlayer() {
 			_delay = 80;
-			_frames = new Array();
+			_frames = new Vector.<int>();
 		}
 
 		public function get bitmap() : Bitmap {
@@ -173,7 +173,7 @@
 			return _delay;
 		}
 
-		public function set frames(value : Array) : void {
+		public function set frames(value:Vector.<int>) : void {
 			resetFrames(value);
 			if (_frames.length > 1) {
 				GFrameRender.instance.add(this);
@@ -182,7 +182,7 @@
 			}
 		}
 
-		public function get frames() : Array {
+		public function get frames() :Vector.<int>{
 			return _frames;
 		}
 
@@ -190,7 +190,7 @@
 			return _loop;
 		}
 
-		public function play(delay : int = 33, frames : Array = null, loop : int = 1) : void {
+		public function play(delay : int = 33, frames :Vector.<int> = null, loop : int = 1) : void {
 			if (_list == null) {
 				return;
 			}
@@ -302,15 +302,12 @@
 		/**
 		 * 修改播放中的帧，插入帧序列
 		 */
-		public function insertFrames(index : int, frames : Array) : void {
-			if (index < 0 ) return;
-			var left : Array = _frames.slice(index + 1, _frames.length);
-			_frames.splice(index);
-			for each (var i : uint in frames) {
-				_frames.push(i);
+		public function insertFrames(index : int, frames :Vector.<int>) : void {
+			if (index < 0||index>=_frames.length||frames==null){
+				return;
 			}
-			for each (var h : uint in left) {
-				_frames.push(h);
+			for each(var frame:int in frames){
+				_frames.splice(index,0,frame);
 			}
 		}
 

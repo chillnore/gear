@@ -1,16 +1,19 @@
 ﻿package gear.gui.bd {
 	/**
+	 * 播放数据定义
+	 * 
+	 * @see gear.gui.bd.GBDPlayer
 	 * @author bright
-	 * @version 20121215
+	 * @version 20121227
 	 */
 	public class GPlayData {
 		protected var _delay : int;
-		protected var _frames : Array;
+		protected var _frames:Vector.<int>;
 		protected var _loop : int;
 		protected var _change : Function;
 		protected var _complete : Function;
 
-		public function GPlayData(delay : int = 33, frames : Array = null, loop : int = 1) {
+		public function GPlayData(delay : int = 33, frames :Vector.<int>= null, loop : int = 1) {
 			_delay = delay;
 			_frames = frames;
 			_loop = loop;
@@ -20,11 +23,11 @@
 			return _delay;
 		}
 
-		public function set frames(value : Array) : void {
+		public function set frames(value :Vector.<int>) : void {
 			_frames = value;
 		}
 
-		public function get frames() : Array {
+		public function get frames() :Vector.<int>{
 			return _frames;
 		}
 
@@ -50,7 +53,7 @@
 
 		public function parseObj(value : Object) : void {
 			_delay = (value.delay != null ? value.delay : 33);
-			_frames = (value.frames != null ? value.frames : new Array());
+			_frames = (value.frames != null ? value.frames : null);
 			_loop = (value.loop != null ? value.loop : 1);
 		}
 	}
