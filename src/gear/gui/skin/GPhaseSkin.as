@@ -3,8 +3,10 @@
 	import flash.display.BitmapData;
 	import flash.display.DisplayObjectContainer;
 	import flash.geom.Rectangle;
+
 	import gear.gui.core.GPhase;
 	import gear.utils.GBDUtil;
+
 	/**
 	 * 位图阶段皮肤
 	 * 
@@ -18,13 +20,16 @@
 		protected var _scale9Grid : Rectangle;
 		protected var _selected : Boolean;
 		protected var _phase : int;
-		protected var _width:int;
-		protected var _height:int;
-		
-		protected function update():void{
+		protected var _width : int;
+		protected var _height : int;
+
+		protected function update() : void {
+			if(_phase==GPhase.NONE){
+				_phase=GPhase.UP;
+			}
 			var bd : BitmapData = _target[_phase + (_selected ? 4 : 0)];
 			if (bd == null) {
-				bd = _target[_selected?GPhase.SELECTED_UP:GPhase.UP];
+				bd = _target[_selected ? GPhase.SELECTED_UP : GPhase.UP];
 			}
 			_bitmap.bitmapData = bd;
 		}
@@ -33,19 +38,21 @@
 			_source = new Vector.<BitmapData>(9, true);
 			_target = new Vector.<BitmapData>(9, true);
 			_bitmap = new Bitmap();
-			_phase = GPhase.UP;
+			_phase = GPhase.NONE;
 		}
-		
-		public function set name(value:String):void{
-			_bitmap.name=value;
+
+		public function set name(value : String) : void {
+			_bitmap.name = value;
 		}
 
 		public function setAt(phase : int, bitmapData : BitmapData) : void {
 			_source[phase] = bitmapData;
 			_target[phase] = bitmapData;
+			_width = Math.max(_width, bitmapData.width);
+			_height = Math.max(_height, bitmapData.height);
 		}
 
-		public function addTo(parent : DisplayObjectContainer,index:int=0) : void {
+		public function addTo(parent : DisplayObjectContainer, index : int = 0) : void {
 			if (_bitmap.parent != parent) {
 				parent.addChildAt(_bitmap, index);
 			}
@@ -56,22 +63,22 @@
 				_bitmap.parent.removeChild(_bitmap);
 			}
 		}
-		
-		public function moveTo(x : int, y : int) :void{
-			_bitmap.x=x;
-			_bitmap.y=y;
+
+		public function moveTo(x : int, y : int) : void {
+			_bitmap.x = x;
+			_bitmap.y = y;
 		}
-		
-		public function set x(value:int):void{
-			_bitmap.x=value;
+
+		public function set x(value : int) : void {
+			_bitmap.x = value;
 		}
 
 		public function get x() : int {
 			return _bitmap.x;
 		}
-		
-		public function set y(value:int):void{
-			_bitmap.y=value;
+
+		public function set y(value : int) : void {
+			_bitmap.y = value;
 		}
 
 		public function get y() : int {
@@ -79,11 +86,11 @@
 		}
 
 		public function setSize(width : int, height : int) : void {
-			if(_width==width&&_height==height){
+			if (_width == width && _height == height) {
 				return;
 			}
-			_width=width;
-			_height=height;
+			_width = width;
+			_height = height;
 			var i : int;
 			var bd : BitmapData;
 			for (i = 0;i < _target.length;i++) {
@@ -94,11 +101,11 @@
 			}
 			if (_scale9Grid != null) {
 				for (i = 0;i < _source.length;i++) {
-					_target[i] = GBDUtil.scale9(_source[i], _scale9Grid,_width,_height);
+					_target[i] = GBDUtil.scale9(_source[i], _scale9Grid, _width, _height);
 				}
 			} else {
 				for (i = 0;i < _source.length;i++) {
-					_target[i] = GBDUtil.scaleBD(_source[i],_width,_height);
+					_target[i] = GBDUtil.scaleBD(_source[i], _width, _height);
 				}
 			}
 			update();
@@ -113,10 +120,7 @@
 		}
 
 		public function set phase(value : int) : void {
-			if(_phase==value){
-				return;
-			}
-			_phase=value;
+			_phase = value;
 			update();
 		}
 
@@ -137,7 +141,9 @@
 					result.setAt(i, bd);
 				}
 			}
-			result.scale9Grid = _scale9Grid.clone();
+			if (_scale9Grid != null) {
+				result.scale9Grid = _scale9Grid.clone();
+			}
 			return result;
 		}
 	}

@@ -20,6 +20,7 @@
 			_padding.vdist = 2;
 			_bgSkin = GUIUtil.theme.emptySkin;
 			_icon = GUIUtil.theme.radioButtonIcon;
+			addRender(viewSkin);
 			addRender(update);
 		}
 
@@ -32,8 +33,6 @@
 
 		override protected function resize() : void {
 			_bgSkin.setSize(_width, _height);
-			_bgSkin.phase = _phase;
-			_icon.phase = _phase;
 		}
 
 		override protected function viewSkin() : void {
@@ -47,7 +46,6 @@
 		}
 
 		protected function update() : void {
-			trace("update", name);
 			if (_autoSize == GAutoSizeMode.AUTO_SIZE) {
 				forceSize(_padding.left + _icon.width + _label.width + _padding.right, _padding.top + Math.max(_icon.height, _label.height) + _padding.bottom);
 				_icon.x = _padding.left;

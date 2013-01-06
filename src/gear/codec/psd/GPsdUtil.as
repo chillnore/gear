@@ -1,4 +1,4 @@
-package gear.codec.psd {
+﻿package gear.codec.psd {
 	import gear.log4a.GLogError;
 
 	import flash.display.BitmapData;

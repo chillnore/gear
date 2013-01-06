@@ -20,7 +20,7 @@
 	 */
 	public class GButton extends GBase {
 		protected var _phase : int;
-		protected var _lockPhase:int;
+		protected var _lockPhase : int;
 		protected var _skin : IGSkin;
 		protected var _label : GLabel;
 		protected var _onClick : Function;
@@ -30,7 +30,7 @@
 			_autoSize = GAutoSizeMode.NONE;
 			_padding.hdist = 6;
 			_padding.vdist = 2;
-			_lockPhase=GPhase.NONE;
+			_lockPhase = GPhase.NONE;
 			setSize(60, 22);
 			skin = GUIUtil.theme.buttonSkin;
 		}
@@ -93,29 +93,29 @@
 				return;
 			}
 			try {
-				_onClick.apply(null, [this]);
+				_onClick.apply(null, _onClick.length < 1 ? null : [this]);
 			} catch(e : Error) {
 				GLogger.error(e.getStackTrace());
 			}
 		}
 
 		protected function updatePhase() : void {
-			var value:int=(_lockPhase!=-1?_lockPhase:_phase);
+			var value : int = (_lockPhase != -1 ? _lockPhase : _phase);
 			_skin.phase = value;
-			_label.phase =value;
+			_label.phase = value;
 		}
 
 		public function GButton() {
 		}
-		
+
 		/**
 		 * 设置锁定阶段
 		 */
-		public function set lockPhase(value:int):void{
-			if(_lockPhase==value){
+		public function set lockPhase(value : int) : void {
+			if (_lockPhase == value) {
 				return;
 			}
-			_lockPhase=value;
+			_lockPhase = value;
 			addRender(updatePhase);
 		}
 

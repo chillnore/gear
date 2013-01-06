@@ -22,6 +22,12 @@
 		protected function onSelect() : void {
 		}
 		
+		override protected function onEnabled():void{
+			if (!_enabled) {
+				_phase = GPhase.DISABLED;
+			}
+		}
+		
 		override protected  function onShow() : void {
 			super.onShow();
 			addEvent(this, MouseEvent.ROLL_OVER, mouseHandler);
@@ -43,11 +49,11 @@
 				_phase = GPhase.DOWN;
 			} else if (event.type == MouseEvent.MOUSE_UP) {
 				_phase = (event.currentTarget == this) ? GPhase.OVER : GPhase.UP;
-				if (_group!=null) {
-					if (!_selected) {
-						selected = true;
+				if(_group!=null){
+					if(!_selected){
+						_group.selected(this);
 					}
-				} else {
+				}else{
 					selected = !_selected;
 				}
 			}
@@ -67,9 +73,6 @@
 				return;
 			}
 			_selected = value;
-			if (_group != null && _selected) {
-				_group.selected(this);
-			}
 			onSelect();
 		}
 

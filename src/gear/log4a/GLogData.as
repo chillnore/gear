@@ -5,14 +5,14 @@
 	 * 日志数据
 	 * 
 	 * @author bright
-	 * @version 20121227
+	 * @version 20130106
 	 */
 	public final class GLogData {
 		private var _level : GLevel;
 		private var _message : Array;
 		private var _code : String;
 
-		private static function vectorToString(target :Vector.<*>) : String {
+		private static function vectorToString(target :Vector.<Object>) : String {
 			var code : String = "";
 			var len : int = target.length;
 			for (var i : int = 0;i < len;i++) {
@@ -78,7 +78,7 @@
 			if (target is Array) {
 				return arrayToString(target);
 			}
-			if (target is Vector.<*>) {
+			if (target is Vector.<Object>) {
 				return vectorToString(target);
 			}
 			var name : String = getQualifiedClassName(target).split("::").pop();

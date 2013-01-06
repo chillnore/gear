@@ -4,6 +4,7 @@
 
 	/**
 	 * 对象池
+	 * 
 	 * @example
 	 * <listing version="3.0"> 
 	 * GObjPool对象池使用示例:
@@ -13,13 +14,12 @@
 	 * pool.returnObj(point);
 	 * 
 	 * @author bright
-	 * @version 20121118
+	 * @version 20130103
 	 */
 	public final class GObjPool implements IDispose {
 		private var _class : Class;
-		private var _list : Array;
-		private var _total : int;
-
+		private var _idles : Vector.<Object>;
+		
 		protected function construct(args : Array) : Object {
 			switch( args.length ) {
 				case 0:
@@ -45,34 +45,29 @@
 				case 10:
 					return new _class(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
 				default:
-					throw new GLogError("GObjPool.construct args length >10!");
+					throw new GLogError("对象池构造参数数量不能超过10个!");
 			}
 		}
 
-		public function GObjPool(value : Class, total : int = 0) {
+		public function GObjPool(value : Class) {
 			_class = value;
-			_list = new Array();
-			_total = total;
+			_idles = new Vector.<Object>();
 		}
 
 		public function borrowObj(...args : Array) : Object {
-			if (_list.length > 0) {
-				var temp : Object = _list.shift();
+			if (_idles.length > 0) {
+				var temp : Object = _idles.shift();
 				return temp;
 			}
 			return construct(args);
 		}
 
 		public function returnObj(value : Object) : void {
-			if (_total > 0 && _list.length >= _total) {
-				return;
-			}
-			_list.push(value);
+			_idles.push(value);
 		}
 
 		public function dispose() : void {
-			_list.length = 0;
-			_list = null;
+			_idles.length = 0;
 		}
 	}
 }

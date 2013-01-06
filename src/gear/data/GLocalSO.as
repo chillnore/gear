@@ -12,7 +12,7 @@
 	 * 本地共享对象类
 	 * 
 	 * @author bright
-	 * @version 20101015
+	 * @version 20130105
 	 */
 	public class GLocalSO {
 		private var _shareObject : SharedObject;
@@ -50,7 +50,7 @@
 		 * @param value 值
 		 * @example 
 		 * <listing version="3.0">
-		 * var lso:LocalSO=new LocalSO("game");
+		 * var lso:GLocalSO=new GLocalSO("game");
 		 * lso.setAt("key","value");
 		 * lso.flush();
 		 * </listing>
@@ -69,7 +69,7 @@
 		 * @param key 键
 		 * @example 
 		 * <listing version="3.0">
-		 * var lso:LocalSO=new LocalSO("game")
+		 * var lso:GLocalSO=new GLocalSO("game")
 		 * trace(lso.getAt("key")); // 如果flush成功则输出"value"
 		 * </listing>
 		 * @see #setAt()
