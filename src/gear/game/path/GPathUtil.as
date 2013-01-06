@@ -33,7 +33,7 @@
 			var error : int = dx >> 1;
 			var y : int = y0;
 			var ystep : int = (y0 < y1) ? 1 : -1;
-			var result : Vector = new Vector.<GNode>;
+			var result : Vector.<GNode> = new Vector.<GNode>;
 			for (var x : int = x0;x < x1;x++) {
 				if (steep) {
 					result.push(GNode.pool.borrowObj(y, x));

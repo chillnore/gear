@@ -1,19 +1,20 @@
 ﻿package gear.game.path {
 	import gear.pool.GObjPool;
+
 	/**
 	 * 地图节点
 	 * 
 	 * @author bright
 	 */
 	public class GNode {
-		public static var pool:GObjPool=new GObjPool(GNode);
+		public static var pool : GObjPool = new GObjPool(GNode);
 		public var x : int;
 		public var y : int;
 		public var g : int;
 		public var h : int;
 		public var f : int;
 		public var parent : GNode;
-		public var opened:Boolean;
+		public var opened : Boolean;
 		public var closed : Boolean;
 
 		public function GNode() {
