@@ -12,7 +12,7 @@
 	 * 控件基类
 	 * 
 	 * @author bright
-	 * @version 20121212
+	 * @version 20130110
 	 */
 	public class GBase extends Sprite {
 		protected var _parent : DisplayObjectContainer;
@@ -27,32 +27,34 @@
 		protected var _align : GAlign;
 		protected var _enabled : Boolean;
 		protected var _padding : GPadding;
-		protected var _isTop:Boolean;
+		protected var _isTop : Boolean;
 		protected var _events : Vector.<Object>;
 		protected var _renders : Vector.<Function>;
 		protected var _isRender : Boolean;
+		protected var _sizeRender : Boolean;
 		protected var _source : *;
 
 		protected function addToStageHandler(event : Event) : void {
 			if (parent == GUIUtil.root) {
-				if(_isTop&&GUIUtil.tops.indexOf(this)==-1){
+				if (_isTop && GUIUtil.tops.indexOf(this) == -1) {
 					GUIUtil.tops.push(this);
 				}
-				var index:int=(_isTop?parent.numChildren-1:parent.numChildren-GUIUtil.tops.length-1);
+				var index : int = (_isTop ? parent.numChildren - 1 : parent.numChildren - GUIUtil.tops.length - 1);
 				parent.setChildIndex(this, index);
 				addEvent(stage, Event.RESIZE, stageResizeHandler);
+				if (_align != null) {
+					addRender(layout);
+				}
 			}
-			if (_renders.length > 0) {
-				stage.invalidate();
-			}
+			render();
 			onShow();
 		}
 
 		protected function removedFromStageHandler(event : Event) : void {
-			if(_isTop&&parent==GUIUtil.root){
-				var index:int=GUIUtil.tops.indexOf(this);
-				if(index!=-1){
-					GUIUtil.tops.splice(index,1);
+			if (_isTop && parent == GUIUtil.root) {
+				var index : int = GUIUtil.tops.indexOf(this);
+				if (index != -1) {
+					GUIUtil.tops.splice(index, 1);
 				}
 			}
 			removeAllEvent();
@@ -108,10 +110,10 @@
 			if (_isRender) {
 				return;
 			}
-			if (_renders.length == 1) {
-				addEvent(this, Event.ENTER_FRAME, renderHandler);
-				addEvent(this, Event.RENDER, renderHandler);
+			if (_renders.length > 0) {
 				if (stage != null) {
+					addEvent(this, Event.ENTER_FRAME, renderHandler);
+					addEvent(this, Event.RENDER, renderHandler);
 					stage.invalidate();
 				}
 			}
@@ -234,7 +236,7 @@
 			if (_scaleMode == GScaleMode.FIT_SIZE || _scaleMode == GScaleMode.FIT_WIDTH || _autoSize == GAutoSizeMode.AUTO_SIZE || _autoSize == GAutoSizeMode.AUTO_WIDTH) {
 				return;
 			}
-			var newW : int = GMathUtil.clamp(Math.round(value), _minWidth, _maxWidth);
+			var newW : int = GMathUtil.clamp(GMathUtil.round(value), _minWidth, _maxWidth);
 			if (_width == newW) {
 				return;
 			}
@@ -246,14 +248,25 @@
 		}
 
 		override public function get width() : Number {
+			if (_sizeRender) {
+				render();
+			}
 			return _width;
+		}
+
+		public function get right() : int {
+			return x + width;
+		}
+
+		public function get bottom() : int {
+			return y + height;
 		}
 
 		override public function set height(value : Number) : void {
 			if (_scaleMode == GScaleMode.FIT_SIZE || _scaleMode == GScaleMode.FIT_HEIGHT || _autoSize == GAutoSizeMode.AUTO_SIZE || _autoSize == GAutoSizeMode.AUTO_HEIGHT) {
 				return;
 			}
-			var newH : int = GMathUtil.clamp(Math.round(value), _minHeight, _maxHeight);
+			var newH : int = GMathUtil.clamp(GMathUtil.round(value), _minHeight, _maxHeight);
 			if (_height == newH) {
 				return;
 			}
@@ -265,6 +278,9 @@
 		}
 
 		override public function get height() : Number {
+			if (_sizeRender) {
+				render();
+			}
 			return _height;
 		}
 
@@ -296,7 +312,7 @@
 				parent.setChildIndex(this, parent.numChildren - 1);
 			} else {
 				if (_parent == null) {
-					_parent=GUIUtil.root;
+					_parent = GUIUtil.root;
 				}
 				_parent.addChild(this);
 			}

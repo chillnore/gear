@@ -6,11 +6,11 @@ package gear.particle.init {
 	 * @author bright
 	 * @version 20111027
 	 */
-	public class ScaleInit extends InitBase {
+	public class GScaleInit extends InitBase {
 		protected var _min : Number;
 		protected var _max : Number;
 
-		public function ScaleInit(minScale : Number = 1, maxScale : Number = NaN) {
+		public function GScaleInit(minScale : Number = 1, maxScale : Number = NaN) {
 			_min = minScale;
 			_max = maxScale;
 			if ( isNaN(maxScale) ) {

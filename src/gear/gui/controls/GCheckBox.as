@@ -80,7 +80,6 @@
 		}
 
 		protected function update() : void {
-			trace("update", name);
 			if (_autoSize == GAutoSizeMode.AUTO_SIZE) {
 				forceSize(_padding.left + _icon.width + _label.width + _padding.right, _padding.top + Math.max(_icon.height, _label.height) + _padding.bottom);
 				_icon.x = _padding.left;

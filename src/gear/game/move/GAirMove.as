@@ -1,4 +1,5 @@
 ﻿package gear.game.move {
+	import gear.utils.GMathUtil;
 	/**
 	 * 浮空移动
 	 * 
@@ -34,7 +35,7 @@
 			_total = _upT + _dropT;
 			return _total;
 		}
-		
+
 		override public function set total(value : int) : void {
 			_total = value;
 			_step = 0;
@@ -47,14 +48,14 @@
 			var upH : int = _dist - _start;
 			var dropH : int = _dist;
 			if (upH < 0) {
-				_upT = Math.round(_total * (upH / (upH + dropH)));
-				_upG = -upH * 2 / (_upT * (_upT - 1));
+				_upT = GMathUtil.round(_total * (upH / (upH + dropH)));
+				_upG = (-upH << 1) / (_upT * (_upT - 1));
 				_upS = -_upT * _upG;
 			} else {
 				_upT = 0;
 			}
 			_dropT = _total - _upT;
-			_dropG = -dropH * 2 / (_dropT * (_dropT - 1));
+			_dropG = (-dropH << 1) / (_dropT * (_dropT - 1));
 			_dropS = (_upT > 0 ? -_dropG : 0);
 		}
 

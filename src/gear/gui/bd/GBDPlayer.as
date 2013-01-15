@@ -23,7 +23,7 @@
 		protected var _list : GBDList;
 		protected var _delay : int;
 		protected var _frame : int;
-		protected var _frames:Vector.<int>;
+		protected var _frames : Vector.<int>;
 		protected var _current : int;
 		protected var _offset : int;
 		protected var _count : int;
@@ -57,6 +57,12 @@
 			addChild(_bitmap);
 		}
 
+		override protected function onShow() : void {
+			if (_current < _frames.length) {
+				GFrameRender.instance.add(this);
+			}
+		}
+
 		/**
 		 * @private
 		 * @inheritDoc
@@ -66,7 +72,7 @@
 			GFrameRender.instance.remove(this);
 		}
 
-		protected function resetFrames(value :Vector.<int>) : void {
+		protected function resetFrames(value : Vector.<int>) : void {
 			_frames.length = 0;
 			var total : int;
 			var i : int;
@@ -108,9 +114,9 @@
 				}
 			}
 			_frame = frame;
-			var d:int=_dir;
-			if(_isTurn&&_oldDir!=_dir){
-				d=_oldDir=GMathUtil.getTurnDir(_oldDir, _dir);
+			var d : int = _dir;
+			if (_isTurn && _oldDir != _dir) {
+				d = _oldDir = GMathUtil.getTurnDir(_oldDir, _dir);
 			}
 			var index : int = (_dirs < 1 ? _frame : (_frame * _dirs + d));
 			var unit : GBDUnit = _list.getAt(index, false);
@@ -173,7 +179,7 @@
 			return _delay;
 		}
 
-		public function set frames(value:Vector.<int>) : void {
+		public function set frames(value : Vector.<int>) : void {
 			resetFrames(value);
 			if (_frames.length > 1) {
 				GFrameRender.instance.add(this);
@@ -182,7 +188,7 @@
 			}
 		}
 
-		public function get frames() :Vector.<int>{
+		public function get frames() : Vector.<int> {
 			return _frames;
 		}
 
@@ -190,7 +196,7 @@
 			return _loop;
 		}
 
-		public function play(delay : int = 33, frames :Vector.<int> = null, loop : int = 1) : void {
+		public function play(delay : int = 33, frames : Vector.<int> = null, loop : int = 1) : void {
 			if (_list == null) {
 				return;
 			}
@@ -235,7 +241,7 @@
 		}
 
 		/**
-		 * 重播
+		 * 重放
 		 */
 		public function replay() : void {
 			_offset = 0;
@@ -302,12 +308,12 @@
 		/**
 		 * 修改播放中的帧，插入帧序列
 		 */
-		public function insertFrames(index : int, frames :Vector.<int>) : void {
-			if (index < 0||index>=_frames.length||frames==null){
+		public function insertFrames(index : int, frames : Vector.<int>) : void {
+			if (index < 0 || index >= _frames.length || frames == null) {
 				return;
 			}
-			for each(var frame:int in frames){
-				_frames.splice(index,0,frame);
+			for each (var frame:int in frames) {
+				_frames.splice(index, 0, frame);
 			}
 		}
 
@@ -467,6 +473,9 @@
 		 */
 		public function set dir(value : int) : void {
 			value = value % 8;
+			if (value < 0) {
+				value += 8;
+			}
 			if (_dir == value) {
 				return;
 			}

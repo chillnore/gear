@@ -1,12 +1,17 @@
 ﻿package gear.game.path {
+	import gear.game.hit.GBlock;
+
 	/**
-	 * 地图碰撞
+	 * 地图接口
 	 * 
 	 * @author bright
-	 * @version 20111205
+	 * @version 20130107
 	 */
 	public interface IGMap {
-		function isOut(x:int,y:int):Boolean;
-		function walkable(source:GNode,target:GNode) : Boolean;
+		function isHitOrOut(block : GBlock) : Boolean;
+
+		function isOut(block : GBlock, nodeX : int, nodeY : int) : Boolean;
+
+		function walkable(block : GBlock, source : GNode, target : GNode) : Boolean;
 	}
 }

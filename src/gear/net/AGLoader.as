@@ -20,7 +20,7 @@
 
 		protected function complete() : void {
 			_state = GLoadState.COMPLETE;
-			GLogger.info(GStringUtil.format("加载 {0} 完成", _url));
+			GLogger.info(GStringUtil.format("加载 %s 完成", _url));
 			GLoadUtil.loadNext(this);
 			if (_onLoaded == null) {
 				return;
@@ -34,7 +34,7 @@
 
 		protected function failed() : void {
 			_state = GLoadState.FAILED;
-			GLogger.warn(GStringUtil.format("加载 {0} 失败!", _url));
+			GLogger.warn(GStringUtil.format("加载 %s 失败!", _url));
 			GLoadUtil.loadNext(this);
 			if (_onFailed == null) {
 				return;

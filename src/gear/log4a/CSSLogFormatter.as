@@ -19,7 +19,7 @@
 		 */
 		public function format(data : GLogData, separator : String = "\n") : String {
 			var result : String = "<p class='" + data.level.name.toLowerCase() + "'>[" + data.level.name + "]";
-			result += data.toString() + "</p>";
+			result += data.toString().replace(/\n/g,"<br>") + "</p>";
 			return result;
 		}
 	}

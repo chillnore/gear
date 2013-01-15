@@ -1,13 +1,12 @@
 ﻿package gear.game.path {
-	import gear.pool.GObjPool;
 
 	/**
 	 * 地图节点
 	 * 
 	 * @author bright
+	 * @version 20130107
 	 */
 	public class GNode {
-		public static var pool : GObjPool = new GObjPool(GNode);
 		public var x : int;
 		public var y : int;
 		public var g : int;
@@ -17,7 +16,8 @@
 		public var opened : Boolean;
 		public var closed : Boolean;
 
-		public function GNode() {
+		public function GNode(newX:int=0,newY:int=0) {
+			setTo(newX,newY);
 		}
 
 		public function setTo(newX : int, newY : int) : void {

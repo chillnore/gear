@@ -4,6 +4,7 @@
 	import gear.gui.skin.IGSkin;
 	import gear.utils.GBDUtil;
 	import gear.utils.GColorUtil;
+	import gear.utils.GDrawUtil;
 	import gear.utils.GMathUtil;
 
 	import flash.display.BitmapData;
@@ -23,21 +24,26 @@
 		private static const EMPTY_SKIN : int = 0;
 		private static const BUTTON_SKIN : int = 1;
 		private static const CHECK_BOX_ICON : int = 2;
-		private static const PROGRESS_BAR_TRACK_SKIN:int=3;
-		private static const PROGRESS_BAR_BAR_SKIN:int=4;
-		private static const RADIO_BUTTON_ICON : int = 5;
-		private static const SCROLL_BAR_TRACK_SKIN : int = 6;
-		private static const SCROLL_BAR_THUMB_SKIN : int = 7;
-		private static const SCROLL_BAR_ARROW_UP_SKIN : int = 8;
-		private static const SCROLL_BAR_ARROW_DOWN_SKIN : int = 9;
-		private static const TOGGLE_BUTTON_SKIN : int = 10;
-		private static const SCROLL_BAR_THUMB_ICON : int = 0;
+		private static const PANEL_BG_SKIN:int=3;
+		private static const PROGRESS_BAR_TRACK_SKIN : int = 4;
+		private static const PROGRESS_BAR_BAR_SKIN : int = 5;
+		private static const RADIO_BUTTON_ICON : int = 6;
+		private static const SCROLL_BAR_TRACK_SKIN : int = 7;
+		private static const SCROLL_BAR_THUMB_SKIN : int = 8;
+		private static const SCROLL_BAR_ARROW_UP_SKIN : int = 9;
+		private static const SCROLL_BAR_ARROW_DOWN_SKIN : int = 10;
+		private static const TEXT_AREA_BORDER_SKIN:int=11;
+		private static const TEXT_INPUT_BORDER_SKIN : int = 12;
+		private static const TOGGLE_BUTTON_SKIN : int = 13;
+		private static const LEFT_ARROW_ICON : int = 0;
+		private static const RIGHT_ARROW_ICON : int = 1;
+		private static const SCROLL_BAR_THUMB_ICON : int = 2;
 		private var _caches : Vector.<IGSkin>;
 		private var _icons : Vector.<BitmapData>;
 
 		public function GASTheme() {
-			_caches = new Vector.<IGSkin>(11, true);
-			_icons = new Vector.<BitmapData>(1, true);
+			_caches = new Vector.<IGSkin>(14, true);
+			_icons = new Vector.<BitmapData>(3, true);
 		}
 
 		public function get emptySkin() : IGSkin {
@@ -47,7 +53,6 @@
 			}
 			result = new GPhaseSkin();
 			var bd : BitmapData = new BitmapData(60, 60, true, 0);
-			// bd.fillRect(bd.rect, 0x330000FF);
 			result.setAt(GPhase.UP, bd);
 			_caches[EMPTY_SKIN] = result;
 			return result;
@@ -256,7 +261,23 @@
 			return result;
 		}
 		
-		public function get progressBarTrackSkin():IGSkin{
+		public function get panelBgSkin() : IGSkin {
+			var result : IGSkin = _caches[PANEL_BG_SKIN];
+			if (result != null) {
+				return result.clone();
+			}
+			result = new GPhaseSkin();
+			var skin : Shape = new Shape();
+			var g : Graphics = skin.graphics;
+			GDrawUtil.drawFillBorder(g, 0xA9ACAE, 1, 0, 0, 50, 50);
+			GDrawUtil.drawFillRect(g, 0xFFFFFF, 1, 1, 1, 48, 48);
+			result.setAt(GPhase.UP, GBDUtil.shapeToBD(skin));
+			result.scale9Grid = new Rectangle(1, 1, 48, 48);
+			_caches[PANEL_BG_SKIN] = result;
+			return result;
+		}
+
+		public function get progressBarTrackSkin() : IGSkin {
 			var result : IGSkin = _caches[PROGRESS_BAR_TRACK_SKIN];
 			if (result != null) {
 				return result.clone();
@@ -273,13 +294,13 @@
 			mtx.createGradientBox(12, 12, GMathUtil.angleToRadian(90), 1, 1);
 			g.drawRect(1, 1, 12, 12);
 			g.endFill();
-			result.setAt(GPhase.UP,GBDUtil.shapeToBD(skin));
-			result.scale9Grid = new Rectangle(2,2,10,10);
-			_caches[PROGRESS_BAR_TRACK_SKIN]=result;
+			result.setAt(GPhase.UP, GBDUtil.shapeToBD(skin));
+			result.scale9Grid = new Rectangle(2, 2, 10, 10);
+			_caches[PROGRESS_BAR_TRACK_SKIN] = result;
 			return result;
 		}
-		
-		public function get progressBarBarSkin():IGSkin{
+
+		public function get progressBarBarSkin() : IGSkin {
 			var result : IGSkin = _caches[PROGRESS_BAR_BAR_SKIN];
 			if (result != null) {
 				return result.clone();
@@ -296,9 +317,9 @@
 			mtx.createGradientBox(12, 12, GMathUtil.angleToRadian(90), 1, 1);
 			g.drawRect(1, 1, 12, 12);
 			g.endFill();
-			result.setAt(GPhase.UP,GBDUtil.shapeToBD(skin));
-			result.scale9Grid = new Rectangle(2,2,10,10);
-			_caches[PROGRESS_BAR_BAR_SKIN]=result;
+			result.setAt(GPhase.UP, GBDUtil.shapeToBD(skin));
+			result.scale9Grid = new Rectangle(2, 2, 10, 10);
+			_caches[PROGRESS_BAR_BAR_SKIN] = result;
 			return result;
 		}
 
@@ -390,6 +411,42 @@
 			return result;
 		}
 
+		public function get leftArrowIcon() : BitmapData {
+			var result : BitmapData = _icons[LEFT_ARROW_ICON];
+			if (result != null) {
+				return result;
+			}
+			var skin : Shape = new Shape();
+			var g : Graphics = skin.graphics;
+			g.beginFill(0, 1);
+			g.moveTo(4, 0);
+			g.lineTo(4, 7);
+			g.lineTo(0, 3.5);
+			g.lineTo(4, 0);
+			g.endFill();
+			result = GBDUtil.shapeToBD(skin);
+			_icons[LEFT_ARROW_ICON] = result;
+			return result;
+		}
+
+		public function get rightArrowIcon() : BitmapData {
+			var result : BitmapData = _icons[RIGHT_ARROW_ICON];
+			if (result != null) {
+				return result;
+			}
+			var skin : Shape = new Shape();
+			var g : Graphics = skin.graphics;
+			g.beginFill(0, 1);
+			g.moveTo(0, 0);
+			g.lineTo(4, 3.5);
+			g.lineTo(0, 7);
+			g.lineTo(0, 0);
+			g.endFill();
+			result = GBDUtil.shapeToBD(skin);
+			_icons[RIGHT_ARROW_ICON] = result;
+			return result;
+		}
+
 		public function get scrollBarTrackSkin() : IGSkin {
 			var result : IGSkin = _caches[SCROLL_BAR_TRACK_SKIN];
 			if (result != null) {
@@ -403,7 +460,7 @@
 			g.drawRect(0, 0, 1, 100);
 			g.endFill();
 			mtx.createGradientBox(13, 100, GMathUtil.angleToRadian(0), 1, 1);
-			g.beginGradientFill(GradientType.LINEAR, [0x94999B,0xE7E7E7], [1, 1], [0, 255], mtx);
+			g.beginGradientFill(GradientType.LINEAR, [0x94999B, 0xE7E7E7], [1, 1], [0, 255], mtx);
 			g.drawRect(1, 0, 13, 100);
 			g.endFill();
 			g.beginFill(0x585F63, 1);
@@ -415,7 +472,7 @@
 			g.drawRect(0, 0, 1, 100);
 			g.endFill();
 			mtx.createGradientBox(13, 100, GMathUtil.angleToRadian(0), 1, 1);
-			g.beginGradientFill(GradientType.LINEAR, [0xDDDDDD,0xEEEEEE], [1, 1], [0, 255], mtx);
+			g.beginGradientFill(GradientType.LINEAR, [0xDDDDDD, 0xEEEEEE], [1, 1], [0, 255], mtx);
 			g.drawRect(1, 0, 13, 100);
 			g.endFill();
 			g.beginFill(0xA5A5A5, 1);
@@ -423,7 +480,7 @@
 			g.endFill();
 			result.setAt(GPhase.DISABLED, GBDUtil.shapeToBD(skin));
 			result.scale9Grid = new Rectangle(1, 0, 13, 100);
-			_caches[SCROLL_BAR_TRACK_SKIN]=result;
+			_caches[SCROLL_BAR_TRACK_SKIN] = result;
 			return result;
 		}
 
@@ -470,23 +527,6 @@
 			return result;
 		}
 
-		public function get scrollBarThumbIcon() : BitmapData {
-			var result:BitmapData=_icons[SCROLL_BAR_THUMB_ICON];
-			if(result!=null){
-				return result;
-			}
-			var skin : Shape = new Shape();
-			var g : Graphics = skin.graphics;
-			g.beginFill(0x5A6165,1);
-			g.drawRect(0, 0, 5, 1);
-			g.drawRect(0,2,5,1);
-			g.drawRect(0,4,5,1);
-			g.drawRect(0,6,5,1);
-			result=GBDUtil.shapeToBD(skin);
-			_icons[SCROLL_BAR_THUMB_ICON]=result;
-			return result;
-		}
-
 		public function get scrollBarArrowUpSkin() : IGSkin {
 			var result : IGSkin = _caches[SCROLL_BAR_ARROW_UP_SKIN];
 			if (result != null) {
@@ -501,14 +541,14 @@
 			g.drawRect(0, 0, 15, 14);
 			g.endFill();
 			mtx.createGradientBox(13, 12, GMathUtil.angleToRadian(90), 1, 1);
-			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF,0xE6E6E6], [1, 1], [0, 255], mtx);
+			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xE6E6E6], [1, 1], [0, 255], mtx);
 			g.drawRect(1, 1, 13, 12);
 			g.endFill();
 			mtx.createGradientBox(13, 6, GMathUtil.angleToRadian(90), 1, 1);
 			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xEEEEEE], [0.3, 0], [0, 255], mtx);
-			g.drawRect(1, 1, 13,6);
+			g.drawRect(1, 1, 13, 6);
 			g.endFill();
-			g.beginFill(0,1);
+			g.beginFill(0, 1);
 			g.moveTo(7.5, 4);
 			g.lineTo(11, 8);
 			g.lineTo(4, 8);
@@ -521,14 +561,14 @@
 			g.drawRect(0, 0, 15, 14);
 			g.endFill();
 			mtx.createGradientBox(13, 12, GMathUtil.angleToRadian(90), 1, 1);
-			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF,0xE6E6E6], [1, 1], [0, 255], mtx);
+			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xE6E6E6], [1, 1], [0, 255], mtx);
 			g.drawRect(1, 1, 13, 12);
 			g.endFill();
 			mtx.createGradientBox(13, 6, GMathUtil.angleToRadian(90), 1, 1);
 			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xEEEEEE], [0.3, 0], [0, 255], mtx);
-			g.drawRect(1, 1, 13,6);
+			g.drawRect(1, 1, 13, 6);
 			g.endFill();
-			g.beginFill(0,1);
+			g.beginFill(0, 1);
 			g.moveTo(7.5, 4);
 			g.lineTo(11, 8);
 			g.lineTo(4, 8);
@@ -546,9 +586,9 @@
 			g.endFill();
 			mtx.createGradientBox(13, 6, GMathUtil.angleToRadian(90), 1, 1);
 			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xEEEEEE], [0.3, 0], [0, 255], mtx);
-			g.drawRect(1, 1, 13,6);
+			g.drawRect(1, 1, 13, 6);
 			g.endFill();
-			g.beginFill(0,1);
+			g.beginFill(0, 1);
 			g.moveTo(7.5, 4);
 			g.lineTo(11, 8);
 			g.lineTo(4, 8);
@@ -561,25 +601,25 @@
 			g.drawRect(0, 0, 15, 14);
 			g.endFill();
 			mtx.createGradientBox(13, 12, GMathUtil.angleToRadian(90), 1, 1);
-			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF,0xE6E6E6], [1, 1], [0, 255], mtx);
+			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xE6E6E6], [1, 1], [0, 255], mtx);
 			g.drawRect(1, 1, 13, 12);
 			g.endFill();
 			mtx.createGradientBox(13, 6, GMathUtil.angleToRadian(90), 1, 1);
 			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xEEEEEE], [0.3, 0], [0, 255], mtx);
-			g.drawRect(1, 1, 13,6);
+			g.drawRect(1, 1, 13, 6);
 			g.endFill();
-			g.beginFill(0x888888,1);
+			g.beginFill(0x888888, 1);
 			g.moveTo(7.5, 4);
 			g.lineTo(11, 8);
 			g.lineTo(4, 8);
 			g.lineTo(7.5, 4);
 			g.endFill();
 			result.setAt(GPhase.DISABLED, GBDUtil.shapeToBD(skin));
-			result.scale9Grid = new Rectangle(1,1,13,12);
-			_caches[SCROLL_BAR_ARROW_UP_SKIN]=result;
+			result.scale9Grid = new Rectangle(1, 1, 13, 12);
+			_caches[SCROLL_BAR_ARROW_UP_SKIN] = result;
 			return result;
 		}
-		
+
 		public function get scrollBarArrowDownSkin() : IGSkin {
 			var result : IGSkin = _caches[SCROLL_BAR_ARROW_DOWN_SKIN];
 			if (result != null) {
@@ -594,14 +634,14 @@
 			g.drawRect(0, 0, 15, 14);
 			g.endFill();
 			mtx.createGradientBox(13, 12, GMathUtil.angleToRadian(90), 1, 1);
-			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF,0xE6E6E6], [1, 1], [0, 255], mtx);
+			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xE6E6E6], [1, 1], [0, 255], mtx);
 			g.drawRect(1, 1, 13, 12);
 			g.endFill();
 			mtx.createGradientBox(13, 6, GMathUtil.angleToRadian(90), 1, 1);
 			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xEEEEEE], [0.3, 0], [0, 255], mtx);
-			g.drawRect(1, 1, 13,6);
+			g.drawRect(1, 1, 13, 6);
 			g.endFill();
-			g.beginFill(0,1);
+			g.beginFill(0, 1);
 			g.moveTo(7.5, 9);
 			g.lineTo(11, 5);
 			g.lineTo(4, 5);
@@ -614,14 +654,14 @@
 			g.drawRect(0, 0, 15, 14);
 			g.endFill();
 			mtx.createGradientBox(13, 12, GMathUtil.angleToRadian(90), 1, 1);
-			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF,0xE6E6E6], [1, 1], [0, 255], mtx);
+			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xE6E6E6], [1, 1], [0, 255], mtx);
 			g.drawRect(1, 1, 13, 12);
 			g.endFill();
 			mtx.createGradientBox(13, 6, GMathUtil.angleToRadian(90), 1, 1);
 			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xEEEEEE], [0.3, 0], [0, 255], mtx);
-			g.drawRect(1, 1, 13,6);
+			g.drawRect(1, 1, 13, 6);
 			g.endFill();
-			g.beginFill(0,1);
+			g.beginFill(0, 1);
 			g.moveTo(7.5, 9);
 			g.lineTo(11, 5);
 			g.lineTo(4, 5);
@@ -639,9 +679,9 @@
 			g.endFill();
 			mtx.createGradientBox(13, 6, GMathUtil.angleToRadian(90), 1, 1);
 			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xEEEEEE], [0.3, 0], [0, 255], mtx);
-			g.drawRect(1, 1, 13,6);
+			g.drawRect(1, 1, 13, 6);
 			g.endFill();
-			g.beginFill(0,1);
+			g.beginFill(0, 1);
 			g.moveTo(7.5, 9);
 			g.lineTo(11, 5);
 			g.lineTo(4, 5);
@@ -654,22 +694,70 @@
 			g.drawRect(0, 0, 15, 14);
 			g.endFill();
 			mtx.createGradientBox(13, 12, GMathUtil.angleToRadian(90), 1, 1);
-			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF,0xE6E6E6], [1, 1], [0, 255], mtx);
+			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xE6E6E6], [1, 1], [0, 255], mtx);
 			g.drawRect(1, 1, 13, 12);
 			g.endFill();
 			mtx.createGradientBox(13, 6, GMathUtil.angleToRadian(90), 1, 1);
 			g.beginGradientFill(GradientType.LINEAR, [0xFFFFFF, 0xEEEEEE], [0.3, 0], [0, 255], mtx);
-			g.drawRect(1, 1, 13,6);
+			g.drawRect(1, 1, 13, 6);
 			g.endFill();
-			g.beginFill(0x888888,1);
+			g.beginFill(0x888888, 1);
 			g.moveTo(7.5, 9);
 			g.lineTo(11, 5);
 			g.lineTo(4, 5);
 			g.lineTo(7.5, 9);
 			g.endFill();
 			result.setAt(GPhase.DISABLED, GBDUtil.shapeToBD(skin));
-			result.scale9Grid = new Rectangle(1,1,13,12);
-			_caches[SCROLL_BAR_ARROW_DOWN_SKIN]=result;
+			result.scale9Grid = new Rectangle(1, 1, 13, 12);
+			_caches[SCROLL_BAR_ARROW_DOWN_SKIN] = result;
+			return result;
+		}
+		
+		public function get textAreaBorderSkin() : IGSkin {
+			var result : IGSkin = _caches[TEXT_AREA_BORDER_SKIN];
+			if (result != null) {
+				return result.clone();
+			}
+			result = new GPhaseSkin();
+			var skin : Shape = new Shape();
+			var g : Graphics = skin.graphics;
+			GDrawUtil.drawFillBorder(g, 0x565656, 1, 0, 0, 50, 50);
+			GDrawUtil.drawFillLine(g, 0xDADADA, 1, 1, 1, 48);
+			result.setAt(GPhase.UP, GBDUtil.shapeToBD(skin));
+			g.clear();
+			GDrawUtil.drawGradientFillBorder(g,GradientType.LINEAR, [0x009DFF, 0x0075BF], [1, 1], [0, 255],0,0,50,50);
+			GDrawUtil.drawFillLine(g, 0xDADADA, 1, 1, 1, 48);
+			result.setAt(GPhase.FOCUS, GBDUtil.shapeToBD(skin));
+			g.clear();
+			GDrawUtil.drawFillBorder(g, 0xA5A5A5A5, 1, 0, 0, 50, 50);
+			GDrawUtil.drawFillLine(g, 0xECECEC, 1, 1, 1, 48);
+			result.setAt(GPhase.DISABLED, GBDUtil.shapeToBD(skin));
+			result.scale9Grid = new Rectangle(2, 2, 46, 46);
+			_caches[TEXT_AREA_BORDER_SKIN] = result;
+			return result;
+		}
+
+		public function get textInputBorderSkin() : IGSkin {
+			var result : IGSkin = _caches[TEXT_INPUT_BORDER_SKIN];
+			if (result != null) {
+				return result.clone();
+			}
+			result = new GPhaseSkin();
+			var skin : Shape = new Shape();
+			var g : Graphics = skin.graphics;
+			GDrawUtil.drawFillBorder(g, 0x565656, 1, 0, 0, 50, 50);
+			GDrawUtil.drawFillLine(g, 0xDADADA, 1, 1, 1, 48);
+			result.setAt(GPhase.UP, GBDUtil.shapeToBD(skin));
+			g.clear();
+			GDrawUtil.drawGradientFillBorder(g,GradientType.LINEAR, [0x009DFF, 0x0075BF], [1, 1], [0, 255],0,0,50,50);
+			GDrawUtil.drawFillLine(g, 0xDADADA, 1, 1, 1, 48);
+			result.setAt(GPhase.FOCUS, GBDUtil.shapeToBD(skin));
+			g.clear();
+			GDrawUtil.drawFillBorder(g, 0xA5A5A5A5, 1, 0, 0, 50, 50);
+			GDrawUtil.drawFillLine(g, 0xECECEC, 1, 1, 1, 48);
+			result.setAt(GPhase.DISABLED, GBDUtil.shapeToBD(skin));
+			result.scale9Grid = new Rectangle(2, 2, 46, 46);
+			_caches[TEXT_INPUT_BORDER_SKIN] = result;
 			return result;
 		}
 
@@ -762,8 +850,21 @@
 			return result;
 		}
 
-		public function get textInputSkin() : IGSkin {
-			return null;
+		public function get scrollBarThumbIcon() : BitmapData {
+			var result : BitmapData = _icons[SCROLL_BAR_THUMB_ICON];
+			if (result != null) {
+				return result;
+			}
+			var skin : Shape = new Shape();
+			var g : Graphics = skin.graphics;
+			g.beginFill(0x5A6165, 1);
+			g.drawRect(0, 0, 5, 1);
+			g.drawRect(0, 2, 5, 1);
+			g.drawRect(0, 4, 5, 1);
+			g.drawRect(0, 6, 5, 1);
+			result = GBDUtil.shapeToBD(skin);
+			_icons[SCROLL_BAR_THUMB_ICON] = result;
+			return result;
 		}
 	}
 }

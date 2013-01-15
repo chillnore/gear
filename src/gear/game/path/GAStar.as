@@ -1,22 +1,23 @@
 ﻿package gear.game.path {
+	import gear.game.hit.GBlock;
 	import gear.data.GBinaryHeap;
 	import gear.utils.GMathUtil;
 
-	import flash.geom.Point;
 	import flash.utils.Dictionary;
 
 	/**
 	 * A*寻路算法
 	 * 
 	 * @author bright
-	 * @version  20130105
+	 * @version  20130108
 	 */
 	public final class GAStar {
-		protected const _dirs : Vector.<Point>=new <Point>[new Point(1, 0), new Point(1, 1), new Point(0, 1), new Point(-1, 1), new Point(-1, 0), new Point(-1, -1), new Point(0, -1), new Point(1, -1)];
 		// 估价函数
 		protected var _heuristic : Function;
 		// 地图模型接口
 		protected var _map : IGMap;
+		// 碰撞
+		protected var _block : GBlock;
 		// 起点
 		protected var _start : GNode;
 		// 终点
@@ -26,11 +27,10 @@
 		// 开放表-二叉堆
 		protected var _openList : GBinaryHeap;
 
-		protected function reset() : void {
+		protected function clear() : void {
 			_openList.clear();
 			for each (var node:GNode in _grid) {
-				GNode.pool.returnObj(node);
-				delete _grid[node.x << 16 | node.y];
+				delete _grid[node.x+"_"+node.y];
 			}
 		}
 
@@ -42,8 +42,8 @@
 			var target : GNode;
 			var cost : int;
 			for (var i : int = 0;i < 8;i++) {
-				target = getNode(source.x + _dirs[i].x, source.y + _dirs[i].y);
-				if (target == null || target.closed || !_map.walkable(source, target)) {
+				target = getNode(source.x + GPathUtil.dirs[i].x, source.y + GPathUtil.dirs[i].y);
+				if (target == null || target.closed || !_map.walkable(_block, source, target)) {
 					continue;
 				}
 				cost = source.g + (source.x == target.x || source.y == target.y ? 10 : 14);
@@ -65,7 +65,15 @@
 
 		// 曼哈顿
 		protected function manhattan(source : GNode) : int {
-			return (Math.abs(_goal.x - source.x) + Math.abs(_goal.y - source.y)) * 10;
+			var dx : int = _goal.x - source.x;
+			if (dx < 0) {
+				dx = -dx;
+			}
+			var dy : int = _goal.y - source.y;
+			if (dy < 0) {
+				dy = -dy;
+			}
+			return (dx + dy) * 10;
 		}
 
 		// 欧氏
@@ -84,12 +92,12 @@
 
 		// 获得节点
 		protected function getNode(x : int, y : int) : GNode {
-			if (_map.isOut(x, y)) {
+			if (_map.isOut(_block, x, y)) {
 				return null;
 			}
-			var key : int = (x << 16 | y);
+			var key:String=x+"_"+y;
 			if (_grid[key] == null) {
-				var node : GNode = GNode(GNode.pool.borrowObj());
+				var node : GNode = new GNode();
 				node.setTo(x, y);
 				_grid[key] = node ;
 			}
@@ -118,12 +126,21 @@
 			_map = value;
 		}
 
-		public function find(startX : int, startY : int, goalX : int, goalY : int) : Vector.<GNode> {
-			reset();
+		public function set block(value : GBlock) : void {
+			_block = value;
+		}
+		
+		public function set start(value:GNode):void{
+			_start.setTo(value.x,value.y);
+		}
+
+		public function set goal(value : GNode) : void {
+			_goal.setTo(value.x, value.y);
+		}
+
+		public function replan() : Vector.<GNode> {
 			// 将起点放入开放表中
-			_start.setTo(startX, startY);
 			_openList.push(_start);
-			_goal.setTo(goalX, goalY);
 			var current : GNode;
 			while (_openList.length > 0) {
 				// 取出开放表中第一个节点
@@ -131,12 +148,14 @@
 				current.opened = false;
 				// 终点在开放表中,路径已找到
 				if (current.equal(_goal)) {
+					clear();
 					return getPath(current);
 				}
 				current.closed = true;
 				// 检查相邻节点
 				checkAdjacent(current);
 			}
+			clear();
 			return null;
 		}
 	}

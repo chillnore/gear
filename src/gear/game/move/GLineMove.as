@@ -15,14 +15,14 @@
 			_step = 0;
 			_end = _dist;
 			_time = 0;
-			if(_dist==0){
+			if (_dist == 0) {
 				return;
 			}
 			if (_mode == GMoveMode.SUB) {
-				_g = -_dist * 2 / (_total * (_total - 1));
+				_g = (-_dist << 1) / (_total * (_total - 1));
 				_s = -_total * _g;
 			} else if (_mode == GMoveMode.ADD) {
-				_g = _dist * 2 / (_total * (_total - 1));
+				_g = (_dist << 1) / (_total * (_total - 1));
 				_s = 0;
 			}
 		}
@@ -33,7 +33,7 @@
 				return;
 			}
 			if (_mode == GMoveMode.UNIFORM) {
-				_step = Math.round(_end / (_total - _time));
+				_step = _end / (_total - _time);
 				_current += _step;
 				_end -= _step;
 			} else if (_mode == GMoveMode.SUB) {

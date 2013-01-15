@@ -50,6 +50,10 @@
 				}
 			}
 		}
+		
+		public function get selectedIndex():int{
+			return _selectedIndex;
+		}
 
 		public function selected(value : GToggleBase) : void {
 			var index : int = _list.indexOf(value);

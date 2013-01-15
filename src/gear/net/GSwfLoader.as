@@ -83,7 +83,7 @@
 			}
 			var sprite : Sprite = new assetClass() as Sprite;
 			if (sprite == null) {
-				GLogger.warn(GStringUtil.format("{0} isn't a Sprite in {1}", className, _key));
+				GLogger.warn(GStringUtil.format("在%s中,%s不是一个Sprite类型!", _key, className));
 			}
 			return sprite;
 		}
@@ -100,7 +100,7 @@
 			}
 			var mc : MovieClip = new assetClass() as MovieClip;
 			if (mc == null) {
-				GLogger.warn(GStringUtil.format("{0} isn't a MovieClip in {1}", className, _key));
+				GLogger.warn(GStringUtil.format("在%s中,%s不是一个MovieClip类型!", _key, className));
 			}
 			mc.stop();
 			return mc;
@@ -119,7 +119,7 @@
 			}
 			var bd : BitmapData = new assetClass() as BitmapData;
 			if (bd == null) {
-				GLogger.warn(GStringUtil.format("{0} isn't a BitmapData in {1}", className, _key));
+				GLogger.warn(GStringUtil.format("在%s中,%s不是一个BitmapData类型!", _key, className));
 			}
 			return bd;
 		}
@@ -136,7 +136,7 @@
 				return null;
 			var sound : Sound = new assetClass() as Sound;
 			if (sound == null) {
-				GLogger.warn(GStringUtil.format("{0} isn't a Sound in {1}", className, _key));
+				GLogger.warn(GStringUtil.format("在%s中,%s不是一个Sound类型!", _key, className));
 			}
 			return sound;
 		}

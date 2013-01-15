@@ -1,6 +1,8 @@
 ﻿package gear.gui.controls {
 	import gear.gui.utils.GUIUtil;
+
 	import flash.text.StyleSheet;
+
 	import gear.gui.core.GBase;
 	import gear.render.GFrameRender;
 	import gear.render.IGFrame;
@@ -21,11 +23,11 @@
 	 * @version 20121210
 	 */
 	public class GStats extends GBase implements IGFrame {
-		private var _bgColor:uint;
-		private var _fpsColor:uint;
-		private var _msColor:uint;
-		private var _memColor:uint;
-		private var _maxMemColor:uint;
+		private var _bgColor : uint;
+		private var _fpsColor : uint;
+		private var _msColor : uint;
+		private var _memColor : uint;
+		private var _maxMemColor : uint;
 		private var _xml : XML;
 		private var _rect : Rectangle;
 		private var _label : TextField;
@@ -39,23 +41,23 @@
 		private var _fps_graph : uint;
 		private var _mem_graph : uint;
 		private var _maxMem_graph : uint;
-		
-		override protected function preinit():void{
-			_isTop=true;
+
+		override protected function preinit() : void {
+			_isTop = true;
 			_bgColor = 0x000033;
 			_fpsColor = 0xffff00;
 			_msColor = 0x00ff00;
 			_memColor = 0x00ffff;
 			_maxMemColor = 0xff0070;
 			_xml = <xml><fps>FPS:</fps><ms>MS:</ms><mem>MEM:</mem><maxMem>MAX:</maxMem></xml>;
-			_rect=new Rectangle();
-			setSize(70,100);
+			_rect = new Rectangle();
+			setSize(70, 100);
 		}
 
-		override protected function create() : void {			
+		override protected function create() : void {
 			_label = new TextField();
 			_label.height = 50;
-			var css:StyleSheet= new StyleSheet();
+			var css : StyleSheet = new StyleSheet();
 			css.setStyle("xml", {fontSize:'9px', fontFamily:GUIUtil.defaultFont, leading:'-2px'});
 			css.setStyle("fps", {color:"#" + _fpsColor.toString(16)});
 			css.setStyle("ms", {color:"#" + _msColor.toString(16)});
@@ -70,14 +72,14 @@
 			_graph.y = 50;
 			addChild(_graph);
 		}
-		
-		override protected function resize():void{
+
+		override protected function resize() : void {
 			graphics.clear();
 			graphics.beginFill(_bgColor);
 			graphics.drawRect(0, 0, _width, _height);
 			graphics.endFill();
-			_label.width=_width;
-			if(_graph.bitmapData!=null){
+			_label.width = _width;
+			if (_graph.bitmapData != null) {
 				_graph.bitmapData.dispose();
 			}
 			_graph.bitmapData = new BitmapData(_width, _height - 50, false, _bgColor);
@@ -85,7 +87,7 @@
 		}
 
 		override protected function onShow() : void {
-			addEvent(this,MouseEvent.CLICK, clickHandler);
+			addEvent(this, MouseEvent.CLICK, clickHandler);
 			GFrameRender.instance.add(this);
 		}
 
@@ -112,7 +114,7 @@
 				_graph.bitmapData.lock();
 				_graph.bitmapData.scroll(-1, 0);
 				_graph.bitmapData.fillRect(_rect, _bgColor);
-				var px:int=_graph.width - 1;
+				var px : int = _graph.width - 1;
 				_graph.bitmapData.setPixel(px, _graph.height - _fps_graph, _fpsColor);
 				_graph.bitmapData.setPixel(px, _graph.height - ((_time - _ms ) >> 1 ), _msColor);
 				_graph.bitmapData.setPixel(px, _graph.height - _mem_graph, _memColor);

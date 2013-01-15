@@ -7,6 +7,13 @@
 	/**
 	 * MathUtil 数学工具类
 	 * 
+	 * 绝对值 n=(n^(n>>31))-(n>>31);
+	 * 交换a,b a^=b;b^=a;a^=b;
+	 * n=-n n=~n+1
+	 * 对2的整数wugk%n n=2,4,8... &(n-1)
+	 * 取整 |0
+	 * 1位小数四舍五入 +(n<0?-0.5:0.5)|0
+	 * 
 	 * @author bright
 	 * @version 20111207
 	 */
@@ -51,10 +58,10 @@
 		}
 
 		public static function toIntRect(rect : Rectangle) : Rectangle {
-			rect.x = Math.round(rect.x);
-			rect.y = Math.round(rect.y);
-			rect.width = Math.round(rect.width);
-			rect.height = Math.round(rect.height);
+			rect.x = rect.x + 0.5 | 0;
+			rect.y = rect.y + 0.5 | 0;
+			rect.width = rect.width + 0.5 | 0;
+			rect.height = rect.height + 0.5 | 0;
 			return rect;
 		}
 
@@ -65,8 +72,12 @@
 			return (source > -target ? source : -target);
 		}
 
+		public static function round(value : Number) : int {
+			return value + (value < 0 ? -0.5 : 0.5) | 0;
+		}
+
 		public static function ceil(value : Number) : int {
-			return Math.ceil(value > 0 ? value : -value);
+			return value > 0 ? Math.ceil(value) : -Math.ceil(-value);
 		}
 
 		public static function clamp(n : Number, min : Number, max : Number) : Number {
@@ -82,19 +93,19 @@
 		public static function getAngle(startX : int, startY : int, endX : int, endY : int) : int {
 			var dx : Number = endX - startX;
 			var dy : Number = endY - startY;
-			return Math.round(Math.atan2(dy, dx) / Math.PI * 180);
+			return Math.atan2(dy, dx) / Math.PI * 180 + 0.5 | 0;
 		}
 
 		public static function getTwoPointAngle(start : Point, end : Point) : int {
 			var dx : Number = end.x - start.x;
 			var dy : Number = end.y - start.y;
-			return Math.round(Math.atan2(dy, dx) / Math.PI * 180);
+			return Math.atan2(dy, dx) / Math.PI * 180 + 0.5 | 0;
 		}
 
 		public static function getDir(startX : int, startY : int, endX : int, endY : int) : int {
 			var dx : Number = endX - startX;
 			var dy : Number = endY - startY;
-			var angle : int = toUAngle(Math.round(Math.atan2(dy, dx) / Math.PI * 180));
+			var angle : int = toUAngle(Math.atan2(dy, dx) / Math.PI * 180 + 0.5 | 0);
 			if (angle > 337 || angle < 23) {
 				return 0;
 			} else if (angle > 292) {
@@ -113,8 +124,8 @@
 				return 1;
 			}
 		}
-		
-		public static function getOffsetDir(dx:int,dy:int):int{
+
+		public static function getOffsetDir(dx : int, dy : int) : int {
 			if (dx > 0) {
 				if (dy > 0) {
 					return 1;
@@ -154,11 +165,11 @@
 			if (min == max) {
 				return min;
 			}
-			return Math.round(Math.random() * (max - min)) + min;
+			return Math.random() * (max - min) + 0.5 | 0 + min;
 		}
 
 		public static function randomAtArray(value : Array) : * {
-			var index : int = Math.round(Math.random() * (value.length - 1));
+			var index : int = Math.random() * (value.length - 1) + 0.5 | 0;
 			return value[index];
 		}
 
@@ -182,8 +193,8 @@
 		}
 
 		public static function rotate(x : int, y : int, angle : int, tx : int = 0, ty : int = 0) : Point {
-			var xr : int = Math.round(x * GMathUtil.cos(angle)) - Math.round(y * GMathUtil.sin(angle)) + tx;
-			var yr : int = Math.round(x * GMathUtil.sin(angle)) + Math.round(y * GMathUtil.cos(angle)) + ty;
+			var xr : int = x * GMathUtil.cos(angle) - y * GMathUtil.sin(angle) + 0.5 | 0 + tx;
+			var yr : int = x * GMathUtil.sin(angle) + y * GMathUtil.cos(angle) + 0.5 | 0 + ty;
 			return new Point(xr, yr);
 		}
 
@@ -209,21 +220,6 @@
 			c.y += ty;
 			d.x += tx;
 			d.y += ty;
-		}
-
-		public static function getLastInsertPoint(source : Point, target : Point, radius : int) : Point {
-			var distance : Number = GMathUtil.getTwoPointDistance(source, target);
-			var diameter : int = radius * 2;
-			var cut : Point = new Point();
-			if (distance > diameter) {
-				var count : int = Math.ceil(distance / diameter) - 1;
-				var angle : int = GMathUtil.getTwoPointAngle(source, target);
-				cut.x = count * diameter * GMathUtil.cos(angle);
-				cut.y = count * diameter * GMathUtil.sin(angle);
-				return source.add(cut);
-			} else {
-				return source;
-			}
 		}
 
 		public static function getCrossAngle(source : int, target : int) : int {

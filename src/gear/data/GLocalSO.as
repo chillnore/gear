@@ -12,7 +12,7 @@
 	 * 本地共享对象类
 	 * 
 	 * @author bright
-	 * @version 20130105
+	 * @version 20130110
 	 */
 	public class GLocalSO {
 		private var _shareObject : SharedObject;
@@ -74,7 +74,7 @@
 		 * </listing>
 		 * @see #setAt()
 		 */
-		public function getAt(key : String) : Object {
+		public function getBy(key : String) : * {
 			return _shareObject.data[key];
 		}
 

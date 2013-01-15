@@ -120,7 +120,7 @@
 			return target;
 		}
 
-		public static function getThumbBD(bd : BitmapData, w : int, h : int, gap : int) : BitmapData {
+		public static function getThumbBD(bd : BitmapData, w : int, h : int) : BitmapData {
 			if (bd == null) {
 				return null;
 			}
@@ -134,19 +134,17 @@
 			var ty : int;
 			if (rect.width == 0 || rect.height == 0) {
 				source = bd.clone();
-				sx = (w - gap * 2) / bd.width;
-				sy = (h - gap * 2) / bd.height;
+				sx = w / bd.width;
+				sy = h / bd.height;
 				s = Math.min(Math.min(sx, sy), 1);
-				tx = gap;
-				ty = gap;
 			} else {
 				source = new BitmapData(rect.width, rect.height, true, 0);
 				source.copyPixels(bd, rect, GMathUtil.ZERO_POINT);
-				sx = (w - gap * 2) / rect.width;
-				sy = (h - gap * 2) / rect.height;
+				sx = w / rect.width;
+				sy = h / rect.height;
 				s = Math.min(Math.min(sx, sy), 1);
-				tx = (w - rect.width * s) * 0.5;
-				ty = (h - rect.height * s) * 0.5;
+				tx = (w - rect.width * s) >> 1;
+				ty = (h - rect.height * s) >> 2;
 			}
 			mtx.scale(s, s);
 			mtx.translate(tx, ty);
@@ -223,24 +221,24 @@
 				oy = -gh * 0.5;
 			}
 			var list : Vector.<GBDUnit> = new Vector.<GBDUnit>();
-			var bd : BitmapData;
+			var clip : BitmapData;
 			var rect : Rectangle = new Rectangle(0, 0, gw, gh);
 			var offset : Point = new Point();
-			var r : int;
 			var c : int;
+			var r : int;
 			var next : int = 0;
-			for (c = 0;c < col;c++) {
+			for (r = 0;r < row;r++) {
 				if (filters != null && filters.indexOf(c) != -1) {
 					continue;
 				}
-				rect.y = c * gh;
-				for (r = 0;r < row;r++) {
-					rect.x = r * gw;
-					bd = new BitmapData(rect.width, rect.height, true, 0);
-					bd.copyPixels(source, rect, GMathUtil.ZERO_POINT);
+				rect.x = r * gw;
+				for (c = 0;c < col;c++) {
+					rect.y = c * gh;
+					clip = new BitmapData(rect.width, rect.height, true, 0);
+					clip.copyPixels(source, rect, GMathUtil.ZERO_POINT);
 					offset.setTo(ox, oy);
-					bd = cutAlphaBD(bd, offset);
-					list[next++] = new GBDUnit(offset.x, offset.y, bd);
+					clip = cutAlphaBD(clip, offset);
+					list[next++] = new GBDUnit(offset.x, offset.y, clip);
 				}
 			}
 			return new GBDList(list);

@@ -1,4 +1,4 @@
-package gear.particle.core {
+﻿package gear.particle.core {
 	/**
 	 * @author Administrator
 	 */

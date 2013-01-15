@@ -1,4 +1,6 @@
 ﻿package gear.game.path {
+	import gear.game.hit.GBlock;
+
 	import flash.utils.ByteArray;
 
 	/**
@@ -9,16 +11,16 @@
 	 * 3 保留
 	 * 
 	 * @author bright
-	 * @version 20130105
+	 * @version 20130108
 	 */
-	public class GMapBlock {
+	public class GGridBlock {
 		protected var _gw : int;
 		protected var _gh : int;
 		protected var _tw : int;
 		protected var _th : int;
 		protected var _blocks : ByteArray;
 
-		public function GMapBlock() {
+		public function GGridBlock() {
 			_blocks = new ByteArray();
 		}
 
@@ -32,19 +34,38 @@
 
 		public function setBlock(x : int, y : int, isBlock : Boolean) : void {
 			var index : int = y * _gw + x;
-			var bits : int = (3 - index % 4) << 1;
+			var bits : int = (3 -(index&3)) << 1;
 			var sign : int = isBlock ? 1 << bits : 0;
 			var offset : int = index >> 2;
 			var byte : int = _blocks[offset] & ~(3 << bits) | sign;
 			_blocks[offset] = byte;
 		}
 
-		public function walkable(x : int, y : int) : Boolean {
-			var index : int = y * _gw + x;
-			var bits : int = (3 - index % 4) << 1;
+		public function isBlock(gx : int, gy : int) : Boolean {
+			var index : int = gy * _gw + gx;
+			var bits : int = (3 - (index&3)) << 1;
 			var byte : int = _blocks[index >> 2];
 			var sign : int = byte >> bits & 3;
-			return sign != 1;
+			return sign == 1;
+		}
+
+		public function getNode(x : int, y : int) : GNode {
+			var gx : int = x / _tw;
+			var gy : int = y / _th;
+			return new GNode(gx, gy);
+		}
+
+		public function isOut(x : int, y : int) : Boolean {
+			if(x<0||x>=_gw||y<0||y>=_gh){
+				return true;
+			}
+			return false;
+		}
+
+		public function walkable(block : GBlock, source : GNode, target : GNode) : Boolean {
+			block;
+			source;
+			return !isBlock(target.x, target.y);
 		}
 
 		public function clear() : void {

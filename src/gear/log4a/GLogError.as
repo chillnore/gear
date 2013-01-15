@@ -1,4 +1,5 @@
 ﻿package gear.log4a {
+	import gear.utils.GStringUtil;
 	/**
 	 * 日志错误类
 	 * 
@@ -9,7 +10,7 @@
 	 */
 	public class GLogError extends Error {
 		public function GLogError(...log : Array) {
-			super(GLogData.toCode(log));
+			super(GStringUtil.toString(log));
 			GLogger.error(log);
 		}
 	}

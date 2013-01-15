@@ -16,6 +16,7 @@
 
 		override protected function preinit() : void {
 			_autoSize = GAutoSizeMode.AUTO_SIZE;
+			_sizeRender = true;
 			_padding.hdist = 3;
 			_padding.vdist = 2;
 			_bgSkin = GUIUtil.theme.emptySkin;

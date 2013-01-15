@@ -1,6 +1,6 @@
 ﻿package gear.utils {
-	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
+	import flash.utils.getQualifiedClassName;
 
 	/**
 	 * 字符串工具类
@@ -9,48 +9,252 @@
 	 * @version 20121112
 	 */
 	public final class GStringUtil {
-		private static function isWhitespace(character : String) : Boolean {
-			switch (character) {
-				case " ":
-				case "\t":
-				case "\r":
-				case "\n":
-				case "\f":
-					return true;
-				default:
-					return false;
+		private static function formatD(pattern : String, format : String, value : *) : String {
+			var output : String = "NaN";
+			if (value is int || value is Number) {
+				output = String((value < 0 ? -value : value) | 0);
+			} else if (value is uint) {
+				output = String(value);
+			} else if (value is String) {
+				var n : Number = parseFloat(value);
+				if (!isNaN(n)) {
+					output = String((n < 0 ? -n : n) | 0);
+				}
+			}
+			if (output == "NaN") {
+				return pattern.replace(format, output);
+			}
+			var body : String = format.replace(/[%,d]/g, "");
+			if (body.length < 1) {
+				return pattern.replace(format, output);
+			}
+			var width : int = body.split(".")[0] - output.length;
+			var fills : String = "";
+			while (fills.length < width) {
+				fills += "0";
+			}
+			return pattern.replace(format, fills + output);
+		}
+
+		private static function formatN(pattern : String, format : String, value : *) : String {
+			var output : String = "NaN";
+			if (value is int || value is Number || value is uint) {
+				output = String(value);
+			} else if (value is String) {
+				output = String(parseFloat(value));
+			}
+			if (output == "NaN") {
+				return pattern.replace(format, output);
+			}
+			var body : String = format.replace(/[%,n]/g, "");
+			if (body.length < 1) {
+				return pattern.replace(format, value);
+			}
+			var index : int = body.indexOf(".");
+			var flags : String = "";
+			var result : Array = body.split(".");
+			var width : int = 0;
+			var perc : int = output.indexOf(".");
+			if (index > 0) {
+				width = result[result.length - 1] - (perc < 0 ? 0 : output.length - 1 - perc);
+			} else if (perc < 0) {
+				width = result[0] - output.length;
+			}
+			if (width > 0) {
+				while (flags.length < width) {
+					flags += "0";
+				}
+			}
+			if (index != -1) {
+				var scale : int = Math.pow(10, result[result.length - 1]);
+				output = (GMathUtil.round(value * scale)) / scale + flags;
+			} else if (perc < 0) {
+				output = flags + output;
+			}
+			return pattern.replace(format, output);
+		}
+
+		private static function formatS(pattern : String, format : String, value : *) : String {
+			var body:String = format.replace(/[%,s]/g, "");
+			var output : String = toString(value);
+			if (body.length < 1) {
+				return pattern.replace(format, output);
+			}
+			var index : int = body.indexOf(".");
+			var result : Array = body.split(".");
+			var fills : String = "";
+			if (index != -1) {
+				output = output.substring(0, result[result.length - 1]);
+				if (index > 0) {
+					var width : int = result[0] - output.length;
+					if (width > 0) {
+						while (fills.length < width) {
+							fills += " ";
+						}
+						output = fills + output;
+					}
+				}
+			}
+			return pattern.replace(format, output);
+		}
+
+		private static function vectorToString(target : Vector.<Object>) : String {
+			var code : String = "";
+			var len : int = target.length;
+			for (var i : int = 0;i < len;i++) {
+				if (i > 0) {
+					code += ",";
+				}
+				code += toString(target[i]);
+			}
+			return "[" + code + "]";
+		}
+
+		private static function arrayToString(target : Array) : String {
+			var code : String = "";
+			var len : int = target.length;
+			for (var i : int = 0;i < len;i++) {
+				if (i > 0) {
+					code += ",";
+				}
+				code += toString(target[i]);
+			}
+			return "[" + code + "]";
+		}
+
+		private static function objectToString(target : Object) : String {
+			var code : String = "";
+			var value : Object;
+			for (var key:String in target) {
+				value = target[key];
+				if (value is Function) {
+					continue;
+				}
+				if (code.length > 0) {
+					code += ",";
+				}
+				code += key + ":" + toString(value);
+			}
+			return code;
+		}
+
+		public static function hasFormat(pattern : String) : Boolean {
+			return /%\d*\.*\d*[s,d,n]/g.test(pattern);
+		}
+
+		/**
+		 * %s
+		 * %[width].[prec]d
+		 * %[width].[prec]n
+		 */
+		public static function format(pattern : String, ...rest : Array) : String {
+			var result : Array = pattern.match(/%\d*\.*\d*[s,d,n]/g);
+			var length : int = Math.min(result.length, rest.length);
+			var format : String;
+			var type : String;
+			while (length-- > 0) {
+				format = result.shift();
+				type = format.charAt(format.length - 1);
+				switch(type) {
+					case "s":
+						pattern = formatS(pattern, format, rest.shift());
+						break;
+					case "d":
+						pattern = formatD(pattern, format, rest.shift());
+						break;
+					case "n":
+						pattern = formatN(pattern, format, rest.shift());
+						break;
+				}
+			}
+			return pattern;
+		}
+
+		public static function toString(value : *) : String {
+			if (value == null) {
+				return "null";
+			}
+			if (value is String) {
+				return value;
+			}
+			if (value is Array) {
+				return arrayToString(value);
+			}
+			var name : String = getQualifiedClassName(value).split("::").pop();
+			if (name.indexOf("Vector") != -1) {
+				return vectorToString(Vector.<Object>(value));
+			}
+			if (name != "Object") {
+				if (value.toString is Function) {
+					return value.toString();
+				} else {
+					return "[" + name + "]";
+				}
+			} else {
+				return objectToString(value);
 			}
 		}
 
 		public static function trim(value : String) : String {
-			if (value == null) return '';
-			var startIndex : int = 0;
-			while (isWhitespace(value.charAt(startIndex))) {
-				++startIndex;
-			}
-			var endIndex : int = value.length - 1;
-			while (isWhitespace(value.charAt(endIndex))) {
-				--endIndex;
-			}
-			if (endIndex >= startIndex) {
-				return value.slice(startIndex, endIndex + 1);
-			} else {
-				return "";
-			}
+			return value.replace(/^\s*|\s*$/g, "");
 		}
 
-		public static function format(str : String, ...rest : Array) : String {
-			if (str == null) return '';
-			var len : uint = rest.length;
-			var args : Array;
-			if (len == 1 && rest[0] is Array) {
-				args = rest[0] as Array;
-				len = args.length;
-			} else {
-				args = rest;
+		public static function formatTime(value : int) : String {
+			var result : String = "";
+			var hour : int = value / 3600000;
+			result += (hour < 10 ? "0" + hour : hour);
+			value -= hour * 3600000;
+			var minute : int = value / 60000;
+			result += ":" + (minute < 10 ? ("0" + minute) : minute);
+			value -= minute * 60000;
+			var second : int = value / 1000;
+			result += ":" + (second < 10 ? "0" + second : second);
+			return result;
+		}
+
+		public static function formatDate(value : Date) : String {
+			var result : String = value.getFullYear() + "-";
+			var month : int = value.getMonth() + 1;
+			result += (month > 9) ? month : "0" + month;
+			result += "-";
+			var date : int = value.getDate();
+			result += (date > 9) ? date : "0" + date;
+			var hours : int = value.getHours();
+			result += " ";
+			result += (hours > 9) ? hours : "0" + hours;
+			result += ":";
+			var minutes : int = value.getMinutes();
+			result += (minutes > 9) ? minutes : "0" + minutes;
+			result += ":";
+			var seconds : int = value.getSeconds();
+			result += (seconds > 9) ? seconds : "0" + seconds;
+			return result;
+		}
+
+		public static function formatNumber(value : int) : String {
+			var count : Number;
+			var str : String = value.toString();
+			var split : Array = new Array();
+			var len : Number = str.length;
+			while (len > 0) {
+				count = Math.max((len - 3), 0);
+				split.unshift(str.slice(count, len));
+				len = count;
 			}
-			for (var i : int = 0;i < len;i++) {
-				str = str.replace(new RegExp("\\{" + i + "\\}", "g"), args[i]);
+			return split.join(",");
+		}
+
+		public static function formatByteArray(value : ByteArray) : String {
+			if (value == null) {
+				return "null";
+			}
+			value.position = 0;
+			var str : String = "";
+			for (var i : int = 0;i < value.length;i++) {
+				if (i > 0) {
+					str += ",";
+				}
+				str += value[i].toString(16);
 			}
 			return str;
 		}
@@ -135,24 +339,8 @@
 		}
 
 		public static function isURL(url : String) : Boolean {
-			var pattern : RegExp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+			var pattern : RegExp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 			return (pattern.test(url));
-		}
-
-		public static function rectToString(rect : Rectangle) : String {
-			if (rect == null) {
-				return "";
-			}
-			return rect.x + "," + rect.y + "," + rect.width + "," + rect.height;
-		}
-
-		public static function stringToRect(value : String) : Rectangle {
-			var params : Array = value.split(",");
-			if (params.length != 4) {
-				return null;
-			} else {
-				return new Rectangle(params[0], params[1], params[2], params[3]);
-			}
 		}
 	}
 }

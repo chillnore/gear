@@ -45,7 +45,7 @@
 		private function execute(request : CallData) : void {
 			var calls : Array = _callbacks[request.method];
 			if (calls == null || calls.length == 0) {
-				GLogger.warn(GStringUtil.format("{0} not found callbacks", request.method));
+				GLogger.warn(GStringUtil.format("找不到回调方法:%s!", request.method));
 				return;
 			}
 			for each (var callback:Function in calls) {

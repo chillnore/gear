@@ -4,6 +4,7 @@
 	import gear.gui.core.GScaleMode;
 	import gear.gui.skin.IGSkin;
 	import gear.gui.utils.GUIUtil;
+	import gear.log4a.GLogger;
 	import gear.utils.GMathUtil;
 
 	import flash.display.BitmapData;
@@ -35,6 +36,7 @@
 		protected var _pageSize : int;
 		protected var _step : int;
 		protected var _repeatDelay : int;
+		protected var _onValueChange : Function;
 
 		override protected function preinit() : void {
 			_trackSkin = GUIUtil.theme.scrollBarTrackSkin;
@@ -123,7 +125,7 @@
 
 		protected function stage_mouseMoveHandler(event : MouseEvent) : void {
 			_position = GMathUtil.clamp(mouseY - _thumbScrollOffset, _up_btn.height, _up_btn.height + _range - _thumb_btn.height);
-			value = Math.round((_position - _up_btn.height) / (_range - _thumb_btn.height) * (_max - _min)) + _min;
+			value = (_position - _up_btn.height) / (_range - _thumb_btn.height) * (_max - _min) + 0.5 | 0 + _min;
 		}
 
 		/**
@@ -138,25 +140,38 @@
 		}
 
 		protected function updateThumb() : void {
-			_thumb_btn.height = Math.max(12, Math.round(_pageSize / (_max - _min + _pageSize) * _range));
+			_thumb_btn.height = Math.max(12, _pageSize / (_max - _min + _pageSize) * _range + 0.5 | 0);
 			_thumb_btn.y = _up_btn.height + (_value - _min) / (_max - _min) * (_range - _thumb_btn.height);
 		}
 
 		public function GVScrollBar() {
 		}
 
-		public function set min(value : int) : void {
-			if (_min == value) {
-				return;
-			}
-			_min = value;
+		public function set onValueChange(value : Function) : void {
+			_onValueChange = value;
 		}
 
-		public function set max(value : int) : void {
-			if (_max == value) {
-				return;
+		public function setTo(newPageSize : int, newMax : int, newValue : int, newMin : int = 0) : void {
+			var isUpdate : Boolean = false;
+			if (_pageSize != newPageSize) {
+				_pageSize = newPageSize;
+				isUpdate = true;
 			}
-			_max = value;
+			if (_max != newMax) {
+				_max = newMax;
+				isUpdate = true;
+			}
+			if (_value != newValue) {
+				value = newValue;
+				isUpdate = true;
+			}
+			if (_min != _min) {
+				_min = newMin;
+				isUpdate = true;
+			}
+			if (isUpdate) {
+				addRender(updateThumb);
+			}
 		}
 
 		public function set value(n : int) : void {
@@ -165,7 +180,18 @@
 				return;
 			}
 			_value = n;
+			if (_onValueChange != null) {
+				try {
+					_onValueChange();
+				} catch(e : Error) {
+					GLogger.error(e.getStackTrace());
+				}
+			}
 			addRender(updateThumb);
+		}
+
+		public function get value() : int {
+			return _value;
 		}
 
 		public function set step(value : int) : void {
@@ -173,13 +199,6 @@
 				return;
 			}
 			_step = value;
-		}
-
-		public function set pageSize(value : int) : void {
-			if (_pageSize == value) {
-				return;
-			}
-			_pageSize = value;
 		}
 	}
 }

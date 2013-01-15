@@ -1,5 +1,5 @@
 ﻿package gear.log4a {
-	import flash.utils.getQualifiedClassName;
+	import gear.utils.GStringUtil;
 
 	/**
 	 * 日志数据
@@ -12,85 +12,22 @@
 		private var _message : Array;
 		private var _code : String;
 
-		private static function vectorToString(target :Vector.<Object>) : String {
-			var code : String = "";
-			var len : int = target.length;
-			for (var i : int = 0;i < len;i++) {
-				if (i > 0) {
-					code += ",";
-				}
-				code += encode(target[i]);
-			}
-			return "[" + code + "]";
-		}
-
-		private static function arrayToString(target : Array) : String {
-			var code : String = "";
-			var len : int = target.length;
-			for (var i : int = 0;i < len;i++) {
-				if (i > 0) {
-					code += ",";
-				}
-				code += encode(target[i]);
-			}
-			return "[" + code + "]";
-		}
-
-		private static function objectToString(target : Object) : String {
-			var code : String = "";
-			var name : String = getQualifiedClassName(target);
-			var className : String = name.split("::").pop();
-			if (className.indexOf("Vector") != -1) {
-				return "[" + target.toString() + "]";
-			}
-			if (className == "Object") {
-				var value : Object;
-				for (var key:String in target) {
-					value = target[key];
-					if (value is Function) {
-						continue;
-					}
-					if (code.length > 0) {
-						code += ",";
-					}
-					code += key + ":" + GLogData.encode(value);
-				}
-			} else {
-				return "<" + name + ">";
-			}
-			return "{" + code + "}";
-		}
-
-		private static function encode(target : *) : String {
-			if (target == null) {
+		protected function format(target : Array) : String {
+			if (target == null || target.length < 1) {
 				return "null";
 			}
-			if (target is String) {
-				return "\"" + target + "\"";
+			if (target[0] is String && GStringUtil.hasFormat(target[0])) {
+				return GStringUtil.format.apply(null,target);
 			}
-			if (target is Number) {
-				if (isNaN(target)) {
-					return "NaN";
-				} else {
-					return String(target);
+			var result : String = "";
+			for each (var item:* in target) {
+				if (result.length > 0) {
+					result += " ";
 				}
+				result += GStringUtil.toString(item);
 			}
-			if (target is Array) {
-				return arrayToString(target);
-			}
-			if (target is Vector.<Object>) {
-				return vectorToString(target);
-			}
-			var name : String = getQualifiedClassName(target).split("::").pop();
-			if (name != "Object") {
-				if (target.toString is Function) {
-					return target.toString();
-				} else {
-					return "[" + name + "]";
-				}
-			} else {
-				return objectToString(target);
-			}
+
+			return result;
 		}
 
 		/**
@@ -98,6 +35,7 @@
 		public function GLogData(level : GLevel, message : Array) {
 			_level = level;
 			_message = message;
+			_code = format(_message);
 		}
 
 		public function get level() : GLevel {
@@ -108,24 +46,7 @@
 			return _message;
 		}
 
-		public static function toCode(target : Array) : String {
-			var result : String = "null";
-			if (target != null) {
-				result = "";
-				for each (var item:* in target) {
-					if (result.length > 0) {
-						result += " ";
-					}
-					result += GLogData.encode(item);
-				}
-			}
-			return result;
-		}
-
 		public function toString() : String {
-			if (_code == null) {
-				_code = GLogData.toCode(_message);
-			}
 			return _code;
 		}
 	}

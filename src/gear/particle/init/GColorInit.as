@@ -6,11 +6,11 @@ package gear.particle.init {
 	/**
 	 * @author Administrator
 	 */
-	public class ColorInit extends InitBase {
+	public class GColorInit extends InitBase {
 		protected var _min : uint;
 		protected var _max : uint;
 
-		public function ColorInit(color1 : uint = 0xFFFFFF, color2 : uint = 0xFFFFFF) {
+		public function GColorInit(color1 : uint = 0xFFFFFF, color2 : uint = 0xFFFFFF) {
 			_min = color1;
 			_max = color2;
 		}

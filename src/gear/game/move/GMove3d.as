@@ -21,10 +21,10 @@
 			_moveY = new GLineMove();
 			_moveZ = new GAirMove();
 		}
-		
-		public function setMode(modeX: int, modeY : int) : void {
-			_moveX.mode=modeX;
-			_moveY.mode=modeY;
+
+		public function setMode(modeX : int, modeY : int) : void {
+			_moveX.mode = modeX;
+			_moveY.mode = modeY;
 		}
 
 		public function setSpeed(speed : Number, speedZ : Number, scaleY : Number = 0.8) : void {
@@ -45,17 +45,17 @@
 			_moveX.total = _moveY.total = _moveZ.total = _total;
 			_time = 1;
 		}
-		
+
 		public function bounce(percent : Number, distZ : int, total : int) : void {
-			_moveX.dist=_moveX.dist * percent;
-			_moveY.dist = Math.round(_moveY.dist * percent);
-			_moveZ.setTo(0,distZ);
+			_moveX.dist = _moveX.dist * percent;
+			_moveY.dist = _moveY.dist * percent + 0.5 | 0;
+			_moveZ.setTo(0, distZ);
 			_total = Math.max(_moveX.total, _moveY.total, _moveZ.total);
 			if (_total < total) {
 				_total = total;
 			}
 			_total = total;
-			_moveX.total=_moveY.total=_moveZ.total=_total;
+			_moveX.total = _moveY.total = _moveZ.total = _total;
 			_time = 1;
 		}
 
@@ -64,13 +64,12 @@
 				_wait--;
 				return true;
 			}
-			if (_time >= _total) {
+			if (_time++ >= _total) {
 				return false;
 			}
 			_moveX.next();
 			_moveY.next();
 			_moveZ.next();
-			_time++;
 			return true;
 		}
 

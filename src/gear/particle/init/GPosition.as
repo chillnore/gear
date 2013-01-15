@@ -8,10 +8,10 @@ package gear.particle.init {
 	/**
 	 * @author Administrator
 	 */
-	public class Position extends InitBase {
+	public class GPosition extends InitBase {
 		protected var _zone : IZone;
 
-		public function Position(zone : IZone = null) {
+		public function GPosition(zone : IZone = null) {
 			_zone = zone;
 		}
 

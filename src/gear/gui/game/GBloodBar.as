@@ -11,6 +11,7 @@
 	import gear.utils.GBDUtil;
 	import gear.utils.GColorUtil;
 	import gear.utils.GDrawUtil;
+	import gear.utils.GMathUtil;
 
 	import flash.display.Graphics;
 	import flash.display.Shape;
@@ -32,7 +33,7 @@
 		protected var _model : GRangeModel;
 		protected var _fade : GRenderCall;
 		protected var _isSub : Boolean;
-		protected var _autoHide:Boolean;
+		protected var _autoHide : Boolean;
 		protected var _hide : uint;
 
 		override protected function preinit() : void {
@@ -62,7 +63,7 @@
 			_model = new GRangeModel();
 			_model.onChange = modelOnChange;
 			_fade = new GRenderCall(checkFade);
-			_autoHide=true;
+			_autoHide = true;
 			setSize(60, 6);
 		}
 
@@ -74,7 +75,7 @@
 
 		override protected function resize() : void {
 			_trackSkin.setSize(_width, _height);
-			var bw : int = Math.round((_width - _padding.left - _padding.right) * _model.percent);
+			var bw : int = GMathUtil.round((_width - _padding.left - _padding.right) * _model.percent);
 			var bh : int = _height - _padding.top - _padding.bottom;
 			_oldBarSkin.setSize(bw, bh);
 			_barSkin.setSize(bw, bh);
@@ -85,7 +86,7 @@
 		}
 
 		protected function resetFade() : void {
-			var bw : int = Math.round((_width - _padding.left - _padding.right) * _model.percent);
+			var bw : int = GMathUtil.round((_width - _padding.left - _padding.right) * _model.percent);
 			if (_model.value < _model.oldValue) {
 				_barSkin.setSize(bw, _barSkin.height);
 				_isSub = true;
@@ -95,13 +96,13 @@
 			}
 			_fade.reset();
 			GFrameRender.instance.add(_fade);
-			if(_autoHide){
+			if (_autoHide) {
 				hideWait();
 			}
 		}
 
 		protected function resetBars() : void {
-			var bw : int = Math.round((_width - _padding.left - _padding.right) * _model.percent);
+			var bw : int = GMathUtil.round((_width - _padding.left - _padding.right) * _model.percent);
 			_oldBarSkin.setSize(bw, _oldBarSkin.height);
 			_barSkin.setSize(bw, _barSkin.height);
 		}
@@ -115,11 +116,11 @@
 				if (_isSub) {
 					b = _oldBarSkin.width;
 					c = _barSkin.width - _oldBarSkin.width;
-					_oldBarSkin.setSize(Math.round(_ease(_fade.count + 1, b, c, 20)), _oldBarSkin.height);
+					_oldBarSkin.setSize(GMathUtil.round(_ease(_fade.count + 1, b, c, 20)), _oldBarSkin.height);
 				} else {
 					b = _barSkin.width;
 					c = _oldBarSkin.width - _barSkin.width;
-					_barSkin.setSize(Math.round(_ease(_fade.count + 1, b, c, 20)), _barSkin.height);
+					_barSkin.setSize(GMathUtil.round(_ease(_fade.count + 1, b, c, 20)), _barSkin.height);
 				}
 			}
 		}
@@ -134,9 +135,9 @@
 
 		public function GBloodBar() {
 		}
-		
-		public function set autoHide(value:Boolean):void{
-			_autoHide=value;
+
+		public function set autoHide(value : Boolean) : void {
+			_autoHide = value;
 		}
 
 		/**

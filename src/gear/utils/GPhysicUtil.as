@@ -3,7 +3,7 @@
 	 * 物理工具类
 	 * 
 	 * @author bright
-	 * @version 20120518
+	 * @version 20130115
 	 */
 	public final class GPhysicUtil {
 		public static function getTotal(distX : int, speedX : int, startZ : int, high : int, speedZ : int, distY : int = 0, speedY : int = 5) : int {
@@ -22,13 +22,13 @@
 
 		public static function getAirH(target : Array, high : int, total : int) : void {
 			target.length = 0;
-			var half : int = total * 0.5;
-			var gravity : Number = high * 2 / (half * (half - 1));
+			var half : int = total >> 1;
+			var gravity : Number = (high << 1) / (half * (half - 1));
 			var speed : Number = -half * gravity;
 			var start : Number = 0;
 			var i : int;
 			for (i = 0;i < half;i++) {
-				target.push(Math.round(start));
+				target.push(start + 0.5 | 0);
 				speed += gravity;
 				start += speed;
 			}
@@ -47,11 +47,11 @@
 				}
 				return;
 			}
-			var acceleration : Number = dist * 2 / (total * (total - 1));
+			var acceleration : Number = (dist << 1) / (total * (total - 1));
 			var speed : Number = total * acceleration;
 			for (i = 0;i < total;i++) {
 				speed -= acceleration;
-				target.push(Math.round(speed));
+				target.push(speed + 0.5 | 0);
 			}
 		}
 
@@ -62,7 +62,7 @@
 				speed = dist / total;
 				dist -= speed;
 				total--;
-				target.push(Math.round(speed));
+				target.push(speed + 0.5 | 0);
 			}
 		}
 	}

@@ -16,7 +16,7 @@
 	 * 按钮控件
 	 * 
 	 * @author bright
-	 * @version 20121204
+	 * @version 20130110
 	 */
 	public class GButton extends GBase {
 		protected var _phase : int;
@@ -44,6 +44,7 @@
 		override protected function resize() : void {
 			_skin.setSize(_width, _height);
 			_skin.phase = _phase;
+			GAlignLayout.layout(_label);
 		}
 
 		protected function update() : void {
@@ -65,9 +66,8 @@
 		}
 
 		override protected function onEnabled() : void {
-			if (!_enabled) {
-				_phase = GPhase.DISABLED;
-			}
+			_phase = _enabled ? GPhase.UP : GPhase.DISABLED;
+			addRender(updatePhase);
 		}
 
 		protected function mouseHandler(event : MouseEvent) : void {

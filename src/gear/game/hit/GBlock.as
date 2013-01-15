@@ -7,32 +7,28 @@
 	 * @author bright
 	 * @version 20130105
 	 */
-	public class GBlockData {
+	public class GBlock {
 		protected var _halfW : int;
 		protected var _halfH : int;
-		protected var _block : Rectangle;
+		protected var _hitRect : Rectangle;
 		protected var _x : int;
 		protected var _y : int;
-		protected var _width : int;
-		protected var _height : int;
 
-		public function GBlockData(halfW : int = 20, halfH : int = 10) {
+		public function GBlock(halfW : int = 10, halfH : int = 10) {
 			setTo(halfW, halfH);
 		}
 
 		public function setTo(halfW : int, halfH : int) : void {
 			_halfW = halfW;
 			_halfH = halfH;
-			_width = _halfW << 1;
-			_height = _halfH << 1;
-			_block = new Rectangle(-halfW, -halfH, _width, _height);
+			_hitRect = new Rectangle(-halfW, -halfH, _halfW << 1, _halfH << 1);
 		}
 
 		public function moveTo(nx : int, ny : int) : void {
 			_x = nx;
-			_block.x = _x - _halfW;
+			_hitRect.x = _x - _halfW;
 			_y = ny;
-			_block.y = _y - _halfH;
+			_hitRect.y = _y - _halfH;
 		}
 
 		public function get halfW() : int {
@@ -50,26 +46,18 @@
 		public function get y() : int {
 			return _y;
 		}
-		
-		public function get width():int{
-			return _width;
-		}
-		
-		public function get height():int{
-			return _height;
-		}
 
 		/**
 		 * 障碍矩形-处理寻路
 		 * 
 		 * @return Rectangle
 		 */
-		public function get blockRect() : Rectangle {
-			return _block;
+		public function get hitRect() : Rectangle {
+			return _hitRect;
 		}
 
-		public function isHit(value : GBlockData) : Boolean {
-			return _block.intersects(value.blockRect);
+		public function isHit(value : GBlock) : Boolean {
+			return _hitRect.intersects(value.hitRect);
 		}
 	}
 }
