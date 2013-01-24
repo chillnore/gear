@@ -19,22 +19,9 @@
 	 * Flash Remoting Client
 	 * 
 	 * @author bright
-	 * @version 20101025
-	 * @example
-	 * <listing version="3.0">
-	 * var rc:RemoteClient=new RemoteClient("http://localhost/gateway.php");
-	 * rc.testMode=true;
-	 * rc.addTest("UserService.hello",test_hello);
-	 * rc.call("UserService.hello",call_hello,"bright");
-	 * private function test_hello(username:String):Array{
-	 * 	return ["hello "+username];
-	 * }
-	 * private function call_hello(info:String):void{
-	 * 	trace(info); // "hello bright"
-	 * }
-	 * </listing>
+	 * @version 20130124
 	 */
-	public class Service extends EventDispatcher {
+	public class GRemotingService extends EventDispatcher {
 		public static const INVALID_QUEST : String = "invalidQuest";
 		private var _gateway : String;
 		private var _verify : String;
@@ -43,7 +30,7 @@
 		private var _test : Dictionary;
 		private var _nc : NetConnection;
 		private var _timer : GRenderCall;
-		private var _pollCall : Amf3Call;
+		private var _pollCall : GAmf3Call;
 
 		private function netStatusHandler(event : NetStatusEvent) : void {
 			for (var s:String in event.info) {
@@ -80,7 +67,7 @@
 			_nc.call.apply(null, _pollCall.params);
 		}
 
-		public function Service(gateway : String) : void {
+		public function GRemotingService(gateway : String) : void {
 			if (gateway == null || gateway.length < 1) {
 				throw new GLogError("gateway valid");
 			}
@@ -105,7 +92,7 @@
 			_prefix = value;
 		}
 
-		public function addCall(value : Amf3Call) : void {
+		public function addCall(value : GAmf3Call) : void {
 			if (_test[value.method] != null) {
 				try {
 					value.onResult.apply(null, Function(_test[value.method]).apply(null, value.args));
@@ -124,7 +111,7 @@
 			_timestamp = value;
 		}
 
-		public function startPoll(call : Amf3Call, delay : int) : void {
+		public function startPoll(call : GAmf3Call, delay : int) : void {
 			if (_verify == "none") return;
 			_pollCall = call;
 			_pollCall.merge(_prefix);

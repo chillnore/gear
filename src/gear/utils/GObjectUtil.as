@@ -3,7 +3,7 @@
 	 * 对象工具类
 	 * 
 	 * @author bright
-	 * @version 20121112
+	 * @version 20130124
 	 */
 	public final class GObjectUtil {
 		public static function append(source : Object, target : Object) : void {

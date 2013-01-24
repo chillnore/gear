@@ -27,8 +27,8 @@
 		/**
 		 * @inheritDoc
 		 */
-		public function GXmlLoader(url : String) {
-			super(url);
+		public function GXmlLoader(url : String, key : String = null, version : String = null) {
+			super(url, key, version);
 		}
 
 		/**

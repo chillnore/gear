@@ -5,7 +5,7 @@
 	 * @author bright
 	 * @version 20121105
 	 */
-	public interface ILogFormatter {
+	public interface IGLogFormatter {
 		/**
 		 * 格式化输出
 		 * 

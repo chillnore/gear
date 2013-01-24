@@ -51,7 +51,7 @@
 			removeListeners();
 			complete();
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -71,8 +71,8 @@
 		/**
 		 * @inheritDoc
 		 */
-		public function GMp3Loader(url : String) {
-			super(url);
+		public function GMp3Loader(url : String, key : String = null, version : String = null) {
+			super(url, key, version);
 		}
 
 		/**

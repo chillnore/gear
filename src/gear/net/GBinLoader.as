@@ -23,8 +23,8 @@
 		 * @private
 		 */
 		protected var _data : ByteArray;
-		
-		override protected function startLoad():void{
+
+		override protected function startLoad() : void {
 			_stream = new URLStream();
 			addStreamEvents();
 			_stream.load(_request);
@@ -57,7 +57,7 @@
 		}
 
 		protected function ioErrorHandler(event : IOErrorEvent) : void {
-			removeStreamEvents();			
+			removeStreamEvents();
 			failed();
 		}
 
@@ -67,6 +67,7 @@
 		}
 
 		private function progressHandler(event : ProgressEvent) : void {
+			_model.setTo(event.bytesLoaded, 0, event.bytesTotal);
 		}
 
 		private function completeHandler(event : Event) : void {
@@ -88,8 +89,8 @@
 		/**
 		 * @inheritDoc
 		 */
-		public function GBinLoader(url : String) {
-			super(url);
+		public function GBinLoader(url : String, key : String = null, version : String = null) {
+			super(url, key, version);
 			_request = new URLRequest(_url);
 		}
 

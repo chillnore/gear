@@ -49,10 +49,14 @@
 		}
 
 		override protected function onShow() : void {
-			addEvent(_textField, FocusEvent.FOCUS_IN, focusInHandler);
-			addEvent(_textField, FocusEvent.FOCUS_OUT, focusOutHandler);
+			addEvent(_textField, FocusEvent.FOCUS_IN, focusHandler);
+			addEvent(_textField, FocusEvent.FOCUS_OUT, focusHandler);
 			addEvent(_textField, TextEvent.TEXT_INPUT, textInputHandler);
 			addEvent(this, KeyboardEvent.KEY_UP, keyUpHandler);
+		}
+		
+		override protected function onHide():void{
+			setFocus(false);
 		}
 
 		override protected function onEnabled() : void {
@@ -70,16 +74,15 @@
 		}
 
 		protected function updateText() : void {
-			_textField.text = _text;
+			_textField.text = _text == null ? "" : _text;
 		}
 
-		protected function focusInHandler(event : FocusEvent) : void {
-			_phase = GPhase.FOCUS;
-			addRender(updatePhase);
-		}
-
-		protected function focusOutHandler(event : FocusEvent) : void {
-			_phase = _enabled ? GPhase.UP : GPhase.DISABLED;
+		protected function focusHandler(event : FocusEvent) : void {
+			if(event.type==FocusEvent.FOCUS_IN){
+				_phase = GPhase.FOCUS;
+			}else if(event.type==FocusEvent.FOCUS_OUT){
+				_phase = _enabled ? GPhase.UP : GPhase.DISABLED;
+			}
 			addRender(updatePhase);
 		}
 
@@ -144,13 +147,13 @@
 			if (focus) {
 				if (GUIUtil.root.stage.focus != _textField) {
 					GUIUtil.root.stage.focus = _textField;
-					_phase=GPhase.FOCUS;
+					_phase = GPhase.FOCUS;
 					addRender(updatePhase);
 				}
 			} else {
 				if (GUIUtil.root.stage.focus == _textField) {
 					GUIUtil.root.stage.focus = null;
-					_phase=GPhase.UP;
+					_phase = GPhase.UP;
 					addRender(updatePhase);
 				}
 			}
@@ -174,9 +177,9 @@
 		public function set onEnter(value : Function) : void {
 			_onEnter = value;
 		}
-		
-		public function clear():void{
-			_text="";
+
+		public function clear() : void {
+			_text = null;
 			addRender(updateText);
 		}
 	}

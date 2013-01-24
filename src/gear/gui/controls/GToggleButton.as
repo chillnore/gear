@@ -33,13 +33,11 @@
 		}
 
 		override protected function resize() : void {
-			trace("resize", name,_phase,_width,_height);
 			_skin.setSize(_width, _height);
 			_skin.phase = _phase;
 		}
 
 		protected function update() : void {
-			trace("update", name);
 			if (_autoSize == GAutoSizeMode.AUTO_SIZE) {
 				forceSize(_padding.left + _label.width + _padding.right, _padding.top + _label.height + _padding.bottom);
 			} else if (_autoSize == GAutoSizeMode.AUTO_WIDTH) {
@@ -48,15 +46,13 @@
 			GAlignLayout.layout(_label);
 		}
 		
-		override protected function viewSkin() : void {
-			trace("viewSkin", name);
-			_label.phase = _phase;
+		override protected function updatePhase() : void {
 			_skin.phase = _phase;
+			_label.phase = _phase;
 		}
 
-		override protected function onSelect() : void {
+		override protected function updateSelected() : void {
 			_skin.selected=_selected;
-			addRender(viewSkin);
 		}
 
 		public function GToggleButton() {
@@ -78,7 +74,7 @@
 			}else if(_scaleMode==GScaleMode.FIT_HEIGHT){
 				forceSize(_width,_skin.height);
 			}
-			addRender(viewSkin);
+			addRender(updatePhase);
 		}
 		
 		public function set icon(value : BitmapData) : void {

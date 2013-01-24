@@ -23,7 +23,7 @@
 		public static const IO_ERROR : String = "ioError";
 		public static const SECURITY_ERROR : String = "securityError";
 		public static const CLOSE : String = "close";
-		private var _callPool : CallPool;
+		private var _callPool : GCallPool;
 		private var _buffer : ByteArray;
 		private var _socket : Socket;
 		private var _data : SocketData;
@@ -37,7 +37,7 @@
 			_socket = new Socket();
 			_socket.objectEncoding = ObjectEncoding.AMF3;
 			_data = new SocketData("default", "127.0.0.1", 1863);
-			_callPool = new CallPool();
+			_callPool = new GCallPool();
 			_test = new Dictionary();
 			addSocketEvents();
 		}
@@ -84,7 +84,7 @@
 					_buffer = new ByteArray();
 					_socket.readBytes(_buffer, 0, _length);
 					var value : Object = _buffer.readObject();
-					_callPool.addRequest(CallData.parse(value));
+					_callPool.addRequest(GCallData.parse(value));
 					_readBytes += _length + 4;
 				} catch(e : Error) {
 					GLogger.error(_data.toString(), _length, e.getStackTrace());

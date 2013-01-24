@@ -13,7 +13,7 @@
 	 * @author bright
 	 * @version 20101008
 	 */
-	public class CallPool implements IDispose {
+	public class GCallPool implements IDispose {
 		private var _callbacks : Dictionary;
 		private var _list : Array;
 		private var _timer : Timer;
@@ -42,7 +42,7 @@
 			return -1;
 		}
 
-		private function execute(request : CallData) : void {
+		private function execute(request : GCallData) : void {
 			var calls : Array = _callbacks[request.method];
 			if (calls == null || calls.length == 0) {
 				GLogger.warn(GStringUtil.format("找不到回调方法:%s!", request.method));
@@ -57,7 +57,7 @@
 			}
 		}
 
-		public function CallPool() {
+		public function GCallPool() {
 			_callbacks = new Dictionary(true);
 			_list = new Array();
 			_timer = new Timer(30);
@@ -102,7 +102,7 @@
 		 * 
 		 * @param request CallData 反射数据
 		 */
-		public function addRequest(request : CallData) : void {
+		public function addRequest(request : GCallData) : void {
 			if (!_queue) {
 				execute(request);
 				return;

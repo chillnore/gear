@@ -17,8 +17,8 @@
 			complete();
 		}
 
-		public function GXlsxLoader(url : String) {
-			super(url);
+		public function GXlsxLoader(url : String, key : String = null, version : String = null) {
+			super(url, key, version);
 			_decoder = new GXlsxDecoder();
 		}
 

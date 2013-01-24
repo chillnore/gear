@@ -37,21 +37,21 @@
 			if (index != -1) {
 				_loadings.splice(index, 1);
 			}
-			if(loader.state==GLoadState.COMPLETE){
-				_loaded[loader.key]=loader;
+			if (loader.state == GLoadState.COMPLETE) {
+				_loaded[loader.key] = loader;
 			}
-			var group:GLoadGroup;
-			var finishs:Vector.<GLoadGroup>=new Vector.<GLoadGroup>();
+			var group : GLoadGroup;
+			var finishs : Vector.<GLoadGroup>=new Vector.<GLoadGroup>();
 			for each (group in groups) {
 				group.loadNext(loader);
-				if(group.isFinish){
+				if (group.isFinish) {
 					finishs.push(group);
 				}
 			}
-			for each(group in finishs){
-				index=groups.indexOf(group);
-				if(index!=-1){
-					groups.splice(index,1);
+			for each (group in finishs) {
+				index = groups.indexOf(group);
+				if (index != -1) {
+					groups.splice(index, 1);
 				}
 			}
 			if (_waits.length < 1) {
@@ -73,11 +73,12 @@
 		 * 创建加载器-工厂模式
 		 * 
 		 * @param url URL地址
-		 * @param automatch 自动匹配文件类型
 		 * @return ALoader 抽象加载器
 		 */
-		internal static function create(url : String) : AGLoader {
-			var key : String = GFileType.getKey(url);
+		internal static function create(url : String, key : String = null) : AGLoader {
+			if (key == null) {
+				key = GFileType.getKey(url);
+			}
 			var loader : AGLoader = _created[key];
 			if (loader != null) {
 				return loader;
@@ -85,69 +86,74 @@
 			var type : int = GFileType.getType(url);
 			switch(type) {
 				case GFileType.GPK:
-					loader = new GpkLoader(url);
+					loader = new GpkLoader(url, key);
 					break;
 				case GFileType.SWF:
-					loader = new GSwfLoader(url);
+					loader = new GSwfLoader(url, key);
 					break;
 				case GFileType.PNG:
-					loader = new GImgLoader(url);
+					loader = new GImgLoader(url, key);
 					break;
 				case GFileType.JPG:
-					loader = new GImgLoader(url);
+					loader = new GImgLoader(url, key);
 					break;
 				case GFileType.MP3:
-					loader = new GMp3Loader(url);
+					loader = new GMp3Loader(url, key);
 					break;
 				case GFileType.XML:
-					loader = new GXmlLoader(url);
+					loader = new GXmlLoader(url, key);
 					break;
 				case GFileType.JSON:
-					loader = new GJsonLoader(url);
+					loader = new GJsonLoader(url, key);
 					break;
 				case GFileType.XLSX:
-					loader = new GXlsxLoader(url);
+					loader = new GXlsxLoader(url, key);
 					break;
 				case GFileType.PSD:
-					loader = new GPsdLoader(url);
+					loader = new GPsdLoader(url, key);
 					break;
 				case GFileType.PLIST:
-					loader = new GPlistLoader(url);
+					loader = new GPlistLoader(url, key);
 					break;
 				default:
-					loader = new GBinLoader(url);
+					loader = new GBinLoader(url, key);
 					break;
 			}
 			_created[key] = loader;
 			return loader;
 		}
-		
-		internal static function startLoad(loader:AGLoader) : void {
+
+		internal static function startLoad(loader : AGLoader) : void {
 			if (_loadings.length < MAX) {
-				_loadings.push(loader);
-				loader.load();
-			} else {
+				if (_loadings.indexOf(loader) == -1) {
+					_loadings.push(loader);
+					loader.load();
+				}
+			} else if (_waits.indexOf(loader) == -1) {
 				_waits.push(loader);
 				loader.wait();
 			}
 		}
 
-		public static function load(url : String, onLoaded : Function, onFailed : Function = null) : void {
+		/**
+		 * 加载
+		 * 
+		 * @param url 加载地址
+		 * @param onLoaded 加载完成回调函数
+		 * @param onFailed 加载失败回调函数
+		 * @param reload 是否重新加载
+		 */
+		public static function load(url : String, onLoaded : Function, onFailed : Function = null, onProgress : Function = null, reload : Boolean = false) : IGLoader {
 			var loader : AGLoader = create(url);
-			if (loader.state != GLoadState.NONE) {
-				return;
+			if (reload) {
+				loader.reload();
 			}
-			loader.onLoaded = onLoaded;
-			loader.onFailed = onFailed;
-			startLoad(loader);
-		}
-		
-		public static function unload(key:String):void{
-			var loader:AGLoader=_loaded[key];
-			if(loader!=null){
-				//loader.unload();
-				delete _loaded[key];
+			if (loader.state == GLoadState.NONE) {
+				loader.onLoaded = onLoaded;
+				loader.onFailed = onFailed;
+				startLoad(loader);
 			}
+			return loader;
 		}
 
 		public static function getByteArray(key : String) : ByteArray {
@@ -181,7 +187,7 @@
 		public static function getGpkLBD(key : String, lib : String) : GBDList {
 			var loader : GpkLoader = _loaded[lib] as GpkLoader;
 			if (loader == null) {
-				GLogger.warn("在"+lib+"中找不到"+key);
+				GLogger.warn("找不到%s!", lib);
 				return null;
 			}
 			var gpk : Gpk = loader.gpk;
@@ -190,7 +196,7 @@
 
 		public static function getImg(key : String) : BitmapData {
 			var loader : GImgLoader = _loaded[key] as GImgLoader;
-			return loader != null ? loader.bitmap.bitmapData : null;
+			return loader != null ? loader.bitmapData : null;
 		}
 
 		public static function getMp3(name : String) : Sound {

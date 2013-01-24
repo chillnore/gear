@@ -52,8 +52,8 @@
 		 * @param url
 		 * @param key
 		 */
-		public function GSwfLoader(url : String) {
-			super(url);
+		public function GSwfLoader(url : String, key : String = null, version : String = null) {
+			super(url, key, version);
 		}
 
 		/**

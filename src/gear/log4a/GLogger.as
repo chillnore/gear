@@ -34,7 +34,7 @@
 		}
 
 		private static function callAppenders(event : GLogData) : void {
-			for each (var appender:IAppender in GLogger._appenders) {
+			for each (var appender:IGAppender in GLogger._appenders) {
 				appender.append(event);
 			}
 		}
@@ -64,7 +64,7 @@
 		 * 
 		 * @param appender 日志输出源接口
 		 */
-		public static function addAppender(appender : IAppender) :void {
+		public static function addAppender(appender : IGAppender) :void {
 			if (GLogger._appenders == null) {
 				GLogger._appenders = new Array();
 			}

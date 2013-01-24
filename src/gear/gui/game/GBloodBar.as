@@ -149,7 +149,7 @@
 
 		public function reset(max : int) : void {
 			GFrameRender.instance.remove(_fade);
-			_model.resetRange(max, 0, max);
+			_model.setTo(max, 0, max);
 			addRender(resetBars);
 		}
 

@@ -7,14 +7,14 @@
 	 * 哈希表
 	 * 
 	 * @author bright
-	 * @version 20121025
+	 * @version 20130116
 	 */
 	public class GHashMap {
-		private var _keys : Array ;
+		private var _keys : Vector.<String>;
 		private var _values : Dictionary;
 
 		public function GHashMap() {
-			_keys = new Array();
+			_keys = new Vector.<String>;
 			_values = new Dictionary(true);
 		}
 
@@ -24,8 +24,7 @@
 		 * @param key 键
 		 * @return 是否有键
 		 */
-		public function containsKey(key : *) : Boolean {
-			return _values.hasOwnProperty(key);
+		public function containsKey(key : String) : Boolean {
 			return _keys.indexOf(key) != -1;
 		}
 
@@ -50,11 +49,11 @@
 		 * @param value 值
 		 * @example 
 		 * <listing version="3.0">
-		 * var hashMap:HashMap=new HashMap();
+		 * var hashMap:GHashMap=new GHashMap();
 		 * hashMap.put("key","value");
 		 * </listing>
 		 */
-		public function put(key : *, value : *) : void {
+		public function put(key :String, value : *) : void {
 			if (_values[key] != null) {
 				_values[key] = value;
 			} else {
@@ -69,12 +68,12 @@
 		 * @param key 键
 		 * @return 键对值	     * @example 
 		 * <listing version="3.0">
-		 * var hashMap:HashMap=new HashMap();
+		 * var hashMap:GHashMap=new GHashMap();
 		 * hashMap.put("key","value");
 		 * var result:String=hashMap.getBy("key");
 		 * </listing>
 		 */
-		public function getBy(key : *) : * {
+		public function getBy(key :String) : * {
 			if (key == null) {
 				return null;
 			}
@@ -171,7 +170,7 @@
 		 * trace(hashMap.keys); // 输出["key"]
 		 * </listing>
 		 */
-		public function get keys() : Array {
+		public function get keys() : Vector.<String>{
 			return _keys;
 		}
 
@@ -212,7 +211,7 @@
 		 * @return 转换后的值数组
 		 * @example
 		 * <listing version="3.0">
-		 * var hashMap:HashMap=new HashMap();
+		 * var hashMap:GHashMap=new GHashMap();
 		 * hashMap.put("key","value");
 		 * trace(hashMap.toArray()) // 输出["value"]
 		 * </listing>
@@ -228,12 +227,6 @@
 		/**
 		 * 转换成字符串
 		 * @return 字符串
-		 * @example
-		 * <listing version="3.0">
-		 * var hashMap:HashMap=new HashMap();
-		 * hashMap.put("key","value");
-		 * trace(hashMap.toArray()) // 输出["value"]
-		 * </listing>
 		 */
 		public function toString() : String {
 			var out : String = "";

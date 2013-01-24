@@ -15,8 +15,8 @@
 			complete();
 		}
 
-		public function GPsdLoader(url : String) {
-			super(url);
+		public function GPsdLoader(url : String,key:String=null,version:String=null) {
+			super(url,key,version);
 			_decoder = new GPsdDecoder();
 		}
 	}

@@ -5,8 +5,10 @@
 	import flash.utils.Dictionary;
 
 	/**
+	 * AMF数据标签
+	 * 
 	 * @author bright
-	 * @version 20121225
+	 * @version 20130116
 	 */
 	public final class GpkTagAMF extends AGpkTag {
 		public static const TYPE : String = "amf";

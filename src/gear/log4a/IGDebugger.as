@@ -5,7 +5,7 @@
 	 * @author bright
 	 * @version 20110905
 	 */
-	public interface IDebugger {
+	public interface IGDebugger {
 		function debug(params : Array) : void;
 	}
 }

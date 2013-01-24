@@ -16,26 +16,28 @@
 	 * 按钮控件
 	 * 
 	 * @author bright
-	 * @version 20130110
+	 * @version 20130116
 	 */
 	public class GButton extends GBase {
-		protected var _phase : int;
-		protected var _lockPhase : int;
 		protected var _skin : IGSkin;
 		protected var _label : GLabel;
+		protected var _phase : int;
+		protected var _lockPhase : int;
 		protected var _onClick : Function;
 
 		override protected function preinit() : void {
+			_skin = GUIUtil.theme.buttonSkin;
 			_scaleMode = GScaleMode.SCALE;
 			_autoSize = GAutoSizeMode.NONE;
 			_padding.hdist = 6;
 			_padding.vdist = 2;
 			_lockPhase = GPhase.NONE;
+			addRender(updatePhase);
 			setSize(60, 22);
-			skin = GUIUtil.theme.buttonSkin;
 		}
 
 		override protected function create() : void {
+			_skin.addTo(this, 0);
 			_label = new GLabel();
 			_label.align = GAlign.CENTER;
 			addChild(_label);
@@ -43,7 +45,6 @@
 
 		override protected function resize() : void {
 			_skin.setSize(_width, _height);
-			_skin.phase = _phase;
 			GAlignLayout.layout(_label);
 		}
 
@@ -71,7 +72,6 @@
 		}
 
 		protected function mouseHandler(event : MouseEvent) : void {
-			event.stopImmediatePropagation();
 			if (!_enabled) {
 				return;
 			}
@@ -88,7 +88,6 @@
 		}
 
 		protected function clickHandler(event : MouseEvent) : void {
-			event.stopPropagation();
 			if (_onClick == null) {
 				return;
 			}
@@ -100,7 +99,7 @@
 		}
 
 		protected function updatePhase() : void {
-			var value : int = (_lockPhase != -1 ? _lockPhase : _phase);
+			var value : int = (_lockPhase != GPhase.NONE ? _lockPhase : _phase);
 			_skin.phase = value;
 			_label.phase = value;
 		}

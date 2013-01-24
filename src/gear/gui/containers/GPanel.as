@@ -5,24 +5,29 @@
 	import gear.gui.skin.IGSkin;
 	import gear.gui.utils.GUIUtil;
 	import gear.log4a.GLogger;
+	import gear.utils.GMathUtil;
 
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.geom.Point;
 
 	/**
 	 * 面板控件
 	 * 
 	 * @author bright
-	 * @version 20121204
+	 * @version 20130116
 	 */
 	public class GPanel extends GBase {
 		protected var _bgSkin : IGSkin;
 		protected var _content : Sprite;
-		protected var _modalSkin : Sprite;
+		protected var _modalSkin : IGSkin;
+		protected var _modal : Boolean;
 		protected var _onClose : Function;
 
 		override protected function preinit() : void {
 			_bgSkin = GUIUtil.theme.panelBgSkin;
+			_modalSkin = GUIUtil.theme.modalSkin;
+			_modal = false;
 			setSize(100, 100);
 		}
 
@@ -41,14 +46,18 @@
 				GAlignLayout.layout(base);
 			}
 		}
+		
+		override protected function onShow():void{
+			if(_modal){
+				addRender(updateModal);
+			}
+		}
 
 		/**
 		 * @private
 		 */
 		override protected function onHide() : void {
-			if (_modalSkin != null) {
-				_modalSkin.parent.removeChild(_modalSkin);
-			}
+			_modalSkin.remove();
 			if (_onClose != null) {
 				try {
 					_onClose();
@@ -59,19 +68,14 @@
 		}
 
 		override protected function onStageResize() : void {
-			addRender(showModal);
+			addRender(updateModal);
 		}
 
-		protected function showModal() : void {
-			if (_modalSkin != null) {
-				_modalSkin.width = GUIUtil.root.stage.stageWidth;
-				_modalSkin.height = GUIUtil.root.stage.stageHeight;
-				GUIUtil.root.stage.focus = null;
-				_modalSkin.width = GUIUtil.root.stage.stageWidth;
-				_modalSkin.height = GUIUtil.root.stage.stageHeight;
-				parent.addChildAt(_modalSkin, parent.numChildren - 1);
-				parent.setChildIndex(this, parent.numChildren - 1);
-			}
+		protected function updateModal() : void {
+			var topLeft : Point = parent.localToGlobal(GMathUtil.ZERO_POINT);
+			_modalSkin.moveTo(-topLeft.x, -topLeft.y);
+			_modalSkin.setSize(GUIUtil.root.stage.stageWidth, GUIUtil.root.stage.stageHeight);
+			_modalSkin.addTo(parent, parent.numChildren - 1);
 		}
 
 		public function GPanel() {
@@ -97,18 +101,11 @@
 		 * 设置模式
 		 */
 		public function set modal(value : Boolean) : void {
-			if ((_modalSkin != null) == value) {
+			if (_modal == value) {
 				return;
 			}
-			if (value) {
-				// _modalSkin = GUIUtil.theme.modalSkin;
-				addRender(showModal);
-			} else {
-				if (_modalSkin != null && _modalSkin.parent != null) {
-					_modalSkin.parent.removeChild(_modalSkin);
-				}
-				_modalSkin = null;
-			}
+			_modal = value;
+			addRender(updateModal);
 		}
 
 		public function add(value : GBase) : void {
@@ -117,9 +114,9 @@
 			}
 			_content.addChild(value);
 		}
-		
-		public function set onClose(value:Function):void{
-			_onClose=value;
+
+		public function set onClose(value : Function) : void {
+			_onClose = value;
 		}
 	}
 }

@@ -3,7 +3,7 @@
 	 * @author bright
 	 * @version 20110916
 	 */
-	public class SimpleDebuger implements IDebugger {
+	public class GSimpleDebuger implements IGDebugger {
 		public function debug(param : Array) : void {
 			param;
 		}

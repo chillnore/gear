@@ -1,5 +1,4 @@
 ﻿package gear.gui.core {
-	import gear.gui.containers.GPanel;
 	import gear.gui.utils.GUIUtil;
 
 	import flash.display.DisplayObject;
@@ -29,15 +28,16 @@
 			var ty : int = 0;
 			var tw : int;
 			var th : int;
+			var base : GBase;
 			if (source.parent == GUIUtil.root) {
 				tw = GUIUtil.root.stage.stageWidth;
 				th = GUIUtil.root.stage.stageHeight;
 			} else if (source.parent.name == "content") {
-				var panel : GPanel = GPanel(source.parent.parent);
-				tw = panel.width - panel.padding.left - panel.padding.right;
-				th = panel.height - panel.padding.top - panel.padding.bottom;
+				base = GBase(source.parent.parent);
+				tw = base.width - base.padding.left - base.padding.right;
+				th = base.height - base.padding.top - base.padding.bottom;
 			} else if (source.parent is GBase) {
-				var base : GBase = GBase(source.parent);
+				base = GBase(source.parent);
 				tx = base.padding.left;
 				ty = base.padding.top;
 				tw = base.width - base.padding.left - base.padding.right;

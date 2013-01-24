@@ -24,8 +24,8 @@
 		protected var _height : int;
 
 		protected function update() : void {
-			if(_phase==GPhase.NONE){
-				_phase=GPhase.UP;
+			if (_phase == GPhase.NONE) {
+				_phase = GPhase.UP;
 			}
 			var bd : BitmapData = _target[_phase + (_selected ? 4 : 0)];
 			if (bd == null) {
@@ -55,6 +55,7 @@
 		public function addTo(parent : DisplayObjectContainer, index : int = 0) : void {
 			if (_bitmap.parent != parent) {
 				parent.addChildAt(_bitmap, index);
+			} else {
 			}
 		}
 
@@ -105,7 +106,7 @@
 				}
 			} else {
 				for (i = 0;i < _source.length;i++) {
-					_target[i] = GBDUtil.scaleBD(_source[i], _width, _height);
+					_target[i] = GBDUtil.resizeBD(_source[i], _width, _height);
 				}
 			}
 			update();
@@ -120,6 +121,9 @@
 		}
 
 		public function set phase(value : int) : void {
+			if (_phase == value) {
+				return;
+			}
 			_phase = value;
 			update();
 		}
@@ -129,7 +133,11 @@
 		}
 
 		public function set selected(value : Boolean) : void {
+			if(_selected==value){
+				return;
+			}
 			_selected = value;
+			update();
 		}
 
 		public function clone() : IGSkin {

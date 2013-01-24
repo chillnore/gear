@@ -34,7 +34,7 @@
 		protected var _sizeRender : Boolean;
 		protected var _source : *;
 
-		protected function addToStageHandler(event : Event) : void {
+		protected final function addToStageHandler(event : Event) : void {
 			if (parent == GUIUtil.root) {
 				if (_isTop && GUIUtil.tops.indexOf(this) == -1) {
 					GUIUtil.tops.push(this);
@@ -46,11 +46,15 @@
 					addRender(layout);
 				}
 			}
-			render();
+			if (!_isRender && _renders.length > 0 && stage != null) {
+				addEvent(this, Event.ENTER_FRAME, renderHandler);
+				addEvent(this, Event.RENDER, renderHandler);
+				stage.invalidate();
+			}
 			onShow();
 		}
 
-		protected function removedFromStageHandler(event : Event) : void {
+		protected final function removedFromStageHandler(event : Event) : void {
 			if (_isTop && parent == GUIUtil.root) {
 				var index : int = GUIUtil.tops.indexOf(this);
 				if (index != -1) {
@@ -61,18 +65,18 @@
 			onHide();
 		}
 
-		protected function stageResizeHandler(event : Event) : void {
+		protected final function stageResizeHandler(event : Event) : void {
 			if (_align != null) {
 				addRender(layout);
 			}
 			onStageResize();
 		}
 
-		protected function renderHandler(event : Event) : void {
+		protected final function renderHandler(event : Event) : void {
 			render();
 		}
 
-		protected function addEvent(target : EventDispatcher, type : String, listener : Function) : void {
+		protected final function addEvent(target : EventDispatcher, type : String, listener : Function) : void {
 			var event : Object;
 			for each (event in _events) {
 				if (event.target == target && event.type == type) {
@@ -83,7 +87,7 @@
 			_events.push({target:target, type:type, listener:listener});
 		}
 
-		protected function removeEvent(target : EventDispatcher, type : String) : void {
+		protected final function removeEvent(target : EventDispatcher, type : String) : void {
 			var event : Object;
 			for (var i : int = 0;i < _events.length;i++) {
 				event = _events[i];
@@ -95,28 +99,38 @@
 			}
 		}
 
-		protected function removeAllEvent() : void {
+		protected final function removeAllEvent() : void {
 			for each (var event:Object in _events) {
 				EventDispatcher(event.target).removeEventListener(event.type, event.listener);
 			}
 			_events.length = 0;
 		}
 
-		protected function addRender(value : Function) : void {
+		protected final function addRender(value : Function) : void {
 			if (_renders.indexOf(value) != -1) {
 				return;
 			}
 			_renders.push(value);
-			if (_isRender) {
+			if (!_isRender && _renders.length > 0 && stage != null) {
+				addEvent(this, Event.ENTER_FRAME, renderHandler);
+				addEvent(this, Event.RENDER, renderHandler);
+				stage.invalidate();
+			}
+		}
+
+		protected final function render() : void {
+			if (_isRender || _renders.length < 1) {
 				return;
 			}
-			if (_renders.length > 0) {
-				if (stage != null) {
-					addEvent(this, Event.ENTER_FRAME, renderHandler);
-					addEvent(this, Event.RENDER, renderHandler);
-					stage.invalidate();
-				}
+			_isRender = true;
+			var func : Function;
+			while (_renders.length > 0) {
+				func = _renders.shift();
+				func.apply();
 			}
+			removeEvent(this, Event.ENTER_FRAME);
+			removeEvent(this, Event.RENDER);
+			_isRender = false;
 		}
 
 		protected function init() : void {
@@ -175,21 +189,6 @@
 
 		public function setParent(value : DisplayObjectContainer) : void {
 			_parent = value;
-		}
-
-		public final function render() : void {
-			if (_isRender || _renders.length < 1) {
-				return;
-			}
-			_isRender = true;
-			var func : Function;
-			while (_renders.length > 0) {
-				func = _renders.shift();
-				func.apply();
-			}
-			removeEvent(this, Event.ENTER_FRAME);
-			removeEvent(this, Event.RENDER);
-			_isRender = false;
 		}
 
 		/**

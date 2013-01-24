@@ -1,4 +1,5 @@
 ﻿package gear.codec.xlsx {
+	import gear.core.IDispose;
 	import gear.data.GHashMap;
 
 	import flash.utils.ByteArray;
@@ -7,9 +8,9 @@
 	 * xlsx文件解码
 	 * 
 	 * @author bright
-	 * @version 20121108
+	 * @version 20130116
 	 */
-	public class GXlsxDecoder {
+	public class GXlsxDecoder implements IDispose{
 		private var _zipDecoder : GZipDecoder;
 		private var _list : GHashMap;
 		private var _shared : Array;
@@ -132,6 +133,10 @@
 				return _list.getBy(name);
 			}
 			return _list.getBy(name);
+		}
+		
+		public function dispose():void{
+			_list.clear();
 		}
 	}
 }

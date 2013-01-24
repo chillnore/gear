@@ -5,11 +5,11 @@
 	 * @author bright
 	 * @version 20121105
 	 */
-	public class GAppender implements IAppender {
+	public class GAppender implements IGAppender {
 		/**
 		 * @private
 		 */
-		protected var _formatter : ILogFormatter;
+		protected var _formatter : IGLogFormatter;
 
 		public function GAppender() {
 		}

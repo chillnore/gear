@@ -51,7 +51,7 @@
 			if(_bd==null){
 				return;
 			}
-			var newBD:BitmapData=GBDUtil.scaleBD(_bd,_bound.width,_bound.height);
+			var newBD:BitmapData=GBDUtil.resizeBD(_bd,_bound.width,_bound.height);
 			_bd.dispose();
 			_bd=newBD;
 		}

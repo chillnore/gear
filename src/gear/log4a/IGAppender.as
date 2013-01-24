@@ -5,7 +5,7 @@
 	 * @author bright
 	 * @version 20101015
 	 */
-	public interface IAppender {
+	public interface IGAppender {
 		/**
 		 * 追加日志数据
 		 * 

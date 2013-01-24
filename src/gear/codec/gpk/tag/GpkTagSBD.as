@@ -10,27 +10,26 @@
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 
-
 	/**
 	 * @author bright
 	 * @version 20121225
 	 */
 	public final class GpkTagSBD extends AGpkTag {
 		public static const TYPE : String = "sbd";
-		private var _bd : BitmapData;
+		private var _bitmapData : BitmapData;
 		private var _ba : ByteArray;
 
 		private function completeHandler(event : Event) : void {
 			var loaderInfo : LoaderInfo = LoaderInfo(event.currentTarget);
 			loaderInfo.removeEventListener(Event.COMPLETE, completeHandler);
-			_bd = Bitmap(loaderInfo.content).bitmapData;
+			_bitmapData = Bitmap(loaderInfo.content).bitmapData;
 			loaderInfo.loader.unload();
 			complete();
 		}
 
-		public function GpkTagSBD(key : String="none", bd : BitmapData=null) : void {
+		public function GpkTagSBD(key : String = "none", bd : BitmapData = null) : void {
 			_key = key;
-			_bd = bd;
+			_bitmapData = bd;
 		}
 
 		override public function encode(output : ByteArray) : void {
@@ -41,7 +40,7 @@
 			var jpeg : JPEGXREncoderOptions = new JPEGXREncoderOptions();
 			jpeg.quantization = 30;
 			_ba = new ByteArray();
-			_bd.encode(_bd.rect, jpeg, _ba);
+			_bitmapData.encode(_bitmapData.rect, jpeg, _ba);
 			output.writeUnsignedInt(_ba.length);
 			output.writeBytes(_ba);
 			var end : int = output.position;
@@ -67,7 +66,14 @@
 		}
 
 		override public function addTo(content : Dictionary) : void {
-			content[key] = _bd;
+			content[key] = _bitmapData;
+		}
+
+		override public function dispose() : void {
+			if (_bitmapData != null) {
+				_bitmapData.dispose();
+				_bitmapData = null;
+			}
 		}
 	}
 }

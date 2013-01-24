@@ -1,9 +1,12 @@
 ﻿package gear.gui.controls {
 	import gear.gui.core.GBase;
+	import gear.gui.core.GPhase;
 	import gear.gui.skin.IGSkin;
 	import gear.gui.utils.GUIUtil;
 
 	import flash.events.Event;
+	import flash.events.FocusEvent;
+	import flash.text.StyleSheet;
 	import flash.text.TextField;
 	import flash.text.TextFieldType;
 
@@ -11,21 +14,24 @@
 	 * 文本框控件
 	 * 
 	 * @author bright
-	 * @version 20130110
+	 * @version 20130118
 	 */
 	public class GTextArea extends GBase {
 		protected var _borderSkin : IGSkin;
 		protected var _textField : TextField;
 		protected var _vScrollBar : GVScrollBar;
+		protected var _phase : int;
 		protected var _editable : Boolean;
 		protected var _maxLines : int;
 		protected var _edlim : String;
 		protected var _lock : Boolean;
+		protected var _appender : String;
 
 		override protected function preinit() : void {
 			editable = true;
 			_maxLines = 0;
 			_edlim = "</p>";
+			_appender = "";
 			setSize(100, 100);
 		}
 
@@ -43,8 +49,11 @@
 
 		override protected function resize() : void {
 			_borderSkin.setSize(_width, _height);
-			_textField.width = _width - _padding.left - _padding.right;
+			_textField.width = _width - (_vScrollBar.visible ? _vScrollBar.width : 0) - _padding.left - _padding.right;
 			_textField.height = _height - _padding.top - _padding.bottom;
+			_vScrollBar.x = _width - _vScrollBar.width;
+			_vScrollBar.height = _height;
+			addRender(updateScroll);
 		}
 
 		override protected function onEnabled() : void {
@@ -52,7 +61,22 @@
 		}
 
 		override protected function onShow() : void {
+			addEvent(_textField, FocusEvent.FOCUS_IN, focusHandler);
+			addEvent(_textField, FocusEvent.FOCUS_OUT, focusHandler);
 			addEvent(_textField, Event.SCROLL, textFieldScrollHandler);
+		}
+
+		protected function focusHandler(event : FocusEvent) : void {
+			if (event.type == FocusEvent.FOCUS_IN) {
+				_phase = GPhase.FOCUS;
+			} else if (event.type == FocusEvent.FOCUS_OUT) {
+				_phase = _enabled ? GPhase.UP : GPhase.DISABLED;
+			}
+			addRender(updatePhase);
+		}
+
+		protected function updatePhase() : void {
+			_borderSkin.phase = _phase;
 		}
 
 		protected function textFieldScrollHandler(event : Event) : void {
@@ -63,40 +87,50 @@
 			_textField.type = (_enabled ? (_editable ? TextFieldType.INPUT : TextFieldType.DYNAMIC) : TextFieldType.DYNAMIC);
 		}
 
+		protected function updateHtmlText() : void {
+			_textField.htmlText += _appender;
+			_appender = "";
+			if (_maxLines > 0) {
+				var lines : Array = _textField.htmlText.split(_edlim);
+				if (lines.length - 1 > _maxLines) {
+					_textField.htmlText = _textField.htmlText.slice(String(lines[0]).length + _edlim.length);
+				}
+			}
+			addRender(updateScroll);
+		}
+
 		protected function updateScroll() : void {
-			var needVScroll : Boolean = vScrollMax > 0;
-			var newWidth : int = _width - (needVScroll ? _vScrollBar.width : 0);
-			_textField.width = newWidth - _padding.left - _padding.right;
-			if (needVScroll) {
-				_vScrollBar.x = _width - _vScrollBar.width;
-				_vScrollBar.setTo(_textField.bottomScrollV - _textField.scrollV + 1, vScrollMax, _textField.scrollV - 1);
+			if (_textField.maxScrollV > 1) {
+				var pageSize : int = _textField.numLines - _textField.maxScrollV + 1;
+				_vScrollBar.setTo(pageSize, _textField.maxScrollV, _textField.scrollV, 1);
 				if (!_vScrollBar.visible) {
-					_vScrollBar.visible = true;
+					_textField.width = _width - _vScrollBar.width - _padding.left - _padding.right;
 					_vScrollBar.onValueChange = onValueChange;
+					_vScrollBar.visible = true;
 				}
 			} else if (_vScrollBar.visible) {
 				_vScrollBar.visible = false;
 				_vScrollBar.onValueChange = null;
+				_textField.width = _width - _padding.left - _padding.right;
 			}
 		}
 
 		protected function onValueChange() : void {
-			_textField.scrollV = _vScrollBar.value + 1;
-		}
-
-		protected function get vScrollMax() : int {
-			var max : int = _textField.numLines - _textField.bottomScrollV + _textField.scrollV - 1;
-			return Math.min(max, _textField.maxScrollV - 1);
+			_textField.scrollV = _vScrollBar.value;
 		}
 
 		public function GTextArea() {
 		}
-		
-		public function set maxLines(value:int):void{
-			if(_maxLines==value){
+
+		public function set styleSheet(value : StyleSheet) : void {
+			_textField.styleSheet = value;
+		}
+
+		public function set maxLines(value : int) : void {
+			if (_maxLines == value) {
 				return;
 			}
-			_maxLines=value;
+			_maxLines = value;
 		}
 
 		public function set editable(value : Boolean) : void {
@@ -108,20 +142,12 @@
 		}
 
 		public function appendHtmlText(value : String) : void {
-			_textField.htmlText += value;
-			if (_maxLines > 0) {
-				var lines : Array = _textField.htmlText.split(_edlim);
-				if (lines.length - 1 > _maxLines) {
-					_textField.htmlText = _textField.htmlText.slice(String(lines[0]).length + _edlim.length);
-				}
-			}
-			if (!_lock) {
-				_textField.scrollV = vScrollMax + 1;
-			}
+			_appender += value;
+			addRender(updateHtmlText);
 		}
-		
-		public function clear():void{
-			_textField.text="";
+
+		public function clear() : void {
+			_textField.text = "";
 		}
 	}
 }

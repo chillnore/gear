@@ -1,6 +1,9 @@
 ﻿package gear.net {
 	/**
+	 * 加载状态
+	 * 
 	 * @author bright
+	 * @version 20130116
 	 */
 	public class GLoadState {
 		public static const NONE:int=-1;

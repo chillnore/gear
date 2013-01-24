@@ -111,7 +111,10 @@
 		 * 
 		 * @param value 位图数组.
 		 */
-		public function GBDList(value : Vector.<GBDUnit>) {
+		public function GBDList(value : Vector.<GBDUnit>=null) {
+			if(value==null){
+				value=new Vector.<GBDUnit>();
+			}
 			_list = value;
 			_matrix = new Matrix();
 			_hasShadow = false;

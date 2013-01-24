@@ -1,4 +1,5 @@
 ﻿package gear.codec.plist {
+	import gear.core.IDispose;
 	import gear.log4a.GLogger;
 
 	import flash.utils.ByteArray;
@@ -9,7 +10,7 @@
 	 * @author bright
 	 * @version 20121025
 	 */
-	public class GPlist {
+	public class GPlistDecoder implements IDispose {
 		private var _data : ByteArray;
 		private var _offsetSize : int;
 		private var _objectRefSize : int;
@@ -206,9 +207,8 @@
 			return dest;
 		}
 
-		public function GPlist() {
+		public function GPlistDecoder() {
 		}
-
 
 		public function decode(data : ByteArray) : void {
 			_data = data;
@@ -231,6 +231,10 @@
 
 		public function get plistObj() : Object {
 			return _plistObj;
+		}
+
+		public function dispose() : void {
+			_plistObj = null;
 		}
 	}
 }

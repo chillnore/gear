@@ -1,4 +1,4 @@
-package gear.socket {
+﻿package gear.socket {
 	/**
 	 * @author flashpf
 	 */

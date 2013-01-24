@@ -76,5 +76,12 @@
 		override public function addTo(content : Dictionary) : void {
 			content[key] = _list;
 		}
+		
+		override public function dispose():void{
+			if(_list!=null){
+				_list.dispose();
+				_list=null;
+			}
+		}
 	}
 }

@@ -39,6 +39,7 @@
 		protected var _oldDir : int;
 		protected var _dirChange : Boolean;
 		protected var _isTurn : Boolean;
+		protected var _cols : int;
 
 		override protected function preinit() : void {
 			_dirs = 1;
@@ -84,7 +85,7 @@
 			} else {
 				total = value.length;
 				for (i = 0;i < total;i++) {
-					_frames.push(value[i]);
+					_frames[i] = value[i];
 				}
 			}
 			_offset = 0;
@@ -118,7 +119,7 @@
 			if (_isTurn && _oldDir != _dir) {
 				d = _oldDir = GMathUtil.getTurnDir(_oldDir, _dir);
 			}
-			var index : int = (_dirs < 1 ? _frame : (_frame * _dirs + d));
+			var index : int = d * _cols + _frame;
 			var unit : GBDUnit = _list.getAt(index, false);
 			if (unit == null) {
 				return;
@@ -161,6 +162,7 @@
 			}
 			_frames.length = 0;
 			_frame = -1;
+			_cols = _list.length / _dirs;
 		}
 
 		public function get list() : GBDList {
@@ -482,7 +484,7 @@
 			_oldDir = _dir;
 			_dir = value;
 			_dirChange = true;
-			if (_list != null) {
+			if (_list != null && _frames.length > 0) {
 				update();
 			}
 		}

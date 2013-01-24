@@ -1,4 +1,5 @@
 ﻿package gear.log4a {
+	import flash.utils.getTimer;
 	import gear.utils.GStringUtil;
 
 	/**
@@ -11,6 +12,7 @@
 		private var _level : GLevel;
 		private var _message : Array;
 		private var _code : String;
+		private var _timestamp:int;
 
 		protected function format(target : Array) : String {
 			if (target == null || target.length < 1) {
@@ -26,7 +28,6 @@
 				}
 				result += GStringUtil.toString(item);
 			}
-
 			return result;
 		}
 
@@ -35,6 +36,7 @@
 		public function GLogData(level : GLevel, message : Array) {
 			_level = level;
 			_message = message;
+			_timestamp=getTimer();
 			_code = format(_message);
 		}
 
@@ -44,6 +46,10 @@
 
 		public function get message() : Array {
 			return _message;
+		}
+		
+		public function get timestamp():int{
+			return _timestamp;
 		}
 
 		public function toString() : String {

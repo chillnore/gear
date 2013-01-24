@@ -3,7 +3,7 @@
 	 * Json文件加载器-只允许包内访问
 	 * 
 	 * @author bright
-	 * @version 20121212
+	 * @version 20130116
 	 */
 	internal final class GJsonLoader extends GBinLoader {
 		private var _jsonObj : Object;
@@ -21,8 +21,8 @@
 		/**
 		 * @inheritDoc
 		 */
-		public function GJsonLoader(url : String) {
-			super(url);
+		public function GJsonLoader(url : String,key:String=null,version:String=null) {
+			super(url,key,version);
 		}
 
 		/**

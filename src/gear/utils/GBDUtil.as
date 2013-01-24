@@ -108,7 +108,7 @@
 			return bd;
 		}
 
-		public static function scaleBD(source : BitmapData, w : int, h : int) : BitmapData {
+		public static function resizeBD(source : BitmapData, w : int, h : int) : BitmapData {
 			if (source == null) {
 				return null;
 			}
@@ -156,22 +156,6 @@
 
 		public static function getCutRect(source : BitmapData) : Rectangle {
 			return source.getColorBoundsRect(0xFF000000, 0x00000000, false);
-		}
-
-		public static function getResizeCutBD(source : BitmapData, scale : Number) : GBDUnit {
-			var w : int = Math.ceil(source.width * scale);
-			var h : int = Math.ceil(source.height * scale);
-			if (w < 1 || h < 1)
-				return null;
-			var resize : BitmapData = new BitmapData(w, h, true, 0);
-			var mtx : Matrix = new Matrix();
-			mtx.scale(scale, scale);
-			resize.draw(source, mtx, null, null, null, true);
-			var rect : Rectangle = resize.getColorBoundsRect(0xFF000000, 0x00000000, false);
-			var cut : BitmapData = new BitmapData(rect.width, rect.height, true, 0);
-			cut.copyPixels(resize, rect, GMathUtil.ZERO_POINT);
-			resize.dispose();
-			return new GBDUnit(int(rect.x - w * 0.5), int(rect.y - h), cut);
 		}
 
 		public static function getBDBy(key : String, lib : String, frame : int = 0) : BitmapData {
@@ -248,7 +232,7 @@
 		 * 切掉透明像素,释放源图，并重算偏移
 		 */
 		public static function cutAlphaBD(source : BitmapData, point : Point) : BitmapData {
-			if (!source.transparent) {
+			if (source == null || !source.transparent) {
 				return source;
 			}
 			var rect : Rectangle = source.getColorBoundsRect(0xFF000000, 0x00000000, false);

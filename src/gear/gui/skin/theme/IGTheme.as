@@ -10,11 +10,27 @@
 	 * @version 20130110
 	 */
 	public interface IGTheme {
-		function get emptySkin() : IGSkin;
-
 		function get buttonSkin() : IGSkin;
 
+		function get cellSkin() : IGSkin;
+
 		function get checkBoxIcon() : IGSkin;
+
+		function get emptySkin() : IGSkin;
+		
+		function get hScrollBarTrackSkin() : IGSkin;
+
+		function get hScrollBarThumbSkin() : IGSkin;
+
+		function get hScrollBarThumbIcon() : BitmapData;
+
+		function get hScrollBarArrowUpSkin() : IGSkin;
+
+		function get hScrollBarArrowDownSkin() : IGSkin;
+
+		function get listSkin() : IGSkin;
+
+		function get modalSkin() : IGSkin;
 
 		function get panelBgSkin() : IGSkin;
 
@@ -24,15 +40,15 @@
 
 		function get radioButtonIcon() : IGSkin;
 
-		function get scrollBarTrackSkin() : IGSkin;
+		function get vScrollBarTrackSkin() : IGSkin;
 
-		function get scrollBarThumbSkin() : IGSkin;
+		function get vScrollBarThumbSkin() : IGSkin;
 
-		function get scrollBarThumbIcon() : BitmapData;
+		function get vScrollBarThumbIcon() : BitmapData;
 
-		function get scrollBarArrowUpSkin() : IGSkin;
+		function get vScrollBarArrowUpSkin() : IGSkin;
 
-		function get scrollBarArrowDownSkin() : IGSkin;
+		function get vScrollBarArrowDownSkin() : IGSkin;
 
 		function get textAreaBorderSkin() : IGSkin;
 

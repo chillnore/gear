@@ -9,8 +9,8 @@
 	 * 
 	 * 绝对值 n=(n^(n>>31))-(n>>31);
 	 * 交换a,b a^=b;b^=a;a^=b;
-	 * n=-n n=~n+1
-	 * 对2的整数wugk%n n=2,4,8... &(n-1)
+	 * 取负值 n=-n n=~n+1
+	 * 对2的整数倍取余 %n n=2,4,8... &(n-1)
 	 * 取整 |0
 	 * 1位小数四舍五入 +(n<0?-0.5:0.5)|0
 	 * 
@@ -165,7 +165,7 @@
 			if (min == max) {
 				return min;
 			}
-			return Math.random() * (max - min) + 0.5 | 0 + min;
+			return Math.random() * (max - min) + min;
 		}
 
 		public static function randomAtArray(value : Array) : * {

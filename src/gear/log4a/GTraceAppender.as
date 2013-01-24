@@ -8,7 +8,7 @@
 	public class GTraceAppender extends GAppender {
 		public function GTraceAppender() {
 			super();
-			_formatter = new SimpleLogFormatter();
+			_formatter = new GSimpleLogFormatter();
 		}
 
 		/**

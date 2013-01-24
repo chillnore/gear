@@ -25,11 +25,10 @@
 		protected var _text : String;
 		protected var _phase : int;
 		protected var _phaseColor : GPhaseColor;
-		protected var _textChanged : Boolean;
 
 		override protected function preinit() : void {
 			_autoSize = GAutoSizeMode.AUTO_SIZE;
-			_sizeRender=true;
+			_sizeRender = true;
 			_textAlignIcon = GAlignMode.RIGHT_CENTER;
 			_hgap = _vgap = 1;
 			_phaseColor = new GPhaseColor();
@@ -45,11 +44,12 @@
 			addChild(_textField);
 		}
 
-		protected function update() : void {
-			if (_textChanged) {
-				_textChanged = false;
-				_textField.text = _text;
-			}
+		protected function updateText() : void {
+			_textField.text = (_text == null ? "" : _text);
+			addRender(updateLayout);
+		}
+		
+		protected function updateLayout():void{
 			if (_autoSize == GAutoSizeMode.AUTO_SIZE) {
 				var tw : int = 0;
 				var th : int = 0;
@@ -100,7 +100,7 @@
 
 		public function set icon(value : BitmapData) : void {
 			_icon.bitmapData = value;
-			addRender(update);
+			addRender(updateLayout);
 		}
 
 		public function set text(value : String) : void {
@@ -108,12 +108,16 @@
 				return;
 			}
 			_text = value;
-			_textChanged = true;
-			addRender(update);
+			addRender(updateText);
 		}
 
 		public function set textFieldFilters(value : Array) : void {
 			_textField.filters = value;
+		}
+
+		public function clear() : void {
+			_text = null;
+			addRender(updateText);
 		}
 	}
 }

@@ -1,11 +1,11 @@
 ﻿package gear.log4a {
-	import gear.utils.GSystemUtil;
 	import gear.gui.containers.GPanel;
 	import gear.gui.controls.GButton;
 	import gear.gui.controls.GTextArea;
 	import gear.gui.controls.GTextInput;
 	import gear.gui.core.GAlign;
 	import gear.gui.utils.GUIUtil;
+	import gear.utils.GSystemUtil;
 
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
@@ -14,18 +14,25 @@
 	 * UI日志输出源
 	 * 
 	 * @author bright
-	 * @version 20130110
+	 * @version 20130116
 	 */
-	public class GUIAppender extends GPanel implements IAppender {
+	public class GUIAppender extends GPanel implements IGAppender {
 		protected var _debug_ta : GTextArea;
 		protected var _commond_ti : GTextInput;
 		protected var _run_btn : GButton;
-		protected var _formatter : ILogFormatter;
-		protected var _debugger:IDebugger;
-		
-		override protected function onShow():void{
+		protected var _close_btn : GButton;
+		protected var _formatter : GCSSLogFormatter;
+		protected var _debugger : IGDebugger;
+
+		override protected function onShow() : void {
 			super.onShow();
 			_commond_ti.setFocus();
+		}
+
+		protected function keyDownHandler(event : KeyboardEvent) : void {
+			if (event.ctrlKey && event.keyCode == Keyboard.S) {
+				event.preventDefault();
+			}
 		}
 
 		protected function keyUpHandler(event : KeyboardEvent) : void {
@@ -42,19 +49,28 @@
 			_debug_ta.maxLines = 100;
 			add(_debug_ta);
 			_commond_ti = new GTextInput();
-			_commond_ti.align = new GAlign(5, 70, -1, 5, -1, -1);
+			_commond_ti.align = new GAlign(5, 115, -1, 5, -1, -1);
 			add(_commond_ti);
 			_run_btn = new GButton();
 			_run_btn.text = "执行";
-			_run_btn.align = new GAlign(-1, 5, -1, 5, -1, -1);
+			_run_btn.width = 50;
+			_run_btn.align = new GAlign(-1, 60, -1, 5, -1, -1);
 			add(_run_btn);
-			_formatter = new CSSLogFormatter();
-			_commond_ti.onEnter = run;
-			_run_btn.onClick = run;
+			_close_btn = new GButton();
+			_close_btn.text = "退出";
+			_close_btn.width = 50;
+			_close_btn.align = new GAlign(-1, 5, -1, 5, -1, -1);
+			add(_close_btn);
+			_formatter = new GCSSLogFormatter();
+			_debug_ta.styleSheet = _formatter.styleSheet;
+			_commond_ti.onEnter = onRun;
+			_run_btn.onClick = onRun;
+			_close_btn.onClick = hide;
+			GUIUtil.root.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
 			GUIUtil.root.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
 		}
-		
-		protected function run():void{
+
+		protected function onRun() : void {
 			var params : Array = _commond_ti.text.split(" ");
 			_commond_ti.clear();
 			if (params.length == 0) {
@@ -62,13 +78,13 @@
 			}
 			var perfix : String = params.shift();
 			switch(perfix) {
-				case "clear":
+				case "c":
 					_debug_ta.clear();
 					break;
-				case "quit":
+				case "q":
 					hide();
 					break;
-				case "getInfo":
+				case "i":
 					GLogger.info(GSystemUtil.getInfo());
 					break;
 				default:

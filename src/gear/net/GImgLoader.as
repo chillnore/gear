@@ -1,12 +1,11 @@
 ﻿package gear.net {
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Loader;
-	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.system.Capabilities;
 	import flash.system.ImageDecodingPolicy;
 	import flash.system.LoaderContext;
-	import flash.utils.getTimer;
 
 	/**
 	 * PNG,JPG,GIF加载器
@@ -15,37 +14,36 @@
 	 * @version 20121212
 	 */
 	internal final class GImgLoader extends GBinLoader {
-		private var _bitmap : Bitmap;
-		private var _start : int;
+		private var _loader : Loader;
+		private var _context : LoaderContext;
+		private var _bitmapData : BitmapData;
 
 		override protected function decode() : void {
-			_start = getTimer();
-			var loader : Loader = new Loader();
-			var context : LoaderContext = new LoaderContext();
-			context.allowCodeImport = true;
-			if (Capabilities.playerType == "Desktop") {
-				context.allowLoadBytesCodeExecution = true;
-			}
-			context.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
-			loader.loadBytes(_data, context);
+			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
+			_loader.loadBytes(_data, _context);
 		}
 
 		private function completeHandler(event : Event) : void {
-			var loaderInfo : LoaderInfo = LoaderInfo(event.currentTarget);
-			loaderInfo.removeEventListener(Event.COMPLETE, completeHandler);
-			_bitmap = Bitmap(loaderInfo.content);
-			loaderInfo.loader.unload();
+			_loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, completeHandler);
+			_bitmapData = Bitmap(_loader.contentLoaderInfo.content).bitmapData;
+			_loader.unloadAndStop();
 			_data.clear();
 			complete();
 		}
 
-		public function GImgLoader(url : String) {
-			super(url);
+		public function GImgLoader(url : String, key : String = null, version : String = null) {
+			super(url, key, version);
+			_loader = new Loader();
+			_context = new LoaderContext();
+			_context.allowCodeImport = true;
+			if (Capabilities.playerType == "Desktop") {
+				_context.allowLoadBytesCodeExecution = true;
+			}
+			_context.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
 		}
 
-		public function get bitmap() : Bitmap {
-			return _bitmap;
+		public function get bitmapData() : BitmapData {
+			return _bitmapData;
 		}
 	}
 }

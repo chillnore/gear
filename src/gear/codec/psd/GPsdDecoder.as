@@ -1,4 +1,5 @@
 ﻿package gear.codec.psd {
+	import gear.core.IDispose;
 	import gear.codec.psd.data.GPsd;
 	import gear.codec.psd.data.GPsdBlendMode;
 	import gear.codec.psd.data.GPsdChannel;
@@ -22,9 +23,9 @@
 	 * Psd文件解码器 
 	 *  
 	 * @author bright
-	 * @version 20121116
+	 * @version 201301116
 	 */
-	public final class GPsdDecoder {
+	public final class GPsdDecoder implements IDispose{
 		private var _data : ByteArray;
 		private var _psd : GPsd;
 
@@ -648,6 +649,9 @@
 			//bitmap.filters = _psd.getLayerBy("Group 1/Layer 1").filters;
 			bitmap.bitmapData = _psd.getLayerBy("Group 1/Layer 1").bitmapData;
 			GUIUtil.root.addChild(bitmap);
+		}
+		
+		public function dispose():void{
 		}
 	}
 }

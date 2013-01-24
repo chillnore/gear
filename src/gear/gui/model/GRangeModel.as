@@ -12,7 +12,7 @@
 		protected var _zeroPercent:Number;
 		protected var _onChange:Function;
 		
-		protected function reset():void{
+		protected function update():void{
 			_oldPercent = _percent;
 			_percent = (_value - _min) / (_max - _min);
 			_zeroPercent = (0 - _min) / (_max - _min);
@@ -25,18 +25,18 @@
 			_value=value;
 			_min=min;
 			_max=max;
-			reset();
+			update();
 		}
 		
 		public function set onChange(value:Function):void{
 			_onChange=value;
 		}
 		
-		public function resetRange(value : Number, min : Number, max : Number) : void {
+		public function setTo(value : Number, min : Number, max : Number) : void {
 			_value = value;
 			_min = min;
 			_max = max;
-			reset();
+			update();
 		}
 		
 		public function set min(n : Number) : void {
@@ -44,7 +44,7 @@
 				return;
 			}
 			_min = n;
-			reset();
+			update();
 		}
 
 		public function get min() : Number {
@@ -58,7 +58,7 @@
 			}
 			_oldValue = _value;
 			_value = n;
-			reset();
+			update();
 		}
 		
 		public function get value() : Number {
@@ -74,7 +74,7 @@
 				return;
 			}
 			_max = n;
-			reset();
+			update();
 		}
 
 		public function get max() : Number {

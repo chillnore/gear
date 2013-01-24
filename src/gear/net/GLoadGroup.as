@@ -12,10 +12,11 @@
 		private var _loaders : Vector.<AGLoader>;
 		private var _onFinish : Function;
 		private var _onLoaded : Function;
+		private var _model : GLoadModel;
 
 		private function finish() : void {
 			_isLoading = false;
-			if (_onFinish!=null) {
+			if (_onFinish != null) {
 				try {
 					_onFinish();
 				} catch(e : Error) {
@@ -27,6 +28,7 @@
 		public function GLoadGroup() {
 			_isLoading = false;
 			_loaders = new Vector.<AGLoader>();
+			_model = new GLoadModel();
 		}
 
 		internal function loadNext(loader : AGLoader) : void {
@@ -35,10 +37,10 @@
 				return;
 			}
 			_loaders.splice(index, 1);
-			if(_onLoaded!=null){
-				try{
+			if (_onLoaded != null) {
+				try {
 					_onLoaded(loader.key);
-				}catch(e:Error){
+				} catch(e : Error) {
 					GLogger.error(e.getStackTrace());
 				}
 			}
@@ -46,22 +48,40 @@
 				finish();
 			}
 		}
-		
-		internal function get isFinish():Boolean{
-			return _loaders.length<1;
+
+		internal function get isFinish() : Boolean {
+			return _loaders.length < 1;
+		}
+
+		public function get model() : GLoadModel {
+			return _model;
 		}
 
 		/**
 		 * 加入加载器
 		 * 
-		 * @param value LibData
+		 * @param url 加载地址
+		 * @param key 别名
+		 * @param reload 是否重新加载
 		 */
-		public function add(url : String) : void {
-			var loader : AGLoader = GLoadUtil.create(url);
-			if(loader.state==GLoadState.COMPLETE||loader.state==GLoadState.FAILED){
+		public function add(url : String, key : String = null, reload : Boolean = false) : void {
+			var loader : AGLoader = GLoadUtil.create(url, key);
+			if (reload) {
+				loader.reload();
+			}
+			if (loader.state != GLoadState.NONE || _loaders.indexOf(loader) != -1) {
 				return;
 			}
-			if (_loaders.indexOf(loader) == -1) {
+			_loaders.push(loader);
+		}
+
+		public function adds(urls : Vector.<String>) : void {
+			var loader : AGLoader;
+			for each (var url:String in urls) {
+				loader = GLoadUtil.create(url);
+				if (loader.state != GLoadState.NONE || _loaders.indexOf(loader) != -1) {
+					continue;
+				}
 				_loaders.push(loader);
 			}
 		}
@@ -83,6 +103,7 @@
 				for each (var loader:AGLoader in _loaders) {
 					GLoadUtil.startLoad(loader);
 				}
+				_model.reset(_loaders);
 			} else {
 				finish();
 			}

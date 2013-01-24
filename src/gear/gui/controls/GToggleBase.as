@@ -12,22 +12,22 @@
 	 * @version 20101018
 	 */
 	public class GToggleBase extends GBase {
-		protected var _phase:int;
+		protected var _phase : int;
 		protected var _selected : Boolean = false;
 		protected var _group : GToggleGroup;
-		
-		protected function viewSkin():void{			
+
+		protected function updatePhase() : void {
 		}
 
-		protected function onSelect() : void {
+		protected function updateSelected() : void {
 		}
-		
-		override protected function onEnabled():void{
+
+		override protected function onEnabled() : void {
 			if (!_enabled) {
 				_phase = GPhase.DISABLED;
 			}
 		}
-		
+
 		override protected  function onShow() : void {
 			super.onShow();
 			addEvent(this, MouseEvent.ROLL_OVER, mouseHandler);
@@ -35,9 +35,8 @@
 			addEvent(this, MouseEvent.MOUSE_DOWN, mouseHandler);
 			addEvent(this, MouseEvent.MOUSE_UP, mouseHandler);
 		}
-		
+
 		protected function mouseHandler(event : MouseEvent) : void {
-			event.stopPropagation();
 			if (!_enabled) {
 				return;
 			}
@@ -49,15 +48,15 @@
 				_phase = GPhase.DOWN;
 			} else if (event.type == MouseEvent.MOUSE_UP) {
 				_phase = (event.currentTarget == this) ? GPhase.OVER : GPhase.UP;
-				if(_group!=null){
-					if(!_selected){
+				if (_group != null) {
+					if (!_selected) {
 						_group.selected(this);
 					}
-				}else{
+				} else {
 					selected = !_selected;
 				}
 			}
-			addRender(viewSkin);
+			addRender(updatePhase);
 		}
 
 		public function GToggleBase() {
@@ -73,7 +72,7 @@
 				return;
 			}
 			_selected = value;
-			onSelect();
+			addRender(updateSelected);
 		}
 
 		/**

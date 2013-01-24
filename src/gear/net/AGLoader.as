@@ -1,4 +1,5 @@
 ﻿package gear.net {
+	import gear.gui.model.GRangeModel;
 	import gear.log4a.GLogger;
 	import gear.utils.GStringUtil;
 
@@ -8,12 +9,14 @@
 	 * @author bright
 	 * @version 20121108
 	 */
-	internal class AGLoader {
+	internal class AGLoader implements IGLoader {
 		protected var _url : String;
 		protected var _key : String;
+		protected var _version : String;
 		protected var _state : int;
 		protected var _onLoaded : Function;
 		protected var _onFailed : Function;
+		protected var _model : GRangeModel;
 
 		protected function startLoad() : void {
 		}
@@ -48,13 +51,17 @@
 
 		/**
 		 * 构造函数
-		 * 
-		 * @param data 库数据
 		 */
-		public function AGLoader(url : String) {
+		public function AGLoader(url : String, key : String = null, version : String = null) {
 			_url = url;
-			_key = GFileType.getKey(url);
+			_key = (key == null ? GFileType.getKey(url) : key);
+			_version = version;
 			_state = GLoadState.NONE;
+			_model = new GRangeModel();
+		}
+
+		public function get model() : GRangeModel {
+			return _model;
 		}
 
 		public function get url() : String {
@@ -89,7 +96,14 @@
 				return;
 			}
 			_state = GLoadState.LOADING;
+			_model.setTo(0, 0, 100);
 			startLoad();
+		}
+
+		public function reload() : void {
+			if (_state == GLoadState.COMPLETE || _state == GLoadState.FAILED) {
+				_state = GLoadState.NONE;
+			}
 		}
 
 		public function wait() : void {

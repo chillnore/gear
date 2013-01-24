@@ -1,21 +1,23 @@
 ﻿package gear.codec.gpk {
-	import flash.display.BitmapData;
-	import flash.utils.ByteArray;
-	import flash.utils.Dictionary;
 	import gear.codec.gpk.tag.AGpkTag;
 	import gear.codec.gpk.tag.GpkTagFactory;
+	import gear.core.IDispose;
 	import gear.gui.bd.GBDList;
 	import gear.log4a.GLogError;
 	import gear.log4a.GLogger;
+
+	import flash.display.BitmapData;
+	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 
 
 	/**
 	 * Gpk 资源包
 	 * 
 	 * @author bright
-	 * @version 20121219
+	 * @version 201301116
 	 */
-	public final class Gpk {
+	public final class Gpk implements IDispose{
 		private var _magic : String;
 		private var _version : int;
 		private var _output : ByteArray;
@@ -60,7 +62,7 @@
 				tag = GpkTagFactory.create(tagType);
 				tag.decode(_input, onTagFinish);
 				if (_input.position != end) {
-					GLogger.warn("解码标签长度不匹配!标签类型=" + tagType + ",当前位置=" + _input.position + ",结束位置=" + end);
+					GLogger.warn("解码标签长度不匹配!标签类型=%s,当前位置=%s,结束位置=%s",tagType,_input.position,end);
 					_input.position = end;
 				}
 			}
@@ -131,6 +133,16 @@
 
 		public function getLBD(key : String) : GBDList {
 			return _content[key] as GBDList;
+		}
+		
+		public function dispose():void{
+			for each(var tag:AGpkTag in _tags){
+				tag.dispose();
+			}
+			_tags.length=0;
+			for(var key:String in _content){
+				delete _content[key];
+			}
 		}
 	}
 }
