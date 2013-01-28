@@ -1,4 +1,6 @@
 ﻿package gear.game.move {
+	import gear.utils.GMathUtil;
+
 	/**
 	 * 移动基类
 	 * 
@@ -55,12 +57,8 @@
 		public function next() : void {
 		}
 
-		public function get step() : int {
-			return _step + 0.5 | 0;
-		}
-
 		public function get current() : int {
-			return _current + 0.5 | 0;
+			return GMathUtil.round(_current);
 		}
 
 		public function set dist(value : int) : void {

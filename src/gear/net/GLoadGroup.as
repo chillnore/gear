@@ -37,9 +37,9 @@
 				return;
 			}
 			_loaders.splice(index, 1);
-			if (_onLoaded != null) {
+			if (loader.state == GLoadState.COMPLETE && _onLoaded != null) {
 				try {
-					_onLoaded(loader.key);
+					_onLoaded.apply(null,[loader.key]);
 				} catch(e : Error) {
 					GLogger.error(e.getStackTrace());
 				}

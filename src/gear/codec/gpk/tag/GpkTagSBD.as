@@ -1,4 +1,6 @@
 ﻿package gear.codec.gpk.tag {
+	import gear.log4a.GLogger;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.JPEGXREncoderOptions;
@@ -33,6 +35,10 @@
 		}
 
 		override public function encode(output : ByteArray) : void {
+			if (_bitmapData == null) {
+				GLogger.error("%s-位图不能为空值!", _key);
+				return;
+			}
 			output.writeUTF(TYPE);
 			var start : int = output.position;
 			output.writeUnsignedInt(0);

@@ -1,6 +1,8 @@
 ﻿package gear.gui.controls {
-	import gear.gui.model.GRangeModel;
 	import gear.gui.core.GBase;
+	import gear.gui.core.GPhase;
+	import gear.gui.core.GScaleMode;
+	import gear.gui.model.GRangeModel;
 	import gear.gui.skin.IGSkin;
 	import gear.gui.utils.GUIUtil;
 
@@ -38,22 +40,55 @@
 			_trackSkin.setSize(_width, _height);
 			_barSkin.setSize(_model.percent * _width, _height);
 		}
-		
-		protected function onModelChange():void{
+
+		protected function onModelChange() : void {
 			_barSkin.setSize(_model.percent * _width, _height);
 		}
 
 		public function GProgressBar() {
 		}
 
-		public function set model(value : GRangeModel) : void {
-			if(_model==value){
+		public function set trackSkin(value : IGSkin) : void {
+			if (_trackSkin == value) {
 				return;
 			}
-			if(_model!=null){
+			if (_trackSkin != null) {
+				_trackSkin.remove();
+			}
+			_trackSkin = value;
+			if (_trackSkin == null) {
+				return;
+			}
+			_trackSkin.phase = (_enabled ? GPhase.UP : GPhase.DISABLED);
+			_trackSkin.addTo(this, 0);
+			if (_scaleMode == GScaleMode.FIT_SIZE) {
+				forceSize(_trackSkin.width, _trackSkin.height);
+			}
+		}
+
+		public function set barSkin(value : IGSkin) : void {
+			if (_barSkin == value) {
+				return;
+			}
+			if (_barSkin != null) {
+				_barSkin.remove();
+			}
+			_barSkin = value;
+			if (_barSkin == null) {
+				return;
+			}
+			_barSkin.phase = (_enabled ? GPhase.UP : GPhase.DISABLED);
+			_barSkin.addTo(this, 1);
+		}
+
+		public function set model(value : GRangeModel) : void {
+			if (_model == value) {
+				return;
+			}
+			if (_model != null) {
 				_model.onChange = null;
 			}
-			_model=value;
+			_model = value;
 			_model.onChange = onModelChange;
 			_barSkin.setSize(_model.percent * _width, _height);
 		}

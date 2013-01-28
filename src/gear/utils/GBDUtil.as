@@ -109,7 +109,7 @@
 		}
 
 		public static function resizeBD(source : BitmapData, w : int, h : int) : BitmapData {
-			if (source == null) {
+			if (source == null || w == 0 || h == 0) {
 				return null;
 			}
 			var a : Number = w / source.width;

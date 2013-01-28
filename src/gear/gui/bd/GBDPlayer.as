@@ -148,7 +148,6 @@
 		public function get bitmap() : Bitmap {
 			return _bitmap;
 		}
-
 		public function set list(value : GBDList) : void {
 			GFrameRender.instance.remove(this);
 			_list = value;
@@ -162,7 +161,7 @@
 			}
 			_frames.length = 0;
 			_frame = -1;
-			_cols = _list.length / _dirs;
+			_cols = _list != null ? _list.length / _dirs : 0;
 		}
 
 		public function get list() : GBDList {

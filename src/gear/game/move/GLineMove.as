@@ -13,12 +13,13 @@
 			_total = value;
 			_current = _start;
 			_step = 0;
-			_end = _dist;
 			_time = 0;
 			if (_dist == 0) {
 				return;
 			}
-			if (_mode == GMoveMode.SUB) {
+			if (_mode == GMoveMode.UNIFORM) {
+				_step = _dist / (_total - 1);
+			} else if (_mode == GMoveMode.SUB) {
 				_g = (-_dist << 1) / (_total * (_total - 1));
 				_s = -_total * _g;
 			} else if (_mode == GMoveMode.ADD) {
@@ -32,19 +33,11 @@
 			if (_dist == 0) {
 				return;
 			}
-			if (_mode == GMoveMode.UNIFORM) {
-				_step = _end / (_total - _time);
-				_current += _step;
-				_end -= _step;
-			} else if (_mode == GMoveMode.SUB) {
+			if (_mode != GMoveMode.UNIFORM) {
 				_s += _g;
 				_step = _s;
-				_current += _step;
-			} else if (_mode == GMoveMode.ADD) {
-				_s += _g;
-				_step = _s;
-				_current += _step;
 			}
+			_current += _step;
 		}
 	}
 }

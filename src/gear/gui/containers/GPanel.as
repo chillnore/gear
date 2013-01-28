@@ -1,4 +1,5 @@
 ﻿package gear.gui.containers {
+	import gear.gui.core.GPhase;
 	import gear.gui.core.GAlignLayout;
 	import gear.gui.core.GBase;
 	import gear.gui.core.GScaleMode;
@@ -46,9 +47,9 @@
 				GAlignLayout.layout(base);
 			}
 		}
-		
-		override protected function onShow():void{
-			if(_modal){
+
+		override protected function onShow() : void {
+			if (_modal) {
 				addRender(updateModal);
 			}
 		}
@@ -90,8 +91,10 @@
 			}
 			_bgSkin = value;
 			if (_bgSkin == null) {
+				return;
 			}
-			_bgSkin.addTo(this);
+			_bgSkin.phase = (_enabled ? GPhase.UP : GPhase.DISABLED);
+			_bgSkin.addTo(this, 0);
 			if (_scaleMode == GScaleMode.FIT_SIZE) {
 				forceSize(_bgSkin.width, _bgSkin.height);
 			}

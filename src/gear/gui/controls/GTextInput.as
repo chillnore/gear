@@ -1,6 +1,7 @@
 ﻿package gear.gui.controls {
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
+	import gear.gui.core.GPhaseColor;
 	import gear.gui.core.GScaleMode;
 	import gear.gui.skin.IGSkin;
 	import gear.gui.utils.GUIUtil;
@@ -23,11 +24,15 @@
 		protected var _textField : TextField;
 		protected var _label : GLabel;
 		protected var _phase : int;
+		protected var _phaseColor : GPhaseColor;
 		protected var _text : String;
 		protected var _onEnter : Function;
 
 		override protected function preinit() : void {
 			_padding.left = _padding.right = 2;
+			_phaseColor = new GPhaseColor();
+			_phaseColor.setAt(GPhase.UP, 0x111111);
+			_phaseColor.setAt(GPhase.DISABLED, 0x666666);
 			setSize(100, 22);
 		}
 
@@ -54,8 +59,8 @@
 			addEvent(_textField, TextEvent.TEXT_INPUT, textInputHandler);
 			addEvent(this, KeyboardEvent.KEY_UP, keyUpHandler);
 		}
-		
-		override protected function onHide():void{
+
+		override protected function onHide() : void {
 			setFocus(false);
 		}
 
@@ -74,13 +79,15 @@
 		}
 
 		protected function updateText() : void {
-			_textField.text = _text == null ? "" : _text;
+			_textField.text = (_text == null ? "" : _text);
+			var end : int = _textField.text.length + 1;
+			_textField.setSelection(end, end);
 		}
 
 		protected function focusHandler(event : FocusEvent) : void {
-			if(event.type==FocusEvent.FOCUS_IN){
+			if (event.type == FocusEvent.FOCUS_IN) {
 				_phase = GPhase.FOCUS;
-			}else if(event.type==FocusEvent.FOCUS_OUT){
+			} else if (event.type == FocusEvent.FOCUS_OUT) {
 				_phase = _enabled ? GPhase.UP : GPhase.DISABLED;
 			}
 			addRender(updatePhase);
@@ -108,6 +115,11 @@
 		}
 
 		public function GTextInput() {
+		}
+
+		public function setPhaseColor(phase : int, color : uint) : void {
+			_phaseColor.setAt(phase, color);
+			_textField.textColor = _phaseColor.getBy(_phase);
 		}
 
 		public function set skin(value : IGSkin) : void {

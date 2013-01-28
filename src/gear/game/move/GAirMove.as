@@ -1,10 +1,11 @@
 ﻿package gear.game.move {
 	import gear.utils.GMathUtil;
+
 	/**
 	 * 浮空移动
 	 * 
 	 * @author bright
-	 * @version 20121225
+	 * @version 20130124
 	 */
 	public class GAirMove extends GMoveBase {
 		protected var _upT : int;
