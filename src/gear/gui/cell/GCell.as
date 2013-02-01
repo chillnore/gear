@@ -2,6 +2,7 @@
 	import gear.gui.controls.GLabel;
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
+	import gear.gui.core.GScaleMode;
 	import gear.gui.skin.IGSkin;
 	import gear.gui.utils.GUIUtil;
 	import gear.utils.GStringUtil;
@@ -70,12 +71,30 @@
 		public function GCell() {
 		}
 
+		public function set skin(value : IGSkin) : void {
+			if (value == null || _skin == value) {
+				return;
+			}
+			if (_skin != null) {
+				_skin.remove();
+			}
+			_skin = value;
+			_skin.addTo(this);
+			if (_scaleMode == GScaleMode.FIT_SIZE) {
+				forceSize(_skin.width, _skin.height);
+			}
+			addRender(updatePhase);
+		}
+
 		public function set selected(value : Boolean) : void {
 			if (_selected == value) {
 				return;
 			}
 			_selected = value;
 			addRender(updateSelected);
+		}
+
+		public function set hotKey(value : String) : void {
 		}
 
 		override public function set source(value : *) : void {

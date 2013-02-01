@@ -10,11 +10,11 @@
 	 * @version 20130116
 	 */
 	public class GHashMap {
-		private var _keys : Vector.<String>;
+		private var _keys : Vector.<Object>;
 		private var _values : Dictionary;
 
 		public function GHashMap() {
-			_keys = new Vector.<String>;
+			_keys = new Vector.<Object>;
 			_values = new Dictionary(true);
 		}
 
@@ -24,7 +24,7 @@
 		 * @param key 键
 		 * @return 是否有键
 		 */
-		public function containsKey(key : String) : Boolean {
+		public function containsKey(key : *) : Boolean {
 			return _keys.indexOf(key) != -1;
 		}
 
@@ -53,7 +53,7 @@
 		 * hashMap.put("key","value");
 		 * </listing>
 		 */
-		public function put(key :String, value : *) : void {
+		public function put(key : *, value : *) : void {
 			if (_values[key] != null) {
 				_values[key] = value;
 			} else {
@@ -73,7 +73,7 @@
 		 * var result:String=hashMap.getBy("key");
 		 * </listing>
 		 */
-		public function getBy(key :String) : * {
+		public function getBy(key : *) : * {
 			if (key == null) {
 				return null;
 			}
@@ -92,6 +92,9 @@
 		 * </listing>
 		 */
 		public function getAt(index : int) : * {
+			if (index < 0 || index >= _keys.length) {
+				return null;
+			}
 			return _values[_keys[index]];
 		}
 
@@ -170,7 +173,7 @@
 		 * trace(hashMap.keys); // 输出["key"]
 		 * </listing>
 		 */
-		public function get keys() : Vector.<String>{
+		public function get keys() : Vector.<Object> {
 			return _keys;
 		}
 

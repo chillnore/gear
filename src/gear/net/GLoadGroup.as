@@ -8,14 +8,15 @@
 	 * @version 20121108
 	 */
 	public final class GLoadGroup {
-		private var _isLoading : Boolean;
-		private var _loaders : Vector.<AGLoader>;
+		private var _isLoadding : Boolean;
+		private var _loadeds : Vector.<AGLoader>;
+		private var _waits : Vector.<AGLoader>;
 		private var _onFinish : Function;
 		private var _onLoaded : Function;
 		private var _model : GLoadModel;
 
 		private function finish() : void {
-			_isLoading = false;
+			_isLoadding = false;
 			if (_onFinish != null) {
 				try {
 					_onFinish();
@@ -26,31 +27,31 @@
 		}
 
 		public function GLoadGroup() {
-			_isLoading = false;
-			_loaders = new Vector.<AGLoader>();
+			_loadeds = new Vector.<AGLoader>();
+			_waits = new Vector.<AGLoader>();
 			_model = new GLoadModel();
 		}
 
 		internal function loadNext(loader : AGLoader) : void {
-			var index : int = _loaders.indexOf(loader);
+			var index : int = _waits.indexOf(loader);
 			if (index == -1) {
 				return;
 			}
-			_loaders.splice(index, 1);
+			_waits.splice(index, 1);
 			if (loader.state == GLoadState.COMPLETE && _onLoaded != null) {
 				try {
-					_onLoaded.apply(null,[loader.key]);
+					_onLoaded.apply(null, [loader.key]);
 				} catch(e : Error) {
 					GLogger.error(e.getStackTrace());
 				}
 			}
-			if (_loaders.length < 1) {
+			if (_waits.length < 1) {
 				finish();
 			}
 		}
 
 		internal function get isFinish() : Boolean {
-			return _loaders.length < 1;
+			return _waits.length < 1;
 		}
 
 		public function get model() : GLoadModel {
@@ -69,20 +70,16 @@
 			if (reload) {
 				loader.reload();
 			}
-			if (loader.state != GLoadState.NONE || _loaders.indexOf(loader) != -1) {
+			if (loader.state == GLoadState.COMPLETE || loader.state == GLoadState.FAILED) {
+				if (_loadeds.indexOf(loader) == -1) {
+					_isLoadding = false;
+					_loadeds.push(loader);
+				}
 				return;
 			}
-			_loaders.push(loader);
-		}
-
-		public function adds(urls : Vector.<String>) : void {
-			var loader : AGLoader;
-			for each (var url:String in urls) {
-				loader = GLoadUtil.create(url);
-				if (loader.state != GLoadState.NONE || _loaders.indexOf(loader) != -1) {
-					continue;
-				}
-				_loaders.push(loader);
+			if (_waits.indexOf(loader) == -1) {
+				_isLoadding = false;
+				_waits.push(loader);
 			}
 		}
 
@@ -90,20 +87,31 @@
 		 * 开始加载
 		 */
 		public function load(onFinish : Function, onLoaded : Function = null) : void {
-			if (_isLoading) {
+			if (_isLoadding) {
 				return;
 			}
-			_isLoading = true;
+			_isLoadding = true;
 			_onFinish = onFinish;
 			_onLoaded = onLoaded;
-			if (_loaders.length > 0) {
+			var loader : AGLoader;
+			if (_loadeds.length > 0 && _onLoaded != null) {
+				for each (loader in _loadeds) {
+					try {
+						_onLoaded.apply(null, [loader.key]);
+					} catch(e : Error) {
+						GLogger.error(e.getStackTrace());
+					}
+				}
+				_loadeds.length = 0;
+			}
+			if (_waits.length > 0) {
 				if (GLoadUtil.groups.indexOf(this) == -1) {
 					GLoadUtil.groups.push(this);
 				}
-				for each (var loader:AGLoader in _loaders) {
+				for each (loader in _waits) {
 					GLoadUtil.startLoad(loader);
 				}
-				_model.reset(_loaders);
+				_model.reset(_waits);
 			} else {
 				finish();
 			}

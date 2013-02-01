@@ -26,7 +26,7 @@
 		protected var _changes : GChangeList;
 		protected var _model : GListModel;
 		protected var _cellHeight : int;
-		protected var _cell : Class = GCell;
+		protected var _cell : Class;
 		protected var _cells : Vector.<GCell>;
 
 		override protected function preinit() : void {
@@ -38,6 +38,7 @@
 			_model.onChange = onModelChange;
 			_cells = new Vector.<GCell>();
 			_cellHeight = 20;
+			_cell = GCell;
 			_padding.dist = 1;
 			setSize(102, 102);
 		}

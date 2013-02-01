@@ -1,10 +1,8 @@
 ﻿package gear.effect {
-	import gear.render.GRenderCall;
 	import gear.render.GFrameRender;
+	import gear.render.GRenderCall;
 
-	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
+	import flash.display.DisplayObject;
 
 	/**
 	 * Game Effect
@@ -12,12 +10,11 @@
 	 * @author bright
 	 * @version 20101008
 	 */
-	public class GEffect extends EventDispatcher {
-		public static const END : String = "end";
+	public class GEffect {
 		protected var _delay : int;
 		protected var _duration : int;
-		protected var _target : Sprite;
-		protected var _timer : GRenderCall;
+		protected var _target : DisplayObject;
+		protected var _render : GRenderCall;
 
 		protected function onChangeTarget() : void {
 		}
@@ -28,10 +25,10 @@
 		public function GEffect(duration : int, delay : int = 60) {
 			_duration = duration;
 			_delay = delay;
-			_timer = new GRenderCall(next, delay);
+			_render = new GRenderCall(next, delay);
 		}
 
-		public function set target(value : Sprite) : void {
+		public function set target(value : DisplayObject) : void {
 			_target = value;
 			onChangeTarget();
 		}
@@ -46,12 +43,11 @@
 				return;
 			}
 			next();
-			GFrameRender.instance.add(_timer);
+			GFrameRender.instance.add(_render);
 		}
 
 		public function stop() : void {
-			GFrameRender.instance.remove(_timer);
-			dispatchEvent(new Event(GEffect.END));
+			GFrameRender.instance.remove(_render);
 		}
 
 		public function dispose() : void {

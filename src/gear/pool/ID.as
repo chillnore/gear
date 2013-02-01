@@ -8,7 +8,7 @@
 
 		public function ID() {
 			_index = 0;
-			_free=new Vector.<int>();
+			_free = new Vector.<int>();
 		}
 
 		public function get id() : int {
