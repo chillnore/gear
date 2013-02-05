@@ -93,13 +93,13 @@
 		public static function getAngle(startX : int, startY : int, endX : int, endY : int) : int {
 			var dx : Number = endX - startX;
 			var dy : Number = endY - startY;
-			return Math.atan2(dy, dx) / Math.PI * 180 + 0.5 | 0;
+			return Math.atan2(dy, dx) / Math.PI * 180;
 		}
 
 		public static function getTwoPointAngle(start : Point, end : Point) : int {
 			var dx : Number = end.x - start.x;
 			var dy : Number = end.y - start.y;
-			return Math.atan2(dy, dx) / Math.PI * 180 + 0.5 | 0;
+			return Math.atan2(dy, dx) / Math.PI * 180;
 		}
 
 		public static function getDir(startX : int, startY : int, endX : int, endY : int) : int {
@@ -165,7 +165,7 @@
 			if (min == max) {
 				return min;
 			}
-			return Math.random() * (max - min) + min;
+			return round(Math.random() * (max - min) + min);
 		}
 
 		public static function randomAtArray(value : Array) : * {

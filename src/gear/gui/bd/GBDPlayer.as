@@ -148,6 +148,7 @@
 		public function get bitmap() : Bitmap {
 			return _bitmap;
 		}
+
 		public function set list(value : GBDList) : void {
 			GFrameRender.instance.remove(this);
 			_list = value;
@@ -230,6 +231,13 @@
 				GFrameRender.instance.add(this);
 			} else {
 				GFrameRender.instance.remove(this);
+				if (_onChange is Function) {
+					try {
+						_onChange(this);
+					} catch(e : Error) {
+						GLogger.error(e.getStackTrace());
+					}
+				}
 			}
 		}
 
@@ -354,7 +362,7 @@
 		}
 
 		public function get unit() : GBDUnit {
-			return _list.getAt(_frame, false);
+			return _list != null ? _list.getAt(_frame, false) : null;
 		}
 
 		/**
@@ -467,6 +475,10 @@
 		 */
 		public function set dirs(value : int) : void {
 			_dirs = value;
+		}
+
+		public function get dirs() : int {
+			return _dirs;
 		}
 
 		/**

@@ -74,7 +74,11 @@
 			_data = new ByteArray();
 			_stream.readBytes(_data, 0, _stream.bytesAvailable);
 			removeStreamEvents();
-			decode();
+			if (_data.length > 0) {
+				decode();
+			} else {
+				failed();
+			}
 		}
 
 		/**

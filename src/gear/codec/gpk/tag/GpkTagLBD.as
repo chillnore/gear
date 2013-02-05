@@ -3,10 +3,10 @@
 	import flash.display.JPEGXREncoderOptions;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+
 	import gear.codec.core.GLoadBytes;
 	import gear.gui.bd.GBDList;
 	import gear.gui.bd.GBDUnit;
-
 
 	/**
 	 * @author bright
@@ -20,7 +20,7 @@
 
 		private function onLoadDone(i : int, offsetX : int, offsetY : int, bd : BitmapData) : void {
 			_list.setAt(i, new GBDUnit(offsetX, offsetY, bd));
-			if (++_count <_total) {
+			if (++_count < _total) {
 				return;
 			}
 			complete();
@@ -58,11 +58,15 @@
 			_onComplete = onComplete;
 			_key = input.readUTF();
 			_total = input.readUnsignedShort();
+			if (_total == 0) {
+				complete();
+				return;
+			}
 			_count = 0;
 			_list = new GBDList(new Vector.<GBDUnit>(_total));
 			var offsetX : int;
 			var offsetY : int;
-			var ba:ByteArray;
+			var ba : ByteArray;
 			var loadBytes : GLoadBytes;
 			for (var i : int = 0;i < _total;i++) {
 				offsetX = input.readShort();
@@ -76,11 +80,11 @@
 		override public function addTo(content : Dictionary) : void {
 			content[key] = _list;
 		}
-		
-		override public function dispose():void{
-			if(_list!=null){
+
+		override public function dispose() : void {
+			if (_list != null) {
 				_list.dispose();
-				_list=null;
+				_list = null;
 			}
 		}
 	}
