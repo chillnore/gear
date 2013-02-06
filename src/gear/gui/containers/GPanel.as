@@ -69,7 +69,9 @@
 		}
 
 		override protected function onStageResize() : void {
-			addRender(updateModal);
+			if(_modal){
+				addRender(updateModal);
+			}
 		}
 
 		protected function updateModal() : void {
