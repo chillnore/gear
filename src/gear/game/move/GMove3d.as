@@ -1,4 +1,6 @@
 ﻿package gear.game.move {
+	import gear.utils.GMathUtil;
+
 	/**
 	 * 移动控制
 	 * 
@@ -48,7 +50,7 @@
 
 		public function bounce(percent : Number, distZ : int, total : int) : void {
 			_moveX.dist = _moveX.dist * percent;
-			_moveY.dist = _moveY.dist * percent + 0.5 | 0;
+			_moveY.dist = GMathUtil.round(_moveY.dist * percent);
 			_moveZ.setTo(0, distZ);
 			_total = Math.max(_moveX.total, _moveY.total, _moveZ.total);
 			if (_total < total) {

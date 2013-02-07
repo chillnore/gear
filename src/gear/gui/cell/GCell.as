@@ -5,6 +5,7 @@
 	import gear.gui.core.GScaleMode;
 	import gear.gui.skin.IGSkin;
 	import gear.gui.utils.GUIUtil;
+	import gear.log4a.GLogger;
 	import gear.utils.GStringUtil;
 
 	import flash.events.MouseEvent;
@@ -20,6 +21,7 @@
 		protected var _label : GLabel;
 		protected var _phase : int;
 		protected var _selected : Boolean;
+		protected var _onClick : Function;
 
 		override protected function preinit() : void {
 			_skin = GUIUtil.theme.cellSkin;
@@ -42,6 +44,7 @@
 			addEvent(this, MouseEvent.ROLL_OUT, mouseHandler);
 			addEvent(this, MouseEvent.MOUSE_DOWN, mouseHandler);
 			addEvent(this, MouseEvent.MOUSE_UP, mouseHandler);
+			addEvent(this, MouseEvent.CLICK, clickHandler);
 		}
 
 		protected function mouseHandler(event : MouseEvent) : void {
@@ -58,6 +61,17 @@
 				_phase = (event.currentTarget == this) ? GPhase.OVER : GPhase.UP;
 			}
 			addRender(updatePhase);
+		}
+
+		protected function clickHandler(event : MouseEvent) : void {
+			if (_onClick == null) {
+				return;
+			}
+			try {
+				_onClick.apply(null, _onClick.length < 1 ? null : [this]);
+			} catch(e : Error) {
+				GLogger.error(e.getStackTrace());
+			}
 		}
 
 		protected function updatePhase() : void {
@@ -95,6 +109,10 @@
 		}
 
 		public function set hotKey(value : String) : void {
+		}
+
+		public function set onClick(value : Function) : void {
+			_onClick = value;
 		}
 
 		override public function set source(value : *) : void {

@@ -5,6 +5,7 @@
 	import gear.gui.model.GChange;
 	import gear.gui.model.GChangeList;
 	import gear.gui.model.GGridModel;
+	import gear.log4a.GLogger;
 
 	/**
 	 * @author bright
@@ -21,6 +22,7 @@
 		protected var _hotKeys : Vector.<String>;
 		protected var _model : GGridModel;
 		protected var _changes : GChangeList;
+		protected var _onCellClick : Function;
 
 		override protected function preinit() : void {
 			_autoSize = GAutoSizeMode.AUTO_SIZE;
@@ -42,9 +44,21 @@
 					var cell : GCell = new _cell();
 					cell.setSize(_cellW, _cellH);
 					cell.moveTo(c * (_cellW + _hgap), r * (_cellH + _vgap));
+					cell.onClick = cellClick;
 					addChild(cell);
 					_cells.push(cell);
 				}
+			}
+		}
+
+		protected function cellClick(value : GCell) : void {
+			if (_onCellClick == null) {
+				return;
+			}
+			try {
+				_onCellClick.apply(null, _onCellClick.length < 1 ? null : [value]);
+			} catch(e : Error) {
+				GLogger.error(e.getStackTrace());
 			}
 		}
 
@@ -110,6 +124,10 @@
 			}
 			_rows = value;
 			addRender(initCells);
+		}
+
+		public function set onCellClick(value : Function) : void {
+			_onCellClick = value;
 		}
 	}
 }
