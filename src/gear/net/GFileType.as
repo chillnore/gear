@@ -3,7 +3,7 @@
 	 * 文件类型
 	 * 
 	 * @author bright
-	 * @version 20121108
+	 * @version 20130305
 	 */
 	public final class GFileType {
 		public static const BIN : int = -1;
@@ -15,9 +15,10 @@
 		public static const XML : int = 5;
 		public static const JSON : int = 6;
 		public static const XLSX : int = 7;
-		public static const PSD : int = 8;
-		public static const PLIST : int = 9;
-		private static const _types : Vector.<String>=new <String>["gpk", "swf", "png", "jpg", "mp3", "xml", "json", "xlsx", "psd", "plist"];
+		public static const CSV : int = 8;
+		public static const PSD : int = 9;
+		public static const PLIST : int = 10;
+		private static const _types : Vector.<String>=new <String>["gpk", "swf", "png", "jpg", "mp3", "xml", "json", "xlsx", "csv", "psd", "plist"];
 
 		public static function getKey(url : String) : String {
 			var separator : String = (url.indexOf("/") > -1) ? "/" : "\\";

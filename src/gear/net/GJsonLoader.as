@@ -1,9 +1,10 @@
 ﻿package gear.net {
+	import gear.log4a.GLogger;
 	/**
 	 * Json文件加载器-只允许包内访问
 	 * 
 	 * @author bright
-	 * @version 20130116
+	 * @version 20130305
 	 */
 	internal final class GJsonLoader extends GBinLoader {
 		private var _jsonObj : Object;
@@ -13,7 +14,8 @@
 				_jsonObj = JSON.parse(_data.readUTFBytes(_data.length));
 				_data.clear();
 				complete();
-			} catch(e : TypeError) {
+			} catch(e : Error) {
+				GLogger.error(e.getStackTrace());
 				failed();
 			}
 		}
