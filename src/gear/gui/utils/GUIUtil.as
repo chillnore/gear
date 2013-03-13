@@ -7,7 +7,11 @@
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
+	import flash.display.Stage;
+	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
+	import flash.display.StageQuality;
+	import flash.display.StageScaleMode;
 	import flash.filters.DropShadowFilter;
 	import flash.filters.GlowFilter;
 	import flash.geom.Point;
@@ -24,7 +28,7 @@
 	 * UI管理器
 	 * 
 	 * @author bright
-	 * @version 20121129
+	 * @version 20130309
 	 */
 	public final class GUIUtil {
 		public static const SHADOW : DropShadowFilter = new DropShadowFilter(1, 45, 0, 0.5, 1, 1);
@@ -36,7 +40,7 @@
 		// 置顶数组
 		public static var tops : Vector.<DisplayObject>=new Vector.<DisplayObject>();
 		private static var _defaultCSS : StyleSheet;
-		private static var _root : Sprite;
+		private static var _stage : Stage;
 		private static var _url : String;
 
 		/**
@@ -44,9 +48,16 @@
 		 * 
 		 * @param value 根
 		 */
-		public static function set root(value : Sprite) : void {
-			_root = value;
-			_url = GUIUtil._root.loaderInfo.url;
+		public static function init(value : Stage) : void {
+			if (_stage != null) {
+				return;
+			}
+			_stage = value;
+			_stage.scaleMode = StageScaleMode.NO_SCALE;
+			_stage.align = StageAlign.TOP_LEFT;
+			_stage.quality = StageQuality.HIGH;
+			_stage.stageFocusRect = false;
+			_url = _stage.loaderInfo.url;
 			if (_url.indexOf("/[[DYNAMIC]]/") != -1) {
 				_url = _url.split("/[[DYNAMIC]]/")[0];
 			}
@@ -61,17 +72,12 @@
 			}
 		}
 
-		/**
-		 * 获得根
-		 * 
-		 * @return 根
-		 */
-		public static function get root() : Sprite {
-			return GUIUtil._root;
+		public static function get stage() : Stage {
+			return _stage;
 		}
 
 		public static function get url() : String {
-			return GUIUtil._url;
+			return _url;
 		}
 
 		/**
@@ -94,7 +100,7 @@
 		 * @param edgeAlpha 描边透明度 @default 1
 		 */
 		public static function getEdgeFilters(edgeColor : uint) : Array {
-			return [new GlowFilter(edgeColor,1, 2, 2, 1.5, 1, false, false)];
+			return [new GlowFilter(edgeColor, 1, 2, 2, 1.5, 1, false, false)];
 		}
 
 		public static function getOffset(value : DisplayObject) : Point {
@@ -159,10 +165,10 @@
 		}
 
 		public static function hitTest(x : int, y : int) : DisplayObject {
-			if (_root == null) {
+			if (_stage== null) {
 				return null;
 			}
-			var result : Array = _root.getObjectsUnderPoint(new Point(x, y));
+			var result : Array = _stage.getObjectsUnderPoint(new Point(x, y));
 			if (result == null) {
 				return null;
 			}
@@ -170,15 +176,15 @@
 		}
 
 		public static function setFullScreen(value : Boolean) : void {
-			if (_root != null) {
-				if (value == (_root.stage.displayState == StageDisplayState.FULL_SCREEN)) {
+			if (_stage!= null) {
+				if (value == (_stage.displayState == StageDisplayState.FULL_SCREEN)) {
 					return;
 				}
 				try {
 					if (value) {
-						_root.stage.displayState = StageDisplayState.FULL_SCREEN;
+						_stage.displayState = StageDisplayState.FULL_SCREEN;
 					} else {
-						_root.stage.displayState = StageDisplayState.NORMAL;
+						_stage.displayState = StageDisplayState.NORMAL;
 					}
 				} catch(e : SecurityError) {
 					GLogger.debug(e.getStackTrace());

@@ -648,7 +648,7 @@
 			var bitmap : Bitmap = new Bitmap();
 			//bitmap.filters = _psd.getLayerBy("Group 1/Layer 1").filters;
 			bitmap.bitmapData = _psd.getLayerBy("Group 1/Layer 1").bitmapData;
-			GUIUtil.root.addChild(bitmap);
+			GUIUtil.stage.addChild(bitmap);
 		}
 		
 		public function dispose():void{

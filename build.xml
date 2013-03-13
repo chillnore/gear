@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="asdoc" default="create asdoc">
-	<property name="SDK_PATH"
-		value="/Users/bright/Downloads/install/adobe/flex_sdk_4.6" />
-	<target name="create asdoc">
+<project name="Gear发布工具" basedir=".">
+	<property file="${basedir}/build.properties" />
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+	<target name="1.生成asdoc">
 		<delete includeemptydirs="true">
 			<fileset dir="${basedir}/asdoc" includes="**/*" />
 		</delete>
-		<exec executable="${SDK_PATH}/bin/asdoc">
-			<arg
-				line="	-doc-sources '${basedir}/src' 
-		    		-output '${basedir}/asdoc' 
-		    		-main-title 'Gear API' 
-		    		-window-title 'Gear API'" />
+		<exec executable="${FLEX_PATH}/bin/asdoc">
+			<arg line="-doc-sources '${basedir}/src'" />
+			<arg line="-output '${basedir}/asdoc'" />
+			<arg line="-main-title 'Gear API'" />
+			<arg line="-window-title 'Gear API'" />
 		</exec>
+	</target>
+	<target name="2.生成gear.swc" description="库引用">
+		<echo message="正在生成gear.swc..." />
+		<compc output="${basedir}/bin/gear.swc" target-player="11.5" swf-version="18" >
+			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml" />
+			<source-path path-element="${basedir}/src" />
+			<include-sources dir="${basedir}/src" includes="*" />
+		</compc>
 	</target>
 </project>

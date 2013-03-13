@@ -14,7 +14,7 @@
 	 * UI日志输出源
 	 * 
 	 * @author bright
-	 * @version 20130116
+	 * @version 20130307
 	 */
 	public class GUIAppender extends GPanel implements IGAppender {
 		protected var _debug_ta : GTextArea;
@@ -30,17 +30,20 @@
 		}
 
 		protected function keyDownHandler(event : KeyboardEvent) : void {
-			if (event.ctrlKey && event.keyCode == Keyboard.S) {
+			if (event.ctrlKey && event.keyCode == Keyboard.COMMA) {
 				event.preventDefault();
 			}
 		}
 
 		protected function keyUpHandler(event : KeyboardEvent) : void {
-			if (event.ctrlKey && event.keyCode == Keyboard.S) {
+			if (event.ctrlKey && event.keyCode == Keyboard.COMMA) {
 				parent == null ? show() : hide();
 			}
 		}
 
+		/**
+		 * 初始化视图
+		 */
 		protected function initView() : void {
 			align = new GAlign(10, 10, 10, 10, 0, 0);
 			_debug_ta = new GTextArea();
@@ -63,11 +66,14 @@
 			add(_close_btn);
 			_formatter = new GCSSLogFormatter();
 			_debug_ta.styleSheet = _formatter.styleSheet;
+		}
+
+		protected function initEvent() : void {
 			_commond_ti.onEnter = onRun;
 			_run_btn.onClick = onRun;
 			_close_btn.onClick = hide;
-			GUIUtil.root.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
-			GUIUtil.root.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
+			GUIUtil.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
+			GUIUtil.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
 		}
 
 		protected function onRun() : void {
@@ -98,6 +104,7 @@
 
 		public function GUIAppender() {
 			initView();
+			initEvent();
 		}
 
 		public function append(data : GLogData) : void {

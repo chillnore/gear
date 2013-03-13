@@ -1,7 +1,6 @@
 ﻿package gear.gui.core {
 	import gear.gui.utils.GUIUtil;
 	import gear.utils.GMathUtil;
-	import gear.utils.GNameUtil;
 
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
@@ -35,7 +34,7 @@
 		protected var _source : *;
 
 		protected final function addToStageHandler(event : Event) : void {
-			if (parent == GUIUtil.root) {
+			if (parent == stage) {
 				if (_isTop && GUIUtil.tops.indexOf(this) == -1) {
 					GUIUtil.tops.push(this);
 				}
@@ -55,7 +54,7 @@
 		}
 
 		protected final function removedFromStageHandler(event : Event) : void {
-			if (_isTop && parent == GUIUtil.root) {
+			if (_isTop && parent == stage) {
 				var index : int = GUIUtil.tops.indexOf(this);
 				if (index != -1) {
 					GUIUtil.tops.splice(index, 1);
@@ -89,7 +88,7 @@
 
 		protected final function removeEvent(target : EventDispatcher, type : String) : void {
 			var event : Object;
-			for (var i : int = 0;i < _events.length;i++) {
+			for (var i : int = 0; i < _events.length; i++) {
 				event = _events[i];
 				if (event.target == target && event.type == type) {
 					EventDispatcher(event.target).removeEventListener(event.type, event.listener);
@@ -100,7 +99,7 @@
 		}
 
 		protected final function removeAllEvent() : void {
-			for each (var event:Object in _events) {
+			for each (var event : Object in _events) {
 				EventDispatcher(event.target).removeEventListener(event.type, event.listener);
 			}
 			_events.length = 0;
@@ -143,7 +142,6 @@
 			_events = new Vector.<Object>();
 			_renders = new Vector.<Function>();
 			_isRender = false;
-			name = GNameUtil.createUniqueName(this);
 			preinit();
 			create();
 			addEventListener(Event.ADDED_TO_STAGE, addToStageHandler);
@@ -311,9 +309,11 @@
 				parent.setChildIndex(this, parent.numChildren - 1);
 			} else {
 				if (_parent == null) {
-					_parent = GUIUtil.root;
+					_parent = GUIUtil.stage;
 				}
-				_parent.addChild(this);
+				if (_parent != null) {
+					_parent.addChild(this);
+				}
 			}
 		}
 

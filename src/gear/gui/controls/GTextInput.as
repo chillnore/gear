@@ -17,7 +17,7 @@
 	 * 文本输入框控件
 	 * 
 	 * @author bright
-	 * @version 20121205
+	 * @version 20130307
 	 */
 	public class GTextInput extends GBase {
 		protected var _borderSkin : IGSkin;
@@ -137,6 +137,10 @@
 			addRender(updatePhase);
 		}
 
+		public function set displayAsPassword(value : Boolean) : void {
+			_textField.displayAsPassword = value;
+		}
+
 		public function set label(value : String) : void {
 			_label.text = value;
 			addRender(updateLabel);
@@ -149,7 +153,7 @@
 			if (_textField.text.length > 0) {
 				_textField.setSelection(0, _textField.text.length);
 			}
-			GUIUtil.root.stage.focus = _textField;
+			GUIUtil.stage.focus = _textField;
 		}
 
 		/**
@@ -157,14 +161,14 @@
 		 */
 		public function setFocus(focus : Boolean = true) : void {
 			if (focus) {
-				if (GUIUtil.root.stage.focus != _textField) {
-					GUIUtil.root.stage.focus = _textField;
+				if (GUIUtil.stage.focus != _textField) {
+					GUIUtil.stage.focus = _textField;
 					_phase = GPhase.FOCUS;
 					addRender(updatePhase);
 				}
 			} else {
-				if (GUIUtil.root.stage.focus == _textField) {
-					GUIUtil.root.stage.focus = null;
+				if (GUIUtil.stage.focus == _textField) {
+					GUIUtil.stage.focus = null;
 					_phase = GPhase.UP;
 					addRender(updatePhase);
 				}

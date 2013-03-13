@@ -6,9 +6,6 @@
 	import gear.render.GFrameRender;
 
 	import flash.display.Sprite;
-	import flash.display.StageAlign;
-	import flash.display.StageQuality;
-	import flash.display.StageScaleMode;
 	import flash.events.Event;
 
 	/**
@@ -24,20 +21,11 @@
 	 * @version 20121204
 	 */
 	public class Game extends Sprite {
-		/**
-		 * @private
-		 */
-
 		private function addedToStageHandler(event : Event) : void {
 			removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-			stage.quality = StageQuality.HIGH;
-			stage.frameRate = 32;
-			stage.stageFocusRect = false;
-			//stage.showDefaultContextMenu = false;
+			// stage.showDefaultContextMenu = false;
+			GUIUtil.init(stage);
 			GLogger.addAppender(new GTraceAppender());
-			GUIUtil.root = this;
 			GFrameRender.instance.stage = stage;
 			startup();
 		}
