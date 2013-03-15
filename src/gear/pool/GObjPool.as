@@ -8,11 +8,12 @@
 	 * @example
 	 * <listing version="3.0"> 
 	 * GObjPool对象池使用示例:
+	 * 
 	 * var pool:GObjPool=new GObjPool(Point);
 	 * var point:Point=pool.borrowObj(100,100);
 	 * trace(point.x,point.y);
 	 * pool.returnObj(point);
-	 * 
+	 * </listing>
 	 * @author bright
 	 * @version 20130103
 	 */

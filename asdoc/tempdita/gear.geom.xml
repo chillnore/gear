@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><apiPackage id="gear.geom"><apiName>gear.geom</apiName><apiDetail/><apiClassifier id="gear.geom:GSize"><apiName>GSize</apiName><shortdesc>
+	 </shortdesc><prolog><author>bright
+	 </author><asMetadata/><asCustoms><version>20121204
+	 </version></asCustoms></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 </apiDesc></apiClassifierDetail><apiConstructor id="gear.geom:GSize:GSize"><apiName>GSize</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>width</apiItemName><apiType value="int"/></apiParam><apiParam><apiItemName>height</apiItemName><apiType value="int"/></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor><apiValue id="gear.geom:GSize:height:get"><apiName>height</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="gear.geom:GSize:width:get"><apiName>width</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="int"/></apiValueDef></apiValueDetail></apiValue></apiClassifier><apiClassifier id="gear.geom:GHLine"><apiName>GHLine</apiName><shortdesc>
+	 水平线-可用于出生线配置
+	 
+	 </shortdesc><prolog><author>bright
+	 </author><asMetadata/><asCustoms><version>20121204
+	 </version></asCustoms></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 水平线-可用于出生线配置
+	 
+	 </apiDesc></apiClassifierDetail><apiConstructor id="gear.geom:GHLine:GHLine"><apiName>GHLine</apiName><shortdesc>
+		 构造函数
+		 
+		 </shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>x</apiItemName><apiType value="int"/><apiDesc>左侧起点X坐标
+		 </apiDesc></apiParam><apiParam><apiItemName>y</apiItemName><apiType value="int"/><apiDesc>左侧起点Y坐标
+		 </apiDesc></apiParam><apiParam><apiItemName>width</apiItemName><apiType value="int"/><apiDesc>线宽度 
+		 </apiDesc></apiParam></apiConstructorDef><apiDesc>
+		 构造函数
+		 
+		 </apiDesc></apiConstructorDetail></apiConstructor><apiOperation id="gear.geom:GHLine:getRandomPoint"><apiName>getRandomPoint</apiName><shortdesc>
+		 获得水平线上的随机点
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>水平线上的随机点
+		 </apiDesc><apiType value="flash.geom:Point"/></apiReturn></apiOperationDef><apiDesc>
+		 获得水平线上的随机点
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="gear.geom:GHLine:toString"><apiName>toString</apiName><shortdesc>
+		 转换成字符串
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>字符串
+	 	 </apiDesc><apiType value="String"/></apiReturn></apiOperationDef><apiDesc>
+		 转换成字符串
+		 
+		 </apiDesc><example>
+		 <codeblock rev="3.0">
+		 var hline:HLine=new HLine(10,10,100);
+		 trace(hline.toString()) // 输出"x=10,y=10,width=100"
+		 </codeblock>
+		 </example></apiOperationDetail></apiOperation><apiValue id="gear.geom:GHLine:width:get"><apiName>width</apiName><shortdesc>
+		 水平线宽度
+		 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="int"/></apiValueDef><apiDesc>
+		 水平线宽度
+		 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="gear.geom:GHLine:x:get"><apiName>x</apiName><shortdesc>
+		 左侧起点X坐标
+		 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="int"/></apiValueDef><apiDesc>
+		 左侧起点X坐标
+		 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="gear.geom:GHLine:y:get"><apiName>y</apiName><shortdesc>
+		 左侧起点Y坐标
+		 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="int"/></apiValueDef><apiDesc>
+		 左侧起点Y坐标
+		 
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier></apiPackage>

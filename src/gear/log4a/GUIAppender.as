@@ -70,8 +70,8 @@
 
 		protected function initEvent() : void {
 			_commond_ti.onEnter = onRun;
-			_run_btn.onClick = onRun;
-			_close_btn.onClick = hide;
+			//_run_btn.onClick = onRun;
+			//_close_btn.onClick = hide;
 			GUIUtil.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
 			GUIUtil.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
 		}

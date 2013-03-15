@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><apiPackage id="gear.pool"><apiName>gear.pool</apiName><apiDetail/><apiClassifier id="gear.pool:ID"><apiName>ID</apiName><shortdesc>
+	 </shortdesc><prolog><author>bright
+	 </author><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 </apiDesc></apiClassifierDetail><apiConstructor id="gear.pool:ID:ID"><apiName>ID</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="gear.pool:ID:free"><apiName>free</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="int"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiValue id="gear.pool:ID:protected:_free"><apiName>_free</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="protected"/><apiDynamic/><apiType value="Vector$int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="gear.pool:ID:protected:_index"><apiName>_index</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="protected"/><apiDynamic/><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="gear.pool:ID:id:get"><apiName>id</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="int"/></apiValueDef></apiValueDetail></apiValue></apiClassifier><apiClassifier id="gear.pool:GObjPool"><apiName>GObjPool</apiName><shortdesc>
+	 对象池
+	 
+	 </shortdesc><prolog><author>bright
+	 </author><asMetadata/><asCustoms><version>20130103
+	 </version></asCustoms></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiFinal/><apiBaseInterface>gear.core:IDispose</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 对象池
+	 
+	 </apiDesc><example>
+	 <codeblock rev="3.0"> 
+	 GObjPool对象池使用示例:
+	 var pool:GObjPool=new GObjPool(Point);
+	 var point:Point=pool.borrowObj(100,100);
+	 trace(point.x,point.y);
+	 pool.returnObj(point);
+	 </codeblock>
+	 </example></apiClassifierDetail><apiConstructor id="gear.pool:GObjPool:GObjPool"><apiName>GObjPool</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>value</apiItemName><apiType value="Class"/></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="gear.pool:GObjPool:borrowObj"><apiName>borrowObj</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="Object"/></apiReturn><apiParam><apiItemName>args</apiItemName><apiType value="restParam"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="gear.pool:GObjPool:protected:construct"><apiName>construct</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="protected"/><apiReturn><apiType value="Object"/></apiReturn><apiParam><apiItemName>args</apiItemName><apiType value="Array"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="gear.pool:GObjPool:dispose"><apiName>dispose</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="gear.pool:GObjPool:returnObj"><apiName>returnObj</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Object"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation></apiClassifier></apiPackage>

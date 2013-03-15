@@ -6,7 +6,7 @@ package gear.particle.action {
 	/**
 	 * @author Administrator
 	 */
-	public class Age extends ActionBase {
+	public class Age extends GActionBase {
 		protected var _easing : Function;
 
 		public function Age(easing : Function = null) {

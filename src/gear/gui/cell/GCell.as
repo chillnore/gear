@@ -1,4 +1,5 @@
 ﻿package gear.gui.cell {
+	import gear.log4a.GLogger;
 	import gear.gui.controls.GLabel;
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
@@ -14,7 +15,7 @@
 	 * @author bright
 	 * @version 20130116
 	 */
-	public class GCell extends GBase {
+	public class GCell extends GBase implements IGCell{
 		protected var _skin : IGSkin;
 		protected var _label : GLabel;
 		protected var _phase : int;
@@ -80,6 +81,7 @@
 
 		override public function set source(value : *) : void {
 			value = GStringUtil.toString(value);
+			GLogger.debug(value);
 			if (_source == value) {
 				return;
 			}

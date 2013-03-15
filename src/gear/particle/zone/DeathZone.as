@@ -1,9 +1,9 @@
 package gear.particle.zone {
-	import gear.particle.action.ActionBase;
+	import gear.particle.action.GActionBase;
 	import gear.particle.core.Emitter;
 	import gear.particle.core.Particle;
 
-	public final class DeathZone extends ActionBase {
+	public final class DeathZone extends GActionBase {
 		private var _zone : IZone;
 		private var _invertZone : Boolean;
 		private var _inside : Boolean;

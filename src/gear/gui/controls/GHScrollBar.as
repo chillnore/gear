@@ -91,8 +91,8 @@
 		}
 
 		override protected function onShow() : void {
-			_up_btn.onClick = onArrowClick;
-			_down_btn.onClick = onArrowClick;
+			//_up_btn.onClick = onArrowClick;
+			//_down_btn.onClick = onArrowClick;
 			addEvent(_track_btn, MouseEvent.MOUSE_DOWN, track_mouseDownHandler);
 			_thumb_btn.addEventListener(MouseEvent.MOUSE_DOWN, thumb_mouseDownHandler);
 		}

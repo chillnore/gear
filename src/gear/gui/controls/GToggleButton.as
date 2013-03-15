@@ -1,7 +1,7 @@
 ﻿package gear.gui.controls {
 	import gear.gui.core.GAlign;
 	import gear.gui.core.GAlignLayout;
-	import gear.gui.core.GAutoSizeMode;
+	import gear.gui.core.GAutoSize;
 	import gear.gui.core.GScaleMode;
 	import gear.gui.skin.IGSkin;
 	import gear.gui.utils.GUIUtil;
@@ -38,9 +38,9 @@
 		}
 
 		protected function update() : void {
-			if (_autoSize == GAutoSizeMode.AUTO_SIZE) {
+			if (_autoSize == GAutoSize.AUTO_SIZE) {
 				forceSize(_padding.left + _label.width + _padding.right, _padding.top + _label.height + _padding.bottom);
-			} else if (_autoSize == GAutoSizeMode.AUTO_WIDTH) {
+			} else if (_autoSize == GAutoSize.AUTO_WIDTH) {
 				forceSize(_padding.left + _label.width + _padding.right, _height);
 			}
 			GAlignLayout.layout(_label);

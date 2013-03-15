@@ -65,6 +65,10 @@
 			removeStreamEvents();
 			failed();
 		}
+		
+		protected function delayToLoad():void{
+			//TODO 重新加载3次
+		}
 
 		private function progressHandler(event : ProgressEvent) : void {
 			_model.setTo(event.bytesLoaded, 0, event.bytesTotal);

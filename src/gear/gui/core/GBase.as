@@ -6,6 +6,7 @@
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 
 	/**
 	 * 控件基类
@@ -13,7 +14,7 @@
 	 * @author bright
 	 * @version 20130110
 	 */
-	public class GBase extends Sprite {
+	public class GBase extends Sprite implements IGBase{
 		protected var _parent : DisplayObjectContainer;
 		protected var _width : int;
 		protected var _height : int;
@@ -75,7 +76,7 @@
 			render();
 		}
 
-		protected final function addEvent(target : EventDispatcher, type : String, listener : Function) : void {
+		protected final function addEvent(target : IEventDispatcher, type : String, listener : Function) : void {
 			var event : Object;
 			for each (event in _events) {
 				if (event.target == target && event.type == type) {
@@ -86,7 +87,7 @@
 			_events.push({target:target, type:type, listener:listener});
 		}
 
-		protected final function removeEvent(target : EventDispatcher, type : String) : void {
+		protected final function removeEvent(target : IEventDispatcher, type : String) : void {
 			var event : Object;
 			for (var i : int = 0; i < _events.length; i++) {
 				event = _events[i];
@@ -136,7 +137,7 @@
 			_maxWidth = 2880;
 			_maxHeight = 1880;
 			_scaleMode = GScaleMode.SCALE;
-			_autoSize = GAutoSizeMode.NONE;
+			_autoSize = GAutoSize.NONE;
 			_enabled = true;
 			_padding = new GPadding();
 			_events = new Vector.<Object>();
@@ -230,7 +231,7 @@
 		}
 
 		override public function set width(value : Number) : void {
-			if (_scaleMode == GScaleMode.FIT_SIZE || _scaleMode == GScaleMode.FIT_WIDTH || _autoSize == GAutoSizeMode.AUTO_SIZE || _autoSize == GAutoSizeMode.AUTO_WIDTH) {
+			if (_scaleMode == GScaleMode.FIT_SIZE || _scaleMode == GScaleMode.FIT_WIDTH || _autoSize == GAutoSize.AUTO_SIZE || _autoSize == GAutoSize.AUTO_WIDTH) {
 				return;
 			}
 			var newW : int = GMathUtil.clamp(GMathUtil.round(value), _minWidth, _maxWidth);
@@ -260,7 +261,7 @@
 		}
 
 		override public function set height(value : Number) : void {
-			if (_scaleMode == GScaleMode.FIT_SIZE || _scaleMode == GScaleMode.FIT_HEIGHT || _autoSize == GAutoSizeMode.AUTO_SIZE || _autoSize == GAutoSizeMode.AUTO_HEIGHT) {
+			if (_scaleMode == GScaleMode.FIT_SIZE || _scaleMode == GScaleMode.FIT_HEIGHT || _autoSize == GAutoSize.AUTO_SIZE || _autoSize == GAutoSize.AUTO_HEIGHT) {
 				return;
 			}
 			var newH : int = GMathUtil.clamp(GMathUtil.round(value), _minHeight, _maxHeight);
@@ -286,6 +287,13 @@
 				return;
 			}
 			_scaleMode = value;
+		}
+		
+		public function set autoSize(value:int):void{
+			if(_autoSize==value){
+				return;
+			}
+			_autoSize=value;
 		}
 
 		public function get align() : GAlign {
