@@ -26,6 +26,18 @@
 	 * @version 20121112
 	 */
 	public final class GBDUtil {
+		public static function toBD(value:DisplayObject):BitmapData{
+			var rect : Rectangle = value.getBounds(value);
+			if (rect.width < 1 || rect.height < 1) {
+				return null;
+			}
+			var bd : BitmapData = new BitmapData(rect.width, rect.height, true, 0);
+			var mtx : Matrix = new Matrix();
+			mtx.translate(Math.floor(-rect.x), Math.floor(-rect.y));
+			bd.draw(value, mtx, null, null, null, true);
+			return bd;
+		}
+		
 		/**
 		 * 转换MovieClip为位图数组
 		 */
@@ -89,18 +101,6 @@
 			mtx.translate(Math.floor(-rect.x), Math.floor(-rect.y));
 			bd.draw(skin, mtx, null, null, null, true);
 			return new GBDUnit(rect.x, rect.y, bd);
-		}
-
-		public static function shapeToBD(value : Shape) : BitmapData {
-			var rect : Rectangle = value.getBounds(value);
-			if (rect.width < 1 || rect.height < 1) {
-				return null;
-			}
-			var bd : BitmapData = new BitmapData(rect.width, rect.height, true, 0);
-			var mtx : Matrix = new Matrix();
-			mtx.translate(Math.floor(-rect.x), Math.floor(-rect.y));
-			bd.draw(value, mtx, null, null, null, true);
-			return bd;
 		}
 
 		public static function resizeBD(source : BitmapData, w : int, h : int) : BitmapData {

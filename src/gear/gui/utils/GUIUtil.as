@@ -1,15 +1,19 @@
 ﻿package gear.gui.utils {
+	import gear.gui.core.GPhase;
+	import gear.gui.skin.GPhaseSkin;
+	import gear.gui.skin.IGSkin;
 	import gear.gui.skin.theme.GASTheme;
 	import gear.gui.skin.theme.IGTheme;
 	import gear.log4a.GLogger;
+	import gear.utils.GBDUtil;
 
 	import flash.display.DisplayObject;
+	import flash.display.SimpleButton;
 	import flash.display.Stage;
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
 	import flash.display.StageQuality;
 	import flash.display.StageScaleMode;
-	import flash.filters.GlowFilter;
 	import flash.system.Capabilities;
 	import flash.text.StyleSheet;
 	import flash.text.TextField;
@@ -102,11 +106,7 @@
 			textField.selectable = false;
 			return textField;
 		}
-
-		public static function getEdgeFilters(color : uint, alpha : Number = 1) : Array {
-			return [new GlowFilter(color, alpha, 2, 2, 1.5, 1, false, false)];
-		}
-
+		
 		public static function getInputTextField() : TextField {
 			var textField : TextField = new TextField();
 			textField.defaultTextFormat = getTextFormat();
@@ -116,6 +116,18 @@
 			textField.width = textField.textWidth + 3;
 			textField.height = textField.textHeight;
 			return textField;
+		}
+		
+		public static function toSkin(value : DisplayObject) : IGSkin {
+			if (value is SimpleButton) {
+				var skin : IGSkin = new GPhaseSkin();
+				var simpleButton : SimpleButton = SimpleButton(value);
+				skin.setAt(GPhase.UP, GBDUtil.toBD(simpleButton.upState));
+				skin.setAt(GPhase.OVER, GBDUtil.toBD(simpleButton.overState));
+				skin.setAt(GPhase.DOWN, GBDUtil.toBD(simpleButton.downState));
+				return skin;
+			}
+			return null;
 		}
 
 		public static function setFullScreen(value : Boolean) : void {
