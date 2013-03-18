@@ -10,7 +10,7 @@
 	 * 系统工具类
 	 * 
 	 * @author bright
-	 * @version 20130115
+	 * @version 20130314
 	 */
 	public final class GSystemUtil {
 		
@@ -57,10 +57,6 @@
 			result = result.replace(/\x27/g, "&apos;");
 			result = result.replace(/\x22/g, "&quot;");
 			return result;
-		}
-
-		public static function isDebug() : Boolean {
-			return new Error().getStackTrace().search(/:[0-9]+]$/m) > -1;
 		}
 
 		public static function gc() : void {

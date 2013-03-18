@@ -44,8 +44,8 @@
 			_next_btn.icon = GUIUtil.theme.rightArrowIcon;
 			_next_btn.setSize(17, 17);
 			addChild(_next_btn);
-			_prev_btn.onClick = onPrevClick;
-			_next_btn.onClick = onNextClick;
+			//_prev_btn.onClick = onPrevClick;
+			//_next_btn.onClick = onNextClick;
 		}
 
 		override protected function resize() : void {

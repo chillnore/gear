@@ -40,9 +40,11 @@
 		}
 
 		override protected function resize() : void {
-			_bgSkin.setSize(_width, _height);
+			if (_bgSkin != null) {
+				_bgSkin.setSize(_width, _height);
+			}
 			var base : DisplayObject;
-			for (var i : int = 0;i < _content.numChildren;i++) {
+			for (var i : int = 0; i < _content.numChildren; i++) {
 				base = _content.getChildAt(i);
 				GAlignLayout.layout(base);
 			}
@@ -77,7 +79,7 @@
 		protected function updateModal() : void {
 			var topLeft : Point = parent.localToGlobal(GMathUtil.ZERO_POINT);
 			_modalSkin.moveTo(-topLeft.x, -topLeft.y);
-			_modalSkin.setSize(GUIUtil.root.stage.stageWidth, GUIUtil.root.stage.stageHeight);
+			_modalSkin.setSize(GUIUtil.stage.stageWidth, GUIUtil.stage.stageHeight);
 			_modalSkin.addTo(parent, parent.numChildren - 1);
 		}
 

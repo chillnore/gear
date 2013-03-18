@@ -7,14 +7,7 @@
 	/**
 	 * MathUtil 数学工具类
 	 * 
-	 * 绝对值 n=(n^(n>>31))-(n>>31);
-	 * 交换a,b a^=b;b^=a;a^=b;
-	 * 取负值 n=-n n=~n+1
-	 * 对2的整数倍取余 %n n=2,4,8... &(n-1)
-	 * 取整 |0
-	 * 1位小数四舍五入 +(n<0?-0.5:0.5)|0
-	 * 
-	 * @author bright
+ 	 * @author bright
 	 * @version 20111207
 	 */
 	public final class GMathUtil {

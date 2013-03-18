@@ -109,6 +109,9 @@
 				case GFileType.XLSX:
 					loader = new GXlsxLoader(url, key);
 					break;
+				case GFileType.CSV:
+					loader = new GCsvLoader(url, key);
+					break;
 				case GFileType.PSD:
 					loader = new GPsdLoader(url, key);
 					break;
@@ -220,6 +223,11 @@
 		public static function getSheet(key : String, lib : String) : GWorkSheet {
 			var loader : GXlsxLoader = _loaded[lib] as GXlsxLoader;
 			return loader != null ? loader.getSheet(key) : null;
+		}
+
+		public static function getCsvData(key : String) : Vector.<Vector.<String>> {
+			var loader : GCsvLoader = _loaded[key] as GCsvLoader;
+			return loader != null ? loader.data : null;
 		}
 
 		public static function getPlistOb(key : String) : Object {

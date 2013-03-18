@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><apiPackage id="gear.game"><apiName>gear.game</apiName><apiDetail/><apiClassifier id="gear.game:GDepthSort"><apiName>GDepthSort</apiName><shortdesc>
+	 GDepthSort 快速深度排序(二分算法优化)
+	 
+	 </shortdesc><prolog><author>bright
+	 </author><asMetadata/><asCustoms><version>20121127
+	 </version></asCustoms></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiFinal/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 GDepthSort 快速深度排序(二分算法优化)
+	 
+	 </apiDesc></apiClassifierDetail><apiConstructor id="gear.game:GDepthSort:GDepthSort"><apiName>GDepthSort</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>layer</apiItemName><apiType value="flash.display:Sprite"/></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="gear.game:GDepthSort:add"><apiName>add</apiName><shortdesc>
+		 add 使用二分插入显示对象
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="flash.display:DisplayObject"/><apiDesc>DisplayObject
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 add 使用二分插入显示对象
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="gear.game:GDepthSort:reset"><apiName>reset</apiName><shortdesc>
+		 reset 使用二分查找重置深度
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="flash.display:DisplayObject"/><apiDesc>DisplayObject
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 reset 使用二分查找重置深度
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="gear.game:GDepthSort:toString"><apiName>toString</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="String"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation></apiClassifier></apiPackage>

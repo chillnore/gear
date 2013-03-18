@@ -1,5 +1,5 @@
 ﻿package gear.gui.controls {
-	import gear.gui.core.GAutoSizeMode;
+	import gear.gui.core.GAutoSize;
 	import gear.gui.skin.IGSkin;
 	import gear.gui.utils.GUIUtil;
 
@@ -15,7 +15,7 @@
 		protected var _label : GLabel;
 
 		override protected function preinit() : void {
-			_autoSize = GAutoSizeMode.AUTO_SIZE;
+			_autoSize = GAutoSize.AUTO_SIZE;
 			_sizeRender = true;
 			_padding.hdist = 3;
 			_padding.vdist = 2;
@@ -37,7 +37,7 @@
 		}
 
 		protected function updateText() : void {
-			if (_autoSize == GAutoSizeMode.AUTO_SIZE) {
+			if (_autoSize == GAutoSize.AUTO_SIZE) {
 				forceSize(_padding.left + _icon.width + _label.width + _padding.right, _padding.top + Math.max(_icon.height, _label.height) + _padding.bottom);
 				_icon.x = _padding.left;
 				_icon.y = (_height - _icon.height) >> 1;

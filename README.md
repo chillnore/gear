@@ -12,3 +12,4 @@ ASDoc文档
 
 [home]:http://bright.github.com/gear
 [asdoc]:http://brightli.github.com/gear/asdoc/
+[github]:https://github.com/brightli/gear.git

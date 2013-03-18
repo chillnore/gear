@@ -10,6 +10,7 @@
 	 * @version 20130110
 	 */
 	public interface IGTheme {
+
 		function get buttonSkin() : IGSkin;
 
 		function get cellSkin() : IGSkin;
@@ -17,7 +18,7 @@
 		function get checkBoxIcon() : IGSkin;
 
 		function get emptySkin() : IGSkin;
-		
+
 		function get hScrollBarTrackSkin() : IGSkin;
 
 		function get hScrollBarThumbSkin() : IGSkin;

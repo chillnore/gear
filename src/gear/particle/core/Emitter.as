@@ -1,5 +1,5 @@
 package gear.particle.core {
-	import gear.particle.action.IAction;
+	import gear.particle.action.IGAction;
 	import gear.particle.counter.ICounter;
 	import gear.particle.counter.ZeroCounter;
 	import gear.particle.init.IInit;
@@ -17,7 +17,7 @@ package gear.particle.core {
 		protected var _offset : int;
 		protected var _particles : Array;
 		protected var _inits : Vector.<IInit>;
-		protected var _actions : Vector.<IAction>;
+		protected var _actions : Vector.<IGAction>;
 		protected var _pool : GObjPool;
 		protected var _counter : ICounter;
 		protected var _running : Boolean;
@@ -72,7 +72,7 @@ package gear.particle.core {
 			_delay = delay;
 			_particles = new Array();
 			_inits = new Vector.<IInit>();
-			_actions = new Vector.<IAction>();
+			_actions = new Vector.<IGAction>();
 			_pool = new GObjPool(Particle);
 			_running = false;
 			_counter = new ZeroCounter();
@@ -83,7 +83,7 @@ package gear.particle.core {
 			value.addedToEmitter(this);
 		}
 
-		public function addAction(action : IAction) : void {
+		public function addAction(action : IGAction) : void {
 			_actions.splice(getActionIndex(action), 0, action);
 			action.addedToEmitter(this);
 		}
@@ -121,7 +121,7 @@ package gear.particle.core {
 			}
 			if ( _particles.length > 0 ) {
 				len = _actions.length;
-				var action : IAction;
+				var action : IGAction;
 				var len2 : int = _particles.length;
 				var j : int;
 				for ( j = 0; j < len; ++j ) {

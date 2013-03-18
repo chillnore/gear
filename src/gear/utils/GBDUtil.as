@@ -1,5 +1,7 @@
 ﻿package gear.utils {
-	import flash.display.StageQuality;
+	import gear.gui.bd.GBDList;
+	import gear.gui.bd.GBDUnit;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.BitmapDataChannel;
@@ -8,6 +10,7 @@
 	import flash.display.MovieClip;
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.display.StageQuality;
 	import flash.filters.BitmapFilterQuality;
 	import flash.filters.BlurFilter;
 	import flash.filters.ConvolutionFilter;
@@ -15,12 +18,6 @@
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
-	import flash.utils.Dictionary;
-
-	import gear.gui.bd.GBDList;
-	import gear.gui.bd.GBDUnit;
-	import gear.log4a.GLogger;
-	import gear.net.GLoadUtil;
 
 	/**
 	 * 位图工具类
@@ -29,8 +26,6 @@
 	 * @version 20121112
 	 */
 	public final class GBDUtil {
-		private static var _cache : Dictionary = new Dictionary(true);
-
 		/**
 		 * 转换MovieClip为位图数组
 		 */
@@ -163,37 +158,6 @@
 			return source.getColorBoundsRect(0xFF000000, 0x00000000, false);
 		}
 
-		public static function getBDBy(key : String, lib : String, frame : int = 0) : BitmapData {
-			var assetClass : Class = GLoadUtil.getClass(key, lib);
-			if (assetClass == null) {
-				GLogger.warn(key, lib);
-				return null;
-			}
-			var skin : * = new assetClass();
-			if (skin is BitmapData) {
-				return skin;
-			}
-			if (skin is Bitmap) {
-				return Bitmap(skin).bitmapData;
-			}
-			if (skin is Sprite) {
-				var unit : GBDUnit = GBDUtil.spriteToBD(Sprite(skin));
-				if (unit != null) {
-					return unit.bd;
-				} else {
-					return null;
-				}
-			}
-			if (skin is MovieClip) {
-				MovieClip(skin).stop();
-				var list : GBDList = GBDUtil.mcToBDList(MovieClip(skin));
-				if (list == null) {
-					return null;
-				}
-			}
-			return list.getAt(frame).bd;
-		}
-
 		/**
 		 * 按格子切图
 		 */
@@ -259,20 +223,6 @@
 			var output : ByteArray = new ByteArray();
 			source.encode(source.rect, compressor, output);
 			return output;
-		}
-
-		public static function getBDList(key : String, lib : String) : GBDList {
-			if (_cache[key] != null) {
-				return _cache[key];
-			}
-			var data : GBDList = GBDUtil.mcToBDList(GLoadUtil.getMC(key, lib));
-			if (data == null) {
-				GLogger.error(key, lib, "has error!");
-				return null;
-			}
-			data.key = key;
-			_cache[key] = data;
-			return data;
 		}
 
 		/**

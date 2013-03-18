@@ -8,7 +8,7 @@ package gear.particle.action {
 	 * @author bright
 	 * @version 20111027
 	 */
-	public class RandomDrift extends ActionBase {
+	public class RandomDrift extends GActionBase {
 		private var _sizeX : Number;
 		private var _sizeY : Number;
 

@@ -1,12 +1,18 @@
 ﻿package gear.gui.controls {
+	import gear.gui.core.GAutoSize;
 	import gear.gui.cell.GCell;
+	import gear.gui.cell.IGCell;
 	import gear.gui.core.GBase;
+	import gear.gui.core.GPhase;
+	import gear.gui.core.GScaleMode;
+	import gear.gui.core.IGBase;
 	import gear.gui.model.GChange;
 	import gear.gui.model.GChangeList;
 	import gear.gui.model.GListModel;
 	import gear.gui.skin.IGSkin;
 	import gear.gui.utils.GUIUtil;
 
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
@@ -15,36 +21,40 @@
 	 * 列表控件
 	 * 
 	 * @author bright
-	 * @version 20130121
+	 * @version 20130314
 	 */
 	public class GList extends GBase {
-		protected var _skin : IGSkin;
+		protected var _bgSkin : IGSkin;
 		protected var _content : Sprite;
 		protected var _vScrollBar : GVScrollBar;
 		protected var _scrollRect : Rectangle;
 		protected var _selectedIndex : int;
 		protected var _changes : GChangeList;
 		protected var _model : GListModel;
-		protected var _cellHeight : int;
+		protected var _hgap : int;
+		protected var _rows : int;
 		protected var _cell : Class;
-		protected var _cells : Vector.<GCell>;
+		protected var _template : IGCell;
+		protected var _cells : Vector.<IGCell>;
 
 		override protected function preinit() : void {
-			_skin = GUIUtil.theme.listSkin;
+			_autoSize = GAutoSize.AUTO_SIZE;
+			_bgSkin = GUIUtil.theme.listSkin;
 			_scrollRect = new Rectangle();
 			_selectedIndex = -1;
 			_changes = new GChangeList;
 			_model = new GListModel();
 			_model.onChange = onModelChange;
-			_cells = new Vector.<GCell>();
-			_cellHeight = 20;
-			_cell = GCell;
+			_cells = new Vector.<IGCell>();
+			_cell=GCell;
 			_padding.dist = 1;
-			setSize(102, 102);
+			_rows = 5;
+			_template = new _cell();
+			forceSize(_template.width+_padding.left+_padding.right, _template.height * _rows+_padding.top+_padding.bottom);
 		}
 
 		override protected function create() : void {
-			_skin.addTo(this, 0);
+			_bgSkin.addTo(this, 0);
 			_content = new Sprite();
 			_content.x = _padding.left;
 			_content.y = _padding.right;
@@ -55,7 +65,7 @@
 		}
 
 		override protected function resize() : void {
-			_skin.setSize(_width, _height);
+			_bgSkin.setSize(_width, _height);
 			_scrollRect.width = _width - (_vScrollBar.visible ? _vScrollBar.width : 0) - _padding.left - _padding.right;
 			_scrollRect.height = _height - _padding.top - _padding.bottom;
 			_content.scrollRect = _scrollRect;
@@ -90,7 +100,7 @@
 							_selectedIndex++;
 						}
 						addCell(change.index);
-						moveCells(change.index, _cellHeight);
+						moveCells(change.index, _template.height);
 						addRender(updateScroll);
 						break;
 					case GChange.REMOVED:
@@ -100,7 +110,7 @@
 							selectedIndex = -1;
 						}
 						removeCell(change.index);
-						moveCells(change.index - 1, -_cellHeight);
+						moveCells(change.index - 1, -_template.height);
 						addRender(updateScroll);
 						break;
 					case GChange.UPDATE:
@@ -120,7 +130,7 @@
 				return;
 			}
 			var length : int = Math.max(_cells.length, _model.length);
-			for (var i : int = 0;i < length;i++) {
+			for (var i : int = 0; i < length; i++) {
 				if (i >= _cells.length) {
 					addCell(i);
 					continue;
@@ -136,17 +146,17 @@
 		}
 
 		protected function addCell(index : int) : void {
-			var cell : GCell = new _cell();
-			cell.y = index * _cellHeight;
+			var cell : IGCell = new _cell();
+			cell.y = index * _template.height;
 			cell.width = _scrollRect.width;
 			cell.source = _model.getAt(index);
-			_content.addChild(cell);
+			_content.addChild(cell as DisplayObject);
 			_cells.splice(index, 0, cell);
 			addEvent(cell, MouseEvent.MOUSE_DOWN, cellMouseDownHandler);
 		}
 
 		protected function removeCell(index : int) : void {
-			var cell : GCell = _cells[index];
+			var cell : IGBase = _cells[index];
 			cell.hide();
 			removeEvent(cell, MouseEvent.MOUSE_DOWN);
 			_cells.splice(index, 1);
@@ -163,12 +173,12 @@
 		}
 
 		protected function cellMouseDownHandler(event : MouseEvent) : void {
-			selectedIndex = _cells.indexOf(GCell(event.currentTarget));
+			selectedIndex = _cells.indexOf(IGCell(event.currentTarget));
 		}
 
 		protected function updateScroll() : void {
-			var pageSize : int = _height / _cellHeight;
-			var max : int = _cells.length - pageSize;
+			var pageSize:int=_rows;
+			var max : int = _cells.length - _rows;
 			if (max > 0) {
 				_vScrollBar.setTo(pageSize, max, _scrollRect.y);
 				if (!_vScrollBar.visible) {
@@ -187,11 +197,44 @@
 		}
 
 		protected function onValueChange() : void {
-			_scrollRect.y = _vScrollBar.value * _cellHeight;
+			_scrollRect.y = _vScrollBar.value * _template.height;
 			_content.scrollRect = _scrollRect;
 		}
 
 		public function GList() {
+		}
+
+		public function set bgSkin(value : IGSkin) : void {
+			if (_bgSkin == value) {
+				return;
+			}
+			if (_bgSkin != null) {
+				_bgSkin.remove();
+			}
+			_bgSkin = value;
+			if (_bgSkin == null) {
+				return;
+			}
+			_bgSkin.phase = (_enabled ? GPhase.UP : GPhase.DISABLED);
+			_bgSkin.addTo(this, 0);
+			if (_scaleMode == GScaleMode.FIT_SIZE) {
+				forceSize(_bgSkin.width, _bgSkin.height);
+			}
+		}
+
+		public function set rows(value : int) : void {
+			_rows = value;
+			if (_rows > 0 && _autoSize == GAutoSize.AUTO_SIZE) {
+				forceSize(_template.width+_padding.left+_padding.right, _template.height * _rows+_padding.top+_padding.bottom);
+			}
+		}
+
+		public function set cell(value : Class) : void {
+			if (_cell == value) {
+				return;
+			}
+			_cell = value;
+			_template = new _cell();
 		}
 
 		public function set model(value : GListModel) : void {

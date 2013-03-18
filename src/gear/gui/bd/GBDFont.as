@@ -1,6 +1,6 @@
 ﻿package gear.gui.bd {
 	import gear.core.IDispose;
-	import gear.gui.core.GAutoSizeMode;
+	import gear.gui.core.GAutoSize;
 	import gear.gui.core.GBase;
 	import gear.gui.core.GScaleMode;
 	import gear.pool.GObjPool;
@@ -26,7 +26,7 @@
 
 		override protected function preinit() : void {
 			_scaleMode = GScaleMode.FIT_SIZE;
-			_autoSize = GAutoSizeMode.AUTO_SIZE;
+			_autoSize = GAutoSize.AUTO_SIZE;
 		}
 
 		override protected function create() : void {

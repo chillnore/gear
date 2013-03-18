@@ -1,6 +1,6 @@
 ﻿package gear.gui.controls {
+	import gear.gui.core.GAutoSize;
 	import gear.gui.cell.GCell;
-	import gear.gui.core.GAutoSizeMode;
 	import gear.gui.core.GBase;
 	import gear.gui.model.GChange;
 	import gear.gui.model.GChangeList;
@@ -25,7 +25,7 @@
 		protected var _onCellClick : Function;
 
 		override protected function preinit() : void {
-			_autoSize = GAutoSizeMode.AUTO_SIZE;
+			_autoSize = GAutoSize.AUTO_SIZE;
 			_cols = 3;
 			_rows = 2;
 			_hgap = _vgap = 2;

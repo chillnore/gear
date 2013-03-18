@@ -5,7 +5,7 @@ package gear.particle.action {
 	/**
 	 * @author Administrator
 	 */
-	public class Move extends ActionBase {
+	public class Move extends GActionBase {
 		public function Move() {
 			_priority = -10;
 		}

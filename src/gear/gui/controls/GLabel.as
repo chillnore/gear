@@ -1,7 +1,7 @@
 ﻿package gear.gui.controls {
 	import gear.gui.core.GAlignLayout;
 	import gear.gui.core.GAlignMode;
-	import gear.gui.core.GAutoSizeMode;
+	import gear.gui.core.GAutoSize;
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
 	import gear.gui.core.GPhaseColor;
@@ -27,7 +27,7 @@
 		protected var _phaseColor : GPhaseColor;
 
 		override protected function preinit() : void {
-			_autoSize = GAutoSizeMode.AUTO_SIZE;
+			_autoSize = GAutoSize.AUTO_SIZE;
 			_sizeRender = true;
 			_textAlignIcon = GAlignMode.RIGHT_CENTER;
 			_hgap = _vgap = 1;
@@ -50,7 +50,7 @@
 		}
 		
 		protected function updateLayout():void{
-			if (_autoSize == GAutoSizeMode.AUTO_SIZE) {
+			if (_autoSize == GAutoSize.AUTO_SIZE) {
 				var tw : int = 0;
 				var th : int = 0;
 				if (_textField.length > 0) {

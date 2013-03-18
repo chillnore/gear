@@ -1,12 +1,12 @@
 ﻿package gear.gui.core {
 	import gear.gui.utils.GUIUtil;
 	import gear.utils.GMathUtil;
-	import gear.utils.GNameUtil;
 
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 
 	/**
 	 * 控件基类
@@ -14,7 +14,7 @@
 	 * @author bright
 	 * @version 20130110
 	 */
-	public class GBase extends Sprite {
+	public class GBase extends Sprite implements IGBase{
 		protected var _parent : DisplayObjectContainer;
 		protected var _width : int;
 		protected var _height : int;
@@ -35,7 +35,7 @@
 		protected var _source : *;
 
 		protected final function addToStageHandler(event : Event) : void {
-			if (parent == GUIUtil.root) {
+			if (parent == stage) {
 				if (_isTop && GUIUtil.tops.indexOf(this) == -1) {
 					GUIUtil.tops.push(this);
 				}
@@ -55,7 +55,7 @@
 		}
 
 		protected final function removedFromStageHandler(event : Event) : void {
-			if (_isTop && parent == GUIUtil.root) {
+			if (_isTop && parent == stage) {
 				var index : int = GUIUtil.tops.indexOf(this);
 				if (index != -1) {
 					GUIUtil.tops.splice(index, 1);
@@ -76,7 +76,7 @@
 			render();
 		}
 
-		protected final function addEvent(target : EventDispatcher, type : String, listener : Function) : void {
+		protected final function addEvent(target : IEventDispatcher, type : String, listener : Function) : void {
 			var event : Object;
 			for each (event in _events) {
 				if (event.target == target && event.type == type) {
@@ -87,9 +87,9 @@
 			_events.push({target:target, type:type, listener:listener});
 		}
 
-		protected final function removeEvent(target : EventDispatcher, type : String) : void {
+		protected final function removeEvent(target : IEventDispatcher, type : String) : void {
 			var event : Object;
-			for (var i : int = 0;i < _events.length;i++) {
+			for (var i : int = 0; i < _events.length; i++) {
 				event = _events[i];
 				if (event.target == target && event.type == type) {
 					EventDispatcher(event.target).removeEventListener(event.type, event.listener);
@@ -100,7 +100,7 @@
 		}
 
 		protected final function removeAllEvent() : void {
-			for each (var event:Object in _events) {
+			for each (var event : Object in _events) {
 				EventDispatcher(event.target).removeEventListener(event.type, event.listener);
 			}
 			_events.length = 0;
@@ -137,13 +137,12 @@
 			_maxWidth = 2880;
 			_maxHeight = 1880;
 			_scaleMode = GScaleMode.SCALE;
-			_autoSize = GAutoSizeMode.NONE;
+			_autoSize = GAutoSize.NONE;
 			_enabled = true;
 			_padding = new GPadding();
 			_events = new Vector.<Object>();
 			_renders = new Vector.<Function>();
 			_isRender = false;
-			name = GNameUtil.createUniqueName(this);
 			preinit();
 			create();
 			addEventListener(Event.ADDED_TO_STAGE, addToStageHandler);
@@ -232,7 +231,7 @@
 		}
 
 		override public function set width(value : Number) : void {
-			if (_scaleMode == GScaleMode.FIT_SIZE || _scaleMode == GScaleMode.FIT_WIDTH || _autoSize == GAutoSizeMode.AUTO_SIZE || _autoSize == GAutoSizeMode.AUTO_WIDTH) {
+			if (_scaleMode == GScaleMode.FIT_SIZE || _scaleMode == GScaleMode.FIT_WIDTH || _autoSize == GAutoSize.AUTO_SIZE || _autoSize == GAutoSize.AUTO_WIDTH) {
 				return;
 			}
 			var newW : int = GMathUtil.clamp(GMathUtil.round(value), _minWidth, _maxWidth);
@@ -262,7 +261,7 @@
 		}
 
 		override public function set height(value : Number) : void {
-			if (_scaleMode == GScaleMode.FIT_SIZE || _scaleMode == GScaleMode.FIT_HEIGHT || _autoSize == GAutoSizeMode.AUTO_SIZE || _autoSize == GAutoSizeMode.AUTO_HEIGHT) {
+			if (_scaleMode == GScaleMode.FIT_SIZE || _scaleMode == GScaleMode.FIT_HEIGHT || _autoSize == GAutoSize.AUTO_SIZE || _autoSize == GAutoSize.AUTO_HEIGHT) {
 				return;
 			}
 			var newH : int = GMathUtil.clamp(GMathUtil.round(value), _minHeight, _maxHeight);
@@ -289,6 +288,13 @@
 			}
 			_scaleMode = value;
 		}
+		
+		public function set autoSize(value:int):void{
+			if(_autoSize==value){
+				return;
+			}
+			_autoSize=value;
+		}
 
 		public function get align() : GAlign {
 			return _align;
@@ -311,9 +317,11 @@
 				parent.setChildIndex(this, parent.numChildren - 1);
 			} else {
 				if (_parent == null) {
-					_parent = GUIUtil.root;
+					_parent = GUIUtil.stage;
 				}
-				_parent.addChild(this);
+				if (_parent != null) {
+					_parent.addChild(this);
+				}
 			}
 		}
 

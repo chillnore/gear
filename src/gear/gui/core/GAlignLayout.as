@@ -1,7 +1,6 @@
 ﻿package gear.gui.core {
-	import gear.gui.utils.GUIUtil;
-
 	import flash.display.DisplayObject;
+	import flash.display.Stage;
 	import flash.text.TextField;
 
 	/**
@@ -29,14 +28,15 @@
 			var tw : int;
 			var th : int;
 			var base : GBase;
-			if (source.parent == GUIUtil.root) {
-				tw = GUIUtil.root.stage.stageWidth;
-				th = GUIUtil.root.stage.stageHeight;
-			} else if (source.parent.name == "content") {
+			var parent : DisplayObject = source.parent;
+			if (parent is Stage) {
+				tw = Stage(parent).stageWidth;
+				th = Stage(parent).stageHeight;
+			} else if (parent.name == "content") {
 				base = GBase(source.parent.parent);
 				tw = base.width - base.padding.left - base.padding.right;
 				th = base.height - base.padding.top - base.padding.bottom;
-			} else if (source.parent is GBase) {
+			} else if (parent is GBase) {
 				base = GBase(source.parent);
 				tx = base.padding.left;
 				ty = base.padding.top;
