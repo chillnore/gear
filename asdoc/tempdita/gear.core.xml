@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><apiPackage id="gear.core"><apiName>gear.core</apiName><apiDetail/><apiClassifier id="gear.core:Game"><apiName>Game</apiName><shortdesc>
+	 游戏抽象基类
+	 
+	 </shortdesc><prolog><author>bright
+	 </author><asMetadata/><asCustoms><version>20121204
+	 </version></asCustoms></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>flash.display:Sprite</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 游戏抽象基类
+	 
+	 </apiDesc><example>
+	 public class MyGame extends Game{
+	   override protected function startup():void{
+	     // start your game
+	   }
+	 }
+	 </example></apiClassifierDetail><apiConstructor id="gear.core:Game:Game"><apiName>Game</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="gear.core:Game:protected:startup"><apiName>startup</apiName><shortdesc>
+		 启动游戏-抽象方法
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="protected"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 启动游戏-抽象方法
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier><apiClassifier id="gear.core:GLoaderPanel"><apiName>GLoaderPanel</apiName><shortdesc>
+	 </shortdesc><prolog><author>bright
+	 </author><asMetadata/><asCustoms><version>20130309xz
+	 </version></asCustoms></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>gear.gui.containers:GPanel</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 </apiDesc></apiClassifierDetail><apiConstructor id="gear.core:GLoaderPanel:GLoaderPanel"><apiName>GLoaderPanel</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="gear.core:GLoaderPanel:protected:initView"><apiName>initView</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="protected"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiValue id="gear.core:GLoaderPanel:protected:_progressBar"><apiName>_progressBar</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="protected"/><apiDynamic/><apiValueClassifier>gear.gui.controls:GProgressBar</apiValueClassifier></apiValueDef></apiValueDetail></apiValue><apiValue id="gear.core:GLoaderPanel:progressBar:get"><apiName>progressBar</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiValueClassifier>gear.gui.controls:GProgressBar</apiValueClassifier></apiValueDef></apiValueDetail></apiValue></apiClassifier><apiClassifier id="gear.core:GPreloader"><apiName>GPreloader</apiName><shortdesc>
+	 SWF自加载
+	        
+	 用法：在需要实现自加载的类声明前加上[Frame(factoryClass="gear.core.GPreloader")]    
+	 
+	 </shortdesc><prolog><author>bright
+	 </author><asMetadata/><asCustoms><version>20130309
+	 </version></asCustoms></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>flash.display:MovieClip</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 SWF自加载
+	        
+	 用法：在需要实现自加载的类声明前加上<codeph>[Frame(factoryClass="gear.core.GPreloader")]</codeph>    
+	 
+	 </apiDesc></apiClassifierDetail><apiConstructor id="gear.core:GPreloader:GPreloader"><apiName>GPreloader</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="gear.core:GPreloader:protected:addedToStageHandler"><apiName>addedToStageHandler</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="protected"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>event</apiItemName><apiType value="flash.events:Event"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="gear.core:GPreloader:protected:completeHandler"><apiName>completeHandler</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="protected"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>event</apiItemName><apiType value="flash.events:Event"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="gear.core:GPreloader:protected:progressHandler"><apiName>progressHandler</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="protected"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>event</apiItemName><apiType value="flash.events:ProgressEvent"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="gear.core:GPreloader:protected:startup"><apiName>startup</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="protected"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiValue id="gear.core:GPreloader:protected:_loaderPanel"><apiName>_loaderPanel</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="protected"/><apiDynamic/><apiValueClassifier>gear.core:GLoaderPanel</apiValueClassifier></apiValueDef></apiValueDetail></apiValue></apiClassifier><apiClassifier id="gear.core:IDispose"><apiName>IDispose</apiName><shortdesc>
+	 释放接口
+	 
+	 </shortdesc><prolog><author>bright
+	 </author><asMetadata/><asCustoms><version>20101015
+	 </version></asCustoms></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 释放接口
+	 
+	 </apiDesc></apiClassifierDetail><apiOperation id="gear.core:IDispose:gear.core:IDispose:dispose"><apiName>dispose</apiName><shortdesc>
+		 释放资源
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 释放资源
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier></apiPackage>
