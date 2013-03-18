@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><apiPackage id="gear.codec.plist"><apiName>gear.codec.plist</apiName><apiDetail/><apiClassifier id="gear.codec.plist:GPlistDecoder"><apiName>GPlistDecoder</apiName><shortdesc>
-	 plist文件解码
-	 
-	 </shortdesc><prolog><author>bright
-	 </author><asMetadata/><asCustoms><version>20121025
-	 </version></asCustoms></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>gear.core:IDispose</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
-	 plist文件解码
-	 
-	 </apiDesc></apiClassifierDetail><apiConstructor id="gear.codec.plist:GPlistDecoder:GPlistDecoder"><apiName>GPlistDecoder</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="gear.codec.plist:GPlistDecoder:decode"><apiName>decode</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>data</apiItemName><apiType value="flash.utils:ByteArray"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="gear.codec.plist:GPlistDecoder:dispose"><apiName>dispose</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiValue id="gear.codec.plist:GPlistDecoder:plistObj:get"><apiName>plistObj</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Object"/></apiValueDef></apiValueDetail></apiValue></apiClassifier></apiPackage>
