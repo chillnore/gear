@@ -25,7 +25,7 @@
 		 * @inheritDoc
 		 */
 		public function format(data : GLogData, separator : String = "\n") : String {
-			var result : String = "<p class='" + data.level.name.toLowerCase() + "'>[" + GStringUtil.formatTime(data.timestamp) + "][" + data.level.name + "]";
+			var result : String = "<p class='" + data.level.name.toLowerCase() + "'>[" + GStringUtil.formatTime(data.timestamp) + "][" + data.level.name + "]{" + data.caller + "} ";
 			result += data.toString().replace(/\n/g, "<br>") + "</p>";
 			return result;
 		}

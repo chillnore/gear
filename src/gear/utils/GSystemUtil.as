@@ -1,7 +1,10 @@
 ﻿package gear.utils {
+	import gear.log4a.GLogger;
 	import flash.display.DisplayObject;
-	import flash.geom.Matrix;
+	import flash.display.DisplayObjectContainer;
+	import flash.display.MovieClip;
 	import flash.net.LocalConnection;
+	import flash.sampler.getInvocationCount;
 	import flash.system.Capabilities;
 	import flash.system.System;
 	import flash.system.fscommand;
@@ -13,38 +16,23 @@
 	 * @version 20130314
 	 */
 	public final class GSystemUtil {
-		
-		private static var _version:Number;
-		
-		public static function flipH(source : DisplayObject) : void {
-			var matrix : Matrix = source.transform.matrix;
-			matrix.a = -1;
-			matrix.tx = source.width + source.x;
-			source.transform.matrix = matrix;
-		}
+		private static var _version : Number;
 
-		public static function flipV(source : DisplayObject) : void {
-			var matrix : Matrix = source.transform.matrix;
-			matrix.d = -1;
-			matrix.ty = source.height + source.y;
-			source.transform.matrix = matrix;
-		}
-
-		public static function get version() : Number{
-			if(isNaN(_version)){
-				var params:Array=Capabilities.version.split(" ")[1].split(",");
-				_version=parseInt(params[0])+parseInt(params[1])/10;
+		public static function get version() : Number {
+			if (isNaN(_version)) {
+				var params : Array = Capabilities.version.split(" ")[1].split(",");
+				_version = parseInt(params[0]) + parseInt(params[1]) / 10;
 			}
 			return _version;
 		}
 
 		public static function getInfo() : String {
 			var result : String = "系统信息:\n";
-			result += "播放器当前版本:" + Capabilities.version+"\n";
-			result += "分辨率:" + Capabilities.screenResolutionX + "×" + Capabilities.screenResolutionY+"\n";
-			result += "播放器的类型:" + Capabilities.playerType+"\n";
-			result += "当前的操作系统:" + Capabilities.os+"\n";
-			result += "当前播放器是否是debug版本:" + Capabilities.isDebugger+"\n";
+			result += "播放器当前版本:" + Capabilities.version + "\n";
+			result += "分辨率:" + Capabilities.screenResolutionX + "×" + Capabilities.screenResolutionY + "\n";
+			result += "播放器的类型:" + Capabilities.playerType + "\n";
+			result += "当前的操作系统:" + Capabilities.os + "\n";
+			result += "当前播放器是否是debug版本:" + Capabilities.isDebugger + "\n";
 			result += "摄像头和麦克风是否禁止:" + Capabilities.avHardwareDisable;
 			return result;
 		}
@@ -80,11 +68,66 @@
 		}
 
 		public static function exit() : void {
-			if(Capabilities.playerType=="StandAlone"){
+			if (Capabilities.playerType == "StandAlone") {
 				fscommand("quit");
-			}else{
+			} else {
 				GJSUtil.reload();
 			}
+		}
+
+		public static function calcAll(target : DisplayObjectContainer, max : int = 1000000) : int {
+			if (target == null) {
+				return 0;
+			}
+			var list : Array = [target];
+			var i : int;
+			var j : int;
+			var k : int;
+			var l : int;
+			var total : int = 0;
+			var child : DisplayObject;
+			var mc : MovieClip;
+			while (list.length > 0 && total < max) {
+				for (i = 0; i < list.length; i++) {
+					target = list.shift() as DisplayObjectContainer;
+					if (target == null) {
+						continue;
+					}
+					mc = target as MovieClip;
+					if (mc != null) {
+						for (j = 0; j < mc.totalFrames; j++) {
+							mc.gotoAndStop(j);
+							l = mc.numChildren;
+							for (k = 0; k < l; k++) {
+								child = target.getChildAt(k);
+								total++;
+								if (child == null) {
+									continue;
+								}
+								GLogger.debug(child.name,child);
+								list.push(child);
+							}
+						}
+					} else {
+						l = target.numChildren;
+						for (j = 0; j < l; j++) {
+							child = target.getChildAt(j);
+							total++;
+							if (child == null) {
+								continue;
+							}
+							GLogger.debug(child.name,child);
+							list.push(child);
+						}
+					}
+				}
+			}
+			return total;
+		}
+		
+		public static function sample():void{
+			//trace执行次数
+			getInvocationCount(undefined, new QName("","trace"));
 		}
 	}
 }

@@ -14,7 +14,7 @@
 		 * 根据父容器尺寸进行布局
 		 */
 		public static function layout(source : DisplayObject, align : GAlign = null) : void {
-			if (source == null || source.parent == null) {
+			if (source == null || source.stage == null) {
 				return;
 			}
 			if (align == null && source is GBase) {
@@ -29,9 +29,9 @@
 			var th : int;
 			var base : GBase;
 			var parent : DisplayObject = source.parent;
-			if (parent is Stage) {
-				tw = Stage(parent).stageWidth;
-				th = Stage(parent).stageHeight;
+			if (parent == source.stage.loaderInfo.content || parent is Stage) {
+				tw = source.stage.stageWidth;
+				th = source.stage.stageHeight;
 			} else if (parent.name == "content") {
 				base = GBase(source.parent.parent);
 				tw = base.width - base.padding.left - base.padding.right;
@@ -43,9 +43,10 @@
 				tw = base.width - base.padding.left - base.padding.right;
 				th = base.height - base.padding.top - base.padding.bottom;
 			} else {
-				tw = source.parent.width;
-				th = source.parent.height;
+				tw = parent.width;
+				th = parent.height;
 			}
+
 			var l : int = align.left;
 			var r : int = align.right;
 			var t : int = align.top;

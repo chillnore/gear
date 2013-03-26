@@ -6,6 +6,7 @@
 	 * @version 20121217
 	 */
 	public final class GAlign {
+		public static const RIGHT_TOP : GAlign = new GAlign(-1, 0, 0, -1, -1, -1);
 		// 居中对齐
 		public static const CENTER : GAlign = new GAlign(-1, -1, -1, -1, 0, 0);
 		// 铺满

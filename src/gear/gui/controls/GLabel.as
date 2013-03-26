@@ -12,8 +12,10 @@
 	import flash.text.TextFormat;
 
 	/**
+	 * 标签控件
+	 * 
 	 * @author bright
-	 * @version 20121129
+	 * @version 20130326
 	 */
 	public class GLabel extends GBase {
 		protected var _textAlignIcon : int;
@@ -44,12 +46,11 @@
 			addChild(_textField);
 		}
 
-		protected function updateText() : void {
+		protected function changeText() : void {
 			_textField.text = (_text == null ? "" : _text);
-			addRender(updateLayout);
 		}
-		
-		protected function updateLayout():void{
+
+		protected function changeLayout() : void {
 			if (_autoSize == GAutoSize.AUTO_SIZE) {
 				var tw : int = 0;
 				var th : int = 0;
@@ -100,7 +101,8 @@
 
 		public function set icon(value : BitmapData) : void {
 			_icon.bitmapData = value;
-			addRender(updateLayout);
+			callLater(changeLayout);
+			callLater(layout);
 		}
 
 		public function set text(value : String) : void {
@@ -108,7 +110,13 @@
 				return;
 			}
 			_text = value;
-			addRender(updateText);
+			callLater(changeText);
+			callLater(changeLayout);
+			callLater(layout);
+		}
+
+		public function get text() : String {
+			return _text;
 		}
 
 		public function set textFieldFilters(value : Array) : void {
@@ -117,7 +125,7 @@
 
 		public function clear() : void {
 			_text = null;
-			addRender(updateText);
+			callLater(changeText);
 		}
 	}
 }

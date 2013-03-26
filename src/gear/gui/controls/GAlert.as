@@ -17,7 +17,7 @@
 
 		override protected function preinit() : void {
 			_flag = 0x4;
-			addRender(updateFlag);
+			callLater(updateFlag);
 		}
 
 		override protected function create() : void {
@@ -38,7 +38,7 @@
 				return;
 			}
 			_flag = value;
-			addRender(updateFlag);
+			callLater(updateFlag);
 		}
 	}
 }

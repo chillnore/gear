@@ -70,7 +70,7 @@
 			_content.scrollRect = _scrollRect;
 			_vScrollBar.x = _width - _vScrollBar.width;
 			_vScrollBar.height = _height;
-			addRender(updateScroll);
+			callLater(updateScroll);
 		}
 
 		override protected function onShow() : void {
@@ -83,7 +83,7 @@
 
 		protected function onModelChange(change : GChange) : void {
 			_changes.add(change);
-			addRender(updateChanges);
+			callLater(updateChanges);
 		}
 
 		protected function updateChanges() : void {
@@ -92,7 +92,7 @@
 				change = _changes.shift();
 				switch(change.state) {
 					case GChange.RESET:
-						addRender(updateCells);
+						callLater(updateCells);
 						break;
 					case GChange.ADDED:
 						if (change.index <= _selectedIndex) {
@@ -100,7 +100,7 @@
 						}
 						addCell(change.index);
 						moveCells(change.index, _template.height);
-						addRender(updateScroll);
+						callLater(updateScroll);
 						break;
 					case GChange.REMOVED:
 						if (change.index < _selectedIndex) {
@@ -110,7 +110,7 @@
 						}
 						removeCell(change.index);
 						moveCells(change.index - 1, -_template.height);
-						addRender(updateScroll);
+						callLater(updateScroll);
 						break;
 					case GChange.UPDATE:
 						_cells[change.index].source = _model.getAt(change.index);
@@ -141,7 +141,7 @@
 				updateCell(i);
 			}
 			selectedIndex = -1;
-			addRender(updateScroll);
+			callLater(updateScroll);
 		}
 
 		protected function addCell(index : int) : void {
@@ -245,7 +245,7 @@
 			}
 			_model = value;
 			_model.onChange = onModelChange;
-			addRender(updateCells);
+			callLater(updateCells);
 		}
 
 		public function get model() : GListModel {

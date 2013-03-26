@@ -67,7 +67,7 @@
 		override protected function onEnabled() : void {
 			if (!_enabled) {
 				_phase = GPhase.DISABLED;
-				addRender(updatePhase);
+				callLater(updatePhase);
 			}
 		}
 
@@ -90,7 +90,7 @@
 			} else if (event.type == FocusEvent.FOCUS_OUT) {
 				_phase = _enabled ? GPhase.UP : GPhase.DISABLED;
 			}
-			addRender(updatePhase);
+			callLater(updatePhase);
 		}
 
 		protected function textInputHandler(event : TextEvent) : void {
@@ -134,7 +134,7 @@
 			if (_scaleMode == GScaleMode.FIT_SIZE) {
 				forceSize(_borderSkin.width, _borderSkin.height);
 			}
-			addRender(updatePhase);
+			callLater(updatePhase);
 		}
 
 		public function set displayAsPassword(value : Boolean) : void {
@@ -143,7 +143,7 @@
 
 		public function set label(value : String) : void {
 			_label.text = value;
-			addRender(updateLabel);
+			callLater(updateLabel);
 		}
 
 		/**
@@ -164,20 +164,20 @@
 				if (GUIUtil.stage.focus != _textField) {
 					GUIUtil.stage.focus = _textField;
 					_phase = GPhase.FOCUS;
-					addRender(updatePhase);
+					callLater(updatePhase);
 				}
 			} else {
 				if (GUIUtil.stage.focus == _textField) {
 					GUIUtil.stage.focus = null;
 					_phase = GPhase.UP;
-					addRender(updatePhase);
+					callLater(updatePhase);
 				}
 			}
 		}
 
 		public function set text(value : String) : void {
 			_text = value;
-			addRender(updateText);
+			callLater(updateText);
 		}
 
 		/**
@@ -196,7 +196,7 @@
 
 		public function clear() : void {
 			_text = null;
-			addRender(updateText);
+			callLater(updateText);
 		}
 	}
 }

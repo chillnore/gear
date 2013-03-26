@@ -70,8 +70,8 @@
 
 		protected function initEvent() : void {
 			_commond_ti.onEnter = onRun;
-			//_run_btn.onClick = onRun;
-			//_close_btn.onClick = hide;
+			_run_btn.onClick = onRun;
+			_close_btn.onClick = hide;
 			GUIUtil.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
 			GUIUtil.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
 		}
@@ -92,6 +92,9 @@
 					break;
 				case "i":
 					GLogger.info(GSystemUtil.getInfo());
+					break;
+				case "t":
+					GLogger.info(GSystemUtil.calcAll(GUIUtil.stage));
 					break;
 				default:
 					if (_debugger != null) {

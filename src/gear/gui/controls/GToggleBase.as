@@ -56,7 +56,7 @@
 					selected = !_selected;
 				}
 			}
-			addRender(updatePhase);
+			callLater(updatePhase);
 		}
 
 		public function GToggleBase() {
@@ -72,7 +72,7 @@
 				return;
 			}
 			_selected = value;
-			addRender(updateSelected);
+			callLater(updateSelected);
 		}
 
 		/**

@@ -43,7 +43,6 @@
 		private var _maxMem_graph : uint;
 
 		override protected function preinit() : void {
-			_isTop = true;
 			_bgColor = 0x000033;
 			_fpsColor = 0xffff00;
 			_msColor = 0x00ff00;

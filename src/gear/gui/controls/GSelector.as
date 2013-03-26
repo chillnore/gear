@@ -66,7 +66,7 @@
 				_selectedIndex = _model.length - 1;
 			}
 			_content.text = _model.getAt(_selectedIndex);
-			addRender(updateContent);
+			callLater(updateContent);
 		}
 
 		protected function onNextClick() : void {
@@ -79,12 +79,12 @@
 				_selectedIndex = 0;
 			}
 			_content.text = _model.getAt(_selectedIndex);
-			addRender(updateContent);
+			callLater(updateContent);
 		}
 
 		protected function onModelChange(change : GChange) : void {
 			_changes.add(change);
-			addRender(updateChanges);
+			callLater(updateChanges);
 		}
 
 		protected function updateChanges() : void {
@@ -94,7 +94,7 @@
 				switch(change.state) {
 					case GChange.RESET:
 						selectedIndex = GMathUtil.clamp(_selectedIndex, 0, _model.length - 1);
-						addRender(updateContent);
+						callLater(updateContent);
 						break;
 					case GChange.ADDED:
 						if (_selectedIndex == -1) {
@@ -110,12 +110,12 @@
 							if (_selectedIndex > _model.length - 1) {
 								_selectedIndex = _model.length - 1;
 							}
-							addRender(updateContent);
+							callLater(updateContent);
 						}
 						break;
 					case GChange.UPDATE:
 						if (_selectedIndex == change.index) {
-							addRender(updateContent);
+							callLater(updateContent);
 						}
 						break;
 				}
@@ -168,7 +168,7 @@
 
 		public function set label(value : String) : void {
 			_label.text = value;
-			addRender(updateLabel);
+			callLater(updateLabel);
 		}
 
 		public function set selectedIndex(value : int) : void {
@@ -176,7 +176,7 @@
 				return;
 			}
 			_selectedIndex = value;
-			addRender(updateContent);
+			callLater(updateContent);
 		}
 
 		public function get selectedIndex() : int {

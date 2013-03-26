@@ -3,7 +3,7 @@
 	 * trace日志输入源
 	 * 
 	 * @author bright
-	 * @version 20101015
+	 * @version 20130325
 	 */
 	public class GTraceAppender extends GAppender {
 		public function GTraceAppender() {

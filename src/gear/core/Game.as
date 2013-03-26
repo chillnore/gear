@@ -1,5 +1,6 @@
 ﻿package gear.core {
 	import gear.gui.utils.GUIUtil;
+	import gear.log4a.GLogError;
 	import gear.log4a.GLogger;
 	import gear.log4a.GTraceAppender;
 	import gear.render.GFrameRender;
@@ -32,7 +33,7 @@
 		 * 启动游戏-抽象方法
 		 */
 		protected function startup() : void {
-			//throw new GLogError("you must override startup function!");
+			throw new GLogError("you must override startup function!");
 		}
 
 		public function Game() {

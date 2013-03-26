@@ -12,9 +12,9 @@
 	 * 控件基类
 	 * 
 	 * @author bright
-	 * @version 20130110
+	 * @version 20130325
 	 */
-	public class GBase extends Sprite implements IGBase{
+	public class GBase extends Sprite implements IGBase {
 		protected var _parent : DisplayObjectContainer;
 		protected var _width : int;
 		protected var _height : int;
@@ -27,26 +27,18 @@
 		protected var _align : GAlign;
 		protected var _enabled : Boolean;
 		protected var _padding : GPadding;
-		protected var _isTop : Boolean;
 		protected var _events : Vector.<Object>;
-		protected var _renders : Vector.<Function>;
+		protected var _methods : Vector.<Function>;
 		protected var _isRender : Boolean;
 		protected var _sizeRender : Boolean;
 		protected var _source : *;
 
 		protected final function addToStageHandler(event : Event) : void {
-			if (parent == stage) {
-				if (_isTop && GUIUtil.tops.indexOf(this) == -1) {
-					GUIUtil.tops.push(this);
-				}
-				var index : int = (_isTop ? parent.numChildren - 1 : parent.numChildren - GUIUtil.tops.length - 1);
-				parent.setChildIndex(this, index);
+			if (parent == stage || parent == stage.loaderInfo.content) {
+				parent.setChildIndex(this, parent.numChildren - 1);
 				addEvent(stage, Event.RESIZE, stageResizeHandler);
-				if (_align != null) {
-					addRender(layout);
-				}
 			}
-			if (!_isRender && _renders.length > 0 && stage != null) {
+			if (!_isRender && _methods.length > 0 && stage != null) {
 				addEvent(this, Event.ENTER_FRAME, renderHandler);
 				addEvent(this, Event.RENDER, renderHandler);
 				stage.invalidate();
@@ -55,25 +47,34 @@
 		}
 
 		protected final function removedFromStageHandler(event : Event) : void {
-			if (_isTop && parent == stage) {
-				var index : int = GUIUtil.tops.indexOf(this);
-				if (index != -1) {
-					GUIUtil.tops.splice(index, 1);
-				}
-			}
 			removeAllEvent();
 			onHide();
 		}
 
 		protected final function stageResizeHandler(event : Event) : void {
 			if (_align != null) {
-				addRender(layout);
+				callLater(layout);
 			}
 			onStageResize();
 		}
 
 		protected final function renderHandler(event : Event) : void {
 			render();
+		}
+
+		protected final function render() : void {
+			if (_isRender || _methods.length < 1) {
+				return;
+			}
+			_isRender = true;
+			var method : Function;
+			while (_methods.length > 0) {
+				method = _methods.shift();
+				method.apply();
+			}
+			removeEvent(this, Event.ENTER_FRAME);
+			removeEvent(this, Event.RENDER);
+			_isRender = false;
 		}
 
 		protected final function addEvent(target : IEventDispatcher, type : String, listener : Function) : void {
@@ -106,31 +107,17 @@
 			_events.length = 0;
 		}
 
-		protected final function addRender(value : Function) : void {
-			if (_renders.indexOf(value) != -1) {
+		protected final function callLater(value : Function) : void {
+			var index : int = _methods.indexOf(value);
+			if (index != -1) {
 				return;
 			}
-			_renders.push(value);
-			if (!_isRender && _renders.length > 0 && stage != null) {
+			_methods.push(value);
+			if (!_isRender && _methods.length > 0 && stage != null) {
 				addEvent(this, Event.ENTER_FRAME, renderHandler);
 				addEvent(this, Event.RENDER, renderHandler);
 				stage.invalidate();
 			}
-		}
-
-		protected final function render() : void {
-			if (_isRender || _renders.length < 1) {
-				return;
-			}
-			_isRender = true;
-			var func : Function;
-			while (_renders.length > 0) {
-				func = _renders.shift();
-				func.apply();
-			}
-			removeEvent(this, Event.ENTER_FRAME);
-			removeEvent(this, Event.RENDER);
-			_isRender = false;
 		}
 
 		protected function init() : void {
@@ -141,7 +128,7 @@
 			_enabled = true;
 			_padding = new GPadding();
 			_events = new Vector.<Object>();
-			_renders = new Vector.<Function>();
+			_methods = new Vector.<Function>();
 			_isRender = false;
 			preinit();
 			create();
@@ -179,11 +166,14 @@
 				_width = newW;
 				_height = newH;
 			}
-			addRender(resize);
 		}
 
 		public function GBase() {
 			init();
+		}
+
+		public function get methods() : int {
+			return _methods.length;
 		}
 
 		public function setParent(value : DisplayObjectContainer) : void {
@@ -239,10 +229,7 @@
 				return;
 			}
 			_width = newW;
-			addRender(resize);
-			if (_align != null) {
-				addRender(layout);
-			}
+			callLater(resize);
 		}
 
 		override public function get width() : Number {
@@ -269,10 +256,7 @@
 				return;
 			}
 			_height = newH;
-			addRender(resize);
-			if (_align != null) {
-				addRender(layout);
-			}
+			callLater(resize);
 		}
 
 		override public function get height() : Number {
@@ -288,12 +272,12 @@
 			}
 			_scaleMode = value;
 		}
-		
-		public function set autoSize(value:int):void{
-			if(_autoSize==value){
+
+		public function set autoSize(value : int) : void {
+			if (_autoSize == value) {
 				return;
 			}
-			_autoSize=value;
+			_autoSize = value;
 		}
 
 		public function get align() : GAlign {
@@ -302,7 +286,9 @@
 
 		public function set align(value : GAlign) : void {
 			_align = value;
-			addRender(layout);
+			if (_align != null) {
+				callLater(layout);
+			}
 		}
 
 		public function get padding() : GPadding {

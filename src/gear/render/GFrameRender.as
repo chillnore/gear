@@ -55,6 +55,9 @@
 		}
 
 		public function set stage(value : Stage) : void {
+			if (_stage == value) {
+				return;
+			}
 			_stage = value;
 			_stage.addEventListener(Event.ACTIVATE, activateHandler);
 		}
@@ -63,7 +66,7 @@
 			_nowTime = getTimer();
 			elapsed = _nowTime - _lastTime;
 			_lastTime = getTimer();
-			for each (var frame:IGFrame in _list) {
+			for each (var frame : IGFrame in _list) {
 				frame.refresh();
 			}
 			if (_onLast is Function) {
@@ -76,7 +79,7 @@
 		}
 
 		public function add(value : IGFrame) : void {
-			if(value==null){
+			if (value == null) {
 				return;
 			}
 			if (_list.indexOf(value) != -1) {

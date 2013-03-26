@@ -83,7 +83,7 @@
 				return;
 			}
 			_text = value;
-			addRender(update);
+			callLater(update);
 		}
 
 		/**

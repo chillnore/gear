@@ -79,7 +79,7 @@
 			_thumb_btn.x = _up_btn.width;
 			_thumb_btn.y = 1;
 			_thumb_btn.height = _track_btn.height - 2;
-			addRender(updateThumb);
+			callLater(updateThumb);
 		}
 
 		override protected function onEnabled() : void {
@@ -168,7 +168,7 @@
 				isUpdate = true;
 			}
 			if (isUpdate) {
-				addRender(updateThumb);
+				callLater(updateThumb);
 			}
 		}
 
@@ -185,7 +185,7 @@
 					GLogger.error(e.getStackTrace());
 				}
 			}
-			addRender(updateThumb);
+			callLater(updateThumb);
 		}
 
 		public function get value() : int {

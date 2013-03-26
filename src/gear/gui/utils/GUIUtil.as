@@ -34,8 +34,6 @@
 		public static var defaultFontSize : int = 12;
 		// 默认主题
 		public static var theme : IGTheme = new GASTheme();
-		// 置顶数组
-		public static var tops : Vector.<DisplayObject>=new Vector.<DisplayObject>();
 		private static var _defaultCSS : StyleSheet;
 		private static var _stage : Stage;
 		private static var _url : String;
@@ -106,7 +104,7 @@
 			textField.selectable = false;
 			return textField;
 		}
-		
+
 		public static function getInputTextField() : TextField {
 			var textField : TextField = new TextField();
 			textField.defaultTextFormat = getTextFormat();
@@ -117,7 +115,7 @@
 			textField.height = textField.textHeight;
 			return textField;
 		}
-		
+
 		public static function toSkin(value : DisplayObject) : IGSkin {
 			if (value is SimpleButton) {
 				var skin : IGSkin = new GPhaseSkin();
@@ -131,19 +129,20 @@
 		}
 
 		public static function setFullScreen(value : Boolean) : void {
-			if (_stage != null) {
-				if (value == (_stage.displayState == StageDisplayState.FULL_SCREEN)) {
-					return;
+			if (_stage == null) {
+				return;
+			}
+			if (value == (_stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE)) {
+				return;
+			}
+			try {
+				if (value) {
+					_stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+				} else {
+					_stage.displayState = StageDisplayState.NORMAL;
 				}
-				try {
-					if (value) {
-						_stage.displayState = StageDisplayState.FULL_SCREEN;
-					} else {
-						_stage.displayState = StageDisplayState.NORMAL;
-					}
-				} catch(e : SecurityError) {
-					GLogger.debug(e.getStackTrace());
-				}
+			} catch(e : SecurityError) {
+				GLogger.debug(e.getStackTrace());
 			}
 		}
 	}

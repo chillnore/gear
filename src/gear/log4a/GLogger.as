@@ -1,9 +1,11 @@
 ﻿package gear.log4a {
+	import flash.utils.getQualifiedClassName;
+
 	/**
 	 * 日志
 	 * 
 	 * @author bright
-	 * @version 20121025
+	 * @version 20130325
 	 * @example
 	 * <listing version="3.0"> 
 	 * GLogger使用示例:
@@ -17,7 +19,7 @@
 	 * </listing> 
 	 */
 	public final class GLogger {
-		private static var _appenders : Array;
+		private static var _appenders : Vector.<IGAppender>;
 		private static var _level : GLevel = GLevel.ALL_LEVEL;
 		private static var _creating : Boolean = false;
 
@@ -27,14 +29,15 @@
 		 * @param message 消息数组
 		 */
 		private static function forcedLog(level : GLevel, message : Array) : void {
-			if (level.compareTo(GLogger._level)) {
+			if (level.compareTo(_level)) {
 				return;
 			}
-			GLogger.callAppenders(new GLogData(level, message));
+			var caller:String=new Error().getStackTrace().split("at ")[3].split("(")[0].split("/")[0];
+			callAppenders(new GLogData(level, message,caller));
 		}
 
 		private static function callAppenders(event : GLogData) : void {
-			for each (var appender:IGAppender in GLogger._appenders) {
+			for each (var appender : IGAppender in _appenders) {
 				appender.append(event);
 			}
 		}
@@ -45,8 +48,8 @@
 		 * @throws Error 不能实例化
 		 */
 		public function GLogger() {
-			if (!GLogger._creating) {
-				throw(new Error(this, "Logger cannot be instantiated."));
+			if (!_creating) {
+				throw(new Error(this, "GLogger不能实例化"));
 			}
 		}
 
@@ -56,7 +59,7 @@
 		 * @param level 层级
 		 */
 		public static function setLevel(level : GLevel) : void {
-			GLogger._level = level;
+			_level = level;
 		}
 
 		/**
@@ -64,12 +67,20 @@
 		 * 
 		 * @param appender 日志输出源接口
 		 */
-		public static function addAppender(appender : IGAppender) :void {
-			if (GLogger._appenders == null) {
-				GLogger._appenders = new Array();
+		public static function addAppender(appender : IGAppender) : void {
+			if (_appenders == null) {
+				_appenders = new Vector.<IGAppender>();
 			}
-			if (GLogger._appenders.indexOf(appender) == -1) {
-				GLogger._appenders.push(appender);
+			var name : String = getQualifiedClassName(appender);
+			var found : Boolean = false;
+			for each (var target : IGAppender in _appenders) {
+				if (getQualifiedClassName(target) == name) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				_appenders.push(appender);
 			}
 		}
 
@@ -79,7 +90,7 @@
 		 * @param message 消息数组
 		 */
 		public static function fatal(...message : Array) : void {
-			GLogger.forcedLog(GLevel.FATAL_LEVEL, message);
+			forcedLog(GLevel.FATAL_LEVEL, message);
 		}
 
 		/**
@@ -88,7 +99,7 @@
 		 * @param message 消息数组
 		 */
 		public static function error(...message : Array) : void {
-			GLogger.forcedLog(GLevel.ERROR_LEVEL, message);
+			forcedLog(GLevel.ERROR_LEVEL, message);
 		}
 
 		/**
@@ -97,7 +108,7 @@
 		 * @param message 消息数组
 		 */
 		public static function warn(...message : Array) : void {
-			GLogger.forcedLog(GLevel.WARN_LEVEL, message);
+			forcedLog(GLevel.WARN_LEVEL, message);
 		}
 
 		/**
@@ -106,7 +117,7 @@
 		 * @param message 消息数组
 		 */
 		public static function info(...message : Array) : void {
-			GLogger.forcedLog(GLevel.INFO_LEVEL, message);
+			forcedLog(GLevel.INFO_LEVEL, message);
 		}
 
 		/**
@@ -115,7 +126,7 @@
 		 * @param message 消息数组
 		 */
 		public static function debug(...message : Array) : void {
-			GLogger.forcedLog(GLevel.DEBUG_LEVEL, message);
+			forcedLog(GLevel.DEBUG_LEVEL, message);
 		}
 	}
 }

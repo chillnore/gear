@@ -74,17 +74,17 @@
 			}else if(_scaleMode==GScaleMode.FIT_HEIGHT){
 				forceSize(_width,_skin.height);
 			}
-			addRender(updatePhase);
+			callLater(updatePhase);
 		}
 		
 		public function set icon(value : BitmapData) : void {
 			_label.icon = value;
-			addRender(update);
+			callLater(update);
 		}
 
 		public function set text(value : String) : void {
 			_label.text = value;
-			addRender(update);
+			callLater(update);
 		}
 	}
 }

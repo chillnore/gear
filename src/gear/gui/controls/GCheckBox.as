@@ -26,7 +26,7 @@
 			_padding.vdist = 2;
 			_bgSkin = GUIUtil.theme.emptySkin;
 			_icon = GUIUtil.theme.checkBoxIcon;
-			addRender(update);
+			callLater(update);
 		}
 
 		override protected function create() : void {
@@ -66,7 +66,7 @@
 				_phase = (event.currentTarget == this) ? GPhase.OVER : GPhase.UP;
 				selected = !_selected;
 			}
-			addRender(viewSkin);
+			callLater(viewSkin);
 		}
 		
 		protected function viewSkin() : void {
@@ -76,7 +76,7 @@
 
 		protected function onSelect() : void {
 			_icon.selected = _selected;
-			addRender(viewSkin);
+			callLater(viewSkin);
 		}
 
 		protected function update() : void {
@@ -106,7 +106,7 @@
 
 		public function set text(value : String) : void {
 			_label.text = value;
-			addRender(update);
+			callLater(update);
 		}
 	}
 }

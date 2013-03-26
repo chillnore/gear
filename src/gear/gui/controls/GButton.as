@@ -1,6 +1,6 @@
 ﻿package gear.gui.controls {
-	import gear.gui.core.GAlign;
 	import gear.gui.core.GAlignLayout;
+	import gear.gui.core.GAlign;
 	import gear.gui.core.GAutoSize;
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
@@ -32,7 +32,7 @@
 			_padding.hdist = 6;
 			_padding.vdist = 2;
 			_lockPhase = GPhase.NONE;
-			addRender(updatePhase);
+			callLater(changePhase);
 			setSize(60, 22);
 		}
 
@@ -45,10 +45,10 @@
 
 		override protected function resize() : void {
 			_skin.setSize(_width, _height);
-			GAlignLayout.layout(_label);
+			callLater(changeLayout);
 		}
 
-		protected function update() : void {
+		protected function changeLayout() : void {
 			if (_autoSize == GAutoSize.AUTO_SIZE) {
 				forceSize(_padding.left + _label.width + _padding.right, _padding.top + _label.height + _padding.bottom);
 			} else if (_autoSize == GAutoSize.AUTO_WIDTH) {
@@ -68,7 +68,7 @@
 
 		override protected function onEnabled() : void {
 			_phase = _enabled ? GPhase.UP : GPhase.DISABLED;
-			addRender(updatePhase);
+			callLater(changePhase);
 		}
 
 		protected function mouseHandler(event : MouseEvent) : void {
@@ -84,7 +84,7 @@
 			} else if (event.type == MouseEvent.MOUSE_UP) {
 				_phase = (event.currentTarget == this) ? GPhase.OVER : GPhase.UP;
 			}
-			addRender(updatePhase);
+			callLater(changePhase);
 		}
 
 		protected function clickHandler(event : MouseEvent) : void {
@@ -98,7 +98,7 @@
 			}
 		}
 
-		protected function updatePhase() : void {
+		protected function changePhase() : void {
 			var value : int = (_lockPhase != GPhase.NONE ? _lockPhase : _phase);
 			_skin.phase = value;
 			_label.phase = value;
@@ -115,7 +115,7 @@
 				return;
 			}
 			_lockPhase = value;
-			addRender(updatePhase);
+			callLater(changePhase);
 		}
 
 		public function set skin(value : IGSkin) : void {
@@ -130,7 +130,7 @@
 			if (_scaleMode == GScaleMode.FIT_SIZE) {
 				forceSize(_skin.width, _skin.height);
 			}
-			addRender(updatePhase);
+			callLater(changePhase);
 		}
 
 		public function setLabelPhaseColor(phase : int, color : uint) : void {
@@ -139,12 +139,16 @@
 
 		public function set text(value : String) : void {
 			_label.text = value;
-			addRender(update);
+			callLater(changeLayout);
+		}
+
+		public function get text() : String {
+			return _label.text;
 		}
 
 		public function set icon(value : BitmapData) : void {
 			_label.icon = value;
-			addRender(update);
+			callLater(changeLayout);
 		}
 
 		public function set onClick(value : Function) : void {

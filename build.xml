@@ -4,16 +4,13 @@
 	<property name="FLEX_HOME" value="${env.FLEX_HOME}" />
 	<property file="build.properties" />
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
-	<target name="1.生成SWC" description="库引用">
-		<echo message="[swc] 正在生成gear.swc..." />
-		<java jar="${FLEX_HOME}/lib/compc.jar" dir="." fork="true" failonerror="true">
-			<arg value="+flexlib=${FLEX_HOME}/frameworks" />
-			<arg value="-incremental=true" />
-			<arg value="-source-path+=${basedir}/src" />
-			<!-- 导入指定路径下的所有类 -->
-			<arg value="-include-sources=${basedir}/src/gear" />
-			<arg value="-output=${basedir}/bin/gear.swc" />
-		</java>
+	<target name="1. 创建SWC">
+		<compc output="${basedir}/bin/gear.swc">
+			<source-path path-element="${basedir}/src"/>
+			<include-sources dir="${basedir}/src">
+				<include name="gear" />
+			</include-sources>
+		</compc>
 	</target>
 	<target name="2.创建ASDOC" description="Create API docs for ${project.title}">
 		<echo>[asdoc] 生成ASDOC文档</echo>

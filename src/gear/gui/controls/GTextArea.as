@@ -53,11 +53,11 @@
 			_textField.height = _height - _padding.top - _padding.bottom;
 			_vScrollBar.x = _width - _vScrollBar.width;
 			_vScrollBar.height = _height;
-			addRender(updateScroll);
+			callLater(changeScroll);
 		}
 
 		override protected function onEnabled() : void {
-			addRender(updateType);
+			callLater(changeType);
 		}
 
 		override protected function onShow() : void {
@@ -72,7 +72,7 @@
 			} else if (event.type == FocusEvent.FOCUS_OUT) {
 				_phase = _enabled ? GPhase.UP : GPhase.DISABLED;
 			}
-			addRender(updatePhase);
+			callLater(updatePhase);
 		}
 
 		protected function updatePhase() : void {
@@ -80,14 +80,14 @@
 		}
 
 		protected function textFieldScrollHandler(event : Event) : void {
-			addRender(updateScroll);
+			callLater(changeScroll);
 		}
 
-		protected function updateType() : void {
+		protected function changeType() : void {
 			_textField.type = (_enabled ? (_editable ? TextFieldType.INPUT : TextFieldType.DYNAMIC) : TextFieldType.DYNAMIC);
 		}
 
-		protected function updateHtmlText() : void {
+		protected function changeHtmlText() : void {
 			_textField.htmlText += _appender;
 			_appender = "";
 			if (_maxLines > 0) {
@@ -96,10 +96,10 @@
 					_textField.htmlText = _textField.htmlText.slice(String(lines[0]).length + _edlim.length);
 				}
 			}
-			addRender(updateScroll);
+			_textField.scrollV = _textField.maxScrollV;
 		}
 
-		protected function updateScroll() : void {
+		protected function changeScroll() : void {
 			if (_textField.maxScrollV > 1) {
 				var pageSize : int = _textField.numLines - _textField.maxScrollV + 1;
 				_vScrollBar.setTo(pageSize, _textField.maxScrollV, _textField.scrollV, 1);
@@ -138,12 +138,13 @@
 				return;
 			}
 			_editable = value;
-			addRender(updateType);
+			callLater(changeType);
 		}
 
 		public function appendHtmlText(value : String) : void {
 			_appender += value;
-			addRender(updateHtmlText);
+			callLater(changeHtmlText);
+			callLater(changeScroll);
 		}
 
 		public function clear() : void {

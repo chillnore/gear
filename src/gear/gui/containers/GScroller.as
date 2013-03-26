@@ -42,7 +42,7 @@
 			_vScrollBar.height = _height;
 			_hScrollBar.y = _height - _hScrollBar.height;
 			_hScrollBar.width = _width;
-			addRender(updateScroll);
+			callLater(updateScroll);
 		}
 
 		protected function updateBounds() : void {
@@ -115,8 +115,8 @@
 
 		public function add(value : GBase) : void {
 			_content.addChild(value);
-			addRender(updateBounds);
-			addRender(updateScroll);
+			callLater(updateBounds);
+			callLater(updateScroll);
 		}
 	}
 }

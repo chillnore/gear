@@ -21,8 +21,8 @@
 			_padding.vdist = 2;
 			_bgSkin = GUIUtil.theme.emptySkin;
 			_icon = GUIUtil.theme.radioButtonIcon;
-			addRender(updatePhase);
-			addRender(updateText);
+			callLater(updatePhase);
+			callLater(updateText);
 		}
 
 		override protected function create() : void {
@@ -61,7 +61,7 @@
 
 		public function set text(value : String) : void {
 			_label.text = value;
-			addRender(updateText);
+			callLater(updateText);
 		}
 	}
 }

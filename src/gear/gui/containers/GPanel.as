@@ -52,7 +52,7 @@
 
 		override protected function onShow() : void {
 			if (_modal) {
-				addRender(updateModal);
+				callLater(updateModal);
 			}
 		}
 
@@ -71,7 +71,7 @@
 		}
 
 		override protected function onStageResize() : void {
-			addRender(updateModal);
+			callLater(updateModal);
 		}
 
 		protected function updateModal() : void {
@@ -110,7 +110,7 @@
 				return;
 			}
 			_modal = value;
-			addRender(updateModal);
+			callLater(updateModal);
 		}
 
 		public function add(value : GBase) : void {

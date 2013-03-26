@@ -50,6 +50,7 @@
 			_value = 0;
 			_step = 1;
 			forceSize(15, 100);
+			callLater(resize);
 		}
 
 		override protected function create() : void {
@@ -79,7 +80,7 @@
 			_thumb_btn.x = 1;
 			_thumb_btn.y = _up_btn.height;
 			_thumb_btn.width = _track_btn.width - 2;
-			addRender(updateThumb);
+			callLater(updateThumb);
 		}
 
 		override protected function onEnabled() : void {
@@ -168,7 +169,7 @@
 				isUpdate = true;
 			}
 			if (isUpdate) {
-				addRender(updateThumb);
+				callLater(updateThumb);
 			}
 		}
 
@@ -185,7 +186,7 @@
 					GLogger.error(e.getStackTrace());
 				}
 			}
-			addRender(updateThumb);
+			callLater(updateThumb);
 		}
 
 		public function get value() : int {

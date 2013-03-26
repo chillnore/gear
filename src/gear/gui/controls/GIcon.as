@@ -36,7 +36,7 @@
 				return;
 			}
 			_bitmapData=value;
-			addRender(update);
+			callLater(update);
 			if(_scaleMode==GScaleMode.FIT_SIZE){
 				forceSize(_bitmapData.width,_bitmapData.height);
 			}

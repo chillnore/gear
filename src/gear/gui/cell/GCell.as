@@ -24,7 +24,7 @@
 		override protected function preinit() : void {
 			_skin = GUIUtil.theme.cellSkin;
 			setSize(100, 20);
-			addRender(updatePhase);
+			callLater(updatePhase);
 		}
 
 		override protected function create() : void {
@@ -57,7 +57,7 @@
 			} else if (event.type == MouseEvent.MOUSE_UP) {
 				_phase = (event.currentTarget == this) ? GPhase.OVER : GPhase.UP;
 			}
-			addRender(updatePhase);
+			callLater(updatePhase);
 		}
 
 		protected function updatePhase() : void {
@@ -76,7 +76,7 @@
 				return;
 			}
 			_selected = value;
-			addRender(updateSelected);
+			callLater(updateSelected);
 		}
 
 		override public function set source(value : *) : void {
