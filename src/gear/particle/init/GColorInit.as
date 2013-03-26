@@ -1,4 +1,4 @@
-package gear.particle.init {
+﻿package gear.particle.init {
 	import gear.particle.core.Emitter;
 	import gear.particle.core.Particle;
 	import gear.utils.GColorUtil;

@@ -127,6 +127,9 @@
 		}
 
 		internal static function startLoad(loader : AGLoader) : void {
+			if (loader.state != GLoadState.NONE) {
+				return;
+			}
 			if (_loadings.length < MAX) {
 				if (_loadings.indexOf(loader) == -1) {
 					_loadings.push(loader);

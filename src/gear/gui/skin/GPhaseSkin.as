@@ -48,8 +48,10 @@
 		public function setAt(phase : int, bitmapData : BitmapData) : void {
 			_source[phase] = bitmapData;
 			_target[phase] = bitmapData;
-			_width = Math.max(_width, bitmapData.width);
-			_height = Math.max(_height, bitmapData.height);
+			if (bitmapData != null) {
+				_width = Math.max(_width, bitmapData.width);
+				_height = Math.max(_height, bitmapData.height);
+			}
 		}
 
 		public function addTo(parent : DisplayObjectContainer, index : int = 0) : void {
@@ -133,7 +135,7 @@
 		}
 
 		public function set selected(value : Boolean) : void {
-			if(_selected==value){
+			if (_selected == value) {
 				return;
 			}
 			_selected = value;

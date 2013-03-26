@@ -10,13 +10,13 @@
 	/**
 	 * @author flashpf
 	 */
-	public class Ghost extends Sprite implements IGFrame {
-		public static const pool : GObjPool = new GObjPool(Ghost);
+	public class GGhost extends Sprite implements IGFrame {
+		public static const pool : GObjPool = new GObjPool(GGhost);
 		protected var _bitmap : Bitmap;
 		protected var _unit : GBDUnit;
 		protected var _count : int;
 
-		public function Ghost() : void {
+		public function GGhost() : void {
 			_bitmap = new Bitmap();
 			addChild(_bitmap);
 		}

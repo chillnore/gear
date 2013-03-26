@@ -52,7 +52,7 @@
 
 		override protected function onShow() : void {
 			if (_modal) {
-				callLater(updateModal);
+				callLater(changeModal);
 			}
 		}
 
@@ -71,10 +71,12 @@
 		}
 
 		override protected function onStageResize() : void {
-			callLater(updateModal);
+			if (_modal) {
+				callLater(changeModal);
+			}
 		}
 
-		protected function updateModal() : void {
+		protected function changeModal() : void {
 			var topLeft : Point = parent.localToGlobal(GMathUtil.ZERO_POINT);
 			_modalSkin.moveTo(-topLeft.x, -topLeft.y);
 			_modalSkin.setSize(GUIUtil.stage.stageWidth, GUIUtil.stage.stageHeight);
@@ -110,7 +112,7 @@
 				return;
 			}
 			_modal = value;
-			callLater(updateModal);
+			callLater(changeModal);
 		}
 
 		public function add(value : GBase) : void {

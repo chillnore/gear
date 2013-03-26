@@ -52,6 +52,7 @@
 			var total : int = mc.totalFrames;
 			var list : Vector.<GBDUnit>=new Vector.<GBDUnit>(total, true);
 			var bd : BitmapData;
+			var offset : Point;
 			for (var i : int = 0;i < total ;i++) {
 				if (mc.numChildren == 0) {
 					mc.nextFrame();
@@ -60,7 +61,9 @@
 				if (mc.numChildren == 1) {
 					bp = mc.getChildAt(0) as Bitmap;
 					if (bp != null) {
-						list[i] = new GBDUnit(bp.x, bp.y, bp.bitmapData);
+						offset = new Point(bp.x, bp.y);
+						bd = cutAlphaBD(bp.bitmapData, offset);
+						list[i] = new GBDUnit(offset.x, offset.y, bd);
 						mc.nextFrame();
 						continue;
 					}
@@ -77,7 +80,9 @@
 				} else {
 					bd.drawWithQuality(mc, mtx, null, null, null, true, StageQuality.HIGH_16X16_LINEAR);
 				}
-				list[i] = new GBDUnit(bounds.x, bounds.y, bd);
+				offset = new Point(bounds.x, bounds.y);
+				bd = cutAlphaBD(bd, offset);
+				list[i] = new GBDUnit(offset.x, offset.y, bd);
 				mc.nextFrame();
 			}
 			return new GBDList(list);

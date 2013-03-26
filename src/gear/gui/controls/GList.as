@@ -33,7 +33,7 @@
 		protected var _model : GListModel;
 		protected var _hgap : int;
 		protected var _rows : int;
-		protected var _cell : Class = GCell;
+		protected var _cell : Class;
 		protected var _template : IGCell;
 		protected var _cells : Vector.<IGCell>;
 
@@ -46,6 +46,7 @@
 			_model = new GListModel();
 			_model.onChange = onModelChange;
 			_cells = new Vector.<IGCell>();
+			_cell=GCell;
 			_padding.dist = 1;
 			_rows = 5;
 			_template = new _cell();

@@ -50,14 +50,21 @@
 				}
 			}
 		}
-		
-		public function get selectedIndex():int{
+
+		public function get selectedIndex() : int {
 			return _selectedIndex;
 		}
 
 		public function selected(value : GToggleBase) : void {
 			var index : int = _list.indexOf(value);
 			selectedIndex = index;
+		}
+
+		public function get selecction() : GToggleBase {
+			if (_selectedIndex < 0 || _selectedIndex >= _list.length) {
+				return null;
+			}
+			return _list[_selectedIndex];
 		}
 
 		public function set enabled(value : Boolean) : void {
