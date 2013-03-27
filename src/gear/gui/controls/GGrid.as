@@ -8,6 +8,8 @@
 	import gear.log4a.GLogger;
 
 	/**
+	 * 网格控件
+	 * 
 	 * @author bright
 	 * @version 20130327
 	 */
