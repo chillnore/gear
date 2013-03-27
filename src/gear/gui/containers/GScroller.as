@@ -42,10 +42,10 @@
 			_vScrollBar.height = _height;
 			_hScrollBar.y = _height - _hScrollBar.height;
 			_hScrollBar.width = _width;
-			callLater(updateScroll);
+			callLater(changeScroll);
 		}
 
-		protected function updateBounds() : void {
+		protected function changeBounds() : void {
 			var total : int = _content.numChildren;
 			var x : int = 0;
 			var y : int = 0;
@@ -61,7 +61,7 @@
 			_bounds = new Rectangle(x, y, w, h);
 		}
 
-		protected function updateScroll() : void {
+		protected function changeScroll() : void {
 			var vmax : int = _bounds.height - _scrollRect.height;
 			var hmax : int = _bounds.width - _scrollRect.width;
 			if (vmax > 0) {
@@ -115,8 +115,8 @@
 
 		public function add(value : GBase) : void {
 			_content.addChild(value);
-			callLater(updateBounds);
-			callLater(updateScroll);
+			callLater(changeBounds);
+			callLater(changeScroll);
 		}
 	}
 }

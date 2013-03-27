@@ -26,7 +26,7 @@
 		override protected function preinit() : void {
 			_skin = GUIUtil.theme.cellSkin;
 			setSize(100, 20);
-			callLater(updatePhase);
+			callLater(changePhase);
 		}
 
 		override protected function create() : void {
@@ -60,7 +60,7 @@
 			} else if (event.type == MouseEvent.MOUSE_UP) {
 				_phase = (event.currentTarget == this) ? GPhase.OVER : GPhase.UP;
 			}
-			callLater(updatePhase);
+			callLater(changePhase);
 		}
 
 		protected function clickHandler(event : MouseEvent) : void {
@@ -74,11 +74,11 @@
 			}
 		}
 
-		protected function updatePhase() : void {
+		protected function changePhase() : void {
 			_skin.phase = _phase;
 		}
 
-		protected function updateSelected() : void {
+		protected function changeSelected() : void {
 			_skin.selected = _selected;
 		}
 
@@ -97,7 +97,7 @@
 			if (_scaleMode == GScaleMode.FIT_SIZE) {
 				forceSize(_skin.width, _skin.height);
 			}
-			callLater(updatePhase);
+			callLater(changePhase);
 		}
 
 		public function set selected(value : Boolean) : void {
@@ -105,7 +105,7 @@
 				return;
 			}
 			_selected = value;
-			callLater(updateSelected);
+			callLater(changeSelected);
 		}
 
 		public function set hotKey(value : String) : void {

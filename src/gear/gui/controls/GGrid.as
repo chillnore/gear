@@ -1,6 +1,6 @@
 ﻿package gear.gui.controls {
-	import gear.gui.core.GAutoSize;
 	import gear.gui.cell.GCell;
+	import gear.gui.core.GAutoSize;
 	import gear.gui.core.GBase;
 	import gear.gui.model.GChange;
 	import gear.gui.model.GChangeList;
@@ -9,6 +9,7 @@
 
 	/**
 	 * @author bright
+	 * @version 20130327
 	 */
 	public class GGrid extends GBase {
 		protected var _cols : int;

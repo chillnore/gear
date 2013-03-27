@@ -26,7 +26,7 @@
 			_padding.vdist = 2;
 			_bgSkin = GUIUtil.theme.emptySkin;
 			_icon = GUIUtil.theme.checkBoxIcon;
-			callLater(update);
+			callLater(change);
 		}
 
 		override protected function create() : void {
@@ -79,7 +79,7 @@
 			callLater(viewSkin);
 		}
 
-		protected function update() : void {
+		protected function change() : void {
 			if (_autoSize == GAutoSize.AUTO_SIZE) {
 				forceSize(_padding.left + _icon.width + _label.width + _padding.right, _padding.top + Math.max(_icon.height, _label.height) + _padding.bottom);
 				_icon.x = _padding.left;
@@ -106,7 +106,7 @@
 
 		public function set text(value : String) : void {
 			_label.text = value;
-			callLater(update);
+			callLater(change);
 		}
 	}
 }

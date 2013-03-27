@@ -34,7 +34,7 @@
 			addChild(_bitmap);
 		}
 
-		protected function update() : void {
+		protected function change() : void {
 			var i : int;
 			var index : int;
 			var cut_bd : BitmapData;
@@ -83,7 +83,7 @@
 				return;
 			}
 			_text = value;
-			callLater(update);
+			callLater(change);
 		}
 
 		/**

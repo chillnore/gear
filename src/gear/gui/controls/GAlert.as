@@ -17,7 +17,7 @@
 
 		override protected function preinit() : void {
 			_flag = 0x4;
-			callLater(updateFlag);
+			callLater(changeFlag);
 		}
 
 		override protected function create() : void {
@@ -27,7 +27,7 @@
 			add(_textInput);
 		}
 
-		protected function updateFlag() : void {
+		protected function changeFlag() : void {
 		}
 
 		public function GAlert() : void {
@@ -38,7 +38,7 @@
 				return;
 			}
 			_flag = value;
-			callLater(updateFlag);
+			callLater(changeFlag);
 		}
 	}
 }
