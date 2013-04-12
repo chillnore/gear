@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><apiPackage id="gear.gui.utils"><apiName>gear.gui.utils</apiName><apiDetail/><apiClassifier id="gear.gui.utils:GUIUtil"><apiName>GUIUtil</apiName><shortdesc>
+	 UI管理器
+	 
+	 </shortdesc><prolog><author>bright
+	 </author><asMetadata/><asCustoms><version>20130309
+	 </version></asCustoms></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiFinal/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 UI管理器
+	 
+	 </apiDesc></apiClassifierDetail><apiOperation id="gear.gui.utils:GUIUtil:getInputTextField"><apiName>getInputTextField</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiType value="flash.text:TextField"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="gear.gui.utils:GUIUtil:getTextField"><apiName>getTextField</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiType value="flash.text:TextField"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="gear.gui.utils:GUIUtil:getTextFormat"><apiName>getTextFormat</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiType value="flash.text:TextFormat"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="gear.gui.utils:GUIUtil:init"><apiName>init</apiName><shortdesc>
+		 设置根
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="flash.display:Stage"/><apiDesc>根
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 设置根
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="gear.gui.utils:GUIUtil:setFullScreen"><apiName>setFullScreen</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Boolean"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="gear.gui.utils:GUIUtil:toSkin"><apiName>toSkin</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>gear.gui.skin:IGSkin</apiOperationClassifier></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="flash.display:DisplayObject"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiValue id="gear.gui.utils:GUIUtil:defaultFontSize"><apiName>defaultFontSize</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiData>12</apiData><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="gear.gui.utils:GUIUtil:defaultFont"><apiName>defaultFont</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="gear.gui.utils:GUIUtil:theme"><apiName>theme</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiData>unknown</apiData><apiValueClassifier>gear.gui.skin.theme:IGTheme</apiValueClassifier></apiValueDef></apiValueDetail></apiValue><apiValue id="gear.gui.utils:GUIUtil:defaultCSS:get"><apiName>defaultCSS</apiName><shortdesc>
+		 获得默认样式
+		 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiType value="flash.text:StyleSheet"/></apiValueDef><apiDesc>
+		 获得默认样式
+		 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="gear.gui.utils:GUIUtil:stage:get"><apiName>stage</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiType value="flash.display:Stage"/></apiValueDef></apiValueDetail></apiValue><apiValue id="gear.gui.utils:GUIUtil:url:get"><apiName>url</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiType value="String"/></apiValueDef></apiValueDetail></apiValue></apiClassifier></apiPackage>
