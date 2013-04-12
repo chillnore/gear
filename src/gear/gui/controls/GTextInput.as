@@ -1,4 +1,4 @@
-﻿package gear.gui.controls {
+﻿﻿package gear.gui.controls {
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
 	import gear.gui.core.GPhaseColor;
@@ -26,6 +26,7 @@
 		protected var _phase : int;
 		protected var _phaseColor : GPhaseColor;
 		protected var _text : String;
+		protected var _defaultText : String;
 		protected var _onEnter : Function;
 
 		override protected function preinit() : void {
@@ -89,6 +90,10 @@
 				_phase = GPhase.FOCUS;
 			} else if (event.type == FocusEvent.FOCUS_OUT) {
 				_phase = _enabled ? GPhase.UP : GPhase.DISABLED;
+			}
+			if (_defaultText != null) {
+				_defaultText = null;
+				_textField.text = "";
 			}
 			callLater(updatePhase);
 		}
@@ -177,6 +182,7 @@
 
 		public function set text(value : String) : void {
 			_text = value;
+			_defaultText=null;
 			callLater(updateText);
 		}
 
@@ -188,6 +194,11 @@
 		public function get text() : String {
 			render();
 			return _textField.text;
+		}
+
+		public function set defaultText(value : String) : void {
+			_defaultText = _text = value;
+			callLater(updateText);
 		}
 
 		public function set onEnter(value : Function) : void {
