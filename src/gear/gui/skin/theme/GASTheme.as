@@ -821,6 +821,7 @@
 			var skin : Shape = new Shape();
 			var g : Graphics = skin.graphics;
 			var mtx : Matrix = new Matrix();
+			GDrawUtil.drawFillRect(g, 0, 0, 0, 0, 14, 50);
 			mtx.createGradientBox(12, 50, GMathUtil.angleToRadian(90), 1, 1);
 			g.beginGradientFill(GradientType.LINEAR, [0xB7BABC, 0x585F63], [1, 1], [0, 255], mtx);
 			g.drawRoundRectComplex(1, 0, 12, 50, 0, 3, 0, 3);
@@ -831,6 +832,8 @@
 			g.endFill();
 			result.setAt(GPhase.UP, GBDUtil.toBD(skin));
 			g.clear();
+			GDrawUtil.drawFillRect(g, 0, 0, 0, 0, 14, 50);
+			GDrawUtil.drawFillRect(g, 0, 0, 0, 0, 14, 50);
 			mtx.createGradientBox(12, 50, GMathUtil.angleToRadian(90), 1, 1);
 			g.beginGradientFill(GradientType.LINEAR, [0x009DFF, 0x0075BF], [1, 1], [0, 255], mtx);
 			g.drawRoundRectComplex(1, 0, 12, 50, 0, 3, 0, 3);
@@ -841,6 +844,7 @@
 			g.endFill();
 			result.setAt(GPhase.OVER, GBDUtil.toBD(skin));
 			g.clear();
+			GDrawUtil.drawFillRect(g, 0, 0, 0, 0, 14, 50);
 			mtx.createGradientBox(12, 50, GMathUtil.angleToRadian(90), 1, 1);
 			g.beginGradientFill(GradientType.LINEAR, [0x009DFF, 0x0075BF], [1, 1], [0, 255], mtx);
 			g.drawRoundRectComplex(1, 0, 12, 50, 0, 3, 0, 3);
