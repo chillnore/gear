@@ -20,7 +20,7 @@
 	 */
 	public final class GLogger {
 		private static var _appenders : Vector.<IGAppender>;
-		private static var _level : GLevel = GLevel.ALL_LEVEL;
+		private static var _level : GLevel = GLevel.ALL;
 		private static var _creating : Boolean = false;
 
 		/**
@@ -32,8 +32,11 @@
 			if (level.compareTo(_level)) {
 				return;
 			}
-			var caller:String=new Error().getStackTrace().split("at ")[3].split("(")[0].split("/")[0];
-			callAppenders(new GLogData(level, message,caller));
+			var caller : String = new Error().getStackTrace();
+			if (caller != null) {
+				caller = caller.split("at ")[3].split("(")[0].split("/")[0];
+			}
+			callAppenders(new GLogData(level, message, caller));
 		}
 
 		private static function callAppenders(event : GLogData) : void {
@@ -90,7 +93,7 @@
 		 * @param message 消息数组
 		 */
 		public static function fatal(...message : Array) : void {
-			forcedLog(GLevel.FATAL_LEVEL, message);
+			forcedLog(GLevel.FATAL, message);
 		}
 
 		/**
@@ -99,7 +102,7 @@
 		 * @param message 消息数组
 		 */
 		public static function error(...message : Array) : void {
-			forcedLog(GLevel.ERROR_LEVEL, message);
+			forcedLog(GLevel.ERROR, message);
 		}
 
 		/**
@@ -108,7 +111,7 @@
 		 * @param message 消息数组
 		 */
 		public static function warn(...message : Array) : void {
-			forcedLog(GLevel.WARN_LEVEL, message);
+			forcedLog(GLevel.WARN, message);
 		}
 
 		/**
@@ -117,7 +120,7 @@
 		 * @param message 消息数组
 		 */
 		public static function info(...message : Array) : void {
-			forcedLog(GLevel.INFO_LEVEL, message);
+			forcedLog(GLevel.INFO, message);
 		}
 
 		/**
@@ -126,7 +129,7 @@
 		 * @param message 消息数组
 		 */
 		public static function debug(...message : Array) : void {
-			forcedLog(GLevel.DEBUG_LEVEL, message);
+			forcedLog(GLevel.DEBUG, message);
 		}
 	}
 }

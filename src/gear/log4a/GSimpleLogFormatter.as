@@ -12,7 +12,10 @@
 		}
 
 		public function format(data : GLogData, separator : String = "\n") : String {
-			var result : String = "[" + GStringUtil.formatTime(data.timestamp) + "][" + data.level.name + "]{"+data.caller+"} ";
+			var result : String = "[" + GStringUtil.formatTime(data.timestamp) + "][" + data.level.name + "]";
+			if (data.caller != null) {
+				result += "{" + data.caller + "} ";
+			}
 			result += data.toString() + separator;
 			return result;
 		}
