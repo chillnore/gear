@@ -11,27 +11,27 @@
 		/**
 		 * 所有层级
 		 */
-		public static var ALL_LEVEL : GLevel = new GLevel(0, "ALL");
+		public static var ALL : GLevel = new GLevel(0, "ALL");
 		/**
 		 * 调试层级
 		 */
-		public static var DEBUG_LEVEL : GLevel = new GLevel(1, "DEBUG");
+		public static var DEBUG : GLevel = new GLevel(1, "DEBUG");
 		/**
 		 * 信息层级
 		 */
-		public static var INFO_LEVEL : GLevel = new GLevel(2, "INFO");
+		public static var INFO : GLevel = new GLevel(2, "INFO");
 		/**
 		 * 警告层级
 		 */
-		public static var WARN_LEVEL : GLevel = new GLevel(3, "WARN");
+		public static var WARN : GLevel = new GLevel(3, "WARN");
 		/**
 		 * 错误层级
 		 */
-		public static var ERROR_LEVEL : GLevel = new GLevel(4, "ERROR");
+		public static var ERROR : GLevel = new GLevel(4, "ERROR");
 		/**
 		 * 失败层级
 		 */
-		public static var FATAL_LEVEL : GLevel = new GLevel(5, "FATAL");
+		public static var FATAL : GLevel = new GLevel(5, "FATAL");
 		/**
 		 * 关闭层级
 		 */

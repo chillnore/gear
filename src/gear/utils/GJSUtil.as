@@ -1,63 +1,49 @@
-﻿package gear.utils {
+﻿﻿package gear.utils {
 	import flash.external.ExternalInterface;
 
 	/**
 	 * @author admin
 	 */
 	public final class GJSUtil {
-		private static var _firstTime : Boolean = true;
-
-		public static function get hasJS() : Boolean {
-			if (!ExternalInterface.available) return false;
-			if (_firstTime) {
-				_firstTime = false;
-				ExternalInterface.marshallExceptions = true;
+		/**
+		 * 获得浏览器类型
+		 */
+		public static function get browserAgent() : String {
+			if (ExternalInterface.available) {
+				var result : String = ExternalInterface.call("eval", "navigator.userAgent");
+				if (/MSIE 10/i.test(result) && !/Opera/.test(result)) {
+					return "IE 10";
+				}
+				if (/Chrome/i.test(result) && /WebKit/i.test(result) && /Mozilla/i.test(result)) {
+					return "Chrome";
+				}
+				if (/Firefox/i.test(result)) {
+					return "Firefox";
+				}
+				if (/Opera/i.test(result)) {
+					return "Opera";
+				}
+				if (/Webkit/i.test(result) && !(/Chrome/i.test(result) && /WebKit/i.test(result) && /Mozilla/i.test(result))) {
+					return "Safari";
+				}
 			}
-			return true;
+			return "未知";
 		}
 
-		public static function getBrowserType() : String {
-			var result : String = "none";
-			if (!hasJS) return result;
-			try {
-				result = ExternalInterface.call("eval", "navigator.appName");
-				return result;
-			} catch(e : Error) {
-				return "error";
-			}
-			return "none";
-		}
-
-		public static function getBrowserAgent() : String {
-			var result : String = "none";
-			if (!hasJS) return result;
-			try {
-				result = ExternalInterface.call("eval", "navigator.userAgent");
-				return result;
-			} catch(e : Error) {
-				return "error";
-			}
-			return "none";
-		}
-
-		public static function getPageUrl() : String {
-			var result : String = "none";
-			if (!hasJS) return result;
-			try {
-				result = ExternalInterface.call("eval", "window.location.href");
-				return result;
-			} catch(e : Error) {
-				return "error";
-			}
-			return "none";
-		}
-
+		/**
+		 * 刷新
+		 */
 		public static function reload() : void {
-			if (!hasJS) return;
-			try {
+			if (ExternalInterface.available) {
 				ExternalInterface.call("eval", "location.reload();");
-			} catch(e : Error) {
 			}
+		}
+
+		public static function get pageUrl() : String {
+			if (ExternalInterface.available) {
+				return ExternalInterface.call("eval", "window.location.href");
+			}
+			return "null";
 		}
 	}
 }

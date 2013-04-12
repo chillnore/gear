@@ -1,4 +1,4 @@
-﻿package gear.log4a {
+﻿﻿package gear.log4a {
 	import gear.gui.containers.GPanel;
 	import gear.gui.controls.GButton;
 	import gear.gui.controls.GTextArea;
@@ -11,12 +11,14 @@
 	import flash.ui.Keyboard;
 
 	/**
-	 * UI日志输出源
+	 * UI日志输出源-单例
 	 * 
 	 * @author bright
-	 * @version 20130307
+	 * @version 20130410
 	 */
 	public class GUIAppender extends GPanel implements IGAppender {
+		private static var _creating : Boolean = false;
+		private static var _instance : GUIAppender;
 		protected var _debug_ta : GTextArea;
 		protected var _commond_ti : GTextInput;
 		protected var _run_btn : GButton;
@@ -30,13 +32,13 @@
 		}
 
 		protected function keyDownHandler(event : KeyboardEvent) : void {
-			if (event.ctrlKey && event.keyCode == Keyboard.COMMA) {
+			if (event.ctrlKey && event.keyCode == Keyboard.PERIOD) {
 				event.preventDefault();
 			}
 		}
 
 		protected function keyUpHandler(event : KeyboardEvent) : void {
-			if (event.ctrlKey && event.keyCode == Keyboard.COMMA) {
+			if (event.ctrlKey && event.keyCode == Keyboard.PERIOD) {
 				parent == null ? show() : hide();
 			}
 		}
@@ -106,8 +108,20 @@
 		}
 
 		public function GUIAppender() {
+			if (!_creating) {
+				throw (new GLogError("只能使用GUIAppender.instance获得实例!"));
+			}
 			initView();
 			initEvent();
+		}
+
+		public static function get instance() : GUIAppender {
+			if (_instance == null) {
+				_creating = true;
+				_instance = new GUIAppender();
+				_creating = false;
+			}
+			return _instance;
 		}
 
 		public function append(data : GLogData) : void {

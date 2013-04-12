@@ -1,5 +1,6 @@
 ﻿package gear.utils {
 	import gear.log4a.GLogger;
+
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
@@ -28,11 +29,12 @@
 
 		public static function getInfo() : String {
 			var result : String = "系统信息:\n";
-			result += "播放器当前版本:" + Capabilities.version + "\n";
+			result += "浏览器类型:" + GJSUtil.browserAgent + "\n";
+			result += "播放器当前版本:" + Capabilities.version + " ";
+			result += "Debug:" + Capabilities.isDebugger + "\n";
 			result += "分辨率:" + Capabilities.screenResolutionX + "×" + Capabilities.screenResolutionY + "\n";
 			result += "播放器的类型:" + Capabilities.playerType + "\n";
 			result += "当前的操作系统:" + Capabilities.os + "\n";
-			result += "当前播放器是否是debug版本:" + Capabilities.isDebugger + "\n";
 			result += "摄像头和麦克风是否禁止:" + Capabilities.avHardwareDisable;
 			return result;
 		}
@@ -104,7 +106,7 @@
 								if (child == null) {
 									continue;
 								}
-								GLogger.debug(child.name,child);
+								GLogger.debug(child.name, child);
 								list.push(child);
 							}
 						}
@@ -116,7 +118,7 @@
 							if (child == null) {
 								continue;
 							}
-							GLogger.debug(child.name,child);
+							GLogger.debug(child.name, child);
 							list.push(child);
 						}
 					}
@@ -124,10 +126,10 @@
 			}
 			return total;
 		}
-		
-		public static function sample():void{
-			//trace执行次数
-			getInvocationCount(undefined, new QName("","trace"));
+
+		public static function sample() : void {
+			// trace执行次数
+			getInvocationCount(undefined, new QName("", "trace"));
 		}
 	}
 }

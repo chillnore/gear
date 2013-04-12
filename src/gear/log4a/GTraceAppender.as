@@ -1,20 +1,35 @@
-﻿package gear.log4a {
+﻿﻿package gear.log4a {
 	/**
-	 * trace日志输入源
+	 * trace日志输入源-单例
 	 * 
 	 * @author bright
-	 * @version 20130325
+	 * @version 20130410
 	 */
-	public class GTraceAppender extends GAppender {
+	public class GTraceAppender implements IGAppender {
+		private static var _creating : Boolean = false;
+		private static var _instance : GTraceAppender;
+		protected var _formatter : IGLogFormatter;
+
 		public function GTraceAppender() {
-			super();
+			if (!_creating) {
+				throw (new GLogError("只能使用GUIAppender.instance获得实例!"));
+			}
 			_formatter = new GSimpleLogFormatter();
+		}
+
+		public static function get instance() : GTraceAppender {
+			if (_instance == null) {
+				_creating = true;
+				_instance = new GTraceAppender();
+				_creating = false;
+			}
+			return _instance;
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		override public function append(data : GLogData) : void {
+		public function append(data : GLogData) : void {
 			var message : String = _formatter.format(data, "");
 			trace(message);
 		}
