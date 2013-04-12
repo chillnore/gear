@@ -24,7 +24,7 @@
 		private function addedToStageHandler(event : Event) : void {
 			removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			GUIUtil.init(stage);
-			GLogger.addAppender(new GTraceAppender());
+			GLogger.addAppender(GTraceAppender.instance);
 			GFrameRender.instance.stage = stage;
 			startup();
 		}

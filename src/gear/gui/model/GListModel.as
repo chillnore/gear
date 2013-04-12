@@ -1,4 +1,4 @@
-﻿package gear.gui.model {
+﻿﻿package gear.gui.model {
 	import gear.log4a.GLogger;
 
 	/**
@@ -33,12 +33,7 @@
 		}
 
 		public function remove(value : *) : void {
-			var index : int = _source.indexOf(value);
-			if (index == -1) {
-				return;
-			}
-			_source.splice(index, 1);
-			change(new GChange(GChange.REMOVED, index));
+			removeAt(_source.indexOf(value));
 		}
 
 		public function addAt(index : int, value : *) : void {
@@ -53,7 +48,9 @@
 			if (index < 0 || index >= _source.length) {
 				return;
 			}
+			GLogger.debug(_source.length);
 			_source.splice(index, 1);
+			GLogger.debug(_source.length,index);
 			change(new GChange(GChange.REMOVED, index));
 		}
 
@@ -70,6 +67,27 @@
 				return null;
 			}
 			return _source[value];
+		}
+
+		public function findBy(key : String, value : *) : int {
+			var index : int = 0;
+			for each (var item : Object in _source) {
+				if (!item.hasOwnProperty(key)) {
+					return -1;
+				}
+				if (item[key] == value) {
+					return index;
+				}
+				index++;
+			}
+			return -1;
+		}
+
+		public function update(index : int) : void {
+			if ( index < 0 || index >= _source.length) {
+				return;
+			}
+			change(new GChange(GChange.UPDATE, index));
 		}
 
 		public function clear() : void {

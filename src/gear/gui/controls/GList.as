@@ -1,16 +1,15 @@
-﻿package gear.gui.controls {
-	import gear.gui.core.GAutoSize;
+﻿﻿package gear.gui.controls {
 	import gear.gui.cell.GCell;
 	import gear.gui.cell.IGCell;
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
 	import gear.gui.core.GScaleMode;
-	import gear.gui.core.IGBase;
 	import gear.gui.model.GChange;
 	import gear.gui.model.GChangeList;
 	import gear.gui.model.GListModel;
 	import gear.gui.skin.IGSkin;
 	import gear.gui.utils.GUIUtil;
+	import gear.log4a.GLogger;
 
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -32,13 +31,12 @@
 		protected var _changes : GChangeList;
 		protected var _model : GListModel;
 		protected var _hgap : int;
-		protected var _rows : int;
 		protected var _cell : Class;
 		protected var _template : IGCell;
 		protected var _cells : Vector.<IGCell>;
+		protected var _onCellClick : Function;
 
 		override protected function preinit() : void {
-			_autoSize = GAutoSize.AUTO_SIZE;
 			_bgSkin = GUIUtil.theme.listSkin;
 			_scrollRect = new Rectangle();
 			_selectedIndex = -1;
@@ -46,11 +44,10 @@
 			_model = new GListModel();
 			_model.onChange = onModelChange;
 			_cells = new Vector.<IGCell>();
-			_cell=GCell;
+			_cell = GCell;
 			_padding.dist = 1;
-			_rows = 5;
 			_template = new _cell();
-			forceSize(_template.width+_padding.left+_padding.right, _template.height * _rows+_padding.top+_padding.bottom);
+			setSize(100, 100);
 		}
 
 		override protected function create() : void {
@@ -94,6 +91,7 @@
 				switch(change.state) {
 					case GChange.RESET:
 						callLater(updateCells);
+						callLater(updateScroll);
 						break;
 					case GChange.ADDED:
 						if (change.index <= _selectedIndex) {
@@ -109,8 +107,9 @@
 						} else if (change.index == _selectedIndex) {
 							selectedIndex = -1;
 						}
-						removeCell(change.index);
+						removeCellAt(change.index);
 						moveCells(change.index - 1, -_template.height);
+						GLogger.debug("removed",change.index,_model.length);
 						callLater(updateScroll);
 						break;
 					case GChange.UPDATE:
@@ -121,28 +120,15 @@
 		}
 
 		protected function updateCells() : void {
-			if (_cells.length == _model.length) {
-				var index : int = 0;
-				var cell : GCell;
-				for each (cell in _cells) {
-					cell.source = _model.getAt(index++);
-				}
-				return;
+			while (_cells.length > 0) {
+				removeCellAt(0);
 			}
-			var length : int = Math.max(_cells.length, _model.length);
+			var length : int = _model.length;
 			for (var i : int = 0; i < length; i++) {
-				if (i >= _cells.length) {
-					addCell(i);
-					continue;
-				}
-				if (i >= _model.length) {
-					removeCell(i);
-					continue;
-				}
+				addCell(i);
 				updateCell(i);
 			}
 			selectedIndex = -1;
-			callLater(updateScroll);
 		}
 
 		protected function addCell(index : int) : void {
@@ -152,13 +138,15 @@
 			cell.source = _model.getAt(index);
 			_content.addChild(cell as DisplayObject);
 			_cells.splice(index, 0, cell);
-			addEvent(cell, MouseEvent.MOUSE_DOWN, cellMouseDownHandler);
+			addEvent(cell, MouseEvent.MOUSE_DOWN, cell_mouseDownHandler);
+			addEvent(cell, MouseEvent.CLICK, cell_clickHandler);
 		}
 
-		protected function removeCell(index : int) : void {
-			var cell : IGBase = _cells[index];
+		protected function removeCellAt(index:int) : void {
+			var cell:IGCell=_cells[index];
 			cell.hide();
 			removeEvent(cell, MouseEvent.MOUSE_DOWN);
+			removeEvent(cell, MouseEvent.CLICK);
 			_cells.splice(index, 1);
 		}
 
@@ -172,13 +160,23 @@
 			_cells[index].source = _model.getAt(index);
 		}
 
-		protected function cellMouseDownHandler(event : MouseEvent) : void {
+		protected function cell_mouseDownHandler(event : MouseEvent) : void {
 			selectedIndex = _cells.indexOf(IGCell(event.currentTarget));
 		}
 
+		protected function cell_clickHandler(event : MouseEvent) : void {
+			if (_onCellClick != null) {
+				try {
+					_onCellClick(event.currentTarget);
+				} catch(e : Error) {
+					GLogger.debug(e.getStackTrace());
+				}
+			}
+		}
+
 		protected function updateScroll() : void {
-			var pageSize:int=_rows;
-			var max : int = _cells.length - _rows;
+			var pageSize : int = _height / _template.height;
+			var max : int = _model.length - pageSize;
 			if (max > 0) {
 				_vScrollBar.setTo(pageSize, max, _scrollRect.y);
 				if (!_vScrollBar.visible) {
@@ -204,6 +202,10 @@
 		public function GList() {
 		}
 
+		public function set onCellClick(value : Function) : void {
+			_onCellClick = value;
+		}
+
 		public function set bgSkin(value : IGSkin) : void {
 			if (_bgSkin == value) {
 				return;
@@ -222,11 +224,8 @@
 			}
 		}
 
-		public function set rows(value : int) : void {
-			_rows = value;
-			if (_rows > 0 && _autoSize == GAutoSize.AUTO_SIZE) {
-				forceSize(_template.width+_padding.left+_padding.right, _template.height * _rows+_padding.top+_padding.bottom);
-			}
+		public function get vScrollBar() : GVScrollBar {
+			return _vScrollBar;
 		}
 
 		public function set cell(value : Class) : void {
@@ -247,6 +246,7 @@
 			_model = value;
 			_model.onChange = onModelChange;
 			callLater(updateCells);
+			callLater(updateScroll);
 		}
 
 		public function get model() : GListModel {

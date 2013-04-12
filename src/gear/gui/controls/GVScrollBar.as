@@ -77,9 +77,8 @@
 			_down_btn.y = _height - _down_btn.height;
 			_track_btn.y = _up_btn.height;
 			_track_btn.setSize(_width, _height - _up_btn.height - _down_btn.height);
-			_thumb_btn.x = 1;
 			_thumb_btn.y = _up_btn.height;
-			_thumb_btn.width = _track_btn.width - 2;
+			_thumb_btn.width = _track_btn.width;
 			callLater(updateThumb);
 		}
 

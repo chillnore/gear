@@ -23,5 +23,7 @@ package gear.gui.core {
 		function hide() : void;
 
 		function set source(value : *) : void;
+		
+		function get source():*;
 	}
 }
