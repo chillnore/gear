@@ -1,7 +1,6 @@
 ﻿package gear.gui.controls {
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
-	import gear.gui.core.GScaleMode;
 	import gear.gui.skin.IGSkin;
 	import gear.gui.utils.GUIUtil;
 	import gear.log4a.GLogger;
@@ -43,7 +42,6 @@
 			_thumbIcon = GUIUtil.theme.vScrollBarThumbIcon;
 			_arrowUpSkin = GUIUtil.theme.vScrollBarArrowUpSkin;
 			_arrowDownSkin = GUIUtil.theme.vScrollBarArrowDownSkin;
-			_scaleMode = GScaleMode.FIT_WIDTH;
 			_min = 0;
 			_max = 20;
 			_pageSize = 10;
@@ -142,6 +140,26 @@
 		}
 
 		public function GVScrollBar() {
+		}
+		
+		public function set upSkin(value:IGSkin):void{
+			_up_btn.skin=value;
+		}
+		
+		public function set thumbSkin(value:IGSkin):void{
+			_thumb_btn.skin=value;
+		}
+		
+		public function set thumbIcon(value:BitmapData):void{
+			_thumb_btn.icon=value;
+		}
+		
+		public function set trackSkin(value:IGSkin):void{
+			_track_btn.skin=value;
+		}
+		
+		public function set downSkin(value:IGSkin):void{
+			_down_btn.skin=value;
 		}
 
 		public function set onValueChange(value : Function) : void {

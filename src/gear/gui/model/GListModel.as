@@ -1,8 +1,11 @@
-﻿﻿package gear.gui.model {
+﻿package gear.gui.model {
 	import gear.log4a.GLogger;
 
 	/**
+	 * 列表模型
+	 * 
 	 * @author bright
+	 * @version 20130415
 	 */
 	public class GListModel {
 		protected var _source : Vector.<Object>;
@@ -32,25 +35,27 @@
 			change(new GChange(GChange.ADDED, index));
 		}
 
-		public function remove(value : *) : void {
-			removeAt(_source.indexOf(value));
-		}
-
 		public function addAt(index : int, value : *) : void {
 			if (index < 0) {
 				return;
 			}
-			_source.splice(index, 0, value);
+			if (index == 0) {
+				_source.unshift(value);
+			} else {
+				_source.splice(index, 0, value);
+			}
 			change(new GChange(GChange.ADDED, index));
+		}
+
+		public function remove(value : *) : void {
+			removeAt(_source.indexOf(value));
 		}
 
 		public function removeAt(index : int) : void {
 			if (index < 0 || index >= _source.length) {
 				return;
 			}
-			GLogger.debug(_source.length);
 			_source.splice(index, 1);
-			GLogger.debug(_source.length,index);
 			change(new GChange(GChange.REMOVED, index));
 		}
 

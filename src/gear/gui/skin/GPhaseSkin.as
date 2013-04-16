@@ -1,19 +1,21 @@
 ﻿package gear.gui.skin {
+	import gear.gui.core.GPhase;
+	import gear.gui.core.GScaleMode;
+	import gear.utils.GBDUtil;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObjectContainer;
 	import flash.geom.Rectangle;
 
-	import gear.gui.core.GPhase;
-	import gear.utils.GBDUtil;
-
 	/**
 	 * 位图阶段皮肤
 	 * 
 	 * @author bright
-	 * @version 20121205
+	 * @version 20130415
 	 */
 	public class GPhaseSkin implements IGSkin {
+		protected var _scaleMode : int;
 		protected var _bitmap : Bitmap;
 		protected var _source : Vector.<BitmapData>;
 		protected var _target : Vector.<BitmapData>;
@@ -34,11 +36,16 @@
 			_bitmap.bitmapData = bd;
 		}
 
-		public function GPhaseSkin() {
+		public function GPhaseSkin(scaleMode : int = GScaleMode.SCALE) {
+			_scaleMode = scaleMode;
 			_source = new Vector.<BitmapData>(9, true);
 			_target = new Vector.<BitmapData>(9, true);
 			_bitmap = new Bitmap();
 			_phase = GPhase.NONE;
+		}
+
+		public function get scaleMode() : int {
+			return _scaleMode;
 		}
 
 		public function set name(value : String) : void {
@@ -96,18 +103,18 @@
 			_height = height;
 			var i : int;
 			var bd : BitmapData;
-			for (i = 0;i < _target.length;i++) {
+			for (i = 0; i < _target.length; i++) {
 				bd = _target[i];
 				if (bd != null && bd != _source[i]) {
 					bd.dispose();
 				}
 			}
 			if (_scale9Grid != null) {
-				for (i = 0;i < _source.length;i++) {
+				for (i = 0; i < _source.length; i++) {
 					_target[i] = GBDUtil.scale9(_source[i], _scale9Grid, _width, _height);
 				}
 			} else {
-				for (i = 0;i < _source.length;i++) {
+				for (i = 0; i < _source.length; i++) {
 					_target[i] = GBDUtil.resizeBD(_source[i], _width, _height);
 				}
 			}
@@ -145,7 +152,7 @@
 		public function clone() : IGSkin {
 			var result : GPhaseSkin = new GPhaseSkin();
 			var bd : BitmapData;
-			for (var i : int = 0;i < _source.length;i++) {
+			for (var i : int = 0; i < _source.length; i++) {
 				bd = _source[i];
 				if (bd != null) {
 					result.setAt(i, bd);

@@ -15,7 +15,7 @@
 	 * pool.returnObj(point);
 	 * </listing>
 	 * @author bright
-	 * @version 20130103
+	 * @version 20130415
 	 */
 	public final class GObjPool implements IDispose {
 		private var _class : Class;

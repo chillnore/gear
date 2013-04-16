@@ -1,4 +1,5 @@
 ﻿package gear.gui.skin {
+	import gear.gui.core.GScaleMode;
 	import gear.gui.core.GPhase;
 	import gear.utils.GDrawUtil;
 
@@ -44,6 +45,10 @@
 			_mask = new Shape();
 			GDrawUtil.drawFillRect(_mask.graphics, 0xFF, 1, 0, 0, 100, 100);
 			_bitmap.mask = _mask;
+		}
+
+		public function get scaleMode() : int {
+			return GScaleMode.SCALE;
 		}
 
 		public function set name(value : String) : void {
@@ -99,7 +104,7 @@
 			_height = height;
 			var i : int;
 			var bd : BitmapData;
-			for (i = 0;i < _target.length;i++) {
+			for (i = 0; i < _target.length; i++) {
 				bd = _target[i];
 				if (bd != null && bd != _source[i]) {
 					bd.dispose();
@@ -141,7 +146,7 @@
 		public function clone() : IGSkin {
 			var result : GPhaseSkin = new GPhaseSkin();
 			var bd : BitmapData;
-			for (var i : int = 0;i < _source.length;i++) {
+			for (var i : int = 0; i < _source.length; i++) {
 				bd = _source[i];
 				if (bd != null) {
 					result.setAt(i, bd);

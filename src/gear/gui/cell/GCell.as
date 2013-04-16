@@ -117,7 +117,6 @@
 
 		override public function set source(value : *) : void {
 			value = GStringUtil.toString(value);
-			GLogger.debug(value);
 			if (_source == value) {
 				return;
 			}

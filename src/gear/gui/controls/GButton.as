@@ -127,6 +127,7 @@
 			}
 			_skin = value;
 			_skin.addTo(this);
+			_scaleMode=_skin.scaleMode;
 			if (_scaleMode == GScaleMode.FIT_SIZE) {
 				forceSize(_skin.width, _skin.height);
 			}

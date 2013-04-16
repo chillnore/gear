@@ -109,7 +109,6 @@
 						}
 						removeCellAt(change.index);
 						moveCells(change.index - 1, -_template.height);
-						GLogger.debug("removed",change.index,_model.length);
 						callLater(updateScroll);
 						break;
 					case GChange.UPDATE:
