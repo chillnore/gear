@@ -50,6 +50,14 @@
 			g.endFill();
 		}
 
+		public static function drawGradientFillRoundRect(g : Graphics, type : String, colors : Array, alphas : Array, ratios : Array, x : int, y : int, w : int, h : int, tl : int, tr : int, bl : int, br : int) : void {
+			var mtx : Matrix = new Matrix();
+			mtx.createGradientBox(w, h, GMathUtil.angleToRadian(90), 1, 1);
+			g.beginGradientFill(type, colors, alphas, ratios, mtx);
+			g.drawRoundRectComplex(x, y, w, h, tl, tr, bl, br);
+			g.endFill();
+		}
+
 		public static function drawSector(g : Graphics, x : int, y : int, r : int, s : int, e : int) : void {
 			if (s == e) {
 				g.drawCircle(x, y, r);
@@ -67,7 +75,7 @@
 			var cd : Number = r / GMathUtil.cos(da >> 1);
 			var sa : Number = s;
 			var c : Point;
-			for (var i : int = 0;i < 8;i++) {
+			for (var i : int = 0; i < 8; i++) {
 				sa += da;
 				c = Point.polar(cd, GMathUtil.angleToRadian(sa - (da >> 1)));
 				c.offset(x, y);

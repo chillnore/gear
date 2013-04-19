@@ -1,0 +1,37 @@
+package gear.gui.skin {
+	import gear.gui.core.GPhase;
+	import gear.utils.GBDUtil;
+	import gear.utils.GColorUtil;
+	import gear.utils.GDrawUtil;
+
+	import flash.display.GradientType;
+	import flash.display.Shape;
+	import flash.geom.Rectangle;
+	/**
+	 * @author Administrator
+	 */
+	public class GButtonSkin {
+		protected static var _skin : IGSkin;
+
+		public function GButtonSkin() {
+		}
+
+		public static function get skin() : IGSkin {
+			if (_skin == null) {
+				_skin=new GPhaseSkin();
+				var skin : Shape = new Shape();
+				GDrawUtil.drawGradientFillRoundRect(skin.graphics, GradientType.LINEAR, [0xB7BABC, 0x585F63], [1, 1], [0, 255], 0, 0, 60, 22, 3, 3, 3, 3);
+				GDrawUtil.drawGradientFillRoundRect(skin.graphics, GradientType.LINEAR, [GColorUtil.getAlphaColor(0xFFFFFF, 0.3), GColorUtil.getAlphaColor(0xCCCCCC, 0.2)], [1, 1], [0, 255], 1, 1, 58, 20, 2, 2, 2, 2);
+				GDrawUtil.drawGradientFillRoundRect(skin.graphics, GradientType.LINEAR, [0xFFFFFF, 0xCCCCCC], [0.3, 0], [0, 255], 1, 1, 58, 11, 2, 2, 0, 0);
+				_skin.setAt(GPhase.UP, GBDUtil.toBD(skin));
+				skin.graphics.clear();
+				GDrawUtil.drawGradientFillRoundRect(skin.graphics, GradientType.LINEAR, [0x009DFF, 0x0075BF], [1, 1], [0, 255], 0, 0, 60, 22, 3, 3, 3, 3);
+				GDrawUtil.drawGradientFillRoundRect(skin.graphics, GradientType.LINEAR, [GColorUtil.getAlphaColor(0xFFFFFF, 0.6), GColorUtil.getAlphaColor(0xCCCCCC, 0.4)], [1, 1], [0, 255], 1, 1, 58, 20, 2, 2, 2, 2);
+				GDrawUtil.drawGradientFillRoundRect(skin.graphics, GradientType.LINEAR, [0xFFFFFF, 0xCCCCCC], [0.3, 0], [0, 255], 1, 1, 58, 11, 2, 2, 0, 0);
+				_skin.setAt(GPhase.OVER, GBDUtil.toBD(skin));
+				_skin.scale9Grid = new Rectangle(4, 4, 42, 14);
+			}
+			return _skin.clone();
+		}
+	}
+}

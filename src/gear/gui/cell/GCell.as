@@ -107,6 +107,10 @@
 			_selected = value;
 			callLater(changeSelected);
 		}
+		
+		public function get selected():Boolean{
+			return _selected;
+		}
 
 		public function set hotKey(value : String) : void {
 		}

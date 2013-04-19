@@ -1,4 +1,4 @@
-﻿﻿package gear.utils {
+﻿package gear.utils {
 	import flash.external.ExternalInterface;
 
 	/**
@@ -44,6 +44,12 @@
 				return ExternalInterface.call("eval", "window.location.href");
 			}
 			return "null";
+		}
+
+		public static function alert(value : String) : void {
+			if (ExternalInterface.available) {
+				ExternalInterface.call("alert", value);
+			}
 		}
 	}
 }

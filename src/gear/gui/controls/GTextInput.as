@@ -1,4 +1,4 @@
-﻿﻿package gear.gui.controls {
+﻿package gear.gui.controls {
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
 	import gear.gui.core.GPhaseColor;
@@ -41,6 +41,7 @@
 			_borderSkin = GUIUtil.theme.textInputBorderSkin;
 			_borderSkin.addTo(this, 0);
 			_textField = GUIUtil.getInputTextField();
+			_textField.textColor = _phaseColor.getBy(GPhase.UP);
 			addChild(_textField);
 			_label = new GLabel();
 			addChild(_label);
@@ -48,10 +49,12 @@
 
 		override protected function resize() : void {
 			_textField.y = (_height - (_textField.textHeight + 1)) >> 1;
-			_borderSkin.moveTo(_label.width < 1 ? 0 : _label.width + 3, 0);
-			_borderSkin.setSize(_width - _borderSkin.x, _height);
-			_textField.x = _borderSkin.x + _padding.left;
-			_textField.width = _width - _borderSkin.x - _padding.left - _padding.right;
+			if (_borderSkin != null) {
+				_borderSkin.moveTo(_label.width < 1 ? 0 : _label.width + 3, 0);
+				_borderSkin.setSize(_width - _borderSkin.x, _height);
+			}
+			_textField.x = _padding.left;
+			_textField.width = _width - _padding.left - _padding.right;
 		}
 
 		override protected function onShow() : void {
@@ -116,7 +119,9 @@
 		}
 
 		protected function updatePhase() : void {
-			_borderSkin.phase = _phase;
+			if (_borderSkin != null) {
+				_borderSkin.phase = _phase;
+			}
 		}
 
 		public function GTextInput() {
@@ -127,7 +132,7 @@
 			_textField.textColor = _phaseColor.getBy(_phase);
 		}
 
-		public function set skin(value : IGSkin) : void {
+		public function set borderSkin(value : IGSkin) : void {
 			if (_borderSkin == value) {
 				return;
 			}
@@ -135,11 +140,13 @@
 				_borderSkin.remove();
 			}
 			_borderSkin = value;
-			_borderSkin.addTo(this);
-			if (_scaleMode == GScaleMode.FIT_SIZE) {
-				forceSize(_borderSkin.width, _borderSkin.height);
+			if (_borderSkin != null) {
+				_borderSkin.addTo(this);
+				if (_scaleMode == GScaleMode.FIT_SIZE) {
+					forceSize(_borderSkin.width, _borderSkin.height);
+				}
+				callLater(updatePhase);
 			}
-			callLater(updatePhase);
 		}
 
 		public function set displayAsPassword(value : Boolean) : void {
@@ -182,7 +189,7 @@
 
 		public function set text(value : String) : void {
 			_text = value;
-			_defaultText=null;
+			_defaultText = null;
 			callLater(updateText);
 		}
 

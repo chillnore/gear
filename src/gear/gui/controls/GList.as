@@ -1,4 +1,4 @@
-﻿﻿package gear.gui.controls {
+﻿package gear.gui.controls {
 	import gear.gui.cell.GCell;
 	import gear.gui.cell.IGCell;
 	import gear.gui.core.GBase;
@@ -20,7 +20,7 @@
 	 * 列表控件
 	 * 
 	 * @author bright
-	 * @version 20130314
+	 * @version 20130417
 	 */
 	public class GList extends GBase {
 		protected var _bgSkin : IGSkin;
@@ -28,6 +28,7 @@
 		protected var _vScrollBar : GVScrollBar;
 		protected var _scrollRect : Rectangle;
 		protected var _selectedIndex : int;
+		protected var _multipleSelection : Boolean;
 		protected var _changes : GChangeList;
 		protected var _model : GListModel;
 		protected var _hgap : int;
@@ -40,6 +41,7 @@
 			_bgSkin = GUIUtil.theme.listSkin;
 			_scrollRect = new Rectangle();
 			_selectedIndex = -1;
+			_multipleSelection = false;
 			_changes = new GChangeList;
 			_model = new GListModel();
 			_model.onChange = onModelChange;
@@ -141,8 +143,8 @@
 			addEvent(cell, MouseEvent.CLICK, cell_clickHandler);
 		}
 
-		protected function removeCellAt(index:int) : void {
-			var cell:IGCell=_cells[index];
+		protected function removeCellAt(index : int) : void {
+			var cell : IGCell = _cells[index];
 			cell.hide();
 			removeEvent(cell, MouseEvent.MOUSE_DOWN);
 			removeEvent(cell, MouseEvent.CLICK);
@@ -201,6 +203,10 @@
 		public function GList() {
 		}
 
+		public function set multipleSelection(value : Boolean) : void {
+			_multipleSelection = value;
+		}
+
 		public function set onCellClick(value : Function) : void {
 			_onCellClick = value;
 		}
@@ -256,17 +262,33 @@
 			if (_selectedIndex == value) {
 				return;
 			}
-			if (_selectedIndex > -1 && _selectedIndex < _cells.length) {
+			if (!_multipleSelection && _selectedIndex > -1 && _selectedIndex < _cells.length) {
 				_cells[_selectedIndex].selected = false;
 			}
 			_selectedIndex = value;
-			if (_selectedIndex > -1 && _selectedIndex < _cells.length) {
+			if (!_multipleSelection && _selectedIndex > -1 && _selectedIndex < _cells.length) {
 				_cells[_selectedIndex].selected = true;
 			}
 		}
 
 		public function get selectedIndex() : int {
 			return _selectedIndex;
+		}
+
+		public function get selectedItems() : Vector.<Object> {
+			var result : Vector.<Object>=new Vector.<Object>();
+			for each (var cell : IGCell in _cells) {
+				if (cell.selected) {
+					result.push(cell.source);
+				}
+			}
+			return result;
+		}
+
+		public function selectAll(value : Boolean) : void {
+			for each (var cell : IGCell in _cells) {
+				cell.selected = value;
+			}
 		}
 	}
 }

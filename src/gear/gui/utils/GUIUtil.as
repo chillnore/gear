@@ -29,14 +29,14 @@
 	 */
 	public final class GUIUtil {
 		// 默认字体
-		public static var defaultFont : String;
+		public static var defaultFont : String = "Tahoma";
 		// 默认字体尺寸
 		public static var defaultFontSize : int = 12;
 		// 默认主题
 		public static var theme : IGTheme = new GASTheme();
+		// 默认样式
 		private static var _defaultCSS : StyleSheet;
 		private static var _stage : Stage;
-		private static var _url : String;
 
 		/**
 		 * 设置根
@@ -52,10 +52,6 @@
 			_stage.align = StageAlign.TOP_LEFT;
 			_stage.quality = StageQuality.HIGH;
 			_stage.stageFocusRect = false;
-			_url = _stage.loaderInfo.url;
-			if (_url.indexOf("/[[DYNAMIC]]/") != -1) {
-				_url = _url.split("/[[DYNAMIC]]/")[0];
-			}
 			var os : String = Capabilities.os;
 			if (os.indexOf("Windows") != -1) {
 				defaultFont = "Tahoma";
@@ -69,10 +65,6 @@
 
 		public static function get stage() : Stage {
 			return _stage;
-		}
-
-		public static function get url() : String {
-			return _url;
 		}
 
 		/**
@@ -112,7 +104,7 @@
 			textField.tabEnabled = true;
 			textField.type = TextFieldType.INPUT;
 			textField.width = textField.textWidth + 3;
-			textField.height = textField.textHeight;
+			textField.height = textField.textHeight+1;
 			return textField;
 		}
 

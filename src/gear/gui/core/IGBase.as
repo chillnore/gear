@@ -13,17 +13,17 @@ package gear.gui.core {
 		function get y() : Number;
 
 		function set width(value : Number) : void;
-		
-		function get width():Number;
+
+		function get width() : Number;
 
 		function set height(value : Number) : void;
-		
-		function get height():Number;
+
+		function get height() : Number;
 
 		function hide() : void;
 
 		function set source(value : *) : void;
-		
-		function get source():*;
+
+		function get source() : *;
 	}
 }

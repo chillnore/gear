@@ -46,7 +46,6 @@
 				tw = parent.width;
 				th = parent.height;
 			}
-
 			var l : int = align.left;
 			var r : int = align.right;
 			var t : int = align.top;
