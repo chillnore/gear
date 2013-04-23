@@ -7,8 +7,8 @@
 	import gear.gui.model.GChange;
 	import gear.gui.model.GChangeList;
 	import gear.gui.model.GListModel;
-	import gear.gui.skin.IGSkin;
-	import gear.gui.utils.GUIUtil;
+	import gear.gui.skins.GPanelSkin;
+	import gear.gui.skins.IGSkin;
 	import gear.log4a.GLogger;
 
 	import flash.display.DisplayObject;
@@ -38,7 +38,7 @@
 		protected var _onCellClick : Function;
 
 		override protected function preinit() : void {
-			_bgSkin = GUIUtil.theme.listSkin;
+			_bgSkin = GPanelSkin.skin;
 			_scrollRect = new Rectangle();
 			_selectedIndex = -1;
 			_multipleSelection = false;

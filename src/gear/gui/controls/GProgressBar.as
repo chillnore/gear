@@ -3,8 +3,8 @@
 	import gear.gui.core.GPhase;
 	import gear.gui.core.GScaleMode;
 	import gear.gui.model.GRangeModel;
-	import gear.gui.skin.IGSkin;
-	import gear.gui.utils.GUIUtil;
+	import gear.gui.skins.GProgressBarSkin;
+	import gear.gui.skins.IGSkin;
 
 	/**
 	 * 进度条控件
@@ -24,8 +24,8 @@
 		protected var _value : int;
 
 		override protected function preinit() : void {
-			_trackSkin = GUIUtil.theme.progressBarTrackSkin;
-			_barSkin = GUIUtil.theme.progressBarBarSkin;
+			_trackSkin = GProgressBarSkin.trackSkin;
+			_barSkin = GProgressBarSkin.barSkin;
 			_model = new GRangeModel();
 			_model.onChange = onModelChange;
 			setSize(120, 8);

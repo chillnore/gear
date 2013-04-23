@@ -1,6 +1,6 @@
 package gear.gui.controls {
 	import gear.gui.core.GBase;
-	import gear.gui.skin.GComboBoxSkin;
+	import gear.gui.skins.GComboBoxSkin;
 
 	/**
 	 * 组合框控件

@@ -1,4 +1,4 @@
-﻿package gear.gui.skin {
+﻿package gear.gui.skins {
 	import gear.gui.core.GPhase;
 	import gear.gui.core.GScaleMode;
 	import gear.utils.GBDUtil;
@@ -64,7 +64,7 @@
 		public function addTo(parent : DisplayObjectContainer, index : int = 0) : void {
 			if (_bitmap.parent != parent) {
 				parent.addChildAt(_bitmap, index);
-			} else {
+				phase = GPhase.UP;
 			}
 		}
 

@@ -16,16 +16,15 @@
 		protected var _selected : Boolean = false;
 		protected var _group : GToggleGroup;
 
-		protected function updatePhase() : void {
+		protected function changePhase() : void {
 		}
 
-		protected function updateSelected() : void {
+		protected function changeSelected() : void {
 		}
 
 		override protected function onEnabled() : void {
-			if (!_enabled) {
-				_phase = GPhase.DISABLED;
-			}
+			_phase = _enabled ? GPhase.UP : GPhase.DISABLED;
+			callLater(changePhase);
 		}
 
 		override protected  function onShow() : void {
@@ -56,7 +55,7 @@
 					selected = !_selected;
 				}
 			}
-			callLater(updatePhase);
+			callLater(changePhase);
 		}
 
 		public function GToggleBase() {
@@ -72,7 +71,7 @@
 				return;
 			}
 			_selected = value;
-			callLater(updateSelected);
+			callLater(changeSelected);
 		}
 
 		/**

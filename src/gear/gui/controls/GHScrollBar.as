@@ -2,8 +2,8 @@
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
 	import gear.gui.core.GScaleMode;
-	import gear.gui.skin.IGSkin;
-	import gear.gui.utils.GUIUtil;
+	import gear.gui.skins.GHScrollBarSkin;
+	import gear.gui.skins.IGSkin;
 	import gear.log4a.GLogger;
 	import gear.utils.GMathUtil;
 
@@ -20,8 +20,8 @@
 		protected var _trackSkin : IGSkin;
 		protected var _thumbSkin : IGSkin;
 		protected var _thumbIcon : BitmapData;
-		protected var _arrowUpSkin : IGSkin;
-		protected var _arrowDownSkin : IGSkin;
+		protected var _upSkin : IGSkin;
+		protected var _downSkin : IGSkin;
 		protected var _thumb_btn : GButton;
 		protected var _up_btn : GButton;
 		protected var _down_btn : GButton;
@@ -38,18 +38,19 @@
 		protected var _onValueChange : Function;
 
 		override protected function preinit() : void {
-			_trackSkin = GUIUtil.theme.hScrollBarTrackSkin;
-			_thumbSkin = GUIUtil.theme.hScrollBarThumbSkin;
-			_thumbIcon = GUIUtil.theme.hScrollBarThumbIcon;
-			_arrowUpSkin = GUIUtil.theme.hScrollBarArrowUpSkin;
-			_arrowDownSkin = GUIUtil.theme.hScrollBarArrowDownSkin;
+			_trackSkin = GHScrollBarSkin.trackSkin;
+			_thumbSkin = GHScrollBarSkin.thumbSkin;
+			_thumbIcon = GHScrollBarSkin.thumbIcon;
+			_upSkin = GHScrollBarSkin.upSkin;
+			_downSkin = GHScrollBarSkin.downSkin;
 			_scaleMode = GScaleMode.FIT_HEIGHT;
 			_min = 0;
 			_max = 20;
 			_pageSize = 10;
 			_value = 0;
 			_step = 1;
-			forceSize(100, 14);
+			forceSize(100, 15);
+			callLater(resize);
 		}
 
 		override protected function create() : void {
@@ -61,12 +62,12 @@
 			_thumb_btn.icon = _thumbIcon;
 			addChild(_thumb_btn);
 			_up_btn = new GButton();
-			_up_btn.skin = _arrowUpSkin;
-			_up_btn.width = _arrowUpSkin.width;
+			_up_btn.skin = _upSkin;
+			_up_btn.width = _upSkin.width;
 			addChild(_up_btn);
 			_down_btn = new GButton();
-			_down_btn.skin = _arrowDownSkin;
-			_down_btn.width = _arrowDownSkin.width;
+			_down_btn.skin = _downSkin;
+			_down_btn.width = _downSkin.width;
 			addChild(_down_btn);
 		}
 
@@ -77,8 +78,7 @@
 			_track_btn.x = _up_btn.width;
 			_track_btn.setSize(_width - _up_btn.width - _down_btn.width, _height);
 			_thumb_btn.x = _up_btn.width;
-			_thumb_btn.y = 1;
-			_thumb_btn.height = _track_btn.height - 2;
+			_thumb_btn.height = _track_btn.height;
 			callLater(updateThumb);
 		}
 
@@ -91,8 +91,8 @@
 		}
 
 		override protected function onShow() : void {
-			//_up_btn.onClick = onArrowClick;
-			//_down_btn.onClick = onArrowClick;
+			_up_btn.onClick = onArrowClick;
+			_down_btn.onClick = onArrowClick;
 			addEvent(_track_btn, MouseEvent.MOUSE_DOWN, track_mouseDownHandler);
 			_thumb_btn.addEventListener(MouseEvent.MOUSE_DOWN, thumb_mouseDownHandler);
 		}

@@ -1,4 +1,4 @@
-﻿package gear.gui.skin {
+﻿package gear.gui.skins {
 	/**
 	 * @author bright
 	 */

@@ -2,8 +2,9 @@
 	import gear.gui.core.GAutoSize;
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
-	import gear.gui.skin.IGSkin;
-	import gear.gui.utils.GUIUtil;
+	import gear.gui.skins.GCheckBoxSkin;
+	import gear.gui.skins.GEmptySkin;
+	import gear.gui.skins.IGSkin;
 
 	import flash.events.MouseEvent;
 
@@ -17,15 +18,16 @@
 		protected var _bgSkin : IGSkin;
 		protected var _icon : IGSkin;
 		protected var _label : GLabel;
-		protected var _phase:int;
-		protected var _selected:Boolean;
+		protected var _phase : int;
+		protected var _selected : Boolean;
 
 		override protected function preinit() : void {
 			_autoSize = GAutoSize.AUTO_SIZE;
+			_sizeRender = true;
 			_padding.hdist = 3;
 			_padding.vdist = 2;
-			_bgSkin = GUIUtil.theme.emptySkin;
-			_icon = GUIUtil.theme.checkBoxIcon;
+			_bgSkin = GEmptySkin.skin;
+			_icon = GCheckBoxSkin.icon;
 			callLater(change);
 		}
 
@@ -42,7 +44,6 @@
 			_icon.phase = _phase;
 		}
 
-		
 		override protected  function onShow() : void {
 			super.onShow();
 			addEvent(this, MouseEvent.ROLL_OVER, mouseHandler);
@@ -50,9 +51,8 @@
 			addEvent(this, MouseEvent.MOUSE_DOWN, mouseHandler);
 			addEvent(this, MouseEvent.MOUSE_UP, mouseHandler);
 		}
-		
+
 		protected function mouseHandler(event : MouseEvent) : void {
-			event.stopPropagation();
 			if (!_enabled) {
 				return;
 			}
@@ -68,7 +68,7 @@
 			}
 			callLater(viewSkin);
 		}
-		
+
 		protected function viewSkin() : void {
 			_icon.phase = _phase;
 			_label.phase = _phase;
@@ -91,7 +91,7 @@
 
 		public function GCheckBox() {
 		}
-		
+
 		public function set selected(value : Boolean) : void {
 			if (_selected == value) {
 				return;
@@ -99,7 +99,7 @@
 			_selected = value;
 			onSelect();
 		}
-		
+
 		public function get selected() : Boolean {
 			return _selected;
 		}

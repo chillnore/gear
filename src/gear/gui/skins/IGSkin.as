@@ -1,4 +1,4 @@
-﻿package gear.gui.skin {
+﻿package gear.gui.skins {
 	import flash.display.BitmapData;
 	import flash.display.DisplayObjectContainer;
 	import flash.geom.Rectangle;

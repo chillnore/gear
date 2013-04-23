@@ -1,8 +1,8 @@
 ﻿package gear.gui.controls {
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
-	import gear.gui.skin.IGSkin;
-	import gear.gui.utils.GUIUtil;
+	import gear.gui.skins.GVScrollBarSkin;
+	import gear.gui.skins.IGSkin;
 	import gear.log4a.GLogger;
 	import gear.utils.GMathUtil;
 
@@ -19,8 +19,8 @@
 		protected var _trackSkin : IGSkin;
 		protected var _thumbSkin : IGSkin;
 		protected var _thumbIcon : BitmapData;
-		protected var _arrowUpSkin : IGSkin;
-		protected var _arrowDownSkin : IGSkin;
+		protected var _upSkin : IGSkin;
+		protected var _downSkin : IGSkin;
 		protected var _thumb_btn : GButton;
 		protected var _up_btn : GButton;
 		protected var _down_btn : GButton;
@@ -37,11 +37,11 @@
 		protected var _onValueChange : Function;
 
 		override protected function preinit() : void {
-			_trackSkin = GUIUtil.theme.vScrollBarTrackSkin;
-			_thumbSkin = GUIUtil.theme.vScrollBarThumbSkin;
-			_thumbIcon = GUIUtil.theme.vScrollBarThumbIcon;
-			_arrowUpSkin = GUIUtil.theme.vScrollBarArrowUpSkin;
-			_arrowDownSkin = GUIUtil.theme.vScrollBarArrowDownSkin;
+			_trackSkin = GVScrollBarSkin.trackSkin;
+			_thumbSkin = GVScrollBarSkin.thumbSkin;
+			_thumbIcon = GVScrollBarSkin.thumbIcon;
+			_upSkin = GVScrollBarSkin.upSkin;
+			_downSkin = GVScrollBarSkin.downSkin;
 			_min = 0;
 			_max = 20;
 			_pageSize = 10;
@@ -60,12 +60,12 @@
 			_thumb_btn.icon = _thumbIcon;
 			addChild(_thumb_btn);
 			_up_btn = new GButton();
-			_up_btn.skin = _arrowUpSkin;
-			_up_btn.height = _arrowUpSkin.height;
+			_up_btn.skin = _upSkin;
+			_up_btn.height = _upSkin.height;
 			addChild(_up_btn);
 			_down_btn = new GButton();
-			_down_btn.skin = _arrowDownSkin;
-			_down_btn.height = _arrowDownSkin.height;
+			_down_btn.skin = _downSkin;
+			_down_btn.height = _downSkin.height;
 			addChild(_down_btn);
 		}
 
@@ -141,25 +141,25 @@
 
 		public function GVScrollBar() {
 		}
-		
-		public function set upSkin(value:IGSkin):void{
-			_up_btn.skin=value;
+
+		public function set upSkin(value : IGSkin) : void {
+			_up_btn.skin = value;
 		}
-		
-		public function set thumbSkin(value:IGSkin):void{
-			_thumb_btn.skin=value;
+
+		public function set thumbSkin(value : IGSkin) : void {
+			_thumb_btn.skin = value;
 		}
-		
-		public function set thumbIcon(value:BitmapData):void{
-			_thumb_btn.icon=value;
+
+		public function set thumbIcon(value : BitmapData) : void {
+			_thumb_btn.icon = value;
 		}
-		
-		public function set trackSkin(value:IGSkin):void{
-			_track_btn.skin=value;
+
+		public function set trackSkin(value : IGSkin) : void {
+			_track_btn.skin = value;
 		}
-		
-		public function set downSkin(value:IGSkin):void{
-			_down_btn.skin=value;
+
+		public function set downSkin(value : IGSkin) : void {
+			_down_btn.skin = value;
 		}
 
 		public function set onValueChange(value : Function) : void {

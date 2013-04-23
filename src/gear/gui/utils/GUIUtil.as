@@ -1,10 +1,9 @@
 ﻿package gear.gui.utils {
 	import gear.gui.core.GPhase;
-	import gear.gui.skin.GPhaseSkin;
-	import gear.gui.skin.IGSkin;
-	import gear.gui.skin.theme.GASTheme;
-	import gear.gui.skin.theme.IGTheme;
+	import gear.gui.skins.GPhaseSkin;
+	import gear.gui.skins.IGSkin;
 	import gear.log4a.GLogger;
+	import gear.render.GFrameRender;
 	import gear.utils.GBDUtil;
 
 	import flash.display.DisplayObject;
@@ -32,8 +31,6 @@
 		public static var defaultFont : String = "Tahoma";
 		// 默认字体尺寸
 		public static var defaultFontSize : int = 12;
-		// 默认主题
-		public static var theme : IGTheme = new GASTheme();
 		// 默认样式
 		private static var _defaultCSS : StyleSheet;
 		private static var _stage : Stage;
@@ -52,6 +49,7 @@
 			_stage.align = StageAlign.TOP_LEFT;
 			_stage.quality = StageQuality.HIGH;
 			_stage.stageFocusRect = false;
+			GFrameRender.instance.stage = stage;
 			var os : String = Capabilities.os;
 			if (os.indexOf("Windows") != -1) {
 				defaultFont = "Tahoma";
@@ -104,7 +102,7 @@
 			textField.tabEnabled = true;
 			textField.type = TextFieldType.INPUT;
 			textField.width = textField.textWidth + 3;
-			textField.height = textField.textHeight+1;
+			textField.height = textField.textHeight + 1;
 			return textField;
 		}
 

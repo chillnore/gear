@@ -3,8 +3,8 @@
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
 	import gear.gui.core.GScaleMode;
-	import gear.gui.skin.IGSkin;
-	import gear.gui.utils.GUIUtil;
+	import gear.gui.skins.GCellSkin;
+	import gear.gui.skins.IGSkin;
 	import gear.log4a.GLogger;
 	import gear.utils.GStringUtil;
 
@@ -16,7 +16,7 @@
 	 * @author bright
 	 * @version 20130116
 	 */
-	public class GCell extends GBase implements IGCell{
+	public class GCell extends GBase implements IGCell {
 		protected var _skin : IGSkin;
 		protected var _label : GLabel;
 		protected var _phase : int;
@@ -24,7 +24,7 @@
 		protected var _onClick : Function;
 
 		override protected function preinit() : void {
-			_skin = GUIUtil.theme.cellSkin;
+			_skin = GCellSkin.skin;
 			setSize(100, 20);
 			callLater(changePhase);
 		}
@@ -107,8 +107,8 @@
 			_selected = value;
 			callLater(changeSelected);
 		}
-		
-		public function get selected():Boolean{
+
+		public function get selected() : Boolean {
 			return _selected;
 		}
 

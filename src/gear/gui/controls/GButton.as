@@ -1,12 +1,12 @@
 ﻿package gear.gui.controls {
-	import gear.gui.core.GAlignLayout;
 	import gear.gui.core.GAlign;
+	import gear.gui.core.GAlignLayout;
 	import gear.gui.core.GAutoSize;
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
 	import gear.gui.core.GScaleMode;
-	import gear.gui.skin.IGSkin;
-	import gear.gui.utils.GUIUtil;
+	import gear.gui.skins.GButtonSkin;
+	import gear.gui.skins.IGSkin;
 	import gear.log4a.GLogger;
 
 	import flash.display.BitmapData;
@@ -26,13 +26,12 @@
 		protected var _onClick : Function;
 
 		override protected function preinit() : void {
-			_skin = GUIUtil.theme.buttonSkin;
+			_skin = GButtonSkin.skin;
 			_scaleMode = GScaleMode.SCALE;
 			_autoSize = GAutoSize.NONE;
 			_padding.hdist = 6;
 			_padding.vdist = 2;
 			_lockPhase = GPhase.NONE;
-			callLater(changePhase);
 			setSize(60, 22);
 		}
 
@@ -127,7 +126,7 @@
 			}
 			_skin = value;
 			_skin.addTo(this);
-			_scaleMode=_skin.scaleMode;
+			_scaleMode = _skin.scaleMode;
 			if (_scaleMode == GScaleMode.FIT_SIZE) {
 				forceSize(_skin.width, _skin.height);
 			}

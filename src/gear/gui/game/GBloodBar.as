@@ -3,8 +3,8 @@
 	import gear.gui.core.GColor;
 	import gear.gui.core.GPhase;
 	import gear.gui.model.GRangeModel;
-	import gear.gui.skin.GPhaseSkin;
-	import gear.gui.skin.IGSkin;
+	import gear.gui.skins.GPhaseSkin;
+	import gear.gui.skins.IGSkin;
 	import gear.motion.easing.Cubic;
 	import gear.render.GFrameRender;
 	import gear.render.GRenderCall;

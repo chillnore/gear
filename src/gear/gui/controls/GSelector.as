@@ -1,9 +1,9 @@
 ﻿package gear.gui.controls {
-	import gear.gui.model.GChange;
 	import gear.gui.core.GBase;
+	import gear.gui.model.GChange;
 	import gear.gui.model.GChangeList;
 	import gear.gui.model.GListModel;
-	import gear.gui.utils.GUIUtil;
+	import gear.gui.skins.GArrowIcon;
 	import gear.log4a.GLogger;
 	import gear.utils.GMathUtil;
 
@@ -37,15 +37,15 @@
 			_content = new GLabel();
 			addChild(_content);
 			_prev_btn = new GButton();
-			_prev_btn.icon = GUIUtil.theme.leftArrowIcon;
+			_prev_btn.icon = GArrowIcon.leftArrow;
 			_prev_btn.setSize(17, 17);
 			addChild(_prev_btn);
 			_next_btn = new GButton();
-			_next_btn.icon = GUIUtil.theme.rightArrowIcon;
+			_next_btn.icon = GArrowIcon.rightArrow;
 			_next_btn.setSize(17, 17);
 			addChild(_next_btn);
-			//_prev_btn.onClick = onPrevClick;
-			//_next_btn.onClick = onNextClick;
+			_prev_btn.onClick = onPrevClick;
+			_next_btn.onClick = onNextClick;
 		}
 
 		override protected function resize() : void {

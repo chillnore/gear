@@ -1,7 +1,8 @@
 ﻿package gear.gui.controls {
 	import gear.gui.core.GAutoSize;
-	import gear.gui.skin.IGSkin;
-	import gear.gui.utils.GUIUtil;
+	import gear.gui.skins.GEmptySkin;
+	import gear.gui.skins.GRadioButtonSkin;
+	import gear.gui.skins.IGSkin;
 
 	/**
 	 * 单选按钮控件
@@ -19,9 +20,9 @@
 			_sizeRender = true;
 			_padding.hdist = 3;
 			_padding.vdist = 2;
-			_bgSkin = GUIUtil.theme.emptySkin;
-			_icon = GUIUtil.theme.radioButtonIcon;
-			callLater(updatePhase);
+			_bgSkin = GEmptySkin.skin;
+			_icon = GRadioButtonSkin.icon;
+			callLater(changePhase);
 			callLater(updateText);
 		}
 
@@ -31,8 +32,8 @@
 			_label = new GLabel();
 			addChild(_label);
 		}
-		
-		override protected function resize():void{
+
+		override protected function resize() : void {
 			_bgSkin.setSize(_width, _height);
 		}
 
@@ -47,12 +48,12 @@
 			}
 		}
 
-		override protected function updatePhase() : void {
+		override protected function changePhase() : void {
 			_icon.phase = _phase;
 			_label.phase = _phase;
 		}
 
-		override protected function updateSelected() : void {
+		override protected function changeSelected() : void {
 			_icon.selected = _selected;
 		}
 

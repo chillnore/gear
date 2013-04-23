@@ -1,4 +1,5 @@
 ﻿package gear.utils {
+	import flash.display.GradientType;
 	import flash.display.Graphics;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -19,19 +20,19 @@
 			g.endFill();
 		}
 
-		public static function drawFillLine(g : Graphics, color : uint, alpha : Number, x : int, y : int, w : int) : void {
-			g.beginFill(color, alpha);
-			g.drawRect(x, y, w, 1);
-			g.endFill();
-		}
-
 		public static function drawFillRect(g : Graphics, color : uint, alpha : Number, x : int, y : int, w : int, h : int) : void {
 			g.beginFill(color, alpha);
 			g.drawRect(x, y, w, h);
 			g.endFill();
 		}
 
-		public static function drawGradientFillBorder(g : Graphics, type : String, colors : Array, alphas : Array, ratios : Array, x : int, y : int, w : int, h : int) : void {
+		public static function drawGradientFillBorder(g : Graphics, colors : Array, x : int, y : int, w : int, h : int, alphas : Array = null, ratios : Array = null, type : String = GradientType.LINEAR) : void {
+			if (alphas == null) {
+				alphas = [1, 1];
+			}
+			if (ratios == null) {
+				ratios = [0, 255];
+			}
 			var mtx : Matrix = new Matrix();
 			mtx.createGradientBox(w, h, GMathUtil.angleToRadian(90), x, y);
 			g.beginGradientFill(type, colors, alphas, ratios, mtx);
@@ -42,20 +43,68 @@
 			g.endFill();
 		}
 
-		public static function drawGradientFillRect(g : Graphics, type : String, colors : Array, alphas : Array, ratios : Array, x : int, y : int, w : int, h : int) : void {
+		public static function drawGradientFillRect(g : Graphics, colors : Array, x : int, y : int, w : int, h : int, alphas : Array = null, ratios : Array = null, angle : int = 90, type : String = GradientType.LINEAR) : void {
+			if (alphas == null) {
+				alphas = [1, 1];
+			}
+			if (ratios == null) {
+				ratios = [0, 255];
+			}
 			var mtx : Matrix = new Matrix();
-			mtx.createGradientBox(w, h, GMathUtil.angleToRadian(90), x, y);
+			mtx.createGradientBox(w, h, GMathUtil.angleToRadian(angle), x, y);
 			g.beginGradientFill(type, colors, alphas, ratios, mtx);
 			g.drawRect(x, y, w, h);
 			g.endFill();
 		}
 
-		public static function drawGradientFillRoundRect(g : Graphics, type : String, colors : Array, alphas : Array, ratios : Array, x : int, y : int, w : int, h : int, tl : int, tr : int, bl : int, br : int) : void {
+		public static function drawGradientFillRoundRect(g : Graphics, colors : Array, x : int, y : int, w : int, h : int, tl : int, tr : int, bl : int, br : int, alphas : Array = null, ratios : Array = null, angle : int = 90, type : String = GradientType.LINEAR) : void {
+			if (alphas == null) {
+				alphas = [1, 1];
+			}
+			if (ratios == null) {
+				ratios = [0, 255];
+			}
 			var mtx : Matrix = new Matrix();
-			mtx.createGradientBox(w, h, GMathUtil.angleToRadian(90), 1, 1);
+			mtx.createGradientBox(w, h, GMathUtil.angleToRadian(angle), x, y);
 			g.beginGradientFill(type, colors, alphas, ratios, mtx);
 			g.drawRoundRectComplex(x, y, w, h, tl, tr, bl, br);
 			g.endFill();
+		}
+		
+		public static function drawUpArrow(g : Graphics, color : uint, x : int, y : int, w : int, h : int) : void {
+			var commands : Vector.<int>=new <int>[1, 2, 2, 2];
+			var data : Vector.<Number>=new <Number>[x + w * 0.5, y, x + w, y + h, x, y + h, x + w * 0.5, y];
+			g.beginFill(color, 1);
+			g.drawPath(commands, data);
+			g.endFill();
+			return;
+		}
+
+		public static function drawDownArrow(g : Graphics, color : uint, x : int, y : int, w : int, h : int) : void {
+			var commands : Vector.<int>=new <int>[1, 2, 2, 2];
+			var data : Vector.<Number>=new <Number>[x, y, x + w * 0.5, y + h, x + w, y, x, y];
+			g.beginFill(color, 1);
+			g.drawPath(commands, data);
+			g.endFill();
+			return;
+		}
+
+		public static function drawLeftArrow(g : Graphics, color : uint, x : int, y : int, w : int, h : int) : void {
+			var commands : Vector.<int>=new <int>[1, 2, 2, 2];
+			var data : Vector.<Number>=new <Number>[x + w, y, x + w, y + h, x, y + h * 0.5, x + w, y];
+			g.beginFill(color, 1);
+			g.drawPath(commands, data);
+			g.endFill();
+			return;
+		}
+
+		public static function drawRightArrow(g : Graphics, color : uint, x : int, y : int, w : int, h : int) : void {
+			var commands : Vector.<int>=new <int>[1, 2, 2, 2];
+			var data : Vector.<Number>=new <Number>[x, y, x + w, y + h * 0.5, x, y + h, x, y];
+			g.beginFill(color, 1);
+			g.drawPath(commands, data);
+			g.endFill();
+			return;
 		}
 
 		public static function drawSector(g : Graphics, x : int, y : int, r : int, s : int, e : int) : void {

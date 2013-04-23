@@ -3,8 +3,8 @@
 	import gear.gui.core.GAlignLayout;
 	import gear.gui.core.GAutoSize;
 	import gear.gui.core.GScaleMode;
-	import gear.gui.skin.IGSkin;
-	import gear.gui.utils.GUIUtil;
+	import gear.gui.skins.GToggleButtonSkin;
+	import gear.gui.skins.IGSkin;
 
 	import flash.display.BitmapData;
 
@@ -21,7 +21,7 @@
 		override protected function preinit() : void {
 			_padding.hdist = 6;
 			_padding.vdist = 4;
-			_skin=GUIUtil.theme.toggleButtonSkin;
+			_skin=GToggleButtonSkin.skin;
 			setSize(60, 22);
 		}
 
@@ -46,12 +46,12 @@
 			GAlignLayout.layout(_label);
 		}
 		
-		override protected function updatePhase() : void {
+		override protected function changePhase() : void {
 			_skin.phase = _phase;
 			_label.phase = _phase;
 		}
 
-		override protected function updateSelected() : void {
+		override protected function changeSelected() : void {
 			_skin.selected=_selected;
 		}
 
@@ -74,7 +74,7 @@
 			}else if(_scaleMode==GScaleMode.FIT_HEIGHT){
 				forceSize(_width,_skin.height);
 			}
-			callLater(updatePhase);
+			callLater(changePhase);
 		}
 		
 		public function set icon(value : BitmapData) : void {

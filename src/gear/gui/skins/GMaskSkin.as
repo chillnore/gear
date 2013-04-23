@@ -1,4 +1,4 @@
-﻿package gear.gui.skin {
+﻿package gear.gui.skins {
 	import gear.gui.core.GScaleMode;
 	import gear.gui.core.GPhase;
 	import gear.utils.GDrawUtil;

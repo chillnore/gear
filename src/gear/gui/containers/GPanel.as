@@ -1,9 +1,10 @@
 ﻿package gear.gui.containers {
-	import gear.gui.core.GPhase;
 	import gear.gui.core.GAlignLayout;
 	import gear.gui.core.GBase;
+	import gear.gui.core.GPhase;
 	import gear.gui.core.GScaleMode;
-	import gear.gui.skin.IGSkin;
+	import gear.gui.skins.GPanelSkin;
+	import gear.gui.skins.IGSkin;
 	import gear.gui.utils.GUIUtil;
 	import gear.log4a.GLogger;
 	import gear.utils.GMathUtil;
@@ -26,8 +27,8 @@
 		protected var _onClose : Function;
 
 		override protected function preinit() : void {
-			_bgSkin = GUIUtil.theme.panelBgSkin;
-			_modalSkin = GUIUtil.theme.modalSkin;
+			_bgSkin = GPanelSkin.skin;
+			_modalSkin = GPanelSkin.modalSkin;
 			_modal = false;
 			setSize(100, 100);
 		}

@@ -1,7 +1,8 @@
 ﻿package gear.gui.controls {
+	import gear.gui.skins.GBorderSkin;
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
-	import gear.gui.skin.IGSkin;
+	import gear.gui.skins.IGSkin;
 	import gear.gui.utils.GUIUtil;
 
 	import flash.events.Event;
@@ -28,7 +29,7 @@
 		protected var _appender : String;
 
 		override protected function preinit() : void {
-			editable = true;
+			_borderSkin = GBorderSkin.skin;
 			_maxLines = 0;
 			_edlim = "</p>";
 			_appender = "";
@@ -36,7 +37,6 @@
 		}
 
 		override protected function create() : void {
-			_borderSkin = GUIUtil.theme.textAreaBorderSkin;
 			_borderSkin.addTo(this, 0);
 			_textField = GUIUtil.getInputTextField();
 			_textField.multiline = true;

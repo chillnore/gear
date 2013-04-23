@@ -1,6 +1,6 @@
 ﻿package gear.gui.controls {
 	import gear.gui.core.GBase;
-	import gear.gui.skin.IGSkin;
+	import gear.gui.skins.IGSkin;
 	import gear.gui.utils.GUIUtil;
 	import gear.net.GLoadUtil;
 

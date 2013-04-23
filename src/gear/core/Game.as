@@ -3,7 +3,6 @@
 	import gear.log4a.GLogError;
 	import gear.log4a.GLogger;
 	import gear.log4a.GTraceAppender;
-	import gear.render.GFrameRender;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -23,9 +22,8 @@
 	public class Game extends Sprite {
 		private function addedToStageHandler(event : Event) : void {
 			removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			GUIUtil.init(stage);
 			GLogger.addAppender(GTraceAppender.instance);
-			GFrameRender.instance.stage = stage;
+			GUIUtil.init(stage);
 			startup();
 		}
 

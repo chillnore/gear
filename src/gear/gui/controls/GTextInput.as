@@ -1,9 +1,10 @@
 ﻿package gear.gui.controls {
+	import gear.gui.skins.GBorderSkin;
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
 	import gear.gui.core.GPhaseColor;
 	import gear.gui.core.GScaleMode;
-	import gear.gui.skin.IGSkin;
+	import gear.gui.skins.IGSkin;
 	import gear.gui.utils.GUIUtil;
 	import gear.log4a.GLogger;
 
@@ -38,7 +39,7 @@
 		}
 
 		override protected function create() : void {
-			_borderSkin = GUIUtil.theme.textInputBorderSkin;
+			_borderSkin = GBorderSkin.skin;
 			_borderSkin.addTo(this, 0);
 			_textField = GUIUtil.getInputTextField();
 			_textField.textColor = _phaseColor.getBy(GPhase.UP);
