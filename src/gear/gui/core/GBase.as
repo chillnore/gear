@@ -1,4 +1,5 @@
 ﻿package gear.gui.core {
+	import gear.utils.GNameUtil;
 	import gear.gui.utils.GUIUtil;
 	import gear.utils.GMathUtil;
 
@@ -130,6 +131,7 @@
 			_events = new Vector.<Object>();
 			_methods = new Vector.<Function>();
 			_isRender = false;
+			name = GNameUtil.createUniqueName(this);
 			preinit();
 			create();
 			addEventListener(Event.ADDED_TO_STAGE, addToStageHandler);
@@ -322,6 +324,13 @@
 				_parent = parent;
 			}
 			parent.removeChild(this);
+		}
+
+		/**
+		 * 切换显示/隐藏
+		 */
+		public function switchSelf() : void {
+			parent == null ? show() : hide();
 		}
 
 		public function set source(value : *) : void {

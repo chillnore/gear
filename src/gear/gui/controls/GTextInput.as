@@ -18,7 +18,7 @@
 	 * 文本输入框控件
 	 * 
 	 * @author bright
-	 * @version 20130307
+	 * @version 20130426
 	 */
 	public class GTextInput extends GBase {
 		protected var _borderSkin : IGSkin;
@@ -163,25 +163,31 @@
 		 * 选择所有输入文本
 		 */
 		public function selectAll() : void {
+			if (stage == null) {
+				return;
+			}
+			stage.focus = _textField;
 			if (_textField.text.length > 0) {
 				_textField.setSelection(0, _textField.text.length);
 			}
-			GUIUtil.stage.focus = _textField;
 		}
 
 		/**
-		 * @param focus 设置焦点
+		 *  设置焦点
 		 */
-		public function setFocus(focus : Boolean = true) : void {
-			if (focus) {
-				if (GUIUtil.stage.focus != _textField) {
-					GUIUtil.stage.focus = _textField;
+		public function setFocus(value : Boolean = true) : void {
+			if (stage == null) {
+				return;
+			}
+			if (value) {
+				if (stage.focus != _textField) {
+					stage.focus = _textField;
 					_phase = GPhase.FOCUS;
 					callLater(updatePhase);
 				}
 			} else {
-				if (GUIUtil.stage.focus == _textField) {
-					GUIUtil.stage.focus = null;
+				if (stage.focus == _textField) {
+					stage.focus = null;
 					_phase = GPhase.UP;
 					callLater(updatePhase);
 				}

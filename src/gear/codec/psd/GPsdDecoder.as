@@ -1,10 +1,10 @@
 ﻿package gear.codec.psd {
-	import gear.core.IDispose;
 	import gear.codec.psd.data.GPsd;
 	import gear.codec.psd.data.GPsdBlendMode;
 	import gear.codec.psd.data.GPsdChannel;
 	import gear.codec.psd.data.GPsdLayer;
 	import gear.codec.psd.data.GPsdMask;
+	import gear.core.IDispose;
 	import gear.data.GTreeNode;
 	import gear.gui.utils.GUIUtil;
 	import gear.log4a.GLogError;
@@ -138,7 +138,7 @@
 			// 层数量
 			_psd.layerCount = Math.abs(_data.readShort());
 			_psd.layers = new Vector.<GPsdLayer>(_psd.layerCount);
-			var current : GTreeNode = _psd.tree.root;
+			var current : GTreeNode = _psd.rootNode;
 			var node : GTreeNode;
 			var layer : GPsdLayer;
 			for (var i : int = 0; i < _psd.layerCount;++i ) {

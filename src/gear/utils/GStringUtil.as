@@ -1,4 +1,5 @@
 ﻿package gear.utils {
+	import flash.text.Font;
 	import flash.utils.ByteArray;
 	import flash.utils.getQualifiedClassName;
 
@@ -127,7 +128,7 @@
 		public static function formatArray(target : Array) : String {
 			var code : String = "";
 			var len : int = target.length;
-			for (var i : int = 0;i < len;i++) {
+			for (var i : int = 0; i < len; i++) {
 				if (i > 0) {
 					code += ",";
 				}
@@ -139,7 +140,7 @@
 		public static function formatVector(target : Vector.<Object>) : String {
 			var code : String = "";
 			var len : int = target.length;
-			for (var i : int = 0;i < len;i++) {
+			for (var i : int = 0; i < len; i++) {
 				if (i > 0) {
 					code += ",";
 				}
@@ -151,7 +152,7 @@
 		public static function formatByteArray(value : ByteArray) : String {
 			var result : String = "";
 			var unit : String = "";
-			for (var i : int = 0;i < value.length;i++) {
+			for (var i : int = 0; i < value.length; i++) {
 				unit = Number(value[i]).toString(16);
 				if (unit.length < 2) {
 					unit = "0" + unit;
@@ -174,7 +175,7 @@
 		public static function formatObject(target : Object) : String {
 			var code : String = "";
 			var value : Object;
-			for (var key:String in target) {
+			for (var key : String in target) {
 				value = target[key];
 				if (value is Function) {
 					continue;
@@ -235,6 +236,9 @@
 			}
 			if (value is Date) {
 				return formatDate(value);
+			}
+			if (value is Font) {
+				return Font(value).fontName;
 			}
 			var name : String = getQualifiedClassName(value).split("::").pop();
 			if (name.indexOf("Vector") != -1) {

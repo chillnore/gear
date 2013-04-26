@@ -1,5 +1,4 @@
 package gear.codec.psd.data {
-	import gear.data.GTree;
 	import gear.data.GTreeNode;
 
 	import flash.display.BitmapData;
@@ -27,18 +26,18 @@ package gear.codec.psd.data {
 		public var colorMode : int;
 		// 层数量
 		public var layerCount : int;
-		public var tree : GTree;
+		public var rootNode : GTreeNode;
 		public var layers : Vector.<GPsdLayer>;
 		public var bitmapData : BitmapData;
 
 		public function GPsd() : void {
-			tree = new GTree();
+			rootNode = new GTreeNode();
 		}
 
 		public function getLayerBy(path : String) : GPsdLayer {
 			var params : Array = path.split("/");
-			var start : GTreeNode = tree.root;
-			for (var i : int;i < params.length;i++) {
+			var start : GTreeNode = rootNode;
+			for (var i : int; i < params.length; i++) {
 				start = start.findAt("name", params[i]);
 				if (start == null) {
 					return null;

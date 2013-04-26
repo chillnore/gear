@@ -2,14 +2,14 @@ package gear.data {
 	/**
 	 * @author bright
 	 */
-	public class GTreeNode {
+	public class GTreeNode implements IGTreeNode {
 		protected var _parent : GTreeNode;
-		protected var _children : Vector.<GTreeNode>;
+		protected var _childrens : Vector.<GTreeNode>;
 		protected var _data : Object;
 
 		public function GTreeNode(value : Object = null) {
 			_data = value;
-			_children = new Vector.<GTreeNode>();
+			_childrens = new Vector.<GTreeNode>();
 		}
 
 		public function set parent(value : GTreeNode) : void {
@@ -21,12 +21,12 @@ package gear.data {
 		}
 
 		public function add(value : GTreeNode) : void {
-			_children.push(value);
+			_childrens.push(value);
 			value.parent = this;
 		}
 
 		public function findAt(key : String, value : Object) : GTreeNode {
-			for each (var node:GTreeNode in _children) {
+			for each (var node : GTreeNode in _childrens) {
 				if (node.data[key] == value) {
 					return node;
 				}
@@ -34,12 +34,15 @@ package gear.data {
 			return null;
 		}
 
-		public function getChildAt(value : int) : GTreeNode {
-			return _children[value];
+		public function getChildAt(value : int) : IGTreeNode {
+			return _childrens[value];
 		}
 
 		public function get numChildren() : int {
-			return _children.length;
+			return _childrens.length;
+		}
+
+		public function expand() : void {
 		}
 
 		public function set data(value : Object) : void {

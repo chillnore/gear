@@ -28,7 +28,7 @@
 	 */
 	public final class GUIUtil {
 		// 默认字体
-		public static var defaultFont : String = "Tahoma";
+		public static var defaultFont : String = "宋体";
 		// 默认字体尺寸
 		public static var defaultFontSize : int = 12;
 		// 默认样式
@@ -52,7 +52,7 @@
 			GFrameRender.instance.stage = stage;
 			var os : String = Capabilities.os;
 			if (os.indexOf("Windows") != -1) {
-				defaultFont = "Tahoma";
+				defaultFont = "宋体";
 			} else if (os.indexOf("Mac") != -1) {
 				defaultFont = "冬青黑体简体中文 W3";
 			} else if (os.indexOf("Linux") != -1) {
