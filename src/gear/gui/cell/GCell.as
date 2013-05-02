@@ -120,12 +120,13 @@
 		}
 
 		override public function set source(value : *) : void {
-			value = GStringUtil.toString(value);
 			if (_source == value) {
 				return;
 			}
 			_source = value;
-			_label.text = _source;
+			if (_source != null) {
+				_label.text = GStringUtil.toString(_source);
+			}
 		}
 	}
 }

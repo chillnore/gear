@@ -22,9 +22,12 @@ package gear.gui.cell {
 		protected var _phase : int;
 		protected var _selected : Boolean;
 		protected var _onClick : Function;
+		protected var _isOpen : Boolean;
 
 		override protected function preinit() : void {
 			_skin = GCellSkin.skin;
+			_selected = false;
+			_isOpen = false;
 			setSize(100, 20);
 			callLater(changePhase);
 		}
@@ -119,12 +122,20 @@ package gear.gui.cell {
 			_onClick = value;
 		}
 
+		public function set isOpen(value : Boolean) : void {
+			_isOpen = value;
+		}
+
+		public function get isOpen() : Boolean {
+			return _isOpen;
+		}
+
 		override public function set source(value : *) : void {
 			if (_source == value) {
 				return;
 			}
 			_source = value;
-			_label.text = _source.data.name;
+			_label.text = _source.data.label;
 		}
 	}
 }

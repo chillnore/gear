@@ -21,16 +21,16 @@
 			if (charCode >= 48 && charCode <= 57) {
 				name += "_";
 			}
-			return name + _counter++;
+			return name + "_" + _counter++;
 		}
 
 		/**
 		 * 获得路径名字
 		 */
 		public static function getPathName(displayObject : DisplayObject) : String {
-			var result : String="";
+			var result : String = "";
 			try {
-				for (var o : DisplayObject = displayObject;o != null;o = o.parent) {
+				for (var o : DisplayObject = displayObject; o != null; o = o.parent) {
 					if (o.parent && o.stage && o.parent == o.stage) {
 						break;
 					}

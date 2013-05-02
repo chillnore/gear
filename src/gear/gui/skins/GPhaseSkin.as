@@ -41,15 +41,12 @@
 			_source = new Vector.<BitmapData>(9, true);
 			_target = new Vector.<BitmapData>(9, true);
 			_bitmap = new Bitmap();
+			_bitmap.name = "skin";
 			_phase = GPhase.NONE;
 		}
 
 		public function get scaleMode() : int {
 			return _scaleMode;
-		}
-
-		public function set name(value : String) : void {
-			_bitmap.name = value;
 		}
 
 		public function setAt(phase : int, bitmapData : BitmapData) : void {

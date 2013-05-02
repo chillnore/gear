@@ -31,12 +31,12 @@ package gear.gui.skins {
 			_skin.scale9Grid = new Rectangle(1, 1, 48, 48);
 			return _skin;
 		}
-		
-		public static function get modalSkin():IGSkin{
+
+		public static function get modalSkin() : IGSkin {
 			if (_modalSkin != null) {
 				return _modalSkin.clone();
 			}
-			_modalSkin= new GPhaseSkin();
+			_modalSkin = new GPhaseSkin();
 			var bd : BitmapData = new BitmapData(60, 60, true, 0);
 			bd.fillRect(bd.rect, 0x21000000);
 			_modalSkin.setAt(GPhase.UP, bd);

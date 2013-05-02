@@ -11,9 +11,7 @@
 	 */
 	public interface IGSkin {
 		function get scaleMode() : int;
-
-		function set name(value : String) : void;
-
+		
 		function set scale9Grid(value : Rectangle) : void;
 
 		function addTo(parent : DisplayObjectContainer, index : int = 0) : void;

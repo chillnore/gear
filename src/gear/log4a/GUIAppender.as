@@ -81,6 +81,7 @@
 		protected function onRun() : void {
 			var params : Array = _commond_ti.text.split(" ");
 			_commond_ti.clear();
+			_commond_ti.setFocus(true);
 			if (params.length == 0) {
 				return;
 			}

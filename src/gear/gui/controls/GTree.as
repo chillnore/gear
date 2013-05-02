@@ -16,7 +16,10 @@
 	import flash.geom.Rectangle;
 
 	/**
+	 * 树控件
+	 * 
 	 * @author bright
+	 * @version 20130502
 	 */
 	public class GTree extends GBase {
 		protected var _bgSkin : IGSkin;
@@ -50,6 +53,7 @@
 		override protected function create() : void {
 			_bgSkin.addTo(this, 0);
 			_content = new Sprite();
+			_content.name = "content";
 			_content.x = _padding.left;
 			_content.y = _padding.right;
 			addChild(_content);
@@ -107,37 +111,89 @@
 
 		protected function addCell(index : int, node : IGTreeNode) : void {
 			var cell : IGTreeCell = new _cell();
-			cell.y = _cells.length * _template.height;
+			cell.y = index * _template.height;
 			cell.width = _scrollRect.width;
 			cell.source = node;
-			_content.addChild(cell as DisplayObject);
+			_content.addChild(DisplayObject(cell));
 			_cells.splice(index, 0, cell);
 			addEvent(cell, MouseEvent.MOUSE_DOWN, cell_mouseDownHandler);
 			addEvent(cell, MouseEvent.CLICK, cell_clickHandler);
 		}
 
+		protected function removeCell(index : int) : void {
+			if (index < 0 || index >= _cells.length) {
+				return;
+			}
+			var cell : IGTreeCell = _cells[index];
+			cell.hide();
+			_cells.splice(index, 1);
+		}
+
 		protected function expandCell(cell : IGTreeCell) : void {
 			var node : IGTreeNode = cell.source;
 			node.expand();
-			if (node.numChildren > 0) {
-				var index : int = _cells.indexOf(cell);
-				for (var i : int = i; i < node.numChildren; i++) {
-					addCell(index + 1 + i, node.getChildAt(i));
-				}
-				moveCells(index + 1 + node.numChildren, node.numChildren * _template.height);
+			if (node.numChildren < 1) {
+				return;
 			}
+			node.isOpen = true;
+			var childrens : Vector.<IGTreeNode>=node.childrens.slice();
+			var index : int = _cells.indexOf(cell) + 1;
+			var total : int = 0;
+			while (childrens.length > 0) {
+				node = childrens.shift();
+				addCell(index + total, node);
+				if (node.isOpen) {
+					for each (node in node.childrens) {
+						childrens.unshift(node);
+					}
+				}
+				total++;
+			}
+			moveCells(index + total, total * _template.height);
+			callLater(updateScroll);
+		}
+
+		protected function closeCell(cell : IGTreeCell) : void {
+			var node : IGTreeNode = cell.source;
+			if (node.numChildren < 1) {
+				return;
+			}
+			node.isOpen = false;
+			var childrens : Vector.<IGTreeNode>=node.childrens.slice();
+			var index : int = _cells.indexOf(cell) + 1;
+			var total : int = 0;
+			while (childrens.length > 0) {
+				node = childrens.shift();
+				removeCell(index);
+				if (node.isOpen) {
+					for each (node in node.childrens) {
+						childrens.unshift(node);
+					}
+				}
+				total++;
+			}
+			moveCells(index, -total * _template.height);
+			callLater(updateScroll);
 		}
 
 		protected function moveCells(index : int, dy : int) : void {
-			while (++index < _cells.length) {
+			while (index < _cells.length) {
 				_cells[index].y += dy;
+				index++;
 			}
 		}
 
 		protected function cell_mouseDownHandler(event : MouseEvent) : void {
 			var cell : IGTreeCell = IGTreeCell(event.currentTarget);
 			selectedIndex = _cells.indexOf(cell);
-			expandCell(cell);
+			if (IGTreeNode(cell.source).numChildren < 1) {
+				return;
+			}
+			if (!cell.source.isOpen) {
+				expandCell(cell);
+			} else {
+				closeCell(cell);
+			}
 		}
 
 		protected function cell_clickHandler(event : MouseEvent) : void {

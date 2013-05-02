@@ -100,7 +100,7 @@
 							_selectedIndex++;
 						}
 						addCell(change.index);
-						moveCells(change.index, _template.height);
+						moveCells(change.index + 1, _template.height);
 						callLater(updateScroll);
 						break;
 					case GChange.REMOVED:
@@ -110,7 +110,7 @@
 							selectedIndex = -1;
 						}
 						removeCellAt(change.index);
-						moveCells(change.index - 1, -_template.height);
+						moveCells(change.index, -_template.height);
 						callLater(updateScroll);
 						break;
 					case GChange.UPDATE:
@@ -151,9 +151,13 @@
 			_cells.splice(index, 1);
 		}
 
+		/**
+		 * 移动单元格
+		 */
 		protected function moveCells(index : int, dy : int) : void {
-			while (++index < _cells.length) {
+			while (index < _cells.length) {
 				_cells[index].y += dy;
+				index++;
 			}
 		}
 

@@ -6,6 +6,7 @@
 	import gear.codec.psd.data.GPsdMask;
 	import gear.core.IDispose;
 	import gear.data.GTreeNode;
+	import gear.data.IGTreeNode;
 	import gear.gui.utils.GUIUtil;
 	import gear.log4a.GLogError;
 	import gear.log4a.GLogger;
@@ -138,7 +139,7 @@
 			// 层数量
 			_psd.layerCount = Math.abs(_data.readShort());
 			_psd.layers = new Vector.<GPsdLayer>(_psd.layerCount);
-			var current : GTreeNode = _psd.rootNode;
+			var current : IGTreeNode = _psd.rootNode;
 			var node : GTreeNode;
 			var layer : GPsdLayer;
 			for (var i : int = 0; i < _psd.layerCount;++i ) {

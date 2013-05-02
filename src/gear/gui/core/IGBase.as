@@ -6,6 +6,8 @@ package gear.gui.core {
 	 * @version 20130314
 	 */
 	public interface IGBase extends IEventDispatcher {
+		function get name() : String;
+
 		function set x(value : Number) : void;
 
 		function set y(value : Number) : void;

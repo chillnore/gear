@@ -1,4 +1,6 @@
 ﻿package gear.utils {
+	import flash.utils.ByteArray;
+
 	/**
 	 * 数组工具类
 	 * 
@@ -30,12 +32,15 @@
 
 		public static function repeat(value : *, total : int) : Array {
 			var list : Array = new Array();
-			for (var i : int = 0;i < total;i++) {
+			for (var i : int = 0; i < total; i++) {
 				list.push(value);
 			}
 			return list;
 		}
 
+		/**
+		 * 二分搜索
+		 */
 		public static function binarySearch(keys : Array, target : int) : int {
 			var high : int = keys.length;
 			var low : int = -1;
@@ -64,12 +69,22 @@
 				return;
 			}
 			var index : int;
-			for each (var item:Object in target) {
+			for each (var item : Object in target) {
 				index = source.indexOf(item);
 				if (index == -1) {
 					source.push(item);
 				}
 			}
+		}
+
+		/**
+		 * 深复制数组
+		 */
+		public static function clone(value : Array) : Array {
+			var ba : ByteArray = new ByteArray();
+			ba.writeObject(value);
+			ba.position = 0;
+			return ba.readObject();
 		}
 	}
 }
