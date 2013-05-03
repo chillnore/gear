@@ -2,7 +2,7 @@
 	import gear.gui.cell.GCell;
 	import gear.gui.core.GAutoSize;
 	import gear.gui.core.GBase;
-	import gear.gui.model.GChange;
+	import gear.gui.model.GListChange;
 	import gear.gui.model.GChangeList;
 	import gear.gui.model.GGridModel;
 	import gear.log4a.GLogger;
@@ -72,21 +72,21 @@
 			}
 		}
 
-		protected function onModelChange(change : GChange) : void {
+		protected function onModelChange(change : GListChange) : void {
 			_changes.add(change);
 			callLater(updateChanges);
 		}
 
 		protected function updateChanges() : void {
-			var change : GChange;
+			var change : GListChange;
 			while (_changes.hasNext) {
 				change = _changes.shift();
-				if (change.state == GChange.RESET) {
+				if (change.state == GListChange.RESET) {
 					var index : int = 0;
 					for each (var cell:GCell in _cells) {
 						cell.source = _model.getAt(index++);
 					}
-				} else if (change.state == GChange.UPDATE) {
+				} else if (change.state == GListChange.UPDATE) {
 					_cells[change.index].source = _model.getAt(change.index);
 				}
 			}

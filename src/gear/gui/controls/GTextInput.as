@@ -27,7 +27,7 @@
 		protected var _phase : int;
 		protected var _phaseColor : GPhaseColor;
 		protected var _text : String;
-		protected var _defaultText : String;
+		protected var _prompt : String;
 		protected var _onEnter : Function;
 
 		override protected function preinit() : void {
@@ -95,8 +95,8 @@
 			} else if (event.type == FocusEvent.FOCUS_OUT) {
 				_phase = _enabled ? GPhase.UP : GPhase.DISABLED;
 			}
-			if (_defaultText != null) {
-				_defaultText = null;
+			if (_prompt != null) {
+				_prompt = null;
 				_textField.text = "";
 			}
 			callLater(updatePhase);
@@ -196,7 +196,7 @@
 
 		public function set text(value : String) : void {
 			_text = value;
-			_defaultText = null;
+			_prompt = null;
 			callLater(updateText);
 		}
 
@@ -210,8 +210,8 @@
 			return _textField.text;
 		}
 
-		public function set defaultText(value : String) : void {
-			_defaultText = _text = value;
+		public function set prompt(value : String) : void {
+			_prompt = _text = value;
 			callLater(updateText);
 		}
 

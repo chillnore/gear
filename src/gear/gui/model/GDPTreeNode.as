@@ -15,7 +15,7 @@ package gear.gui.model {
 			_firstTime = true;
 		}
 
-		override public function expand() : void {
+		override public function async() : void {
 			if (_firstTime) {
 				_firstTime = false;
 				var node : GDPTreeNode;

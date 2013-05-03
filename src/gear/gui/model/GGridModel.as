@@ -7,7 +7,7 @@
 		protected var _source : Vector.<Object>;
 		protected var _change : Vector.<Function>;
 		
-		protected function change(value : GChange) : void {
+		protected function change(value : GListChange) : void {
 			for each (var change:Function in _change) {
 				try {
 					change.apply(null, [value]);
@@ -32,7 +32,7 @@
 				return;
 			}
 			_source[index] = value;
-			change(new GChange(GChange.UPDATE, index));
+			change(new GListChange(GListChange.UPDATE, index));
 		}
 		
 		public function getAt(value : int) : * {
@@ -47,7 +47,7 @@
 				return;
 			}
 			_source = Vector.<Object>(value);
-			change(new GChange(GChange.RESET));
+			change(new GListChange(GListChange.RESET));
 		}
 	}
 }

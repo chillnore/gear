@@ -1,4 +1,5 @@
 ﻿package gear.gui.controls {
+	import gear.utils.GNameUtil;
 	import gear.utils.GBDUtil;
 	import gear.gui.core.GBase;
 	import gear.gui.core.GScaleMode;
@@ -23,6 +24,7 @@
 
 		override protected function create() : void {
 			_bitmap = new Bitmap();
+			_bitmap.name=GNameUtil.createUniqueName(_bitmap);
 			addChild(_bitmap);
 		}
 

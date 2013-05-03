@@ -1,6 +1,6 @@
 ﻿package gear.gui.controls {
 	import gear.gui.core.GBase;
-	import gear.gui.model.GChange;
+	import gear.gui.model.GListChange;
 	import gear.gui.model.GChangeList;
 	import gear.gui.model.GListModel;
 	import gear.gui.skins.GArrowIcon;
@@ -82,28 +82,28 @@
 			callLater(updateContent);
 		}
 
-		protected function onModelChange(change : GChange) : void {
+		protected function onModelChange(change : GListChange) : void {
 			_changes.add(change);
 			callLater(updateChanges);
 		}
 
 		protected function updateChanges() : void {
-			var change : GChange;
+			var change : GListChange;
 			while (_changes.hasNext) {
 				change = _changes.shift();
 				switch(change.state) {
-					case GChange.RESET:
+					case GListChange.RESET:
 						selectedIndex = GMathUtil.clamp(_selectedIndex, 0, _model.length - 1);
 						callLater(updateContent);
 						break;
-					case GChange.ADDED:
+					case GListChange.ADDED:
 						if (_selectedIndex == -1) {
 							selectedIndex = 0;
 						} else if (change.index <= _selectedIndex) {
 							_selectedIndex++;
 						}
 						break;
-					case GChange.REMOVED:
+					case GListChange.REMOVED:
 						if (change.index < _selectedIndex) {
 							_selectedIndex--;
 						} else if (change.index == _selectedIndex) {
@@ -113,7 +113,7 @@
 							callLater(updateContent);
 						}
 						break;
-					case GChange.UPDATE:
+					case GListChange.UPDATE:
 						if (_selectedIndex == change.index) {
 							callLater(updateContent);
 						}

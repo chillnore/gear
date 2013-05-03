@@ -6,6 +6,7 @@
 	import gear.gui.core.GPhase;
 	import gear.gui.core.GPhaseColor;
 	import gear.gui.utils.GUIUtil;
+	import gear.utils.GNameUtil;
 
 	import flash.display.BitmapData;
 	import flash.text.TextField;
@@ -42,6 +43,7 @@
 			_icon = new GIcon();
 			addChild(_icon);
 			_textField = GUIUtil.getTextField();
+			_textField.name = GNameUtil.createUniqueName(_textField);
 			_textField.textColor = _phaseColor.getBy(GPhase.UP);
 			addChild(_textField);
 		}

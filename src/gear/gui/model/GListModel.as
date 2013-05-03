@@ -11,7 +11,7 @@
 		protected var _source : Vector.<Object>;
 		protected var _change : Vector.<Function>;
 
-		protected function change(value : GChange) : void {
+		protected function change(value : GListChange) : void {
 			for each (var change : Function in _change) {
 				try {
 					change.apply(null, [value]);
@@ -32,7 +32,7 @@
 
 		public function add(value : *) : void {
 			var index : int = _source.push(value) - 1;
-			change(new GChange(GChange.ADDED, index));
+			change(new GListChange(GListChange.ADDED, index));
 		}
 
 		public function addAt(index : int, value : *) : void {
@@ -44,7 +44,7 @@
 			} else {
 				_source.splice(index, 0, value);
 			}
-			change(new GChange(GChange.ADDED, index));
+			change(new GListChange(GListChange.ADDED, index));
 		}
 
 		public function remove(value : *) : void {
@@ -56,7 +56,7 @@
 				return;
 			}
 			_source.splice(index, 1);
-			change(new GChange(GChange.REMOVED, index));
+			change(new GListChange(GListChange.REMOVED, index));
 		}
 
 		public function setAt(index : int, value : *) : void {
@@ -64,7 +64,7 @@
 				return;
 			}
 			_source[index] = value;
-			change(new GChange(GChange.UPDATE, index));
+			change(new GListChange(GListChange.UPDATE, index));
 		}
 
 		public function getAt(value : int) : * {
@@ -92,12 +92,12 @@
 			if ( index < 0 || index >= _source.length) {
 				return;
 			}
-			change(new GChange(GChange.UPDATE, index));
+			change(new GListChange(GListChange.UPDATE, index));
 		}
 
 		public function clear() : void {
 			_source.length = 0;
-			change(new GChange(GChange.RESET));
+			change(new GListChange(GListChange.RESET));
 		}
 
 		public function set onChange(value : Function) : void {
@@ -115,7 +115,7 @@
 
 		public function set source(value : Object) : void {
 			_source = Vector.<Object>(value);
-			change(new GChange(GChange.RESET));
+			change(new GListChange(GListChange.RESET));
 		}
 	}
 }

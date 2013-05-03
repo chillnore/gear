@@ -3,14 +3,14 @@
 	 * @author bright
 	 */
 	public class GChangeList {
-		protected var _list : Vector.<GChange>;
+		protected var _list : Vector.<GListChange>;
 
 		public function GChangeList() {
-			_list=new Vector.<GChange>();
+			_list=new Vector.<GListChange>();
 		}
 
-		public function add(value : GChange) : void {
-			if (value.state == GChange.RESET) {
+		public function add(value : GListChange) : void {
+			if (value.state == GListChange.RESET) {
 				_list.length = 0;
 			}
 			_list.push(value);
@@ -20,7 +20,7 @@
 			return _list.length>0;
 		}
 		
-		public function shift():GChange{
+		public function shift():GListChange{
 			return _list.shift();
 		}
 	}

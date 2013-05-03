@@ -146,13 +146,13 @@
 				layer = parseLayerRecord();
 				if (layer.type == GPsdLayer.BOUNDING_SECTION) {
 					node = new GTreeNode();
-					current.add(node);
+					current.append(node);
 					current = node;
 				} else if (layer.type == GPsdLayer.FOLDER_OPEN || layer.type == GPsdLayer.FOLDER_CLOSED) {
 					current.data = layer;
 					current = current.parent;
 				} else {
-					current.add(new GTreeNode(layer));
+					current.append(new GTreeNode(layer));
 				}
 				_psd.layers[i] = layer;
 			}

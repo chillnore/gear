@@ -32,14 +32,20 @@
 		override protected function create() : void {
 			_skin.addTo(this, 0);
 			_label = new GLabel();
+			_label.x = 2;
 			addChild(_label);
 		}
 
 		override protected function resize() : void {
 			_skin.setSize(_width, _height);
+			_label.y = (_height - _label.height) >> 1;
 		}
 
 		override protected function onShow() : void {
+			if (_phase != GPhase.UP) {
+				_phase = GPhase.UP;
+				callLater(changePhase);
+			}
 			addEvent(this, MouseEvent.ROLL_OVER, mouseHandler);
 			addEvent(this, MouseEvent.ROLL_OUT, mouseHandler);
 			addEvent(this, MouseEvent.MOUSE_DOWN, mouseHandler);
@@ -124,9 +130,8 @@
 				return;
 			}
 			_source = value;
-			if (_source != null) {
-				_label.text = GStringUtil.toString(_source);
-			}
+			_label.text = GStringUtil.toString(_source);
+			_label.y = 2;
 		}
 	}
 }

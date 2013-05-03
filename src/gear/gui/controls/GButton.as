@@ -65,7 +65,7 @@
 			addEvent(this, MouseEvent.MOUSE_UP, mouseHandler);
 			addEvent(this, MouseEvent.CLICK, clickHandler);
 		}
-
+		
 		override protected function onEnabled() : void {
 			_phase = _enabled ? GPhase.UP : GPhase.DISABLED;
 			callLater(changePhase);

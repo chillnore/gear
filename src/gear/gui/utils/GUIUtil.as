@@ -7,6 +7,7 @@
 	import gear.utils.GBDUtil;
 
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.SimpleButton;
 	import flash.display.Stage;
 	import flash.display.StageAlign;
@@ -116,6 +117,23 @@
 				return skin;
 			}
 			return null;
+		}
+		
+		public static function atParent(source : DisplayObject, target : DisplayObject) : Boolean {
+			if (source == null || target == null) {
+				return false;
+			}
+			if (source == target) {
+				return true;
+			}
+			var parent : DisplayObjectContainer = source.parent;
+			while (parent != null) {
+				if (parent == target) {
+					return true;
+				}
+				parent = parent.parent;
+			}
+			return false;
 		}
 
 		public static function setFullScreen(value : Boolean) : void {

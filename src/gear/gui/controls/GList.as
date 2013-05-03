@@ -4,8 +4,8 @@
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
 	import gear.gui.core.GScaleMode;
-	import gear.gui.model.GChange;
 	import gear.gui.model.GChangeList;
+	import gear.gui.model.GListChange;
 	import gear.gui.model.GListModel;
 	import gear.gui.skins.GPanelSkin;
 	import gear.gui.skins.IGSkin;
@@ -81,21 +81,21 @@
 			_vScrollBar.value -= event.delta;
 		}
 
-		protected function onModelChange(change : GChange) : void {
+		protected function onModelChange(change : GListChange) : void {
 			_changes.add(change);
 			callLater(updateChanges);
 		}
 
 		protected function updateChanges() : void {
-			var change : GChange;
+			var change : GListChange;
 			while (_changes.hasNext) {
 				change = _changes.shift();
 				switch(change.state) {
-					case GChange.RESET:
+					case GListChange.RESET:
 						callLater(updateCells);
 						callLater(updateScroll);
 						break;
-					case GChange.ADDED:
+					case GListChange.ADDED:
 						if (change.index <= _selectedIndex) {
 							_selectedIndex++;
 						}
@@ -103,17 +103,17 @@
 						moveCells(change.index + 1, _template.height);
 						callLater(updateScroll);
 						break;
-					case GChange.REMOVED:
+					case GListChange.REMOVED:
 						if (change.index < _selectedIndex) {
 							_selectedIndex--;
 						} else if (change.index == _selectedIndex) {
 							selectedIndex = -1;
 						}
-						removeCellAt(change.index);
+						removeCell(change.index);
 						moveCells(change.index, -_template.height);
 						callLater(updateScroll);
 						break;
-					case GChange.UPDATE:
+					case GListChange.UPDATE:
 						_cells[change.index].source = _model.getAt(change.index);
 						break;
 				}
@@ -122,7 +122,7 @@
 
 		protected function updateCells() : void {
 			while (_cells.length > 0) {
-				removeCellAt(0);
+				removeCell(0);
 			}
 			var length : int = _model.length;
 			for (var i : int = 0; i < length; i++) {
@@ -139,15 +139,15 @@
 			cell.source = _model.getAt(index);
 			_content.addChild(cell as DisplayObject);
 			_cells.splice(index, 0, cell);
-			addEvent(cell, MouseEvent.MOUSE_DOWN, cell_mouseDownHandler);
-			addEvent(cell, MouseEvent.CLICK, cell_clickHandler);
+			cell.addEventListener(MouseEvent.MOUSE_DOWN, cell_mouseDownHandler);
+			cell.addEventListener(MouseEvent.CLICK, cell_clickHandler);
 		}
 
-		protected function removeCellAt(index : int) : void {
+		protected function removeCell(index : int) : void {
 			var cell : IGCell = _cells[index];
 			cell.hide();
-			removeEvent(cell, MouseEvent.MOUSE_DOWN);
-			removeEvent(cell, MouseEvent.CLICK);
+			cell.removeEventListener(MouseEvent.MOUSE_DOWN, cell_mouseDownHandler);
+			cell.removeEventListener(MouseEvent.CLICK, cell_clickHandler);
 			_cells.splice(index, 1);
 		}
 
@@ -266,17 +266,24 @@
 			if (_selectedIndex == value) {
 				return;
 			}
-			if (!_multipleSelection && _selectedIndex > -1 && _selectedIndex < _cells.length) {
+			if (_multipleSelection) {
+				return;
+			}
+			if (_selectedIndex > -1 && _selectedIndex < _cells.length) {
 				_cells[_selectedIndex].selected = false;
 			}
 			_selectedIndex = value;
-			if (!_multipleSelection && _selectedIndex > -1 && _selectedIndex < _cells.length) {
+			if (_selectedIndex > -1 && _selectedIndex < _cells.length) {
 				_cells[_selectedIndex].selected = true;
 			}
 		}
 
 		public function get selectedIndex() : int {
 			return _selectedIndex;
+		}
+
+		public function get selection() : * {
+			return _model.getAt(_selectedIndex);
 		}
 
 		public function get selectedItems() : Vector.<Object> {

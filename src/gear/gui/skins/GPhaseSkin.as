@@ -1,4 +1,5 @@
 ﻿package gear.gui.skins {
+	import gear.utils.GNameUtil;
 	import gear.gui.core.GPhase;
 	import gear.gui.core.GScaleMode;
 	import gear.utils.GBDUtil;
@@ -41,7 +42,7 @@
 			_source = new Vector.<BitmapData>(9, true);
 			_target = new Vector.<BitmapData>(9, true);
 			_bitmap = new Bitmap();
-			_bitmap.name = "skin";
+			_bitmap.name = GNameUtil.createUniqueName(_bitmap);
 			_phase = GPhase.NONE;
 		}
 

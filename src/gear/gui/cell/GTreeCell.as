@@ -1,5 +1,7 @@
 package gear.gui.cell {
 	import gear.gui.controls.GLabel;
+	import gear.gui.core.GAlign;
+	import gear.gui.core.GAlignLayout;
 	import gear.gui.core.GBase;
 	import gear.gui.core.GPhase;
 	import gear.gui.core.GScaleMode;
@@ -8,6 +10,8 @@ package gear.gui.cell {
 	import gear.gui.skins.IGSkin;
 	import gear.log4a.GLogger;
 
+	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 
 	/**
@@ -22,12 +26,10 @@ package gear.gui.cell {
 		protected var _phase : int;
 		protected var _selected : Boolean;
 		protected var _onClick : Function;
-		protected var _isOpen : Boolean;
 
 		override protected function preinit() : void {
 			_skin = GCellSkin.skin;
 			_selected = false;
-			_isOpen = false;
 			setSize(100, 20);
 			callLater(changePhase);
 		}
@@ -35,6 +37,7 @@ package gear.gui.cell {
 		override protected function create() : void {
 			_skin.addTo(this, 0);
 			_label = new GLabel();
+			_label.align = new GAlign(2, -1, -1, -1, -1, 0);
 			addChild(_label);
 		}
 
@@ -103,6 +106,10 @@ package gear.gui.cell {
 			callLater(changePhase);
 		}
 
+		public function set icon(value : BitmapData) : void {
+			_label.icon = value;
+		}
+
 		public function set selected(value : Boolean) : void {
 			if (_selected == value) {
 				return;
@@ -122,20 +129,19 @@ package gear.gui.cell {
 			_onClick = value;
 		}
 
-		public function set isOpen(value : Boolean) : void {
-			_isOpen = value;
-		}
-
-		public function get isOpen() : Boolean {
-			return _isOpen;
-		}
-
 		override public function set source(value : *) : void {
 			if (_source == value) {
 				return;
 			}
 			_source = value;
-			_label.text = _source.data.label;
+			if (_source.data is String) {
+				_label.text = _source.data;
+			} else if (_source.data is DisplayObject) {
+				_label.text = _source.data.name;
+			} else {
+				_label.text = _source.data.label;
+			}
+			GAlignLayout.layout(_label);
 		}
 	}
 }
