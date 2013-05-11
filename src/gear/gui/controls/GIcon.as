@@ -28,7 +28,7 @@
 			addChild(_bitmap);
 		}
 
-		protected function update() : void {
+		protected function refresh() : void {
 			if (_scaleMode == GScaleMode.SCALE) {
 				_bitmapData = GBDUtil.resizeBD(_bitmapData, _width, _height);
 			}
@@ -47,7 +47,7 @@
 				_width = (_bitmapData != null ? _bitmapData.width : 0);
 				_height = (_bitmapData != null ? _bitmapData.height : 0);
 			}
-			callLater(update);
+			callLater(refresh);
 		}
 	}
 }

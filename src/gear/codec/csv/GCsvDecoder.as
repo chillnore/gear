@@ -11,7 +11,7 @@ package gear.codec.csv {
 		public function GCsvDecoder() {
 		}
 
-		public function parse(value : String) : void {
+		public function decode(value : String) : void {
 			var lines : Array = value.split(String.fromCharCode(13));
 			_data = new Vector.<Vector.<String>>();
 			for each (var line : String in lines) {

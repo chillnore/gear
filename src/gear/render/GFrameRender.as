@@ -99,11 +99,9 @@
 				return;
 			}
 			_list.splice(index, 1);
-			if (_list.length == 0 ) {
-				if (_running) {
-					_running = false;
-					_stage.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
-				}
+			if (_list.length < 1 && _running) {
+				_running = false;
+				_stage.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			}
 		}
 

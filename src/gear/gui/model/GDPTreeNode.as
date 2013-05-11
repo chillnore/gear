@@ -23,7 +23,7 @@ package gear.gui.model {
 					for (var i : int = 0; i < DisplayObjectContainer(_data).numChildren; i++) {
 						node = new GDPTreeNode(DisplayObjectContainer(_data).getChildAt(i));
 						node.parent = this;
-						_childrens.push(node);
+						_children.push(node);
 					}
 				}
 			}

@@ -59,7 +59,7 @@
 			if (objType == 0xD) {
 				return readDict(objInfo, offset);
 			}
-			GLogger.error("Unknown object type:" + objType);
+			GLogger.error("未知类型:" + objType);
 		}
 
 		private function readPrimitive(objInfo : int) : * {
@@ -161,7 +161,7 @@
 			}
 			var array : Array = new Array();
 			var objRef : int;
-			for (var i : int = 0;i < length;i++) {
+			for (var i : int = 0; i < length; i++) {
 				objRef = readUnsignedInt(readBytes(_data, offset + arrayOffset + i * _objectRefSize, _objectRefSize));
 				array[i] = readObject(objRef);
 			}
@@ -193,7 +193,7 @@
 
 		private function readUnsignedInt(value : ByteArray) : int {
 			var len : int = 0;
-			for (var i : int = 0;i < value.length;i++) {
+			for (var i : int = 0; i < value.length; i++) {
 				len <<= 8;
 				len |= value[i] & 0xFF;
 			}

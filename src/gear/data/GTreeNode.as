@@ -9,7 +9,7 @@ package gear.data {
 	public class GTreeNode implements IGTreeNode {
 		protected var _depth : int;
 		protected var _parent : IGTreeNode;
-		protected var _childrens : Vector.<IGTreeNode>;
+		protected var _children : Vector.<IGTreeNode>;
 		protected var _data : Object;
 		protected var _expanded : Boolean;
 		protected var _cell:IGTreeCell;
@@ -17,7 +17,7 @@ package gear.data {
 		public function GTreeNode(value : Object = null) {
 			_depth = -1;
 			_data = value;
-			_childrens = new Vector.<IGTreeNode>();
+			_children = new Vector.<IGTreeNode>();
 			_expanded = false;
 		}
 
@@ -36,24 +36,24 @@ package gear.data {
 
 		public function append(value : IGTreeNode) : void {
 			value.parent = this;
-			_childrens.push(value);
+			_children.push(value);
 		}
 
 		public function insert(value : IGTreeNode, index : int) : void {
 			value.parent = this;
-			_childrens.splice(index, 0, value);
+			_children.splice(index, 0, value);
 		}
 
 		public function remove(value : IGTreeNode) : void {
-			var index : int = _childrens.indexOf(value);
+			var index : int = _children.indexOf(value);
 			if (index != -1) {
 				value.parent = null;
-				_childrens.splice(index, 1);
+				_children.splice(index, 1);
 			}
 		}
 
 		public function findAt(key : String, value : Object) : GTreeNode {
-			for each (var node : GTreeNode in _childrens) {
+			for each (var node : GTreeNode in _children) {
 				if (node.data[key] == value) {
 					return node;
 				}
@@ -62,15 +62,15 @@ package gear.data {
 		}
 
 		public function getChildAt(value : int) : IGTreeNode {
-			return _childrens[value];
+			return _children[value];
 		}
 
 		public function get childrens() : Vector.<IGTreeNode> {
-			return _childrens;
+			return _children;
 		}
 
 		public function get numChildren() : int {
-			return _childrens.length;
+			return _children.length;
 		}
 
 		public function async() : void {

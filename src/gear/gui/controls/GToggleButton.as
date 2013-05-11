@@ -37,7 +37,7 @@
 			_skin.phase = _phase;
 		}
 
-		protected function update() : void {
+		protected function refresh() : void {
 			if (_autoSize == GAutoSize.AUTO_SIZE) {
 				forceSize(_padding.left + _label.width + _padding.right, _padding.top + _label.height + _padding.bottom);
 			} else if (_autoSize == GAutoSize.AUTO_WIDTH) {
@@ -79,12 +79,12 @@
 		
 		public function set icon(value : BitmapData) : void {
 			_label.icon = value;
-			callLater(update);
+			callLater(refresh);
 		}
 
 		public function set text(value : String) : void {
 			_label.text = value;
-			callLater(update);
+			callLater(refresh);
 		}
 	}
 }

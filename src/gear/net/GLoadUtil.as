@@ -118,6 +118,9 @@
 				case GFileType.PLIST:
 					loader = new GPlistLoader(url, key);
 					break;
+				case GFileType.ATF:
+					loader = new GAtfLoader(url, key);
+					break;
 				default:
 					loader = new GBinLoader(url, key);
 					break;
@@ -233,6 +236,11 @@
 		public static function getPlistOb(key : String) : Object {
 			var loader : GPlistLoader = _loaded[key] as GPlistLoader;
 			return loader != null ? loader.plistObj : null;
+		}
+
+		public static function getAtfBD(key : String) : BitmapData {
+			var loader : GAtfLoader = _loaded[key] as GAtfLoader;
+			return loader != null ? loader.bitmapData : null;
 		}
 
 		public static function getClass(key : String, lib : String) : Class {

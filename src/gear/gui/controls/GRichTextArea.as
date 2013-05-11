@@ -44,7 +44,7 @@
 			appendGroup();
 		}
 		
-		protected function update():void{
+		protected function refresh():void{
 		}
 		
 		protected function appendGroup():void{

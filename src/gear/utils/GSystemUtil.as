@@ -31,10 +31,11 @@
 			var result : String = "系统信息:\n";
 			result += "浏览器类型:" + GJSUtil.browserAgent + "\n";
 			result += "播放器当前版本:" + Capabilities.version + " ";
-			result += "Debug:" + Capabilities.isDebugger + "\n";
+			result += "调试器:" + Capabilities.isDebugger + "\n";
 			result += "分辨率:" + Capabilities.screenResolutionX + "×" + Capabilities.screenResolutionY + "\n";
 			result += "播放器的类型:" + Capabilities.playerType + "\n";
 			result += "当前的操作系统:" + Capabilities.os + "\n";
+			result += "中央处理器:" + Capabilities.cpuArchitecture + "\n";
 			result += "摄像头和麦克风是否禁止:" + Capabilities.avHardwareDisable;
 			return result;
 		}

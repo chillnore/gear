@@ -102,7 +102,7 @@
 		}
 
 		public function refresh() : void {
-			render();
+			refresh();
 			_time = getTimer();
 			if (_time - 1000 > _prev_ms) {
 				_prev_ms = _time;

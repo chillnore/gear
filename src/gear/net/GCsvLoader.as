@@ -13,7 +13,7 @@ package gear.net {
 
 		override protected function decode() : void {
 			try {
-				_decode.parse(_data.readUTFBytes(_data.length));
+				_decode.decode(_data.readUTFBytes(_data.length));
 				_data.clear();
 				complete();
 			} catch(e : Error) {
