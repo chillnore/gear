@@ -4,13 +4,16 @@ package gear.net {
 	import flash.display.BitmapData;
 
 	/**
-	 * @author Administrator
+	 * ATF加载器
+	 * 
+	 * @author bright
+	 * @version 20130514
 	 */
 	public class GAtfLoader extends GBinLoader {
 		private var _decoder : GAtfDecoder;
 
 		override protected function decode() : void {
-			_decoder.decode(_data,complete,failed);
+			_decoder.decode(_data, complete, failed);
 			_data.clear();
 		}
 

@@ -93,6 +93,7 @@ package gear.codec.atf {
 
 		public function decode(data : ByteArray, onFinish : Function, onFailed : Function) : void {
 			_data = data;
+			_data.position = 0;
 			_onFinish = onFinish;
 			_onFailed = onFailed;
 			var signature : String = _data.readUTFBytes(3);

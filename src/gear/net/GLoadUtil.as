@@ -97,6 +97,9 @@
 				case GFileType.JPG:
 					loader = new GImgLoader(url, key);
 					break;
+				case GFileType.GIF:
+					loader = new GGifLoader(url, key);
+					break;
 				case GFileType.MP3:
 					loader = new GMp3Loader(url, key);
 					break;

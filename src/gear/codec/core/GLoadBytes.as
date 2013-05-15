@@ -40,7 +40,7 @@
 
 		private function completeHandler(event : Event) : void {
 			var loaderInfo : LoaderInfo = LoaderInfo(event.currentTarget);
-			if (loaderInfo.contentType == "image/jpegxr") {
+			if (loaderInfo.contentType == "image/jpegxr" || loaderInfo.contentType == "image/gif") {
 				_args.push(Bitmap(loaderInfo.content).bitmapData);
 			}
 			removeEvents(loaderInfo);
