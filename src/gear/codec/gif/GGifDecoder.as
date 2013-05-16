@@ -1,6 +1,7 @@
 package gear.codec.gif {
-	import gear.codec.core.GLoadBytes;
+	import gear.codec.core.GBytesLoader;
 	import gear.codec.core.IGDecoder;
+	import gear.gui.bd.GBDList;
 	import gear.gui.utils.GUIUtil;
 	import gear.log4a.GLogger;
 
@@ -24,7 +25,7 @@ package gear.codec.gif {
 		protected var _logical : GLSD;
 		protected var _graphicsControl : GGraphicsControl;
 		protected var _gct : GColorTable;
-		protected var _totalFrames : int;
+		protected var _list : GBDList;
 
 		protected function failed() : void {
 			if (_onFailed != null) {
@@ -153,14 +154,13 @@ package gear.codec.gif {
 			image.encode(gif);
 			data.encode(gif);
 			gif.writeByte(0x3B);
-			var load : GLoadBytes = new GLoadBytes(gif, function(offsetLeft : int, offsetTop : int, bd : BitmapData) : void {
+			var loader : GBytesLoader = new GBytesLoader(gif, function(offsetLeft : int, offsetTop : int, bd : BitmapData) : void {
 				var bp : Bitmap = new Bitmap(bd);
 				bp.x = offsetLeft;
 				bp.y = offsetTop;
-				trace(offsetLeft, offsetTop);
 				GUIUtil.stage.addChild(bp);
 			}, x, y);
-			_totalFrames++;
+			loader.load();
 		}
 
 		protected function decodeContents() : void {
@@ -177,6 +177,7 @@ package gear.codec.gif {
 					break;
 				}
 			}
+			finish();
 		}
 
 		public function GGifDecoder() {
@@ -194,7 +195,6 @@ package gear.codec.gif {
 				decodeGCT();
 			}
 			decodeContents();
-			finish();
 		}
 	}
 }

@@ -13,14 +13,18 @@
 	import flash.utils.ByteArray;
 
 	/**
-	 * 转换字节数组
+	 * 字节加载器
 	 * 
 	 * @author bright
 	 * @version 20130510
 	 */
-	public final class GLoadBytes {
+	public final class GBytesLoader {
+		private var _data : ByteArray;
 		private var _onFinish : Function;
 		private var _args : Array;
+		private var _loader : Loader;
+		private var _context : LoaderContext;
+		private var _isLoaded : Boolean;
 
 		private function addEvents(value : LoaderInfo) : void {
 			value.addEventListener(Event.COMPLETE, completeHandler);
@@ -40,7 +44,7 @@
 
 		private function completeHandler(event : Event) : void {
 			var loaderInfo : LoaderInfo = LoaderInfo(event.currentTarget);
-			if (loaderInfo.contentType == "image/jpegxr" || loaderInfo.contentType == "image/gif") {
+			if (loaderInfo.contentType.indexOf("image") != -1) {
 				_args.push(Bitmap(loaderInfo.content).bitmapData);
 			}
 			removeEvents(loaderInfo);
@@ -57,19 +61,27 @@
 			}
 		}
 
-		public function GLoadBytes(data : ByteArray, onFinish : Function, ...args : Array) : void {
+		public function GBytesLoader(data : ByteArray, onFinish : Function, ...args : Array) : void {
+			_data = data;
 			_onFinish = onFinish;
 			_args = args;
-			var loader : Loader = new Loader();
-			var context : LoaderContext = new LoaderContext();
-			context.allowCodeImport = true;
+			_loader = new Loader();
+			_context = new LoaderContext();
+			_context.allowCodeImport = true;
 			if (Capabilities.playerType == "Desktop") {
-				context.allowLoadBytesCodeExecution = true;
+				_context.allowLoadBytesCodeExecution = true;
 			}
-			context.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
-			addEvents(loader.contentLoaderInfo);
-			loader.loadBytes(data, context);
-			data.clear();
+			_context.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
+			_isLoaded = false;
+		}
+
+		public function load() : void {
+			if (!_isLoaded) {
+				_isLoaded = true;
+				addEvents(_loader.contentLoaderInfo);
+				_loader.loadBytes(_data, _context);
+				_data.clear();
+			}
 		}
 	}
 }

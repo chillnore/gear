@@ -4,7 +4,7 @@
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 
-	import gear.codec.core.GLoadBytes;
+	import gear.codec.core.GBytesLoader;
 	import gear.gui.bd.GBDList;
 	import gear.gui.bd.GBDUnit;
 
@@ -40,7 +40,7 @@
 			compressor.quantization = 30;
 			output.writeShort(_list.length);
 			var ba : ByteArray;
-			for each (var unit:GBDUnit in _list.list) {
+			for each (var unit : GBDUnit in _list.list) {
 				output.writeShort(unit.offsetX);
 				output.writeShort(unit.offsetY);
 				ba = new ByteArray();
@@ -67,13 +67,14 @@
 			var offsetX : int;
 			var offsetY : int;
 			var ba : ByteArray;
-			var loadBytes : GLoadBytes;
-			for (var i : int = 0;i < _total;i++) {
+			var loader : GBytesLoader;
+			for (var i : int = 0; i < _total; i++) {
 				offsetX = input.readShort();
 				offsetY = input.readShort();
 				ba = new ByteArray();
 				input.readBytes(ba, 0, input.readUnsignedInt());
-				loadBytes = new GLoadBytes(ba, onLoadDone, i, offsetX, offsetY);
+				loader = new GBytesLoader(ba, onLoadDone, i, offsetX, offsetY);
+				loader.load();
 			}
 		}
 

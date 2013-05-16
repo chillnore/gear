@@ -1,8 +1,6 @@
 package gear.net {
 	import gear.codec.gif.GGifDecoder;
 
-	import com.worlize.gif.GIFDecoder;
-
 	/**
 	 * GIF加载器
 	 * 
@@ -14,8 +12,6 @@ package gear.net {
 
 		override protected function decode() : void {
 			_decoder.decode(_data, complete, failed);
-			var decoder:GIFDecoder=new GIFDecoder();
-			//decoder.decodeBytes(_data);
 			_data.clear();
 		}
 

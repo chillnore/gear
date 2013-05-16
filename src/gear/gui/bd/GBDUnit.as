@@ -10,11 +10,12 @@
 	 * 位图单元
 	 * 
 	 * @author bright
-	 * @version 20111008
+	 * @version 20130518
 	 */
 	public final class GBDUnit implements IDispose {
 		private var _bd : BitmapData;
 		private var _bound : Rectangle;
+		private var _delay : int;
 
 		/**
 		 * 构造函数
@@ -42,18 +43,18 @@
 		public function mergeBD(dx : int, dy : int, unit : GBDUnit) : void {
 			_bd.copyPixels(unit.bd, unit.bd.rect, new Point(dx, dy), null, null, true);
 		}
-		
-		public function set scale(value:Number):void{
-			_bound.x=_bound.x*value;
-			_bound.y=_bound.y*value;
-			_bound.width=_bound.width*value;
-			_bound.height=_bound.height*value;
-			if(_bd==null){
+
+		public function set scale(value : Number) : void {
+			_bound.x = _bound.x * value;
+			_bound.y = _bound.y * value;
+			_bound.width = _bound.width * value;
+			_bound.height = _bound.height * value;
+			if (_bd == null) {
 				return;
 			}
-			var newBD:BitmapData=GBDUtil.resizeBD(_bd,_bound.width,_bound.height);
+			var newBD : BitmapData = GBDUtil.resizeBD(_bd, _bound.width, _bound.height);
 			_bd.dispose();
-			_bd=newBD;
+			_bd = newBD;
 		}
 
 		public function get offsetX() : int {
@@ -77,8 +78,16 @@
 			return _bound;
 		}
 
+		public function set delay(value : int) : void {
+			_delay = value;
+		}
+
+		public function get delay() : int {
+			return _delay;
+		}
+
 		/**
-		 * @inheritDoc
+		 * 释放资源
 		 */
 		public function dispose() : void {
 			_bound = null;

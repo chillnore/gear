@@ -10,7 +10,13 @@ package gear.codec.gif {
 		public var packed : int;
 		// 保留
 		public var reserved : int;
-		// 配置方法
+		/**
+		 * 配置方法
+		 * 0 - 无指定的配置，解码器不需要做任何处理。
+		 * 1 - 不做配值。图像将被留在原位置。
+		 * 2 - 恢复背景颜色。图像所占的区域必须备恢复为背景颜色。
+		 * 3 - 恢复以前的颜色。解码器需要将图像区域恢复为原来成象的颜色。
+		 */
 		public var disposalMethod : int;
 		// 用户输入
 		public var userInput : int;
@@ -21,7 +27,7 @@ package gear.codec.gif {
 		// 透明索引
 		public var transparencyIndex : int;
 
-		public function GraphicsControl() : void {
+		public function GGraphicsControl() : void {
 		}
 
 		public function decode(value : ByteArray) : void {

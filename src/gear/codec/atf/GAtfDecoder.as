@@ -1,5 +1,5 @@
 package gear.codec.atf {
-	import gear.codec.core.GLoadBytes;
+	import gear.codec.core.GBytesLoader;
 	import gear.codec.core.IGDecoder;
 	import gear.log4a.GLogger;
 	import gear.utils.GBAUtil;
@@ -17,6 +17,11 @@ package gear.codec.atf {
 		protected var _data : ByteArray;
 		protected var _onFinish : Function;
 		protected var _onFailed : Function;
+		/**
+		 * 0-RGB 888
+		 * 1-RGBA 8888
+		 * 3-RAW Compressed (DXT1+ETC1+PVRTV4bpp)
+		 */
 		protected var _format : int;
 		protected var _width : int;
 		protected var _height : int;
@@ -43,23 +48,36 @@ package gear.codec.atf {
 			}
 		}
 
-		protected function decodeDXT() : void {
-			var size : int;
+		protected function decodeLZMA() : void {
+			var length : int ;
+			var block : ByteArray;
 			for (var i : int = 0; i < _count * 3; i++) {
-				size = GBAUtil.readU24(_data);
-				_data.position += size;
+				length = GBAUtil.readU24(_data);
+				if (length > 0) {
+					block = new ByteArray();
+					_data.readBytes(block, 0, length);
+					if (i == 0) {
+						decodeDXT1(block);
+					}
+				}
 			}
-			finish();
+		}
+
+		protected function decodeDXT1(value : ByteArray) : void {
+			// TODO
 		}
 
 		protected function decodeJXR() : void {
-			var block : ByteArray = new ByteArray();
-			var size : int = GBAUtil.readU24(_data);
-			_data.readBytes(block, 0, size);
-			new GLoadBytes(block, onLoadFinish);
+			var length : int = GBAUtil.readU24(_data);
+			if (length > 0) {
+				var block : ByteArray = new ByteArray();
+				_data.readBytes(block, 0, length);
+				var loader : GBytesLoader = new GBytesLoader(block, onLoadFinish);
+				loader.load();
+			}
 			for (var i : int = 1; i < _count; i++) {
-				size = GBAUtil.readU24(_data);
-				_data.position += size;
+				length = GBAUtil.readU24(_data);
+				_data.position += length;
 			}
 		}
 
@@ -110,8 +128,9 @@ package gear.codec.atf {
 			_width = Math.pow(2, data.readUnsignedByte());
 			_height = Math.pow(2, data.readUnsignedByte());
 			_count = data.readUnsignedByte();
+			GLogger.debug("格式", _format, "宽度", _width, "高度", _height, "块数", _count);
 			if (_format == 3) {
-				decodeDXT();
+				decodeLZMA();
 				return;
 			}
 			decodeJXR();
