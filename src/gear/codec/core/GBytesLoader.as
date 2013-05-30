@@ -1,14 +1,12 @@
 ﻿package gear.codec.core {
-	import flash.events.IOErrorEvent;
-
 	import gear.log4a.GLogger;
 
 	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.system.Capabilities;
-	import flash.system.ImageDecodingPolicy;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
 
@@ -40,6 +38,7 @@
 		private function ioErrorHandler(event : IOErrorEvent) : void {
 			_args.push(null);
 			finish();
+			GLogger.debug(event.text);
 		}
 
 		private function completeHandler(event : Event) : void {
@@ -71,7 +70,9 @@
 			if (Capabilities.playerType == "Desktop") {
 				_context.allowLoadBytesCodeExecution = true;
 			}
-			_context.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
+			if (_context.hasOwnProperty("imageDecodingPolicy")) {
+				_context.imageDecodingPolicy = "onLoad";
+			}
 			_isLoaded = false;
 		}
 

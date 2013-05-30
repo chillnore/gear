@@ -79,12 +79,12 @@
 			var i : int;
 			if (value == null || value.length < 1) {
 				total = _list.length / _dirs;
-				for (i = 0;i < total;i++) {
+				for (i = 0; i < total; i++) {
 					_frames.push(i);
 				}
 			} else {
 				total = value.length;
-				for (i = 0;i < total;i++) {
+				for (i = 0; i < total; i++) {
 					_frames[i] = value[i];
 				}
 			}
@@ -115,24 +115,24 @@
 				}
 			}
 			_frame = frame;
-			var d : int = _dir;
+			var dir : int = _dir;
 			if (_isTurn && _oldDir != _dir) {
-				d = _oldDir = GMathUtil.getTurnDir(_oldDir, _dir);
+				dir = _oldDir = GMathUtil.getTurnDir(_oldDir, _dir);
 			}
-			var index : int = d * _cols + _frame;
-			var unit : GBDUnit = _list.getAt(index, false);
-			if (unit == null) {
+			var index : int = dir * _cols + _frame;
+			var bdFrame : GBDFrame = _list.getAt(index, false);
+			if ( bdFrame == null) {
 				return;
 			}
-			_bitmap.x = unit.offsetX;
-			_bitmap.y = unit.offsetY;
-			_bitmap.bitmapData = unit.bd;
+			_bitmap.x = bdFrame.offsetX;
+			_bitmap.y = bdFrame.offsetY;
+			_bitmap.bitmapData = bdFrame.bd;
 			if (_shadow != null) {
-				unit = _list.getShadowAt(index, false);
-				if (unit != null) {
-					_shadow.x = unit.offsetX;
-					_shadow.y = unit.offsetY;
-					_shadow.bitmapData = unit.bd;
+				bdFrame = _list.getShadowAt(index, false);
+				if (bdFrame != null) {
+					_shadow.x = bdFrame.offsetX;
+					_shadow.y = bdFrame.offsetY;
+					_shadow.bitmapData = bdFrame.bd;
 				}
 			}
 		}
@@ -309,7 +309,7 @@
 			if (index < 0 || index >= _frames.length) {
 				return;
 			}
-			for (var i : int = 0;i < frames.length;i++) {
+			for (var i : int = 0; i < frames.length; i++) {
 				_frames[index + i] = frames[i];
 			}
 		}
@@ -321,7 +321,7 @@
 			if (index < 0 || index >= _frames.length || frames == null) {
 				return;
 			}
-			for each (var frame:int in frames) {
+			for each (var frame : int in frames) {
 				_frames.splice(index, 0, frame);
 			}
 		}
@@ -338,7 +338,7 @@
 			}
 			if (_frames.length == 0) {
 				var total : int = _list.length;
-				for (var i : int = 0;i < total;i++) {
+				for (var i : int = 0; i < total; i++) {
 					_frames.push(i);
 				}
 				_frame = -1;
@@ -352,16 +352,7 @@
 			return _current;
 		}
 
-		/**
-		 * 获得当前帧
-		 * 
-		 * @return 当前帧
-		 */
-		public function get frame() : int {
-			return _frame;
-		}
-
-		public function get unit() : GBDUnit {
+		public function get unit() : GBDFrame {
 			return _list != null ? _list.getAt(_frame, false) : null;
 		}
 
@@ -411,13 +402,23 @@
 				_wait--;
 				return;
 			}
-			if (_delay > 33) {
+			var dir : int = _dir;
+			if (_isTurn && _oldDir != _dir) {
+				dir = _oldDir = GMathUtil.getTurnDir(_oldDir, _dir);
+			}
+			var index : int = dir * _cols + _frame;
+			var bdFrame : GBDFrame = _list.getAt(index, false);
+			var delay : int = _delay;
+			if (bdFrame != null && bdFrame.delay > 33) {
+				delay = bdFrame.delay;
+			}
+			if (delay > 33) {
 				_offset += GFrameRender.elapsed;
-				if (_offset < _delay) {
+				if (_offset < delay) {
 					return;
 				}
-				_offset -= _delay;
-				_offset %= _delay;
+				_offset -= delay;
+				_offset %= delay;
 			}
 			if (_current >= _frames.length - 1) {
 				if (_loop > 0) {

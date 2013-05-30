@@ -265,6 +265,11 @@
 			var loader : GSwfLoader = _loaded[lib] as GSwfLoader;
 			return loader != null ? loader.getBD(key) : null;
 		}
+		
+		public static function getBDList(key:String):GBDList{
+			var loader : GGifLoader = _loaded[key] as GGifLoader;
+			return loader != null ? loader.bdList : null;
+		}
 
 		public static function getSound(key : String, lib : String) : Sound {
 			var loader : GSwfLoader = _loaded[lib] as GSwfLoader;

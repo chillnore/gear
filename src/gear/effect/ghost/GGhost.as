@@ -1,7 +1,7 @@
 ﻿package gear.effect.ghost {
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
-	import gear.gui.bd.GBDUnit;
+	import gear.gui.bd.GBDFrame;
 	import gear.pool.GObjPool;
 	import gear.render.GFrameRender;
 	import gear.render.IGFrame;
@@ -13,7 +13,7 @@
 	public class GGhost extends Sprite implements IGFrame {
 		public static const pool : GObjPool = new GObjPool(GGhost);
 		protected var _bitmap : Bitmap;
-		protected var _unit : GBDUnit;
+		protected var _unit : GBDFrame;
 		protected var _count : int;
 
 		public function GGhost() : void {
@@ -21,7 +21,7 @@
 			addChild(_bitmap);
 		}
 
-		public function reset(newX : int, newY : int, z : int, unit : GBDUnit) : void {
+		public function reset(newX : int, newY : int, z : int, unit : GBDFrame) : void {
 			x = newX;
 			y = newY - 1;
 			_unit = unit;

@@ -6,7 +6,7 @@
 
 	import gear.codec.core.GBytesLoader;
 	import gear.gui.bd.GBDList;
-	import gear.gui.bd.GBDUnit;
+	import gear.gui.bd.GBDFrame;
 
 	/**
 	 * @author bright
@@ -19,7 +19,7 @@
 		private var _count : int;
 
 		private function onLoadDone(i : int, offsetX : int, offsetY : int, bd : BitmapData) : void {
-			_list.setAt(i, new GBDUnit(offsetX, offsetY, bd));
+			_list.setAt(i, new GBDFrame(offsetX, offsetY, bd));
 			if (++_count < _total) {
 				return;
 			}
@@ -40,7 +40,7 @@
 			compressor.quantization = 30;
 			output.writeShort(_list.length);
 			var ba : ByteArray;
-			for each (var unit : GBDUnit in _list.list) {
+			for each (var unit : GBDFrame in _list.list) {
 				output.writeShort(unit.offsetX);
 				output.writeShort(unit.offsetY);
 				ba = new ByteArray();
@@ -63,7 +63,7 @@
 				return;
 			}
 			_count = 0;
-			_list = new GBDList(new Vector.<GBDUnit>(_total));
+			_list = new GBDList(new Vector.<GBDFrame>(_total));
 			var offsetX : int;
 			var offsetY : int;
 			var ba : ByteArray;

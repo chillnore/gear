@@ -64,7 +64,8 @@ package gear.codec.atf {
 		}
 
 		protected function decodeDXT1(value : ByteArray) : void {
-			// TODO
+			// TODO LZMA
+			value;
 		}
 
 		protected function decodeJXR() : void {

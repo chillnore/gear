@@ -13,17 +13,17 @@
 	 * 位图数据定义
 	 * 
 	 * @author bright
-	 * @version 20121107
+	 * @version 20130527
 	 */
 	public final class GBDList implements IDispose {
 		public var key : String;
-		private var _list : Vector.<GBDUnit>;
+		private var _list : Vector.<GBDFrame>;
 		private var _hasFlipH : Boolean;
 		private var _hasShadow : Boolean;
 		private var _matrix : Matrix;
-		private var _flipH_list : Vector.<GBDUnit>;
-		private var _shadow_list : Vector.<GBDUnit>;
-		private var _flipH_shadow_list : Vector.<GBDUnit>;
+		private var _flipH_list : Vector.<GBDFrame>;
+		private var _shadow_list : Vector.<GBDFrame>;
+		private var _flipH_shadow_list : Vector.<GBDFrame>;
 		private var _rect : Rectangle;
 
 		private function createFlipHList() : void {
@@ -31,12 +31,12 @@
 				return;
 			}
 			var total : int = _list.length;
-			_flipH_list = new Vector.<GBDUnit>(total, true);
-			var unit : GBDUnit;
+			_flipH_list = new Vector.<GBDFrame>(total, true);
+			var unit : GBDFrame;
 			var bd : BitmapData;
 			_matrix.identity();
 			_matrix.scale(-1, 1);
-			for (var i : int = 0;i < total;i++) {
+			for (var i : int = 0; i < total; i++) {
 				unit = _list[i];
 				if (unit == null || unit.bd == null) {
 					continue;
@@ -44,7 +44,7 @@
 				bd = new BitmapData(unit.bd.width, unit.bd.height, true, 0);
 				_matrix.tx = bd.width;
 				bd.draw(unit.bd, _matrix);
-				_flipH_list[i] = new GBDUnit(-unit.offsetX - bd.width, unit.offsetY, bd);
+				_flipH_list[i] = new GBDFrame(-unit.offsetX - bd.width, unit.offsetY, bd);
 			}
 		}
 
@@ -53,15 +53,15 @@
 				return;
 			}
 			var total : int = _list.length;
-			_shadow_list = new Vector.<GBDUnit>(total, true);
-			var unit : GBDUnit;
+			_shadow_list = new Vector.<GBDFrame>(total, true);
+			var unit : GBDFrame;
 			var bd : BitmapData;
 			_matrix.identity();
 			_matrix.c = 0.35;
 			_matrix.d = 0.45;
 			var size : Point;
 			var offset : Point;
-			for (var i : int = 0;i < total;i++) {
+			for (var i : int = 0; i < total; i++) {
 				unit = _list[i];
 				if (unit == null || unit.bd == null) {
 					continue;
@@ -73,7 +73,7 @@
 				}
 				bd = new BitmapData(size.x, size.y, true, 0);
 				bd.draw(unit.bd, _matrix, new ColorTransform(0, 0, 0, 0.5));
-				_shadow_list[i] = new GBDUnit(offset.x, offset.y, bd);
+				_shadow_list[i] = new GBDFrame(offset.x, offset.y, bd);
 			}
 		}
 
@@ -82,15 +82,15 @@
 				return;
 			}
 			var total : int = _list.length;
-			_flipH_shadow_list = new Vector.<GBDUnit>(total, true);
-			var unit : GBDUnit;
+			_flipH_shadow_list = new Vector.<GBDFrame>(total, true);
+			var unit : GBDFrame;
 			var bd : BitmapData;
 			_matrix.identity();
 			_matrix.c = 0.35;
 			_matrix.d = 0.45;
 			var size : Point;
 			var offset : Point;
-			for (var i : int = 0;i < total;i++) {
+			for (var i : int = 0; i < total; i++) {
 				unit = _flipH_list[i];
 				if (unit == null || unit.bd == null) {
 					continue;
@@ -102,7 +102,7 @@
 				}
 				bd = new BitmapData(size.x, size.y, true, 0);
 				bd.draw(unit.bd, _matrix, new ColorTransform(0, 0, 0, 0.5));
-				_flipH_shadow_list[i] = new GBDUnit(offset.x, offset.y, bd);
+				_flipH_shadow_list[i] = new GBDFrame(offset.x, offset.y, bd);
 			}
 		}
 
@@ -111,9 +111,9 @@
 		 * 
 		 * @param value 位图数组.
 		 */
-		public function GBDList(value : Vector.<GBDUnit>=null) {
-			if(value==null){
-				value=new Vector.<GBDUnit>();
+		public function GBDList(value : Vector.<GBDFrame>=null) {
+			if (value == null) {
+				value = new Vector.<GBDFrame>();
 			}
 			_list = value;
 			_matrix = new Matrix();
@@ -121,10 +121,10 @@
 			_hasFlipH = false;
 			_hasShadow = false;
 		}
-		
-		public function set scale(value:Number):void{
-			for each(var unit:GBDUnit in _list){
-				unit.scale=value;
+
+		public function set scale(value : Number) : void {
+			for each (var unit : GBDFrame in _list) {
+				unit.scale = value;
 			}
 		}
 
@@ -148,7 +148,7 @@
 		 * @param frame 第几帧
 		 * @return 位图
 		 */
-		public function getAt(value : int, flipH : Boolean = false) : GBDUnit {
+		public function getAt(value : int, flipH : Boolean = false) : GBDFrame {
 			if (value < 0 || value >= _list.length) {
 				return null;
 			}
@@ -158,9 +158,12 @@
 				return _list[value];
 			}
 		}
-		
-		public function setAt(index:int,unit:GBDUnit):void{
-			_list[index]=unit;
+
+		public function setAt(index : int, unit : GBDFrame) : void {
+			if (_list.length < index) {
+				_list.length = index;
+			}
+			_list[index] = unit;
 		}
 
 		public function get hasFlipH() : Boolean {
@@ -171,7 +174,7 @@
 			return _hasShadow;
 		}
 
-		public function getShadowAt(value : int, flipH : Boolean) : GBDUnit {
+		public function getShadowAt(value : int, flipH : Boolean) : GBDFrame {
 			if (!_hasShadow) {
 				return null;
 			}
@@ -186,9 +189,9 @@
 			}
 			return null;
 		}
-		
-		public function set length(value:int):void{
-			_list.length=value;
+
+		public function set length(value : int) : void {
+			_list.length = value;
 		}
 
 		/**
@@ -207,7 +210,7 @@
 			if (_list == null) {
 				return;
 			}
-			for each (var unit:GBDUnit in _list) {
+			for each (var unit : GBDFrame in _list) {
 				unit.dispose();
 			}
 			_list = null;
@@ -216,7 +219,7 @@
 		private function getMaxRect() : void {
 			_rect = new Rectangle();
 			if (_list) {
-				for each (var data : GBDUnit in _list) {
+				for each (var data : GBDFrame in _list) {
 					var bdw : int = data.offsetX + data.bd.width;
 					var bdh : int = data.offsetY + data.bd.height;
 					if (bdw > _rect.width) _rect.width = bdw;
@@ -231,7 +234,7 @@
 				bd = _list[i].bd;
 				var ct : ColorTransform = new ColorTransform(1.0, 1.0, 1.0, value);
 				bd.colorTransform(bd.rect, ct);
-				_list[i] = new GBDUnit(_list[i].offsetX, _list[i].offsetY, bd);
+				_list[i] = new GBDFrame(_list[i].offsetX, _list[i].offsetY, bd);
 			}
 		}
 
@@ -265,18 +268,17 @@
 			return _rect.width;
 		}
 
-		public function get list() : Vector.<GBDUnit> {
+		public function get list() : Vector.<GBDFrame> {
 			return _list;
 		}
-		
-		public function concat(...args:Array):void{
-			
+
+		public function concat(...args : Array) : void {
 		}
 
 		public function clone() : GBDList {
-			var bds : Vector.<GBDUnit>=new  Vector.<GBDUnit>;
+			var bds : Vector.<GBDFrame>=new  Vector.<GBDFrame>;
 			for (var i : int = 0; i < _list.length; i++) {
-				var bdunit : GBDUnit = _list[i].clone();
+				var bdunit : GBDFrame = _list[i].clone();
 				bds.push(bdunit);
 			}
 			return new GBDList(bds);

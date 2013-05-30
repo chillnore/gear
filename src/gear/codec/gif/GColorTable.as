@@ -4,15 +4,25 @@ package gear.codec.gif {
 	/**
 	 * @author Administrator
 	 */
-	public class GColorTable {
-		public var data : ByteArray;
+	public final class GColorTable {
+		private var _numColors : uint;
+		private var _table : ByteArray;
 
 		public function GColorTable() {
 		}
 
-		public function decode(value : ByteArray, numColors : int) : void {
-			data = new ByteArray();
-			value.readBytes(data, 0, 3 * (2 << numColors));
+		public function decode(value : ByteArray, numColors : uint) : void {
+			_table = new ByteArray();
+			_numColors = numColors;
+			value.readBytes(_table, 0, 3 * (2 << _numColors));
+		}
+
+		public function get numColors() : uint {
+			return _numColors;
+		}
+
+		public function get table() : ByteArray {
+			return _table;
 		}
 	}
 }

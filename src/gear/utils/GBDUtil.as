@@ -1,6 +1,6 @@
 ﻿package gear.utils {
 	import gear.gui.bd.GBDList;
-	import gear.gui.bd.GBDUnit;
+	import gear.gui.bd.GBDFrame;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -50,7 +50,7 @@
 			var mtx : Matrix = new Matrix();
 			mc.gotoAndStop(1);
 			var total : int = mc.totalFrames;
-			var list : Vector.<GBDUnit>=new Vector.<GBDUnit>(total, true);
+			var list : Vector.<GBDFrame>=new Vector.<GBDFrame>(total, true);
 			var bd : BitmapData;
 			var offset : Point;
 			for (var i : int = 0;i < total ;i++) {
@@ -63,7 +63,7 @@
 					if (bp != null) {
 						offset = new Point(bp.x, bp.y);
 						bd = cutAlphaBD(bp.bitmapData, offset);
-						list[i] = new GBDUnit(offset.x, offset.y, bd);
+						list[i] = new GBDFrame(offset.x, offset.y, bd);
 						mc.nextFrame();
 						continue;
 					}
@@ -82,20 +82,20 @@
 				}
 				offset = new Point(bounds.x, bounds.y);
 				bd = cutAlphaBD(bd, offset);
-				list[i] = new GBDUnit(offset.x, offset.y, bd);
+				list[i] = new GBDFrame(offset.x, offset.y, bd);
 				mc.nextFrame();
 			}
 			return new GBDList(list);
 		}
 
-		public static function spriteToBD(skin : Sprite) : GBDUnit {
+		public static function spriteToBD(skin : Sprite) : GBDFrame {
 			if (skin == null || skin.numChildren < 1) {
 				return null;
 			}
 			var bp : Bitmap = skin.getChildAt(0) as Bitmap;
 			if (bp != null) {
 				bp.bitmapData.lock();
-				return new GBDUnit(bp.x, bp.y, bp.bitmapData);
+				return new GBDFrame(bp.x, bp.y, bp.bitmapData);
 			}
 			var rect : Rectangle = skin.getBounds(skin);
 			if (rect.width < 1 || rect.height < 1) {
@@ -105,7 +105,7 @@
 			var mtx : Matrix = new Matrix();
 			mtx.translate(Math.floor(-rect.x), Math.floor(-rect.y));
 			bd.draw(skin, mtx, null, null, null, true);
-			return new GBDUnit(rect.x, rect.y, bd);
+			return new GBDFrame(rect.x, rect.y, bd);
 		}
 
 		public static function resizeBD(source : BitmapData, w : int, h : int) : BitmapData {
@@ -173,7 +173,7 @@
 			if (oy == 0) {
 				oy = -gh * 0.5;
 			}
-			var list : Vector.<GBDUnit> = new Vector.<GBDUnit>();
+			var list : Vector.<GBDFrame> = new Vector.<GBDFrame>();
 			var clip : BitmapData;
 			var rect : Rectangle = new Rectangle(0, 0, gw, gh);
 			var offset : Point = new Point();
@@ -191,7 +191,7 @@
 					clip.copyPixels(source, rect, GMathUtil.ZERO_POINT);
 					offset.setTo(ox, oy);
 					clip = cutAlphaBD(clip, offset);
-					list[next++] = new GBDUnit(offset.x, offset.y, clip);
+					list[next++] = new GBDFrame(offset.x, offset.y, clip);
 				}
 			}
 			return new GBDList(list);
@@ -232,7 +232,7 @@
 			if (source == null || widths == null || widths.length < 1) {
 				return null;
 			}
-			var list : Vector.<GBDUnit> = new Vector.<GBDUnit>(widths.length, true);
+			var list : Vector.<GBDFrame> = new Vector.<GBDFrame>(widths.length, true);
 			var bd : BitmapData;
 			var rect : Rectangle = new Rectangle();
 			rect.height = source.height;
@@ -241,7 +241,7 @@
 				bd = new BitmapData(rect.width, rect.height, true, 0);
 				bd.copyPixels(source, rect, GMathUtil.ZERO_POINT);
 				rect.x += rect.width;
-				list[i] = new GBDUnit(0, 0, bd);
+				list[i] = new GBDFrame(0, 0, bd);
 			}
 			return new GBDList(list);
 		}
@@ -308,11 +308,11 @@
 			return rect;
 		}
 
-		public static function mergeBDUnit(value : Array) : GBDUnit {
-			var source : GBDUnit = GBDUnit(value[0]).clone();
+		public static function mergeBDUnit(value : Array) : GBDFrame {
+			var source : GBDFrame = GBDFrame(value[0]).clone();
 			var s_rect : Rectangle = source.bound;
 			var total : int = value.length;
-			var target : GBDUnit;
+			var target : GBDFrame;
 			var t_rect : Rectangle;
 			var u_rect : Rectangle;
 			for (var i : int = 1;i < total;i++) {
