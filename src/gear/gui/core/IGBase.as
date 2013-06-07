@@ -14,6 +14,8 @@ package gear.gui.core {
 
 		function get y() : Number;
 
+		function moveTo(newX : int, newY : int) : void;
+
 		function set width(value : Number) : void;
 
 		function get width() : Number;

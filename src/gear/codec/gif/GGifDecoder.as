@@ -162,7 +162,8 @@ package gear.codec.gif {
 		}
 
 		protected function onLoad(index : int, delay : int, offsetX : int, offsetY : int, bd : BitmapData) : void {
-			_list.setAt(index, new GBDFrame(offsetX, offsetY, bd, delay * 12));
+			delay = (delay < 1 ? 80 : delay * 12);
+			_list.setAt(index, new GBDFrame(offsetX, offsetY, bd, delay));
 			_count++;
 			if (_count >= _total) {
 				finish();

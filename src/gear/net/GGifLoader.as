@@ -2,8 +2,6 @@ package gear.net {
 	import gear.codec.gif.GGifDecoder;
 	import gear.gui.bd.GBDList;
 
-	import com.worlize.gif.GIFDecoder;
-
 	/**
 	 * GIF加载器
 	 * 
@@ -16,8 +14,6 @@ package gear.net {
 		override protected function decode() : void {
 			 _decoder.decode(_data, complete, failed);
 			 _data.clear();
-			//var decoder : GIFDecoder = new GIFDecoder();
-			//decoder.decodeBytes(_data);
 		}
 
 		public function GGifLoader(url : String, key : String = null, version : String = null) {

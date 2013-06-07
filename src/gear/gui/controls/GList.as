@@ -137,7 +137,7 @@
 			cell.y = index * _template.height;
 			cell.width = _scrollRect.width;
 			cell.source = _model.getAt(index);
-			_content.addChild(cell as DisplayObject);
+			_content.addChild(DisplayObject(cell));
 			_cells.splice(index, 0, cell);
 			cell.addEventListener(MouseEvent.MOUSE_DOWN, cell_mouseDownHandler);
 			cell.addEventListener(MouseEvent.CLICK, cell_clickHandler);
