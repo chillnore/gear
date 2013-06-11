@@ -37,6 +37,7 @@
 		protected var _onCellClick : Function;
 
 		override protected function preinit() : void {
+			
 			_autoSize = GAutoSize.AUTO_SIZE;
 			_scrollRect = new Rectangle();
 			_selectedIndex = -1;
@@ -48,8 +49,6 @@
 			_model = new GGridModel();
 			_model.onChange = onModelChange;
 			_cells = new Vector.<IGCell>();
-			cell = GCell;
-			callLater(initCells);
 		}
 
 		override protected function create() : void {
@@ -60,15 +59,25 @@
 			_vScrollBar = new GVScrollBar();
 			_vScrollBar.visible = false;
 			addChild(_vScrollBar);
+			cell = GCell;
+			callLater(initCells);
 		}
 
 		override protected function resize() : void {
-			_scrollRect.width = _width - _padding.left - _padding.right ;
+			_scrollRect.width = _width - _padding.left - _padding.right - _vScrollBar.width;
 			_scrollRect.height = _height - _padding.top - _padding.bottom;
 			_content.scrollRect = _scrollRect;
-			_vScrollBar.x = _width;
+			_vScrollBar.x = _width - _vScrollBar.width;
 			_vScrollBar.height = _height;
 			callLater(updateScroll);
+		}
+
+		override protected function onShow() : void {
+			addEvent(this, MouseEvent.MOUSE_WHEEL, mouseWheelHandler);
+		}
+
+		protected function mouseWheelHandler(event : MouseEvent) : void {
+			_vScrollBar.value -= event.delta;
 		}
 
 		protected function initCells() : void {
@@ -104,14 +113,10 @@
 			if (max > 0) {
 				_vScrollBar.setTo(pageSize, max, _scrollRect.y);
 				if (!_vScrollBar.visible) {
-					_scrollRect.width = _width - _padding.left - _padding.right;
-					_content.scrollRect = _scrollRect;
 					_vScrollBar.visible = true;
 					_vScrollBar.onValueChange = onValueChange;
 				}
 			} else if (_vScrollBar.visible) {
-				_scrollRect.width = _width - _padding.left - _padding.right;
-				_content.scrollRect = _scrollRect;
 				_vScrollBar.value = 0;
 				_vScrollBar.visible = false;
 				_vScrollBar.onValueChange = null;
@@ -152,10 +157,13 @@
 			if (cr == mr) {
 				return;
 			}
+			var r : int;
+			var c : int;
+			var cell : IGCell;
 			if (cr < mr) {
-				for (var r : int = cr; r < mr; r++) {
-					for (var c : int = 0; c < _cols; c++) {
-						var cell : IGCell = new _cell();
+				for (r = cr; r < mr; r++) {
+					for (c = 0; c < _cols; c++) {
+						cell = new _cell();
 						cell.moveTo(c * (_template.width + _hgap), r * (_template.height + _vgap));
 						cell.addEventListener(MouseEvent.MOUSE_DOWN, cell_mouseDownHandler);
 						cell.addEventListener(MouseEvent.CLICK, cell_clickHandler);
@@ -164,6 +172,15 @@
 					}
 				}
 			} else {
+				for (r = mr; r < cr; r++) {
+					for (c = 0; c < _cols; c++) {
+						cell = _cells[r * _cols + c];
+						cell.removeEventListener(MouseEvent.MOUSE_DOWN, cell_mouseDownHandler);
+						cell.removeEventListener(MouseEvent.CLICK, cell_clickHandler);
+						cell.hide();
+					}
+				}
+				_cells.length = mr * _cols;
 			}
 			callLater(updateScroll);
 		}
@@ -179,6 +196,10 @@
 			_hgap = hgap;
 			_vgap = vgap;
 		}
+		
+		public function get vScrollBar() : GVScrollBar {
+			return _vScrollBar;
+		}
 
 		public function set cell(value : Class) : void {
 			if (_cell == value) {
@@ -187,7 +208,7 @@
 			_cell = value;
 			_template = new _cell();
 			if (_autoSize == GAutoSize.AUTO_SIZE) {
-				var newW : int = _padding.left + _cols * _template.width + _hgap * (_cols - 1) + _padding.right;
+				var newW : int = _padding.left + _cols * _template.width + _hgap * (_cols - 1) + _padding.right + _vScrollBar.width;
 				var newH : int = _padding.top + _rows * _template.height + _vgap * (_rows - 1) + _padding.bottom;
 				forceSize(newW, newH);
 				callLater(resize);
