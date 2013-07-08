@@ -70,7 +70,7 @@
 			g.drawRoundRectComplex(x, y, w, h, tl, tr, bl, br);
 			g.endFill();
 		}
-		
+
 		public static function drawUpArrow(g : Graphics, color : uint, x : int, y : int, w : int, h : int) : void {
 			var commands : Vector.<int>=new <int>[1, 2, 2, 2];
 			var data : Vector.<Number>=new <Number>[x + w * 0.5, y, x + w, y + h, x, y + h, x + w * 0.5, y];
@@ -133,6 +133,16 @@
 				g.curveTo(c.x, c.y, t.x, t.y);
 			}
 			g.lineTo(x, y);
+		}
+
+		/**
+		 * 绘制菱形
+		 */
+		public static function drawDiamond(x : int, y : int, tw : int, th : int, g : Graphics) : void {
+			var halfW : int = tw / 2;
+			var halfH : int = th / 2;
+			g.lineStyle(1, 0, 1);
+			g.drawPath(new <int>[1, 2, 2, 2, 2], new <Number>[x, y - halfH, x + halfW, y, x, y + halfH, x - halfW, y, x, y - halfH]);
 		}
 	}
 }

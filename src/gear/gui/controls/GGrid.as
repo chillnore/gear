@@ -3,9 +3,13 @@
 	import gear.gui.cell.IGCell;
 	import gear.gui.core.GAutoSize;
 	import gear.gui.core.GBase;
+	import gear.gui.core.GPhase;
+	import gear.gui.core.GScaleMode;
 	import gear.gui.model.GChangeList;
 	import gear.gui.model.GGridModel;
 	import gear.gui.model.GListChange;
+	import gear.gui.skins.GPanelSkin;
+	import gear.gui.skins.IGSkin;
 	import gear.log4a.GLogger;
 
 	import flash.display.DisplayObject;
@@ -20,6 +24,7 @@
 	 * @version 20130327
 	 */
 	public class GGrid extends GBase {
+		protected var _bgSkin : IGSkin;
 		protected var _content : Sprite;
 		protected var _vScrollBar : GVScrollBar;
 		protected var _scrollRect : Rectangle;
@@ -37,7 +42,7 @@
 		protected var _onCellClick : Function;
 
 		override protected function preinit() : void {
-			
+			_bgSkin = GPanelSkin.skin;
 			_autoSize = GAutoSize.AUTO_SIZE;
 			_scrollRect = new Rectangle();
 			_selectedIndex = -1;
@@ -52,6 +57,7 @@
 		}
 
 		override protected function create() : void {
+			_bgSkin.addTo(this, 0);
 			_content = new Sprite();
 			_content.x = _padding.left;
 			_content.y = _padding.right;
@@ -64,6 +70,7 @@
 		}
 
 		override protected function resize() : void {
+			_bgSkin.setSize(_width, _height);
 			_scrollRect.width = _width - _padding.left - _padding.right - _vScrollBar.width;
 			_scrollRect.height = _height - _padding.top - _padding.bottom;
 			_content.scrollRect = _scrollRect;
@@ -87,6 +94,7 @@
 					cell.moveTo(c * (_template.width + _hgap), r * (_template.height + _vgap));
 					cell.addEventListener(MouseEvent.MOUSE_DOWN, cell_mouseDownHandler);
 					cell.addEventListener(MouseEvent.CLICK, cell_clickHandler);
+					cell.source = null;
 					_content.addChild(DisplayObject(cell));
 					_cells.push(cell);
 				}
@@ -121,8 +129,6 @@
 				_vScrollBar.visible = false;
 				_vScrollBar.onValueChange = null;
 			}
-			graphics.lineStyle(1, 0xFF0000, 1);
-			graphics.drawRect(_content.x, _content.y, _scrollRect.width, _scrollRect.height);
 		}
 
 		protected function onValueChange() : void {
@@ -141,10 +147,6 @@
 				change = _changes.shift();
 				if (change.state == GListChange.RESET) {
 					updateCells();
-					for (var i : int = 0; i < _cells.length; i++) {
-						_cells[i].source = _model.getAt(i);
-					}
-					callLater(updateScroll);
 				} else if (change.state == GListChange.UPDATE) {
 					_cells[change.index].source = _model.getAt(change.index);
 				}
@@ -154,38 +156,52 @@
 		protected function updateCells() : void {
 			var cr : int = Math.ceil(_cells.length / _cols);
 			var mr : int = Math.max(_rows, Math.ceil(_model.length / _cols));
-			if (cr == mr) {
-				return;
+			if (cr != mr) {
+				var r : int;
+				var c : int;
+				var cell : IGCell;
+				if (cr < mr) {
+					for (r = cr; r < mr; r++) {
+						for (c = 0; c < _cols; c++) {
+							cell = new _cell();
+							cell.moveTo(c * (_template.width + _hgap), r * (_template.height + _vgap));
+							cell.addEventListener(MouseEvent.MOUSE_DOWN, cell_mouseDownHandler);
+							cell.addEventListener(MouseEvent.CLICK, cell_clickHandler);
+							_content.addChild(DisplayObject(cell));
+							_cells.push(cell);
+						}
+					}
+				} else {
+					for (r = mr; r < cr; r++) {
+						for (c = 0; c < _cols; c++) {
+							cell = _cells[r * _cols + c];
+							cell.removeEventListener(MouseEvent.MOUSE_DOWN, cell_mouseDownHandler);
+							cell.removeEventListener(MouseEvent.CLICK, cell_clickHandler);
+							cell.hide();
+						}
+					}
+					_cells.length = mr * _cols;
+				}
 			}
-			var r : int;
-			var c : int;
-			var cell : IGCell;
-			if (cr < mr) {
-				for (r = cr; r < mr; r++) {
-					for (c = 0; c < _cols; c++) {
-						cell = new _cell();
-						cell.moveTo(c * (_template.width + _hgap), r * (_template.height + _vgap));
-						cell.addEventListener(MouseEvent.MOUSE_DOWN, cell_mouseDownHandler);
-						cell.addEventListener(MouseEvent.CLICK, cell_clickHandler);
-						_content.addChild(DisplayObject(cell));
-						_cells.push(cell);
-					}
-				}
-			} else {
-				for (r = mr; r < cr; r++) {
-					for (c = 0; c < _cols; c++) {
-						cell = _cells[r * _cols + c];
-						cell.removeEventListener(MouseEvent.MOUSE_DOWN, cell_mouseDownHandler);
-						cell.removeEventListener(MouseEvent.CLICK, cell_clickHandler);
-						cell.hide();
-					}
-				}
-				_cells.length = mr * _cols;
+			for (var i : int = 0; i < _cells.length; i++) {
+				_cells[i].source = _model.getAt(i);
 			}
 			callLater(updateScroll);
 		}
 
 		public function GGrid() {
+		}
+
+		public function set model(value : GGridModel) : void {
+			if (value == null || _model == value) {
+				return;
+			}
+			if (_model != null) {
+				_model.removeOnChange(onModelChange);
+			}
+			_model = value;
+			_model.onChange = onModelChange;
+			callLater(updateCells);
 		}
 
 		public function get model() : GGridModel {
@@ -196,13 +212,26 @@
 			_hgap = hgap;
 			_vgap = vgap;
 		}
-		
+
+		public function set bgSkin(value : IGSkin) : void {
+			if (_bgSkin == null || _bgSkin == value) {
+				return;
+			}
+			_bgSkin.remove();
+			_bgSkin = value;
+			_bgSkin.phase = (_enabled ? GPhase.UP : GPhase.DISABLED);
+			_bgSkin.addTo(this, 0);
+			if (_scaleMode == GScaleMode.FIT_SIZE) {
+				forceSize(_bgSkin.width, _bgSkin.height);
+			}
+		}
+
 		public function get vScrollBar() : GVScrollBar {
 			return _vScrollBar;
 		}
 
 		public function set cell(value : Class) : void {
-			if (_cell == value) {
+			if (value == null || !value is IGCell || _cell == value) {
 				return;
 			}
 			_cell = value;

@@ -1,6 +1,7 @@
 ﻿package gear.utils {
 	import flash.text.Font;
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 
 	/**
@@ -172,6 +173,14 @@
 			return format("%4d-%2d-%2d %2d:%2d", year, month, date, hours, minutes, seconds);
 		}
 
+		public static function formatDictionary(value : Dictionary) : String {
+			var code : String = "{";
+			for (var key : String in value) {
+				code += "key:" + key + ",value=" + GStringUtil.toString(value[key]);
+			}
+			return code + "}";
+		}
+
 		public static function formatObject(target : Object) : String {
 			var code : String = "";
 			var value : Object;
@@ -239,6 +248,9 @@
 			}
 			if (value is Font) {
 				return Font(value).fontName;
+			}
+			if (value is Dictionary) {
+				return formatDictionary(value);
 			}
 			var name : String = getQualifiedClassName(value).split("::").pop();
 			if (name.indexOf("Vector") != -1) {

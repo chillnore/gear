@@ -20,6 +20,9 @@
 
 		protected function resetLength() : void {
 			var index : int = _source.length;
+			if (index < 1) {
+				return;
+			}
 			while (index-- > -1) {
 				if (_source[index] == null) {
 					_source.length = index;
@@ -37,6 +40,13 @@
 		public function set onChange(value : Function) : void {
 			if (_change.indexOf(value) == -1) {
 				_change.push(value);
+			}
+		}
+
+		public function removeOnChange(value : Function) : void {
+			var index : int = _change.indexOf(value);
+			if (index != -1) {
+				_change.splice(index, 1);
 			}
 		}
 

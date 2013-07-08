@@ -9,6 +9,7 @@
 	import gear.gui.model.GListModel;
 	import gear.gui.skins.GPanelSkin;
 	import gear.gui.skins.IGSkin;
+	import gear.gui.utils.GUIUtil;
 	import gear.log4a.GLogger;
 
 	import flash.display.DisplayObject;
@@ -36,6 +37,7 @@
 		protected var _template : IGCell;
 		protected var _cells : Vector.<IGCell>;
 		protected var _onCellClick : Function;
+		protected var _outside : Boolean;
 
 		override protected function preinit() : void {
 			_bgSkin = GPanelSkin.skin;
@@ -49,6 +51,7 @@
 			_cell = GCell;
 			_padding.dist = 1;
 			_template = new _cell();
+			_outside = false;
 			setSize(100, 100);
 		}
 
@@ -75,6 +78,15 @@
 
 		override protected function onShow() : void {
 			addEvent(this, MouseEvent.MOUSE_WHEEL, mouseWheelHandler);
+			if (_outside) {
+				addEvent(stage, MouseEvent.MOUSE_DOWN, stageMouseDownHandler);
+			}
+		}
+
+		protected function stageMouseDownHandler(event : MouseEvent) : void {
+			if (!GUIUtil.atParent(DisplayObject(event.target), this)) {
+				dispatchEvent(new MouseEvent(MouseEvent.RELEASE_OUTSIDE));
+			}
 		}
 
 		protected function mouseWheelHandler(event : MouseEvent) : void {
@@ -93,7 +105,6 @@
 				switch(change.state) {
 					case GListChange.RESET:
 						callLater(updateCells);
-						callLater(updateScroll);
 						break;
 					case GListChange.ADDED:
 						if (change.index <= _selectedIndex) {
@@ -130,6 +141,7 @@
 				updateCell(i);
 			}
 			selectedIndex = -1;
+			callLater(updateScroll);
 		}
 
 		protected function addCell(index : int) : void {
@@ -216,16 +228,11 @@
 		}
 
 		public function set bgSkin(value : IGSkin) : void {
-			if (_bgSkin == value) {
+			if (_bgSkin == null || _bgSkin == value) {
 				return;
 			}
-			if (_bgSkin != null) {
-				_bgSkin.remove();
-			}
+			_bgSkin.remove();
 			_bgSkin = value;
-			if (_bgSkin == null) {
-				return;
-			}
 			_bgSkin.phase = (_enabled ? GPhase.UP : GPhase.DISABLED);
 			_bgSkin.addTo(this, 0);
 			if (_scaleMode == GScaleMode.FIT_SIZE) {
@@ -246,7 +253,7 @@
 		}
 
 		public function set model(value : GListModel) : void {
-			if (_model == value) {
+			if (value == null || _model == value) {
 				return;
 			}
 			if (_model != null) {
@@ -255,7 +262,6 @@
 			_model = value;
 			_model.onChange = onModelChange;
 			callLater(updateCells);
-			callLater(updateScroll);
 		}
 
 		public function get model() : GListModel {
@@ -300,6 +306,10 @@
 			for each (var cell : IGCell in _cells) {
 				cell.selected = value;
 			}
+		}
+
+		public function set outside(value : Boolean) : void {
+			_outside = value;
 		}
 	}
 }

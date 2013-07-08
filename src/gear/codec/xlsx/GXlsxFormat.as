@@ -1,8 +1,7 @@
 ﻿package gear.codec.xlsx {
 	import gear.log4a.GLogError;
 	import gear.log4a.GLogger;
-
-	import mx.utils.StringUtil;
+	import gear.utils.GStringUtil;
 
 	/**
 	 * Excel 表数据
@@ -63,7 +62,7 @@
 			var value : * = _data[row][column];
 			switch(type) {
 				case "String":
-					item[key] = StringUtil.trim(String(value));
+					item[key] = GStringUtil.trim(String(value));
 					break;
 				case "uint":
 					item[key] = uint(value);
