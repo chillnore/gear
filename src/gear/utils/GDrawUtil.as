@@ -138,11 +138,11 @@
 		/**
 		 * 绘制菱形
 		 */
-		public static function drawDiamond(x : int, y : int, tw : int, th : int, g : Graphics) : void {
+		public static function drawDiamond(tw : int, th : int, g : Graphics) : void {
 			var halfW : int = tw / 2;
 			var halfH : int = th / 2;
 			g.lineStyle(1, 0, 1);
-			g.drawPath(new <int>[1, 2, 2, 2, 2], new <Number>[x, y - halfH, x + halfW, y, x, y + halfH, x - halfW, y, x, y - halfH]);
+			g.drawPath(new <int>[1, 2, 2, 2, 2], new <Number>[0, -halfH, halfW, 0, 0, halfH, -halfW, 0, 0, -halfH]);
 		}
 	}
 }
